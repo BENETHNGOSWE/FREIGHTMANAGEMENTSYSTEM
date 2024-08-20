@@ -1,0 +1,319 @@
+<?php
+
+return [
+    'common' => [
+        'actions' => 'Actions',
+        'create' => 'Create',
+        'edit' => 'Edit',
+        'update' => 'Update',
+        'new' => 'New',
+        'cancel' => 'Cancel',
+        'attach' => 'Attach',
+        'detach' => 'Detach',
+        'save' => 'Save',
+        'delete' => 'Delete',
+        'delete_selected' => 'Delete selected',
+        'search' => 'Search...',
+        'back' => 'Back to Index',
+        'are_you_sure' => 'Are you sure?',
+        'no_items_found' => 'No items found',
+        'created' => 'Successfully created',
+        'saved' => 'Saved successfully',
+        'removed' => 'Successfully removed',
+    ],
+
+    'banks' => [
+        'name' => 'Banks',
+        'index_title' => 'Banks List',
+        'new_title' => 'New Bank',
+        'create_title' => 'Create Bank',
+        'edit_title' => 'Edit Bank',
+        'show_title' => 'Show Bank',
+        'inputs' => [
+            'name' => 'Name',
+            'status' => 'Status',
+        ],
+    ],
+
+    'branches' => [
+        'name' => 'Branches',
+        'index_title' => 'Branches List',
+        'new_title' => 'New Branch',
+        'create_title' => 'Create Branch',
+        'edit_title' => 'Edit Branch',
+        'show_title' => 'Show Branch',
+        'inputs' => [
+            'client_id' => 'Client',
+            'branch_name' => 'Branch Name',
+        ],
+    ],
+
+    'clients' => [
+        'name' => 'Clients',
+        'index_title' => 'Clients List',
+        'new_title' => 'New Client',
+        'create_title' => 'Create Client',
+        'edit_title' => 'Edit Client',
+        'show_title' => 'Show Client',
+        'inputs' => [
+            'name' => 'Name',
+            'logo' => 'Logo',
+            'address' => 'Address',
+            'country_id' => 'Country',
+            'city' => 'City',
+            'registration_number' => 'Registration Number',
+            'subdomain' => 'Subdomain',
+            'client_type_id' => 'Client Type',
+        ],
+    ],
+
+    'client_admins' => [
+        'name' => 'Client Admins',
+        'index_title' => 'ClientAdmins List',
+        'new_title' => 'New Client admin',
+        'create_title' => 'Create ClientAdmin',
+        'edit_title' => 'Edit ClientAdmin',
+        'show_title' => 'Show ClientAdmin',
+        'inputs' => [
+            'user_id' => 'User',
+            'client_id' => 'Client',
+        ],
+    ],
+
+    'client_payments' => [
+        'name' => 'Client Payments',
+        'index_title' => 'ClientPayments List',
+        'new_title' => 'New Client payment',
+        'create_title' => 'Create ClientPayment',
+        'edit_title' => 'Edit ClientPayment',
+        'show_title' => 'Show ClientPayment',
+        'inputs' => [
+            'amount' => 'Amount',
+            'date' => 'Date',
+            'payment_type_id' => 'Payment Type',
+        ],
+    ],
+
+    'client_types' => [
+        'name' => 'Client Types',
+        'index_title' => 'ClientTypes List',
+        'new_title' => 'New Client type',
+        'create_title' => 'Create ClientType',
+        'edit_title' => 'Edit ClientType',
+        'show_title' => 'Show ClientType',
+        'inputs' => [
+            'name' => 'Name',
+        ],
+    ],
+
+    'countries' => [
+        'name' => 'Countries',
+        'index_title' => 'Countries List',
+        'new_title' => 'New Country',
+        'create_title' => 'Create Country',
+        'edit_title' => 'Edit Country',
+        'show_title' => 'Show Country',
+        'inputs' => [
+            'name' => 'Name',
+            'iso' => 'Iso',
+            'iso3' => 'Iso3',
+            'nicename' => 'Nicename',
+        ],
+    ],
+
+    'messages' => [
+        'name' => 'Messages',
+        'index_title' => 'Messages List',
+        'new_title' => 'New Message',
+        'create_title' => 'Create Message',
+        'edit_title' => 'Edit Message',
+        'show_title' => 'Show Message',
+        'inputs' => [
+            'sender_id' => 'Sender Id',
+            'receiver_id' => 'Receiver Id',
+            'body' => 'Body',
+            'status' => 'Status',
+            'opened' => 'Opened',
+            'client_id' => 'Client',
+        ],
+    ],
+
+    'modules' => [
+        'name' => 'Modules',
+        'index_title' => 'Modules List',
+        'new_title' => 'New Module',
+        'create_title' => 'Create Module',
+        'edit_title' => 'Edit Module',
+        'show_title' => 'Show Module',
+        'inputs' => [
+            'name' => 'Name',
+            'features' => 'Features',
+            'client_id' => 'Client',
+        ],
+    ],
+
+    'packages' => [
+        'name' => 'Packages',
+        'index_title' => 'Packages List',
+        'new_title' => 'New Package',
+        'create_title' => 'Create Package',
+        'edit_title' => 'Edit Package',
+        'show_title' => 'Show Package',
+        'inputs' => [
+            'name' => 'Name',
+            'monthly_fee' => 'Monthly Fee',
+            'yearly_fee' => 'Yearly Fee',
+            'features' => 'Features',
+            'client_id' => 'Client',
+        ],
+    ],
+
+    'patients' => [
+        'name' => 'Patients',
+        'index_title' => 'Patients List',
+        'new_title' => 'New Patient',
+        'create_title' => 'Create Patient',
+        'edit_title' => 'Edit Patient',
+        'show_title' => 'Show Patient',
+        'inputs' => [
+            'user_id' => 'User',
+            'patientID' => 'Patient Id',
+            'has_insurance' => 'Has Insurance',
+            'city' => 'City',
+        ],
+    ],
+
+    'payment_types' => [
+        'name' => 'Payment Types',
+        'index_title' => 'PaymentTypes List',
+        'new_title' => 'New Payment type',
+        'create_title' => 'Create PaymentType',
+        'edit_title' => 'Edit PaymentType',
+        'show_title' => 'Show PaymentType',
+        'inputs' => [
+            'name' => 'Name',
+        ],
+    ],
+
+    'roles' => [
+        'name' => 'Roles',
+        'index_title' => 'Roles List',
+        'new_title' => 'New Role',
+        'create_title' => 'Create Role',
+        'edit_title' => 'Edit Role',
+        'show_title' => 'Show Role',
+        'inputs' => [
+            'name' => 'Name',
+        ],
+    ],
+
+    'subscriptions' => [
+        'name' => 'Subscriptions',
+        'index_title' => 'Subscriptions List',
+        'new_title' => 'New Subscription',
+        'create_title' => 'Create Subscription',
+        'edit_title' => 'Edit Subscription',
+        'show_title' => 'Show Subscription',
+        'inputs' => [
+            'client_id' => 'Client',
+            'start_date' => 'Start Date',
+            'expire_date' => 'Expire Date',
+            'package_id' => 'Package',
+            'status' => 'Status',
+        ],
+    ],
+
+    'subscription_invoices' => [
+        'name' => 'Subscription Invoices',
+        'index_title' => 'SubscriptionInvoices List',
+        'new_title' => 'New Subscription invoice',
+        'create_title' => 'Create SubscriptionInvoice',
+        'edit_title' => 'Edit SubscriptionInvoice',
+        'show_title' => 'Show SubscriptionInvoice',
+        'inputs' => [
+            'amount' => 'Amount',
+            'balance' => 'Balance',
+            'bill_date' => 'Bill Date',
+            'due_date' => 'Due Date',
+            'status' => 'Status',
+            'subscription_id' => 'Subscription',
+            'client_id' => 'Client',
+        ],
+    ],
+
+    'subscription_tokens' => [
+        'name' => 'Subscription Tokens',
+        'index_title' => 'SubscriptionTokens List',
+        'new_title' => 'New Subscription token',
+        'create_title' => 'Create SubscriptionToken',
+        'edit_title' => 'Edit SubscriptionToken',
+        'show_title' => 'Show SubscriptionToken',
+        'inputs' => [
+            'subscription_id' => 'Subscription',
+            'subscription_invoice_id' => 'Subscription Invoice',
+            'token_' => 'Token',
+            'expire_date' => 'Expire Date',
+            'status' => 'Status',
+            'client_id' => 'Client',
+        ],
+    ],
+
+    'users' => [
+        'name' => 'Users',
+        'index_title' => 'Users List',
+        'new_title' => 'New User',
+        'create_title' => 'Create User',
+        'edit_title' => 'Edit User',
+        'show_title' => 'Show User',
+        'inputs' => [
+            'name' => 'Name',
+            'email' => 'Email',
+            'password' => 'Password',
+            'phone' => 'Phone',
+            'address' => 'Address',
+            'registration_date' => 'Registration Date',
+            'photo' => 'Photo',
+            'gender' => 'Gender',
+            'dob' => 'Dob',
+            'status' => 'Status',
+            'country_id' => 'Country',
+            'role_id' => 'Role',
+            'client_id' => 'Client',
+        ],
+    ],
+
+    'user_roles' => [
+        'name' => 'User Roles',
+        'index_title' => 'UserRoles List',
+        'new_title' => 'New User role',
+        'create_title' => 'Create UserRole',
+        'edit_title' => 'Edit UserRole',
+        'show_title' => 'Show UserRole',
+        'inputs' => [
+            'user_id' => 'User',
+            'role_id' => 'Role',
+        ],
+    ],
+
+    'roles' => [
+        'name' => 'Roles',
+        'index_title' => 'Roles List',
+        'create_title' => 'Create Role',
+        'edit_title' => 'Edit Role',
+        'show_title' => 'Show Role',
+        'inputs' => [
+            'name' => 'Name',
+        ],
+    ],
+
+    'permissions' => [
+        'name' => 'Permissions',
+        'index_title' => 'Permissions List',
+        'create_title' => 'Create Permission',
+        'edit_title' => 'Edit Permission',
+        'show_title' => 'Show Permission',
+        'inputs' => [
+            'name' => 'Name',
+        ],
+    ],
+];
