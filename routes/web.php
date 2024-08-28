@@ -37,8 +37,8 @@ use App\Http\Controllers\SubscriptionInvoiceController;
 
 Auth::routes();
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
-Route::get('/',[App\Http\Controllers\DashboardController::class,'index'])->name('dashboard');
+// Route::get('/home', [HomeController::class, 'index'])->name('home');
+
 Route::get('/add-patient',[App\Http\Controllers\DashboardController::class,'add_patient'])->name('patient.add');
 Route::get('/list-patient',[App\Http\Controllers\DashboardController::class,'list_patient'])->name('patient.list');
 Route::get('/add-appointment',[App\Http\Controllers\DashboardController::class,'add_appointment'])->name('appointment.add');
@@ -50,6 +50,11 @@ Route::get('/list-departments',[App\Http\Controllers\DashboardController::class,
 Route::prefix('/')
     ->middleware('auth')
     ->group(function () {
+
+        Route::get('/',[App\Http\Controllers\HomeController::class,'index'])->name('home');
+        Route::get('/dashboard',[App\Http\Controllers\HomeController::class,'index'])->name('dashboard');
+
+        
         Route::resource('roles', RoleController::class);
         Route::resource('permissions', PermissionController::class);
 

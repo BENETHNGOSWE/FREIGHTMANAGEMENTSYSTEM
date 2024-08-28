@@ -4,7 +4,7 @@
 
   @include('layouts.partials._meta')
 
-  <title>Hospital Management System</title>
+  <title>Freight Management System</title>
   @include('layouts.partials._global_css')
 </head>
 
