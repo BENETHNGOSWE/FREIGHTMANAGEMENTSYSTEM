@@ -4,7 +4,7 @@
 <div class="container-fluid">
     <div class="form-head d-flex align-items-center mb-sm-4 mb-3">
       <div class="me-auto">
-        <h2 class="text-black font-w600">Welcome Ludovick | Owner </h2>
+        <h2 class="text-black font-w600">Welcome Beneth | Owner </h2>
         <p class="mb-0">25-10-2023 | 11:21 AM</p>
       </div>
       <!-- <a href="javascript:void(0)" class="btn btn-outline-primary"><i class="las la-cog scale5 me-3"></i>Customize
@@ -24,7 +24,7 @@
                 <i class="flaticon-381-calendar-1"></i>
               </span>
               <div class="media-body text-white text-end">
-                <p class="mb-1">Appointment</p>
+                <p class="mb-1">Unpaid Clients</p>
                 <h3 class="text-white">36</h3>
               </div>
             </div>
@@ -39,7 +39,7 @@
                 <i class="flaticon-381-user-9"></i>
               </span>
               <div class="media-body text-white text-end">
-                <p class="mb-1">New Patient</p>
+                <p class="mb-1">Total Clients</p>
                 <h3 class="text-white">23</h3>
               </div>
             </div>
@@ -54,7 +54,7 @@
                 <i class="flaticon-381-user-7"></i>
               </span>
               <div class="media-body text-white text-end">
-                <p class="mb-1">Doctors on Dute</p>
+                <p class="mb-1">Overdue Accounts</p>
                 <h3 class="text-white">7</h3>
               </div>
             </div>
@@ -69,7 +69,7 @@
                 <i class="flaticon-381-user-9"></i>
               </span>
               <div class="media-body text-white text-end">
-                <p class="mb-1">Pending Appointments</p>
+                <p class="mb-1">Pending Cleints</p>
                 <h3 class="text-white">12</h3>
               </div>
             </div>
@@ -117,7 +117,7 @@
                           <i class="fa-regular fa-heart" aria-hidden="true"></i>
                         </span>
                         <div>
-                          <p class="fs-18 mb-2">Total Patient</p>
+                          <p class="fs-18 mb-2">Total Clients</p>
                           <span class="fs-26 text-primary font-w600">36</span>
                         </div>
                       </div>

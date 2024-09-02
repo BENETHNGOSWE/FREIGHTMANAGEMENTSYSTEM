@@ -5,6 +5,8 @@ namespace Database\Factories;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
+
 
 class UserFactory extends Factory
 {
@@ -23,19 +25,15 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->name(),
-            'email' => $this->faker->unique->email(),
-            'email_verified_at' => now(),
-            'password' => \Hash::make('password'),
-            'remember_token' => Str::random(10),
-            'phone' => $this->faker->phoneNumber(),
-            'address' => $this->faker->address(),
-            'registration_date' => $this->faker->date(),
-            'gender' => \Arr::random(['male', 'female', 'other']),
-            'dob' => $this->faker->date(),
-            'status' => '0',
-            'country_id' => \App\Models\Country::factory(),
-            'client_id' => \App\Models\Client::factory(),
+            'name' => $this->faker->name,
+            'email' => $this->faker->unique()->safeEmail, // Use safeEmail to ensure it's valid
+            'phone' => $this->faker->phoneNumber, // Nullable, so this can be left out if desired
+            'photo' => null, // Default to null, or use $this->faker->imageUrl() if you want a placeholder
+            'email_verified_at' => now(), // Automatically verify for seeding
+            'password' => Hash::make('password'), // Using Hash facade to hash the password
+            'remember_token' => Str::random(10), // Random string for remember token
+            'client_id' => \App\Models\Client::factory(), // Link to a Client model
+            'user_type' => 'smallclient', // Default value as per your schema
         ];
     }
 

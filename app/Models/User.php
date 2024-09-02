@@ -21,29 +21,20 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password',
         'phone',
-        'address',
-        'registration_date',
         'photo',
-        'gender',
-        'dob',
-        'status',
-        'country_id',
-        // 'role_id',
+        'email_verified_at',
+        'password',
         'client_id',
+        'user_type',
     ];
+    
 
     protected $searchableFields = ['*'];
 
     protected $hidden = ['password', 'remember_token'];
 
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'registration_date' => 'date',
-        'dob' => 'date',
-    ];
-
+ 
     public function country()
     {
         return $this->belongsTo(Country::class);

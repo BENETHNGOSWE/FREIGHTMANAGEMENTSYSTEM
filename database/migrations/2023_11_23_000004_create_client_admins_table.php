@@ -12,6 +12,13 @@ return new class extends Migration {
     {
         Schema::create('client_admins', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('firstname');
+            $table->string('middlename')->nullable();
+            $table->string('lastname');
+            $table->string('username')->nullable();
+            $table->string('email');
+            $table->string('phone');
+            $table->string('password');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('client_id');
 

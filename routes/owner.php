@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('/')
     ->middleware('auth')
     ->group(function () {
+
+        // Manage Clients Here
+        Route::get('clientcreate',[App\Http\Controllers\Owner\ClientController::class, 'create'])->name('clents.create');
         
         Route::resource('permissions', App\Http\Controllers\Permission\PermissionController::class);
         Route::get('permissions/{permissionId}/delete', [App\Http\Controllers\Permission\PermissionController::class, 'destroy']);

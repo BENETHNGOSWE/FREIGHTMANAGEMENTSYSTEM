@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\ClientType;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+
 
 class ClientTypeSeeder extends Seeder
 {
@@ -12,8 +14,12 @@ class ClientTypeSeeder extends Seeder
      */
     public function run(): void
     {
-        ClientType::factory()
-            ->count(5)
-            ->create();
+        DB::table('client_types')->insert([
+            ['name' => 'Individual'],
+            ['name' => 'Company'],
+            ['name' => 'Non-Profit'],
+            ['name' => 'Government'],
+            ['name' => 'Educational'],
+        ]);
     }
 }

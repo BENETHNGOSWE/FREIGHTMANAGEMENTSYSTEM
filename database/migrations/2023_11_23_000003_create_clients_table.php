@@ -12,13 +12,19 @@ return new class extends Migration {
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
-            $table->string('logo')->nullable();
-            $table->string('address');
-            $table->unsignedBigInteger('country_id');
-            $table->string('city')->nullable();
-            $table->string('registration_number');
-            $table->string('subdomain')->nullable();
+            $table->string('client_name');
+            $table->string('client_logo')->nullable();
+            $table->string('client_location');
+            $table->string('client_address_one')->nullable();
+            $table->string('client_address_two')->nullable();
+            $table->string('client_tinnumber')->nullable();
+            $table->string('client_phonenumber')->nullable();
+            $table->string('client_email')->unique('client_email');
+            $table->string('client_city');
+            $table->string('client_country');
+            $table->string('client_zipcode')->nullable();
+            $table->string('client_fax')->nullable();
+            $table->string('client_website_link')->nullable();
             $table->unsignedBigInteger('client_type_id');
 
             $table->timestamps();

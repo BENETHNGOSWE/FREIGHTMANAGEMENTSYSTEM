@@ -11,7 +11,17 @@ class ClientAdmin extends Model
     use HasFactory;
     use Searchable;
 
-    protected $fillable = ['user_id', 'client_id'];
+    protected $fillable = [
+        'firstname',
+        'middlename',
+        'lastname',
+        'username',
+        'email',
+        'phone',
+        'password',
+        'user_id',
+        'client_id'
+    ];
 
     protected $searchableFields = ['*'];
 

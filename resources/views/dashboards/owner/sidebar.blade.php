@@ -12,10 +12,10 @@
         <li>
           <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
             <i class="fa fa-circle-h"></i>
-            <span class="nav-text">Hospitals</span>
+            <span class="nav-text">Clients</span>
           </a>
           <ul aria-expanded="false">
-            <li><a href="#"><i class="fa fa-house-medical" style="font-size: 16px;"></i> Hospital list</a></li>
+            <li><a href="#"><i class="fa fa-house-medical" style="font-size: 16px;"></i> Clients list</a></li>
             <li><a href="#"><i class="fa fa-file" style="font-size: 16px;"></i> Onboard Details</a></li>
           </ul>
         </li>
