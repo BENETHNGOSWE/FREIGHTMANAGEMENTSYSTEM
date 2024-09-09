@@ -3,18 +3,18 @@
     <div class="container-fluid">
         <div class="form-head align-items-center d-flex mb-sm-4 mb-3">
             <div class="me-auto">
-                <h2 class="text-black font-w600">Hospitals</h2>
+                <h2 class="text-black font-w600">clients</h2>
                 <p class="mb-1">Dashboard / <span><a class="text-primary"
-                            href="{{ route('list.hospitals') }}">Hospitals</a></span></p>
+                            href="{{ route('list.clients') }}">clients</a></span></p>
             </div>
             <div>
-                <a href="{{ route('create.hospitals') }}" class="btn btn-primary me-3">+ Add new</a>
+                <a href="{{ route('create.clients') }}" class="btn btn-primary me-3">+ Add new</a>
             </div>
         </div>
         <div class="row">
             <div class="col-xl-12">
                 <div class="table-responsive card-table">
-                    <table id="hospitalsTable" class="display dataTablesCard white-border table-responsive-xl">
+                    <table id="clientsTable" class="display dataTablesCard white-border table-responsive-xl">
                         <thead>
                             <tr>
                                 <th>
@@ -22,13 +22,13 @@
                                 </th>
                                 <th class="text-left">
                                    
-                                    @lang('crud.hospitals.inputs.hospital_logo')
+                                    @lang('crud.clients.inputs.client_logo')
                                 </th>
                                 <th class="text-left">
-                                    Name
+                                    Client Name
                                 </th>
                                 <th class="text-left">
-                                    @lang('crud.hospitals.inputs.hospital_type_id')
+                                    @lang('crud.clients.inputs.client_type_id')
                                 </th>
                                
                                 <th class="text-left">
@@ -38,7 +38,7 @@
                                     Admin phone
                                 </th>
                                 <th class="text-left">
-                                    @lang('crud.hospitals.inputs.hospital_city')
+                                    @lang('crud.clients.inputs.client_city')
                                 </th>
                                 
                                 <th class="text-center">
@@ -47,46 +47,46 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($hospitals as $hospital)
+                            @forelse($client_list as $client)
                                 <tr>
                                     <td>
                                         {{ $loop->iteration }}
                                     </td>
                                     
                                     <td>
-                                        <img src="{{ asset('storage/uploads/' . $hospital->hospital_logo) }}" alt="Hospital Logo"
+                                        <img src="{{ asset('storage/uploads/' . $client->client_logo) }}" alt="client Logo"
                                             style="width: 50px; height: 50px; object-fit: cover;">
 
                                     </td>
-                                    <td>{{ $hospital->hospital_name ?? '-' }}</td>
+                                    <td>{{ $client->client_name ?? '-' }}</td>
                                     <td>
-                                        {{ $hospital->hospitalType() ?? '-' }}
+                                        {{ $client->clientType() ?? '-' }}
                                     </td>
                                     <td>
-                                        {{ $hospital->admin() ? $hospital->admin()->name : '-'}}
+                                        {{ $client->admin() ? $client->admin()->name : '-'}}
                                     </td>
-                                    <td>{{ $hospital->admin() ? $hospital->admin()->phone : '-' }}</td>
-                                    <td>{{ $hospital->hospital_city ?? '-' }}</td>
+                                    <td>{{ $client->admin() ? $client->admin()->phone : '-' }}</td>
+                                    <td>{{ $client->client_city ?? '-' }}</td>
                                     
                                     <td class="text-center" style="width: 134px;">
                                         <div role="group" aria-label="Row Actions" class="btn-group">
-                                            @can('update', $hospital)
-                                                <a href="{{ route('edit.hospitals', $hospital) }}">
+                                            @can('update', $client)
+                                                <a href="#">
                                                     <button type="button" class="btn btn-outline-success">
                                                         <i class="fas fa-edit"></i>
                                                     </button>
                                                 </a>
-                                                @endcan @can('view', $hospital)
-                                                <a href="{{ route('show.hospitals', $hospital) }}">
+                                                @endcan @can('view', $client)
+                                                <a href="#">
                                                     <button type="button" class="btn btn-outline-primary mx-2">
                                                         <i class="fas fa-eye"></i>
                                                     </button>
                                                 </a>
                                             @endcan
 
-                                            @can('delete', $hospital)
+                                            @can('delete', $client)
                                                 <form class="delete_form"
-                                                    action="{{ route('delete.hospitals', ['hospital' => $hospital->id]) }}"
+                                                    action="#"
                                                     method="POST">
                                                     @csrf
                                                     @method('DELETE')
@@ -116,7 +116,7 @@
 @push('scripts')
     <script>
         (function($) {
-            var table = $("#hospitalsTable").DataTable({
+            var table = $("#clientsTable").DataTable({
                 searching: true,
                 paging: true,
                 select: false,

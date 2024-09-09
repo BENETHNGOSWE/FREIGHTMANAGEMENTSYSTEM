@@ -17,7 +17,7 @@ class setFreightid
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $request->attributes->add(['fmh_id' => Auth::user()->school_id]);
+        $request->attributes->add(['fms_id' => Auth::user()->client_id]);
 
         return $next($request);
     }

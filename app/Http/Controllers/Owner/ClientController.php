@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 use App\Models\ClientType;
 use App\Models\ClientAdmin;
 use App\Models\Client;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\RedirectResponse;
+use Spatie\Permission\Models\Role;
 
 class ClientController extends Controller
 {
@@ -22,7 +27,7 @@ class ClientController extends Controller
     public function index()
     {
         $this->data['client_list'] = client::all();
-        $this->data['clienttypes'] = clientType::pluck('name', 'id');
+        $this->data['clientTypes'] = clientType::pluck('name', 'id');
         return view('dashboards.owner.clients.index', $this->data);
     }
 
@@ -32,7 +37,7 @@ class ClientController extends Controller
     public function create()
     {
         $this->data['clients'] = client::all();
-        $this->data['clienttypes'] = clientType::all();
+        $this->data['clientTypes'] = clientType::pluck('name', 'id');
         return view('dashboards.owner.clients.create', $this->data);
     }
 
@@ -129,7 +134,6 @@ class ClientController extends Controller
                     $clientAdmin->save();
                 }
             }
-
             DB::commit();
             
         } catch (\Throwable $th) {

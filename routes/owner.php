@@ -6,7 +6,9 @@ Route::prefix('/')
     ->group(function () {
 
         // Manage Clients Here
-        Route::get('clientcreate',[App\Http\Controllers\Owner\ClientController::class, 'create'])->name('clents.create');
+        Route::get('index',[App\Http\Controllers\Owner\ClientController::class, 'index'])->name('list.clients');
+        Route::get('clientcreate',[App\Http\Controllers\Owner\ClientController::class, 'create'])->name('create.clients');
+        Route::post('clientstore',[App\Http\Controllers\Owner\ClientController::class, 'store'])->name('store.clients');
         
         Route::resource('permissions', App\Http\Controllers\Permission\PermissionController::class);
         Route::get('permissions/{permissionId}/delete', [App\Http\Controllers\Permission\PermissionController::class, 'destroy']);

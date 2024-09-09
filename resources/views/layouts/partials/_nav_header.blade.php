@@ -1,8 +1,8 @@
 <div class="nav-header">
-    <a href="index.html" class="brand-logo">
-      <img class="logo-abbr header-logo" src="{{asset('assets/images/company_logo.png')}}" alt="" />
-      <img class="logo-compact" src="{{asset('assets/images/company_logo.png')}}" alt="" />
-      <img class="brand-title" src="{{asset('assets/images/company_logo.png')}}" alt="" />
+    <a href="{{url('/')}}" class="brand-logo">
+      <img class="logo-abbr header-logo" style="max-height: 100px;" src="{{asset('images/logo.png')}}" alt="" />
+      <img class="logo-compact" style="max-height: 100px;" src="{{asset('images/logo.png')}}" alt="" />
+      <img class="brand-title" style="max-height: 100px;" src="{{asset('images/logo.png')}}" alt="" />
     </a>
 
     <div class="nav-control">

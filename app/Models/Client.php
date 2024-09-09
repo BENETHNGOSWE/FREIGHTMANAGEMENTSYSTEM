@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Models\Scopes\Searchable;
+use App\Models\ClientAdmin;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -31,6 +33,21 @@ class Client extends Model
 
     protected $searchableFields = ['*'];
 
+
+    public function admin()
+    {
+        $admin = ClientAdmin::where('client_id', $this->id)->first();
+        if ($admin) {
+            $user = User::where('id', $admin->user_id)->first();
+
+            return $user;
+        } else {
+            return null;
+        }
+
+    }
+
+
     // public function country()
     // {
     //     return $this->belongsTo(Country::class);
@@ -38,7 +55,8 @@ class Client extends Model
 
     public function clientType()
     {
-        return $this->belongsTo(ClientType::class);
+        return $this->belongsTo(ClientType::class)->value('name');
+    
     }
 
     public function users()

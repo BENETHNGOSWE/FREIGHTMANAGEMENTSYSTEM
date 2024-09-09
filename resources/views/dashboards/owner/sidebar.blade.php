@@ -15,7 +15,7 @@
             <span class="nav-text">Clients</span>
           </a>
           <ul aria-expanded="false">
-            <li><a href="#"><i class="fa fa-house-medical" style="font-size: 16px;"></i> Clients list</a></li>
+            <li><a href="{{ route('list.clients')}}"><i class="fa fa-house-medical" style="font-size: 16px;"></i> Clients list</a></li>
             <li><a href="#"><i class="fa fa-file" style="font-size: 16px;"></i> Onboard Details</a></li>
           </ul>
         </li>

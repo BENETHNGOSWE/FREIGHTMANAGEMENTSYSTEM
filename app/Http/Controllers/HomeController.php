@@ -7,7 +7,7 @@ use App\Http\Controllers\Owner\OwnerController;
 
 class HomeController extends Controller
 {
-    public $fmh_id;
+    public $fms_id;
     /**
      * Create a new controller instance.
      *
@@ -18,7 +18,7 @@ class HomeController extends Controller
         $this->middleware('auth');
         $this->middleware('set_freight');
         $this->middleware(function ($request, $next) {
-            $this->fmh_id = $request->get('fmh_id');
+            $this->fms_id = $request->get('fms_id');
             return $next($request);
         });
     }
@@ -35,6 +35,10 @@ class HomeController extends Controller
         switch ($role){
             case 'owner':
                 return $this->ownerDashboard();
+
+            case 'admin':
+                return $this->adminDashboard();
+
             default:
                 return view('home'); 
             }       
@@ -43,6 +47,10 @@ class HomeController extends Controller
     public function ownerDashboard()
     {
         $dashboard = new OwnerController();
-        return $dashboard ->index($this->fmh_id);
+        return $dashboard ->index($this->fms_id);
+    }
+
+    public function adminDashboard(){
+        return view('welcome');
     }
 }
