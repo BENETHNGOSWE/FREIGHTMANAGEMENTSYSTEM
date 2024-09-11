@@ -48,6 +48,11 @@ class User extends Authenticatable
         return $this->belongsTo(Client::class);
     }
 
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
     public function patients()
     {
         return $this->hasMany(Patient::class);

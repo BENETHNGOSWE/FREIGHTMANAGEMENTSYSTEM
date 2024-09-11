@@ -4,18 +4,18 @@
     <div class="container-fluid">
         <div class="form-head align-items-center d-flex mb-sm-4 mb-3">
             <div class="me-auto">
-                <h2 class="text-black font-w600">View Hospital</h2>
+                <h2 class="text-black font-w600">View client</h2>
 
             </div>
 
             <div>
-                <p class="mb-1">Dashboard / <span><a class="text-primary" href="{{ route('dashboard.index') }}">View
-                            hospital</a></span></p>
+                <p class="mb-1">Dashboard / <span><a class="text-primary" href="#">View
+                            client</a></span></p>
             </div>
         </div>
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title">{{ $hospital->hospital_name ?? '-' }}</h4>
+                <h4 class="card-title">{{ $client->client_name ?? '-' }}</h4>
             </div>
             <div class="card-body">
 
@@ -25,8 +25,8 @@
                     <div class="default-tab">
                         <ul class="nav nav-tabs" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link active" data-bs-toggle="tab" href="#hospital_info" aria-selected="true"
-                                    role="tab"><i class="la la-home me-2"></i>Hospital Details</a>
+                                <a class="nav-link active" data-bs-toggle="tab" href="#client_info" aria-selected="true"
+                                    role="tab"><i class="la la-home me-2"></i>client Details</a>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <a class="nav-link" data-bs-toggle="tab" href="#admin_details" aria-selected="false"
@@ -46,7 +46,7 @@
                             </li>
                         </ul>
                         <div class="tab-content">
-                            <div class="tab-pane fade active show" id="hospital_info" role="tabpanel">
+                            <div class="tab-pane fade active show" id="client_info" role="tabpanel">
                                 <div class="container-fluid">
                                     <div class="row">
                                         <div class="col-sm-12">
@@ -54,68 +54,64 @@
                                                 <table class="table table-bordered table-responsive-sm">
                                                     <thead>
                                                         <tr>
-                                                            <th style="width: 20%">Hospital Name</th>
-                                                            <th>{{ $hospital->hospital_name ?? '-' }}</th>
+                                                            <th style="width: 20%">client Name</th>
+                                                            <th>{{ $client->client_name ?? '-' }}</th>
                                                         </tr>
 
 
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                            <td>Hospital Type</td>
-                                                            <td>{{ $hospital->hospitalType() ?? '-' }}</td>
+                                                            <td>client Type</td>
+                                                            <td>{{ $client->clientType() ?? '-' }}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>Address</td>
-                                                            <td>{{ $hospital->hospital_address_one ?? '-' }}</td>
+                                                            <td>{{ $client->client_address_one ?? '-' }}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>Address 2</td>
-                                                            <td>{{ $hospital->hospital_address_two ?? '-' }}</td>
+                                                            <td>{{ $client->client_address_two ?? '-' }}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>Tax/Tin number</td>
-                                                            <td>{{ $hospital->hospital_tinnumber ?? '-' }}</td>
+                                                            <td>{{ $client->client_tinnumber ?? '-' }}</td>
                                                         </tr>
 
                                                         <tr>
                                                             <td>Location</td>
-                                                            <td>{{ $hospital->hospital_location ?? '-' }}</td>
+                                                            <td>{{ $client->client_location ?? '-' }}</td>
                                                         </tr>
 
                                                         <tr>
                                                             <td>Location</td>
-                                                            <td>{{ $hospital->hospital_location ?? '-' }}</td>
+                                                            <td>{{ $client->client_location ?? '-' }}</td>
                                                         </tr>
 
                                                         <tr>
                                                             <td>City</td>
-                                                            <td>{{ $hospital->hospital_city ?? '-' }}</td>
+                                                            <td>{{ $client->client_city ?? '-' }}</td>
                                                         </tr>
-                                                        <tr>
-                                                            <td>Country</td>
-                                                            <td>{{ $hospital->country() ?? '-' }}</td>
-                                                        </tr>
-
+                                                       
                                                         <tr>
                                                             <td>Zipcode</td>
-                                                            <td>{{ $hospital->hospital_zipcode ?? '-' }}</td>
+                                                            <td>{{ $client->client_zipcode ?? '-' }}</td>
                                                         </tr>
 
                                                         <tr>
                                                             <td>Fax</td>
-                                                            <td>{{ $hospital->hospital_fax ?? '-' }}</td>
+                                                            <td>{{ $client->client_fax ?? '-' }}</td>
                                                         </tr>
 
                                                         <tr>
                                                             <td>Website</td>
-                                                            <td>{{ $hospital->hospital_website_link ?? '-' }}</td>
+                                                            <td>{{ $client->client_website_link ?? '-' }}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td>Hospital Logo</td>
+                                                            <td>client Logo</td>
                                                             <td>
-                                                                <img src="{{ asset('storage/uploads/' . $hospital->hospital_logo) }}"
-                                                                    alt="Hospital Logo"
+                                                                <img src="{{ asset('storage/uploads/' . $client->client_logo) }}"
+                                                                    alt="client Logo"
                                                                     style="width: 50px; height: 50px; object-fit: cover;">
                                                             </td>
                                                         </tr>
@@ -179,13 +175,13 @@
                 </div>
 
                 <div class="mt-4 d-flex ">
-                    <a href="{{ route('edit.hospitals', $hospital) }}" class="btn btn-outline-success">
+                    <a href="{{ route('edit.clients', $client) }}" class="btn btn-outline-success">
                         <i class="icon fa fa-add"></i>
                         Edit
                     </a>
 
-                    @can('delete', $hospital)
-                        <form class="delete_form mx-3" action="{{ route('delete.hospitals', ['hospital' => $hospital->id]) }}"
+                    @can('delete', $client)
+                        <form class="delete_form mx-3" action="#"
                             method="POST">
                             @csrf
                             @method('DELETE')

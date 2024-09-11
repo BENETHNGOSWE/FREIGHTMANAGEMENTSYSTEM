@@ -1,0 +1,34 @@
+.bg-patient{
+    background-color: #0061f2;
+    color: blue;
+}
+
+.error{
+    color: rgb(255, 0, 0);
+}
+
+input.error{
+    border: 1px solid rgb(255, 0, 0) !important;
+}
+
+textarea.error{
+    border: 1px solid rgb(255, 0, 0) !important;
+}
+
+input.valid{
+    border: 1px solid rgb(10, 161, 98) !important;
+}
+
+textarea.valid{
+    border: 1px solid rgb(10, 161, 98) !important;
+}
+
+
+select.error{
+    border: 1px solid rgb(255, 0, 0) !important;
+}
+
+
+select.valid{
+    border: 1px solid rgb(10, 161, 98) !important;
+}

@@ -71,13 +71,13 @@
                                     <td class="text-center" style="width: 134px;">
                                         <div role="group" aria-label="Row Actions" class="btn-group">
                                             @can('update', $client)
-                                                <a href="#">
+                                                <a href="{{ route('edit.clients', $client )}}">
                                                     <button type="button" class="btn btn-outline-success">
                                                         <i class="fas fa-edit"></i>
                                                     </button>
                                                 </a>
                                                 @endcan @can('view', $client)
-                                                <a href="#">
+                                                <a href="{{ route('show.clients', $client)}}">
                                                     <button type="button" class="btn btn-outline-primary mx-2">
                                                         <i class="fas fa-eye"></i>
                                                     </button>

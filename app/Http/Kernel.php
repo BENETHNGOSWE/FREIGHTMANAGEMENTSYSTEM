@@ -70,5 +70,6 @@ class Kernel extends HttpKernel
         'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
         'set_freight' => \App\Http\Middleware\setFreightid::class,
         'owner' => \App\Http\Middleware\Owner::class,
+        'admin' => \App\Http\Middleware\Admin::class,
     ];
 }

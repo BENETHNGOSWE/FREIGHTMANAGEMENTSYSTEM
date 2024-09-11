@@ -162,7 +162,7 @@ class ClientController extends Controller
      */
     public function show(Request $request, client $client)
     {
-        $this->data['clients'] = $client;
+        $this->data['client'] = $client;
         $this->data['client_list'] = client::all();
         $this->data['clienttypes'] = clientType::pluck('name', 'id');
         $this->data['admin'] = clientAdmin::where('client_id', $client->id)->first(); 
@@ -176,7 +176,7 @@ class ClientController extends Controller
     {
         $this->data['client'] = $client;
         $this->data['client_list'] = client::all();
-        $this->data['clienttypes'] = clientType::all();
+        $this->data['clientTypes'] = clientType::pluck('name', 'id');
         return view('dashboards.owner.clients.edit', $this->data);
     }
 
