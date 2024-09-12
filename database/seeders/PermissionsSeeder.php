@@ -84,6 +84,12 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'update patients']);
         Permission::create(['name' => 'delete patients']);
 
+        Permission::create(['name' => 'list staffs']);
+        Permission::create(['name' => 'view staffs']);
+        Permission::create(['name' => 'create staffs']);
+        Permission::create(['name' => 'update staffs']);
+        Permission::create(['name' => 'delete staffs']);
+
         Permission::create(['name' => 'list paymenttypes']);
         Permission::create(['name' => 'view paymenttypes']);
         Permission::create(['name' => 'create paymenttypes']);

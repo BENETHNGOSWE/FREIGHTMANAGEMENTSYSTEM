@@ -193,9 +193,9 @@ function generateSubscriptionToken($length = 30)
     return $token;
 }
 
-function createStaffidNumber($hospital_id)
+function createStaffidNumber($client_id)
 {
-    $staff = \App\Models\Staff::where('hospital_id', $hospital_id)->latest()->first();
+    $staff = \App\Models\Staff::where('client_id', $client_id)->latest()->first();
     if ($staff) {
         $staff_id = $staff->staff_no;
         $staff_id = explode('-', $staff_id);

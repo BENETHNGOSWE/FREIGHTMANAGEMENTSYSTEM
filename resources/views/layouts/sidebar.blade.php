@@ -2,8 +2,8 @@
 @if(Auth::user()->getRoleNames()[0] == 'super-admin')
     @include('dashboards.owner.sidebar')
 @endif
-@if(Auth::user()->getRoleNames()[0] == 'doctor')
-@include('dashboards.doctor.sidebar')
+@if(Auth::user()->getRoleNames()[0] == 'admin')
+@include('dashboards.admin.sidebar')
 @endif
 @if(Auth::user()->getRoleNames()[0] =='owner')
 @include('dashboards.owner.sidebar')

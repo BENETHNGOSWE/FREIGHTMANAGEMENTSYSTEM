@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Owner\OwnerController;
+use App\Http\Controllers\Admin\AdminDashboardController;
 
 class HomeController extends Controller
 {
@@ -51,6 +52,7 @@ class HomeController extends Controller
     }
 
     public function adminDashboard(){
-        return view('welcome');
+        $dashboard = new AdminDashboardController();
+        return $dashboard->index($this->fms_id);
     }
 }

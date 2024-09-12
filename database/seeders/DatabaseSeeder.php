@@ -37,6 +37,6 @@ class DatabaseSeeder extends Seeder
         $this->call(SubscriptionInvoiceSeeder::class);
         $this->call(SubscriptionTokenSeeder::class);
         $this->call(UserSeeder::class);
-        // $this->call(UserRoleSeeder::class);
+        $this->call(StafftypeSeeder::class);
     }
 }
