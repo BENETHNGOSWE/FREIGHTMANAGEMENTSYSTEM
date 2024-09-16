@@ -84,6 +84,11 @@ class Client extends Model
         return $this->hasMany(ClientAdmin::class);
     }
 
+    public function loadpackage()
+    {
+        return $this->hasMany(Loadpackage::class);
+    }
+
     public function modules()
     {
         return $this->hasMany(Module::class);

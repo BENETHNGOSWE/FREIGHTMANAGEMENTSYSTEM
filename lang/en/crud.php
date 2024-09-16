@@ -112,6 +112,33 @@ return [
         ],
     ],
 
+    'loadpackagetypes' => [
+        'name' => 'Load Package Types',
+        'index_title' => 'Load Package Types List',
+        'create_title' => 'Create Load Type',
+        'edit_title' => 'Edit Load Package Types',
+        'show_title' => 'Show Load Package Types',
+        'inputs' => [
+            'load_type_name' => 'Load Type Name',
+            'load_type_description' => 'Load Type Description',
+        ],
+    ],
+
+    'loadpackages' => [
+        'name' => 'Loadpackages',
+        'index_title' => 'Load List',
+        'create_title' => 'Create Load',
+        'edit_title' => 'Edit Load',
+        'show_title' => 'Show Load',
+        'inputs' => [
+            'load_no' => 'Load No',
+            'load_type_id' => 'Load Type',
+            'load_description' => 'Load Description',
+            'load_name' => 'Load name',
+            'load_location' => 'Load Location',
+        ],
+    ],
+
     'countries' => [
         'name' => 'Countries',
         'index_title' => 'Countries List',

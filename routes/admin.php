@@ -13,6 +13,16 @@ Route::prefix('/')
         Route::get('staff-edit-staff/{staff}', [App\Http\Controllers\Admin\StaffController::class, 'edit'])->name('edit.clients');
         Route::put('staff-update-staff/{staff}', [App\Http\Controllers\Admin\StaffController::class, 'update'])->name('update.clients');
         Route::get('staff-show-staff/{staff}', [App\Http\Controllers\Admin\StaffController::class, 'show'])->name('show.clients');
+
+
+        // Manage loadpackagetype Here
+        Route::get('loadtype',[App\Http\Controllers\Admin\LoadpackagetypeController::class, 'index'])->name('admin.list.loadpackagetpye');
+        Route::get('loadtypecreate',[App\Http\Controllers\Admin\LoadpackagetypeController::class, 'create'])->name('admin.create.loadpackagetpye');
+        Route::post('loadtype/store',[App\Http\Controllers\Admin\LoadpackagetypeController::class, 'store'])->name('admin.store.loadpackagetpye');
+        Route::get('loadtype/edit/{loadpackagetype}',[App\Http\Controllers\Admin\LoadpackagetypeController::class, 'edit'])->name('admin.edit.loadpackagetpye');
+        Route::put('loadtype/update/{loadpackagetype}',[App\Http\Controllers\Admin\LoadpackagetypeController::class, 'update'])->name('admin.update.loadpackagetpye');
+        Route::get('loadtype/show/{loadpackagetype}',[App\Http\Controllers\Admin\LoadpackagetypeController::class, 'show'])->name('admin.show.loadpackagetpye');
+        Route::delete('loadtype/delete/{loadpackagetype}',[App\Http\Controllers\Admin\LoadpackagetypeController::class, 'delete'])->name('admin.delete.loadpackagetpye');
         
        
     });

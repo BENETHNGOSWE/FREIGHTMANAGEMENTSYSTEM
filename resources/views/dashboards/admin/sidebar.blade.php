@@ -22,14 +22,14 @@
             <li>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                     <i class="fa fa-building"></i>
-                    <span class="nav-text">Departments</span>
+                    <span class="nav-text">Customers</span>
                 </a>
                 <ul aria-expanded="false">
                     <li><a href="#">+Add new</a></li>
-                    <li><a href="#">List Departments </a></li>
+                    <li><a href="#">List Customers </a></li>
                 </ul>
             </li>
-            <li>
+            {{-- <li>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                     <i class="fa fa-flask"></i>
                     <span class="nav-text">Laboratories</span>
@@ -45,30 +45,30 @@
                         </a></li>
 
                 </ul>
-            </li>
+            </li> --}}
 
             <li>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                     <i class="fas fa-bed"></i>
-                    <span class="nav-text">Wards</span>
+                    <span class="nav-text">Loads</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="#">
+                    <li><a href="{{ route('admin.list.loadpackagetpye')}}">
                             <i class="fa-solid fa-location-arrow"></i>
-                            <span>List Wards</span>
+                            <span>List Loads</span>
                         </a></li>
 
                 </ul>
                 <ul aria-expanded="false">
-                    <li><a href="#">
+                    <li><a href="{{ route('admin.list.loadpackagetpye')}}">
                             <i class="fa-solid fa-location-arrow"></i>
-                            <span>Ward Types</span>
+                            <span>Loads Types</span>
                         </a></li>
 
                 </ul>
             </li>
 
-            <li>
+            {{-- <li>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                     <i class="fas fa-pills"></i>
                     <span class="nav-text">Pharmacy</span>
@@ -87,9 +87,9 @@
                         </a></li>
 
                 </ul>
-            </li>
+            </li> --}}
 
-            <li>
+            {{-- <li>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                     <i class="fa-solid fa-database"></i>
                     <span class="nav-text">Assets</span>
@@ -133,9 +133,9 @@
 
 
 
-            </li>
+            </li> --}}
 
-            <li>
+            {{-- <li>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                     <i class="fas fa-building"></i>
                     <span class="nav-text">Manage Buildings</span>
@@ -147,7 +147,7 @@
                         </a></li>
 
                 </ul>
-            </li>
+            </li> --}}
             <li>
                 <a class="has-arrow ai-icon" href="#" aria-expanded="false">
                     <i class="fa fa-cog"></i>
