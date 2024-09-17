@@ -6,9 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use App\Models\User;
 use App\Models\Client;
+use App\Models\Loadpackagetype;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Contracts\View\View;
 
 class CustomerController extends Controller
 {
@@ -31,6 +34,7 @@ class CustomerController extends Controller
     public function index()
     {
         $this->data['customers'] = Customer::where('client_id', $this->fms_id)->latest()->get();
+        // $this->data['loadpackagetypes'] = Loadpackagetype::where('client_id', $this->fms_id)->get();
         return view('dashboards.admin.customers.index', $this->data);
     }
 
@@ -75,11 +79,11 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         $validated = $this->validate($request, $this->rules());
-        $customer_type = customertype::find($validated['customer_type_id']);
+        // $customer_type = customertype::find($validated['customer_type_id']);
 
-        if ($customer_type) {
+        if ($validated) {
 
-            $customer_type_name = $customer_type->customer_type_name;
+            // $customer_type_name = $customer_type->customer_type_name;
             $name = $validated['customer_firstname'] . ' ' . $validated['customer_middlename'] . ' ' . $validated['customer_lastname'];
             $password = Hash::make('123456');
 
@@ -88,13 +92,13 @@ class CustomerController extends Controller
                 'email' => $validated['customer_email'],
                 'phone' => $validated['phone'],
                 'password' => $password,
-                'user_type' => $customer_type_name,
+                // 'user_type' => $customer_type_name,
                 'client_id' => $this->fms_id,
             ]);
 
 
 
-            $user->assignRole(\Spatie\Permission\Models\Role::findByName($customer_type_name));
+            // $user->assignRole(\Spatie\Permission\Models\Role::findByName($customer_type_name));
 
             if ($user) {
                 $id_number = createcustomeridNumber($this->fms_id);
@@ -108,7 +112,7 @@ class CustomerController extends Controller
                 if ($employee) {
                     // $message = 'Dear ' . $user->name . ', your account has been created successfully. Your have been Registered as '.strtoupper($user->user_type).'. Your login details are as follows: Email: ' . $user->email . ' Password: 123456 , Please change your password after login. Thank you.';
                     // sendSMS($user->id,$message,$this->h_id);
-                    return redirect()->route('admin.customers.list')->with('success', 'Employee added successfully');
+                    return redirect()->route('admin.list.customer')->with('success', 'Customer added successfully');
                 } else {
                     return redirect()->back()->with('error', 'Something went wrong');
                 }
@@ -119,7 +123,7 @@ class CustomerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(customer $customer)
+    public function show(Customer $customer)
     {
         //
     }
@@ -127,17 +131,74 @@ class CustomerController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(customer $customer)
+    public function edit(Customer $customer)
     {
-        //
+        
+        $this->data['page_title'] = 'Edit Staff';
+        $client_id = auth()->user()->client_id;
+        $customer = Customer::find($employee);
+        $this->data['customer'] = $customer;
+        
+        // $this->data['departments'] = Department::where('client_id', $client_id)->pluck('department_name')->all();;
+        //$this->data['departments']= Department::pluck('department_name', 'id');
+        $this->data['clients'] = Client::pluck('client_name', 'id');
+        $this->data['users'] = User::pluck('id');
+
+        return view('dashboards.admin.staffs.edit', $this->data);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, customer $customer)
+    public function update(Request $request, Customer $customer)
     {
-        //
+        $this->data['customer'] =$customer = Customer::find($id);
+        $this->data['page_title'] = 'Edit Employee';
+        if($customer){
+            
+                $validated = $this->validate($request, $this->rules($customer->user_id));
+                // $staff_type = StaffType::find($validated['staff_type_id']);
+            if ($validated) {
+                // $staff_type_name = $staff_type->staff_type_name;
+                $name = $validated['customer_firstname'].' '.$validated['customer_middlename'].' '.$validated['customer_lastname'];
+                DB::beginTransaction();
+                try {
+                    $staff->user->update([
+                        'name' => $name,
+                        'email' => $validated['customer_email'],
+                        'phone' => $validated['phone'],
+                        // 'user_type' => $staff_type_name,
+                        'client_id' => $this->fms_id,
+                    ]);
+                    // $user = $cust->user->syncRoles(\Spatie\Permission\Models\Role::findByName($staff_type_name));
+
+                    if ($user) {
+                        $validated['user_id'] = $user->id;
+                        $employee = $staff->update($validated);
+                        if ($employee) {
+                            DB::commit();
+                            return redirect()->route('admin.list.staffs')->with('success', $user->name.' Updated successfully');
+                        } else {
+                            DB::rollBack();
+
+                            return redirect()->back()->with('error', 'Something went wrong');
+                        }
+                    }
+                } catch (\Throwable $th) {
+                    DB::rollBack();
+                    \Log::error($th);
+
+                    return redirect()->back()->with('error', $th->getMessage());
+                }
+
+            }
+            
+        $this->authorize('update', $customer);
+        return view('dashboards.hr.employees.edit', $this->data);
+        }else{
+            return redirect()->back()->with('error', 'Something went wrong');
+        }
+        
     }
 
     /**

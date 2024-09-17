@@ -25,8 +25,8 @@
                     <span class="nav-text">Customers</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="#">+Add new</a></li>
-                    <li><a href="#">List Customers </a></li>
+                    <li><a href="{{ route('admin.create.customer')}}">+Add new</a></li>
+                    <li><a href="{{ route('admin.list.customer')}}">List Customers </a></li>
                 </ul>
             </li>
             {{-- <li>

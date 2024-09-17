@@ -209,6 +209,25 @@ function createStaffidNumber($client_id)
     return $staff_id;
 }
 
+
+function createcustomeridNumber($client_id)
+{
+    $customer = \App\Models\Customer::where('client_id', $client_id)->latest()->first();
+    if ($customer) {
+        $customer_id = $customer->customer_no;
+        $customer_id = explode('-', $customer_id);
+        $customer_id = $customer_id[1];
+        $customer_id = $customer_id + 1;
+        $customer_id = 'CST-'.$customer_id;
+    } else {
+        $customer_id = 'CST-1';
+    }
+
+    return $customer_id;
+}
+
+
+
 function createDoctoridNumber($hospital_id)
 {
     $doctor = \App\Models\Doctors::where('hospital_id', $hospital_id)->latest()->first();

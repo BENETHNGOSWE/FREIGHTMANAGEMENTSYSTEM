@@ -112,6 +112,30 @@ return [
         ],
     ],
 
+    'customers' => [
+        'name' => 'Customers',
+        'index_title' => 'Customers List',
+        'new_title' => 'New Customer',
+        'create_title' => 'Create Customer',
+        'edit_title' => 'Edit Customer',
+        'show_title' => 'Show Customer',
+        'inputs' => [
+            'customer_no' => 'Customer No',
+            'customer_firstname' => 'First Name',
+            'customer_middlename' => 'Middle Name',
+            'customer_lastname' => 'Last Name',
+            'customer_address' => 'Address',
+            'customer_photo' => 'Photo',
+            'customer_city' => 'City',
+            'customer_country' => 'Country',
+            'customer_email' => 'Email',
+            'phone' => 'Phone',
+            'customer_document' => 'Document',
+            'customer_bio' => 'Bio',
+            'customer_gender' => 'Gender',
+        ],
+    ],
+
     'loadpackagetypes' => [
         'name' => 'Load Package Types',
         'index_title' => 'Load Package Types List',

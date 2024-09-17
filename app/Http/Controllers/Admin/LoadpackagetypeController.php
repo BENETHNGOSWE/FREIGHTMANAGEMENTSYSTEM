@@ -37,7 +37,7 @@ class LoadpackagetypeController extends Controller
 
     public function create()
     {
-        // $this->authorize('create', Loadpackagetype::class);
+        $this->authorize('create', Loadpackagetype::class);
         return view('dashboards.admin.loadpackagetypes.create', $this->data);
     }
 

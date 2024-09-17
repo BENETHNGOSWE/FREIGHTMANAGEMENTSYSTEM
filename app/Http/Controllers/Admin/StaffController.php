@@ -117,7 +117,7 @@ class StaffController extends Controller
                 if ($employee) {
                     // $message = 'Dear ' . $user->name . ', your account has been created successfully. Your have been Registered as '.strtoupper($user->user_type).'. Your login details are as follows: Email: ' . $user->email . ' Password: 123456 , Please change your password after login. Thank you.';
                     // sendSMS($user->id,$message,$this->fms_id);
-                    return redirect()->route('admin.list.staffs')->with('success', 'Employee added successfully');
+                    return redirect()->route('admin.list.staff')->with('success', 'Employee added successfully');
                 } else {
                     return redirect()->back()->with('error', 'Something went wrong');
                 }
@@ -142,7 +142,8 @@ class StaffController extends Controller
         return view('dashboards.admin.staffs.edit', $this->data);
     }
 
-    public function update(Request $request,$id){
+    public function update(Request $request,$id)
+    {
         $this->data['staff'] =$staff = Staff::find($id);
         $this->data['page_title'] = 'Edit Employee';
         if($staff){
