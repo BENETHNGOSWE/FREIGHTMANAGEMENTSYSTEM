@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('load_name');
             $table->string('load_location')->nullable();
             $table->foreignId('client_id');
+            $table->foreignId('customer_id');
+            $table->foreignId('loadpackagetype_id');
             $table->timestamps();
         });
     }

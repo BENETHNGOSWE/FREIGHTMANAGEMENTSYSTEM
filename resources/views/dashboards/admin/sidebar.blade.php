@@ -53,7 +53,7 @@
                     <span class="nav-text">Loads</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{{ route('admin.list.loadpackagetpye')}}">
+                    <li><a href="{{ route('admin.list.loadpackage')}}">
                             <i class="fa-solid fa-location-arrow"></i>
                             <span>List Loads</span>
                         </a></li>

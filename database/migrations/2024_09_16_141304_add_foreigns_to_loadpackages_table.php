@@ -21,8 +21,15 @@ return new class extends Migration
 
             $table
             ->foreign('customer_id')
-            ->refernces('id')
+            ->references('id')
             ->on('customers')
+            ->onUpdate('CASCADE')
+            ->onDelete('CASCADE');
+
+            $table
+            ->foreign('loadpackagetype_id') 
+             ->references('id')
+            ->on('loadpackagetypes')
             ->onUpdate('CASCADE')
             ->onDelete('CASCADE');
         });
@@ -34,7 +41,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('loadpackages', function (Blueprint $table) {
-            //
+            $table->dropForeign(['client_id']);
+            $table->dropForeign(['customer_id']);
+            $table->dropForeign(['loadpackagetype_id']);
         });
     }
 };

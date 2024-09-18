@@ -24,6 +24,17 @@ Route::prefix('/')
         Route::get('loadtype/show/{loadpackagetype}',[App\Http\Controllers\Admin\LoadpackagetypeController::class, 'show'])->name('admin.show.loadpackagetpye');
         Route::delete('loadtype/delete/{loadpackagetype}',[App\Http\Controllers\Admin\LoadpackagetypeController::class, 'delete'])->name('admin.delete.loadpackagetpye');
 
+
+        // Manage loadpackage Here
+        Route::get('loadpackage',[App\Http\Controllers\Admin\LoadpackageController::class, 'index'])->name('admin.list.loadpackage');
+        Route::get('loadpackagecreate',[App\Http\Controllers\Admin\LoadpackageController::class, 'create'])->name('admin.create.loadpackage');
+        Route::post('loadpackage/store',[App\Http\Controllers\Admin\LoadpackageController::class, 'store'])->name('admin.store.loadpackage');
+        Route::get('loadpackage/edit/{loadpackage}',[App\Http\Controllers\Admin\LoadpackageController::class, 'edit'])->name('admin.edit.loadpackage');
+        Route::put('loadpackage/update/{loadpackage}',[App\Http\Controllers\Admin\LoadpackageController::class, 'update'])->name('admin.update.loadpackage');
+        Route::get('loadpackage/show/{loadpackage}',[App\Http\Controllers\Admin\LoadpackageController::class, 'show'])->name('admin.show.loadpackage');
+        Route::delete('loadpackage/delete/{loadpackage}',[App\Http\Controllers\Admin\LoadpackageController::class, 'delete'])->name('admin.delete.loadpackage');
+
+
         // Manage Customer Here
         Route::get('customer',[App\Http\Controllers\Admin\CustomerController::class, 'index'])->name('admin.list.customer');
         Route::get('customercreate',[App\Http\Controllers\Admin\CustomerController::class, 'create'])->name('admin.create.customer');
@@ -32,6 +43,9 @@ Route::prefix('/')
         Route::put('customer/update/{customer}',[App\Http\Controllers\Admin\CustomerController::class, 'update'])->name('admin.update.customer');
         Route::get('customer/show/{customer}',[App\Http\Controllers\Admin\CustomerController::class, 'show'])->name('admin.show.customer');
         Route::delete('customer/delete/{customer}',[App\Http\Controllers\Admin\CustomerController::class, 'delete'])->name('admin.delete.customer');
+
+
+        
 
         
        
