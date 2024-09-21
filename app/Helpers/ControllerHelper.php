@@ -228,20 +228,20 @@ function createcustomeridNumber($client_id)
 
 
 
-function createDoctoridNumber($hospital_id)
+function createLoadidNumber($client_id)
 {
-    $doctor = \App\Models\Doctors::where('hospital_id', $hospital_id)->latest()->first();
-    if ($doctor) {
-        $doctor_id = $doctor->doctor_id_number;
-        $doctor_id = explode('-', $doctor_id);
-        $doctor_id = $doctor_id[1];
-        $doctor_id = $doctor_id + 1;
-        $doctor_id = 'DOC-'.$doctor_id;
+    $load = \App\Models\Loadpackage::where('client_id', $client_id)->latest()->first();
+    if ($load) {
+        $load_id = $load->load_id_number;
+        $load_id = explode('-', $load_id);
+        $load_id = $load_id[1];
+        $load_id = $load_id + 1;
+        $load_id = 'DOC-'.$load_id;
     } else {
-        $doctor_id = 'DOC-1';
+        $load_id = 'DOC-1';
     }
 
-    return $doctor_id;
+    return $load_id;
 }
 
 function createPatientNumber($hospital_id)

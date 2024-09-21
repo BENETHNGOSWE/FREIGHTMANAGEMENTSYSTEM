@@ -4,12 +4,12 @@
     <div class="container-fluid">
         <div class="form-head align-items-center d-flex mb-sm-4 mb-3">
             <div class="me-auto">
-                <h2 class="text-black font-w600">Load Package Type</h2>
-                <p class="mb-1">Dashboard / <span><a class="text-primary" href="appointment-add.html">Load Package Type List</a></span>
+                <h2 class="text-black font-w600">Load Type</h2>
+                <p class="mb-1">Dashboard / <span><a class="text-primary" href="appointment-add.html">Load Type List</a></span>
                 </p>
             </div>
             <div>
-                <a href="{{ route('admin.create.loadpackagetpye') }}" class="btn btn-primary me-3">+ Add Load Package Type</a>
+                <a href="{{ route('admin.create.loadpackagetpye') }}" class="btn btn-primary me-3">+ Add Load Type</a>
             </div>
         </div>
         <div class="row">

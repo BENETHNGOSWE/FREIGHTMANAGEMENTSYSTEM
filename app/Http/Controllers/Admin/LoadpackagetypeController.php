@@ -65,32 +65,33 @@ class LoadpackagetypeController extends Controller
             \Log::error($th->getMessage() . '' . $th->getTraceAsString());
             return redirect()->back()->with('error', 'Something went wrong');
         }
-        return redirect()->route('admin.list.loadpackagetpye')->with('success', 'Ward type Added Successfuly');
+        return redirect()->route('admin.list.loadpackagetpye')->with('success', 'Load type Added Successfuly');
     }
 
-    public function show(Request $request, Loadpackagetype $Loadpackagetype): View
+    public function show(Request $request, Loadpackagetype $loadpackagetype): View
     {
-        $this->authorize('view', $Loadpackagetype);
-        return view('dashboards.admin.loadpackagetypes.show', compact('Loadpackagetype'));
+        $this->authorize('view', $loadpackagetype);
+        $this->data['loadpackagetype'] = $loadpackagetype;
+        return view('dashboards.admin.loadpackagetypes.show', $this->data);
     }
 
-    public function edit(Loadpackagetype $Loadpackagetype)
+    public function edit(Loadpackagetype $loadpackagetype)
     {
-        $this->authorize('update', $Loadpackagetype);
-        $this->data['Loadpackagetype'] = $Loadpackagetype;
+        $this->authorize('update', $loadpackagetype);
+        $this->data['loadpackagetype'] = $loadpackagetype;
         return view('dashboards.admin.loadpackagetypes.edit', $this->data);
     }
 
-    public function update(Request $request, Loadpackagetype $Loadpackagetype)
+    public function update(Request $request, Loadpackagetype $loadpackagetype)
     {
-        $this->authorize('update', $Loadpackagetype);
+        $this->authorize('update', $loadpackagetype);
         $validated = $request->validate([
             'load_type_name' => ['required', 'string', 'max:255'],
             'load_type_description' => ['nullable', 'string', 'max:255'],
         ]);
         $validated['client_id'] = $this->fms_id;
-        $Loadpackagetype->update($validated);
-        return redirect()->route('admin.list.loadpackagetpye')->with('success', 'Ward Type Updated Successfuly');
+        $loadpackagetype->update($validated);
+        return redirect()->route('admin.list.loadpackagetpye')->with('success', 'Load Type Updated Successfuly');
     }
 
     public function delete(Request $request, $Loadpackagetype)
@@ -100,6 +101,6 @@ class LoadpackagetypeController extends Controller
             ->first();
         $this->authorize('delete', $Loadpackagetype);
         $Loadpackagetype->delete();
-        return redirect()->route('admin.list.loadpackagetpye')->with('success', 'Ward Type Successfuly deleted');
+        return redirect()->route('admin.list.loadpackagetpye')->with('success', 'Load Type Successfuly deleted');
     }
 }

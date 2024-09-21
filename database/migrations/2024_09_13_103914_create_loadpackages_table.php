@@ -16,6 +16,13 @@ return new class extends Migration
             $table->string('load_no');
             $table->string('load_description')->nullable();
             $table->string('load_name');
+            $table->string('load_price');
+            $table->string('load_transportfee');
+            $table->string('load_transport_date');
+            $table->string('load_delivery_date');
+            $table->string('load_status');
+            $table->string('comment_operator');
+            $table->string('load_weight_kg');
             $table->string('load_location')->nullable();
             $table->foreignId('client_id');
             $table->foreignId('customer_id');

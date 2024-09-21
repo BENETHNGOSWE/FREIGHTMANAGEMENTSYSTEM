@@ -10,15 +10,15 @@
 
         <div>
            <p class="mb-1">Dashboard / <span><a class="text-primary"
-                        href="{{ route('dashboard.index') }}">Edit Ward Type</a></span></p>
+                        href="{{ route('admin.list.loadpackagetpye') }}">Edit Ward Type</a></span></p>
         </div>
     </div>
     <div class="card">
         <div class="card-body">
 
             <x-form
-                method="POST"
-                action="{{ route('admin.update.loadpackagetpye', $loadpackagetype) }}"
+                method="PUT"
+                action="{{ route('admin.update.loadpackagetpye', $loadpackagetype ) }}"
                 class="mt-4"
             >
             @include('dashboards.admin.loadpackagetypes.form-inputs')

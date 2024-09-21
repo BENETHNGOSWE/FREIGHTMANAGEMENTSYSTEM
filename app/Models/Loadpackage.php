@@ -12,11 +12,19 @@ class Loadpackage extends Model
         'load_no',
         'load_description',
         'load_name',
-        'load_location',
-        'client_id',
-        'loadpackagetype_id',
-        'customer_id',
+        'load_price',             
+        'load_transportfee',      
+        'load_transport_date',    
+        'load_delivery_date',    
+        'load_status',           
+        'comment_operator',       
+        'load_weight_kg',        
+        'load_location',          
+        'client_id',             
+        'loadpackagetype_id',     
+        'customer_id',            
     ];
+    
 
     public function client()
     {

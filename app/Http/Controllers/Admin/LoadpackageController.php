@@ -8,6 +8,8 @@ use App\Models\Loadpackage;
 use App\Models\Loadpackagetype;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
+use Illuminate\Support\Str;
 
 class LoadpackageController extends Controller
 {
@@ -36,7 +38,7 @@ class LoadpackageController extends Controller
 
         $customer_id = $request->input('customer_id');
         $this->data['loadpackagetypes'] = Loadpackagetype::pluck('load_type_name', 'id');
-        $this->data['customer_id'] = $customer_id;  
+        $this->data['customer_id'] = $customer_id;
 
         return view('dashboards.admin.loadpackages.create', $this->data);
     }
@@ -44,80 +46,100 @@ class LoadpackageController extends Controller
     public function validate_loadpackage(Request $request)
     {
         return $request->validate([
-            'load_no' => ['required', 'string', 'max:255'],
-            'load_name' => ['required', 'string', 'max:255'],
-            'load_location' => ['required', 'string', 'max:255'],
-            'load_description' => ['required', 'string', 'max:255'],
-            'loadpackagetype_id' => ['required', 'string', 'max:255'],
+            // 'load_no.*' => ['required', 'string', 'max:255'],
+            'load_name.*' => ['required', 'string', 'max:255'],
+            'load_location.*' => ['required', 'string', 'max:255'],
+            'load_description.*' => ['required', 'string', 'max:255'],
+            'loadpackagetype_id.*' => ['required', 'integer', 'exists:loadpackagetypes,id'],
+            'load_price.*' => ['required', 'string', 'max:255'],
+            'load_transportfee.*' => ['required', 'string', 'max:255'],
+            'load_transport_date.*' => ['required', 'date'],
+            'load_delivery_date.*' => ['required', 'date'],
+            'load_status.*' => ['required', 'string', 'max:255'],
+            'comment_operator.*' => ['nullable', 'string', 'max:255'],
+            'load_weight_kg.*' => ['required', 'string', 'max:255'],
         ]);
     }
 
     public function store(Request $request)
     {
         $this->authorize('create', Loadpackage::class);
-        $validate = $this->validate_loadpackage($request);
-    
+        $validated = $this->validate_loadpackage($request);
+
         try {
             DB::beginTransaction();
-            $load = new Loadpackage();
-            $validate['client_id'] = $this->fms_id;
-            $validate['customer_id'] = $request->input('customer_id');  
-            $load->fill($validate);
-            $load->save();
-            
+
+            foreach ($validated['load_name'] as $index => $load_name) {
+                $load_no = 'LOAD-' . date('Ymd') . '-' . strtoupper(Str::random(5));
+
+                $load = new Loadpackage();
+                $load->client_id = $this->fms_id;
+                $load->customer_id = $request->input('customer_id');
+                $load->load_no = $load_no;
+                $load->load_name = $validated['load_name'][$index];
+                $load->load_location = $validated['load_location'][$index];
+                $load->load_description = $validated['load_description'][$index];
+                $load->load_price = $validated['load_price'][$index];
+                $load->load_transportfee = $validated['load_transportfee'][$index];
+                $load->load_transport_date = $validated['load_transport_date'][$index];
+                $load->load_delivery_date = $validated['load_delivery_date'][$index];
+                $load->load_status = $validated['load_status'][$index];
+                $load->comment_operator = $validated['comment_operator'][$index];
+                $load->load_weight_kg = $validated['load_weight_kg'][$index];
+                $load->loadpackagetype_id = $validated['loadpackagetype_id'][$index];
+
+                // Log each load package before saving
+                \Log::info('Saving Load Package:', $load->toArray());
+
+                $load->save();
+            }
+
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollback();
-            \Log::error($th->getMessage() . '' . $th->getTraceAsString());
+            \Log::error($th->getMessage() . ' ' . $th->getTraceAsString());
             return redirect()->back()->with('error', $th->getMessage());
         }
-    
-        return redirect()->route('admin.list.loadpackage')->with('success', 'Load package added successfully');
-    }
-    
 
-    public function show(Request $request, loadpackage $loadpackage ): View
+        return redirect()->route('admin.list.loadpackage')->with('success', 'Load packages added successfully');
+    }
+
+    public function show(Request $request, Loadpackage $loadpackage): View
     {
         $this->authorize('view', $loadpackage);
         $this->data['loadpackage'] = $loadpackage;
         return view('dashboards.admin.loadpackages.show', $this->data);
     }
-    public function edit(Request $request, loadpackage $loadpackage): View
+
+    public function edit(Request $request, Loadpackage $loadpackage): View
     {
         $this->authorize('update', $loadpackage);
         $this->data['loadpackage'] = $loadpackage;
-        $this->data['loadtypes'] = loadpackagetype::all();
+        $this->data['loadpackagetypes'] = Loadpackagetype::pluck('load_type_name', 'id');
         return view('dashboards.admin.loadpackages.edit', $this->data);
     }
 
-    public function update(Request $request, loadpackage $loadpackage)
+    public function update(Request $request, Loadpackage $loadpackage)
     {
         $this->authorize('update', $loadpackage);
-        $validate = $this->validated_load($request);
-        $validated = $request->validate([
-            'load_no' => 'required',
-            'load_name' => 'required',
-            'load_location' => 'required',
-            'load_description' => 'required',
-            'load_type_id' => 'required|array',
+        
+        $validate = $request->validate([
+            // 'load_no' => ['required', 'string', 'max:255'],
+            'load_name' => ['required', 'string', 'max:255'],
+            'load_location' => ['required', 'string', 'max:255'],
+            'load_description' => ['required', 'string', 'max:255'],
+            'loadpackagetype_id' => ['required', 'integer', 'exists:loadpackagetypes,id'],
+            'load_price' => ['required', 'string', 'max:255'],
+            'load_transportfee' => ['required', 'string', 'max:255'],
+            'load_transport_date' => ['required', 'date'],
+            'load_delivery_date' => ['required', 'date'],
+            'load_status' => ['required', 'string', 'max:255'],
+            'comment_operator' => ['nullable', 'string', 'max:255'],
+            'load_weight_kg' => ['required', 'string', 'max:255'],
         ]);
 
-        $load = new loadloadpackage([
-            'load_no' => $validated['load_no'],
-            'load_name' => $validated['load_name'],
-            'load_location' => $validated['load_location'],
-            'load_description' => $validated['load_description'],
-        ]);
-
-        $load['client_id'] = $this->fms_id;
-
-        $load->save();
-
-        if ($load->loadtypes()->sync($request->input('load_type_id', []))) {
-            return redirect()->back()->with('success', 'load Updated Successfuly');
-        } else {
-            dd('motto unawaka');
-        }
+        $loadpackage->update($validate);
+        return redirect()->route('admin.list.loadpackage')->with('success', 'Load updated successfully');
     }
 
     public function delete(Request $request, $load)

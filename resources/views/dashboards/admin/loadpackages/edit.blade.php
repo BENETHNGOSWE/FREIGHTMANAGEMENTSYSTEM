@@ -4,186 +4,148 @@
 <div class="container-fluid">
     <div class="form-head align-items-center d-flex mb-sm-4 mb-3">
         <div class="me-auto">
-            <h2 class="text-black font-w600">Edit Ward</h2>
-            
+            <h2 class="text-black font-w600">Edit load</h2>
         </div>
 
         <div>
            <p class="mb-1">Dashboard / <span><a class="text-primary"
-                        href="{{ route('dashboard.index') }}">Edit Ward</a></span></p>
+                        href="{{ route('admin.list.loadpackage') }}">Edit load</a></span></p>
         </div>
     </div>
     <div class="card">
         <div class="card-body">
 
             <x-form
-                method="POST"
-                action="{{ route('update.wards',$ward) }}"
+                method="PUT"
+                action="{{ route('admin.update.loadpackage', $loadpackage) }}"
                 class="mt-4"
             >
           
             <div class="row">
-                <div class="row">
-            
-                    <div class="col-sm 6">
+                <!-- First row with two fields -->
+               
+                <div class="col-md-6">
                     <div class="form-group">
-                        <label for="">Ward No</label>
-                        <input type="text" value="{{$ward->ward_no}}"  name="ward_no" id="" class="form-control" placeholder="" aria-describedby="helpId">
-                        <small id="helpId" class="text-muted">
-                            @error('ward_no')
-                                 <div class="text-danger">{{ $message }}</div>
-                            @enderror
-            
-                        </small>
+                        <label for="load_name">Load Name</label>
+                        <input type="text" value="{{ $loadpackage->load_name }}" name="load_name" class="form-control" placeholder="Load Name">
+                        @error('load_name') <div class="text-danger">{{ $message }}</div> @enderror
                     </div>
-                    <div class="form-group">
-                        <label for="">Ward Name</label>
-                        <input type="text"  value="{{$ward->ward_name}}" name="ward_name" id="" class="form-control" placeholder=""
-                            aria-describedby="helpId">
-                        <small id="helpId" class="text-muted">
-                            @error('ward_name')
-                                 <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </small>
-                    </div>
-            
-                    <div class="form-group">
-                        <label for="">Ward location</label>
-                        <input type="text"  value="{{$ward->ward_location}}" name="ward_location" id="" class="form-control" placeholder=""
-                            aria-describedby="helpId">
-                        <small id="helpId" class="text-muted">
-                            @error('ward_location')
-                            <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </small>
-                    </div>
-            
-                    <div class="form-group">
-                        <label for="my-textarea">Description</label>
-                        <textarea id="my-textarea"  value="{{$ward->ward_description}}" class="form-control" name="ward_description" rows="3"></textarea>
-                        <small id="helpId" class="text-muted">
-                            @error('ward_description')
-                            <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </small>
-                    </div>
-            
-            
-                    @foreach ($wardtypes as $wardtype)
-                        <div class="form-check">
-                            <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input" name="ward_type_id[]" id=""
-                                    value="{{ $wardtype->id }}" >
-            
-                            </label>
-                        </div>
-                        {{ $wardtype->ward_type_name }} <br>
-                        <small id="helpId" class="text-muted">
-                            @error('ward_type_id')
-                            <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </small>
-                    @endforeach
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-                    {{-- 
-                        <x-inputs.group class="col-sm-9">
-                            <x-inputs.text
-                                name="ward_name"
-                                label="Ward Name"
-                                :value="old('ward_name', ($editing ? $ward->ward_name : ''))"
-                                maxlength="255"
-                                placeholder="Ward Name"
-                                required
-                            ></x-inputs.text>
-                        </x-inputs.group>
-                        
-                        <x-inputs.group class="col-sm-9">
-                            <x-inputs.text
-                                name="ward_no"
-                                label="Ward No"
-                                :value="old('ward_no', ($editing ? $ward->ward_no : ''))"
-                                maxlength="255"
-                                placeholder="Ward No"
-                                required
-                            ></x-inputs.text>
-                        </x-inputs.group>
-            
-                        
-            
-                        <x-inputs.group class="col-sm-9">
-                            <x-inputs.text
-                                name="ward_description"
-                                label="Ward Description"
-                                :value="old('diagnosis_description', ($editing ? $ward->diagnosis_description : ''))"
-                                maxlength="255"
-                                placeholder="Diagnosis Description"
-                                
-                            ></x-inputs.text>
-                        </x-inputs.group>
-            
-                        <x-inputs.group class="col-sm-9">
-                            <x-inputs.text
-                                name="ward_location"
-                                label="Ward Location"
-                                :value="old('ward_location', ($editing ? $ward->ward_location : ''))"
-                                maxlength="255"
-                                placeholder="Ward Location"
-                                required
-                            ></x-inputs.text>
-                        </x-inputs.group>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="title">
-                            <h2 class="h4">Choose Ward Type  For this ward </h2>
-                        </div>
-            
-                        @foreach ($wardtypes as $wardtype)
-                            <div class="col-sm-3">
-                                <x-inputs.checkbox id="ward_type_id{{ $wardtype->id }}" name="ward_types_id[]"
-                                    label="{{ strtoupper($wardtype->ward_type_name) }}" value="{{ $wardtype->id }}" :checked="isset($ward) ? $ward->wardtypes->contains($wardtype->id) : false"
-                                    :add-hidden-value="false"></x-inputs.checkbox>
-                            </div>
-                        @endforeach --}}
-                      
-                    </div> 
                 </div>
             </div>
-
-                <div class="mt-4">
-                    <a
-                        href="{{ route('list.wards') }}"
-                        class="btn btn-light"
-                    >
-                        <i class="fa-solid fa-backward"></i>
-                        @lang('crud.common.back')
-                    </a>
-
-                    <a
-                        href="{{ route('create.wards') }}"
-                        class="btn btn-light"
-                    >
-                        
-                    </a>
-
-                    <button type="submit" class="btn btn-primary float-right">
-                        <i class="icon ion-md-save"></i>
-                        @lang('crud.common.update')
-                    </button>
+            
+            <div class="row">
+                <!-- Second row with two fields -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="load_location">Load Location</label>
+                        <input type="text" value="{{ $loadpackage->load_location }}" name="load_location" class="form-control" placeholder="Load Location">
+                        @error('load_location') <div class="text-danger">{{ $message }}</div> @enderror
+                    </div>
                 </div>
+                <div class="col-md-6">
+                    <!-- Dropdown for Load Type -->
+                    <div class="form-group">
+                        <label for="loadpackagetype_id">Load Type</label>
+                        <select name="loadpackagetype_id" class="form-control" required>
+                            <option disabled {{ empty($loadpackage->loadpackagetype_id) ? 'selected' : '' }}>Please select the load Type</option>
+                            @foreach ($loadpackagetypes as $value => $label)
+                                <option value="{{ $value }}" {{ $loadpackage->loadpackagetype_id == $value ? 'selected' : '' }}>
+                                    {{ $label }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('loadpackagetype_id') <div class="text-danger">{{ $message }}</div> @enderror
+                    </div>
+                </div>
+               
+            </div>
+            
+            <div class="row">
+                <!-- Third row with two fields -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="load_price">Load Price</label>
+                        <input type="text" value="{{ $loadpackage->load_price }}" name="load_price" class="form-control" placeholder="Load Price">
+                        @error('load_price') <div class="text-danger">{{ $message }}</div> @enderror
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="load_transportfee">Transport Fee</label>
+                        <input type="text" value="{{ $loadpackage->load_transportfee }}" name="load_transportfee" class="form-control" placeholder="Transport Fee">
+                        @error('load_transportfee') <div class="text-danger">{{ $message }}</div> @enderror
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <!-- Fourth row with two fields -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="load_transport_date">Transport Date</label>
+                        <input type="date" value="{{ $loadpackage->load_transport_date }}" name="load_transport_date" class="form-control" placeholder="Transport Date">
+                        @error('load_transport_date') <div class="text-danger">{{ $message }}</div> @enderror
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="load_delivery_date">Delivery Date</label>
+                        <input type="date" value="{{ $loadpackage->load_delivery_date }}" name="load_delivery_date" class="form-control" placeholder="Delivery Date">
+                        @error('load_delivery_date') <div class="text-danger">{{ $message }}</div> @enderror
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <!-- Fifth row with two fields -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="load_status">Status</label>
+                        <input type="text" value="{{ $loadpackage->load_status }}" name="load_status" class="form-control" placeholder="Status">
+                        @error('load_status') <div class="text-danger">{{ $message }}</div> @enderror
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="load_weight_kg">Load Kg</label>
+                        <input type="number" value="{{ $loadpackage->load_weight_kg }}" name="load_weight_kg" class="form-control" placeholder="Load Kg">
+                        @error('load_weight_kg') <div class="text-danger">{{ $message }}</div> @enderror
+                    </div>
+                </div>
+               
+            </div>
+            
+            <div class="row">
+                <!-- Sixth row with two fields -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="comment_operator">Operator Comment</label>
+                        <textarea class="form-control" name="comment_operator" rows="3">{{ $loadpackage->comment_operator }}</textarea>
+                        {{-- <input type="text" value="{{ $loadpackage->comment_operator }}" name="comment_operator" class="form-control" placeholder="Operator Comment"> --}}
+                        @error('comment_operator') <div class="text-danger">{{ $message }}</div> @enderror
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="load_description">Description</label>
+                        <textarea class="form-control" name="load_description" rows="3">{{ $loadpackage->load_description }}</textarea>
+                        @error('load_description') <div class="text-danger">{{ $message }}</div> @enderror
+                    </div>
+                </div>
+              
+            </div>
+            
+
+            <div class="mt-4">
+                <a href="{{ route('admin.list.loadpackage') }}" class="btn btn-light">
+                    <i class="fa-solid fa-backload"></i> @lang('crud.common.back')
+                </a>
+
+                <button type="submit" class="btn btn-primary float-right">
+                    <i class="icon ion-md-save"></i> @lang('crud.common.update')
+                </button>
+            </div>
+
             </x-form>
         </div>
     </div>

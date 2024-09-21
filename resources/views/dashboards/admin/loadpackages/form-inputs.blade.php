@@ -1,37 +1,64 @@
 @php $editing = isset($load) @endphp
 
-<div class="row">
-    <input type="hidden" name="customer_id" value="{{ request()->customer_id }}">
+<div class="row load-package-row">
+    
+    {{-- <x-inputs.group class="col-sm-4">
+        <x-inputs.text name="load_no[{{ $index }}]" label="Load No" :value="old('load_no.' . $index, $editing ? $load->load_no : '')" maxlength="255" placeholder="Load No" required></x-inputs.text>
+    </x-inputs.group> --}}
 
     <x-inputs.group class="col-sm-4">
-        <x-inputs.text name="load_no" label="Load No" :value="old('Load No', $editing ? $load->load_no : '')" maxlength="255" placeholder="Load No"
-            required></x-inputs.text>
+        <x-inputs.text name="load_name[{{ $index }}]" label="Load Name" :value="old('load_name.' . $index, $editing ? $load->load_name : '')" maxlength="255" placeholder="Load Name"></x-inputs.text>
     </x-inputs.group>
 
     <x-inputs.group class="col-sm-4">
-        <x-inputs.text name="load_name" label="Load Name" :value="old('Load Name', $editing ? $load->load_name : '')" maxlength="255"
-            placeholder="Load Name"></x-inputs.text>
+        <x-inputs.text name="load_location[{{ $index }}]" label="Load Location" :value="old('load_location.' . $index, $editing ? $load->load_location : '')" maxlength="255" placeholder="Location" required></x-inputs.text>
     </x-inputs.group>
 
     <x-inputs.group class="col-sm-4">
-        <x-inputs.text name="load_location" label="Load Location" :value="old('Load Location', $editing ? $load->load_location : '')" maxlength="255" placeholder="Location"
-            required></x-inputs.text>
+        <x-inputs.text name="load_description[{{ $index }}]" label="Description" :value="old('load_description.' . $index, $editing ? $load->load_description : '')" maxlength="255" placeholder="Description" required></x-inputs.text>
     </x-inputs.group>
 
     <x-inputs.group class="col-sm-4">
-        <x-inputs.text name="load_description" label="Description" :value="old('Description', $editing ? $load->load_description : '')" maxlength="255" placeholder="Description"
-            required></x-inputs.text>
+        <x-inputs.number name="load_price[{{ $index }}]" label="Load Price" :value="old('load_price.' . $index, $editing ? $load->load_price : '')" maxlength="255" placeholder="Load Price" required></x-inputs.number>
     </x-inputs.group>
 
+    <x-inputs.group class="col-sm-4">
+        <x-inputs.number name="load_transportfee[{{ $index }}]" label="Transport Fee" :value="old('load_transportfee.' . $index, $editing ? $load->load_transportfee : '')" maxlength="255" placeholder="Transport Fee" required></x-inputs.number>
+    </x-inputs.group>
 
     <x-inputs.group class="col-sm-4">
-        <x-inputs.select name="loadpackagetype_id" label="load Type" required>
-            @php $selected = old('loadpackagetype_id', ($editing ? $load->loadpackagetype_id : '')) @endphp
+        <x-inputs.date name="load_transport_date[{{ $index }}]" label="Transport Date" :value="old('load_transport_date.' . $index, $editing ? $load->load_transport_date : '')" maxlength="255" placeholder="Transport Date" required></x-inputs.date>
+    </x-inputs.group>
+
+    <x-inputs.group class="col-sm-4">
+        <x-inputs.date name="load_delivery_date[{{ $index }}]" label="Delivery Date" :value="old('load_delivery_date.' . $index, $editing ? $load->load_delivery_date : '')" maxlength="255" placeholder="Delivery Date" required></x-inputs.date>
+    </x-inputs.group>
+
+    <x-inputs.group class="col-sm-4">
+        <x-inputs.select name="loadpackagetype_id[{{ $index }}]" label="Load Type" required>
+            @php $selected = old('loadpackagetype_id.' . $index, ($editing ? $load->loadpackagetype_id : '')) @endphp
             <option disabled {{ empty($selected) ? 'selected' : '' }}>Please select the load Type</option>
             @foreach ($loadpackagetypes as $value => $label)
-                <option value="{{ $value }}" {{ $selected == $value ? 'selected' : '' }}>{{ $label }}
-                </option>
+                <option value="{{ $value }}" {{ $selected == $value ? 'selected' : '' }}>{{ $label }}</option>
             @endforeach
         </x-inputs.select>
     </x-inputs.group>
+
+    <x-inputs.group class="col-sm-4">
+        <x-inputs.text name="load_status[{{ $index }}]" label="Status" :value="old('load_status.' . $index, $editing ? $load->load_status : '')" maxlength="255" placeholder="Status" required></x-inputs.text>
+    </x-inputs.group>
+
+    <x-inputs.group class="col-sm-4">
+        <x-inputs.text name="comment_operator[{{ $index }}]" label="Operator Comment" :value="old('comment_operator.' . $index, $editing ? $load->comment_operator : '')" maxlength="255" placeholder="Operator Comment" required></x-inputs.text>
+    </x-inputs.group>
+
+    <x-inputs.group class="col-sm-4">
+        <x-inputs.number name="load_weight_kg[{{ $index }}]" label="Load Kg" :value="old('load_weight_kg.' . $index, $editing ? $load->load_weight_kg : '')" maxlength="255" placeholder="Load Kg" required></x-inputs.number>
+    </x-inputs.group>
+
+    <div class="col-sm-4 mt-4">
+        <button type="button" class="btn btn-danger remove-loadpackage-btn">
+            Remove Load
+        </button>
+    </div>
 </div>

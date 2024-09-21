@@ -4,12 +4,12 @@
     <div class="container-fluid">
         <div class="form-head align-items-center d-flex mb-sm-4 mb-3">
             <div class="me-auto">
-                <h2 class="text-black font-w600">loadpackages</h2>
-                <p class="mb-1">Dashboard / <span><a class="text-primary" href="appointment-add.html">loadpackages List</a></span>
+                <h2 class="text-black font-w600">Load</h2>
+                <p class="mb-1">Dashboard / <span><a class="text-primary" href="appointment-add.html">Load List</a></span>
                 </p>
             </div>
             <div>
-                <a href="{{ route('admin.create.loadpackage') }}" class="btn btn-primary me-3">+ Add loadpackage</a>
+                <a href="{{ route('admin.create.loadpackage') }}" class="btn btn-primary me-3">+ Add Load</a>
             </div>
         </div>
         <div class="row">
@@ -51,7 +51,7 @@
                                         <td>
                                             {{ $loop->iteration }}
                                         </td>
-                                        <td>{{ strtoupper($loadpackage->load_no) ?? '-' }}</td>
+                                        <td style="color: green; font-weight:700;">{{ strtoupper($loadpackage->load_no) ?? '-' }}</td>
                                         <td>{{ strtoupper($loadpackage->customer->customer_firstname) ?? '-' }}</td>
                                         <td>{{ strtoupper($loadpackage->load_name) ?? '-' }}</td>
                                         <td>{{ strtoupper($loadpackage->load_location) ?? '-' }}</td>
