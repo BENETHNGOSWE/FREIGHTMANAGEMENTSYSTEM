@@ -31,6 +31,9 @@
                                     <th class="text-left">
                                         @lang('crud.customers.inputs.customer_firstname')
                                     </th>
+                                    <th class="text-left">
+                                        Add load
+                                    </th>
                                     <th class="text-center">
                                         @lang('crud.common.actions')
                                     </th>
@@ -43,6 +46,7 @@
                                             {{ $loop->iteration }}
                                         </td>
                                         <td>{{ strtoupper($loadpackagetype->customer_firstname) ?? '-' }}</td>
+                                        <td>{{ strtoupper($loadpackagetype->customer_lastname) ?? '-' }}</td>
                                         <td>{{ strtoupper($loadpackagetype->customer_lastname) ?? '-' }}</td>
                                         <td class="text-center" style="width: 134px;">
                                             <div role="group" aria-label="Row Actions" class="btn-group">

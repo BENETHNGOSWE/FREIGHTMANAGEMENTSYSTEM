@@ -61,7 +61,7 @@ class CustomerController extends Controller
             'customer_middlename' => ['nullable', 'max:255', 'string'],
             'customer_lastname' => ['required', 'max:255', 'string'],
             'customer_gender' => ['required', 'in:male,female'],
-            'customer_email' => 'required|email|unique:users,email',
+            'customer_email' => 'required|email|unique:users,email' . $id,
             'phone' => ['nullable', 'max:255', 'string', 'unique:users,phone'],
             'customer_address' => ['required', 'max:255', 'string'],
         ];
@@ -76,15 +76,14 @@ class CustomerController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-
     public function store(Request $request)
     {
         $validated = $this->validate($request, $this->rules());
-
+    
         if ($validated) {
             $name = $validated['customer_firstname'] . ' ' . $validated['customer_middlename'] . ' ' . $validated['customer_lastname'];
             $password = Hash::make('123456');
-
+    
             // Create a new user
             $user = User::create([
                 'name' => $name,
@@ -93,26 +92,25 @@ class CustomerController extends Controller
                 'password' => $password,
                 'client_id' => $this->fms_id,
             ]);
-
+    
             if ($user) {
                 $id_number = createcustomeridNumber($this->fms_id);
                 $validated['user_id'] = $user->id;
                 $validated['customer_no'] = $id_number;
                 $validated['client_id'] = $user->client_id;
                 $customer = Customer::create($validated);
-
+    
                 if ($customer) {
-                    return redirect()
-                        ->route('admin.create.loadpackage', ['customer_id' => $customer->id])
-                        ->with('success', 'Customer added successfully. Now add the load package.');
+                    return redirect()->route('admin.list.customer')
+                        ->with('success', 'Customer added successfully!')
+                        ->with('customer_id', $customer->id);
                 }
             }
         }
-
+    
         return redirect()->back()->with('error', 'Something went wrong');
     }
-
-
+    
     /**
      * Display the specified resource.
      */
@@ -128,12 +126,12 @@ class CustomerController extends Controller
     {
         $this->data['page_title'] = 'Edit Staff';
         $client_id = auth()->user()->client_id;
-        $customer = Customer::find($employee);
+        // $customer = Customer::find($employee);
         $this->data['customer'] = $customer;
         $this->data['clients'] = Client::pluck('client_name', 'id');
         $this->data['users'] = User::pluck('id');
 
-        return view('dashboards.admin.staffs.edit', $this->data);
+        return view('dashboards.admin.customers.edit', $this->data);
     }
 
     /**
@@ -141,55 +139,46 @@ class CustomerController extends Controller
      */
     public function update(Request $request, Customer $customer)
     {
-        $this->data['customer'] = $customer = Customer::find($id);
-        $this->data['page_title'] = 'Edit Employee';
-        if ($customer) {
-            $validated = $this->validate($request, $this->rules($customer->user_id));
-            if ($validated) {
-                $name = $validated['customer_firstname'] . ' ' . $validated['customer_middlename'] . ' ' . $validated['customer_lastname'];
-                DB::beginTransaction();
-                try {
-                    $staff->user->update([
-                        'name' => $name,
-                        'email' => $validated['customer_email'],
-                        'phone' => $validated['phone'],
-                        'client_id' => $this->fms_id,
-                    ]);
-
-                    if ($user) {
-                        $validated['user_id'] = $user->id;
-                        $employee = $staff->update($validated);
-                        if ($employee) {
-                            DB::commit();
-                            return redirect()
-                                ->route('admin.list.staffs')
-                                ->with('success', $user->name . ' Updated successfully');
-                        } else {
-                            DB::rollBack();
-
-                            return redirect()->back()->with('error', 'Something went wrong');
-                        }
-                    }
-                } catch (\Throwable $th) {
-                    DB::rollBack();
-                    \Log::error($th);
-
-                    return redirect()->back()->with('error', $th->getMessage());
-                }
-            }
-
-            $this->authorize('update', $customer);
-            return view('dashboards.hr.employees.edit', $this->data);
-        } else {
-            return redirect()->back()->with('error', 'Something went wrong');
+        // Validate the request, passing the associated user's id to ensure unique constraints are correctly applied
+        $validated = $this->validate($request, $this->rules($customer->user->id));
+    
+        try {
+            // Begin the transaction
+            DB::beginTransaction();
+    
+            // Update the user associated with the customer
+            $user = $customer->user;
+            $user->name = $validated['customer_firstname'] . ' ' . $validated['customer_middlename'] . ' ' . $validated['customer_lastname'];
+            $user->email = $validated['customer_email'];
+            $user->phone = $validated['phone'];
+            $user->save();
+    
+            // Update customer details
+            $customer->update($validated);
+    
+            DB::commit(); // Commit if everything is fine
+        } catch (\Throwable $th) {
+            // Rollback on error
+            DB::rollback();
+            \Log::error($th->getMessage() . ' ' . $th->getTraceAsString());
+            return back()->with('error', $th->getMessage());
         }
+    
+        // Redirect with success message
+        return redirect()->route('admin.list.customer')->with('success', 'Customer updated successfully');
     }
+    
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(customer $customer)
+    public function delete(Customer $customer)
     {
-        //
+        $customer = Customer::where('id', $customer)
+            ->where('client_id', $this->fms_id)
+            ->first();
+        $this->authorize('delete', $customer);
+        $customer->delete();
+        return redirect()->route('admin.list.customer', $customer)->with('success', 'customer Deleted Successful');
     }
 }

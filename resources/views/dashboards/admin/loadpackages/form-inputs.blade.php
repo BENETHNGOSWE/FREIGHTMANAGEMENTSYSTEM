@@ -45,8 +45,18 @@
     </x-inputs.group>
 
     <x-inputs.group class="col-sm-4">
-        <x-inputs.text name="load_status[{{ $index }}]" label="Status" :value="old('load_status.' . $index, $editing ? $load->load_status : '')" maxlength="255" placeholder="Status" required></x-inputs.text>
+        <x-inputs.select name="load_status[{{ $index }}]" label="Status" required>
+            @php
+                $statuses = ['instock', 'onmovement', 'delivery', 'closed'];
+            @endphp
+            @foreach($statuses as $status)
+                <option value="{{ $status }}" {{ old('load_status.' . $index, ($editing && $load->load_status == $status) ? 'selected' : '') }}>
+                    {{ ucfirst($status) }}
+                </option>
+            @endforeach
+        </x-inputs.select>
     </x-inputs.group>
+    
 
     <x-inputs.group class="col-sm-4">
         <x-inputs.text name="comment_operator[{{ $index }}]" label="Operator Comment" :value="old('comment_operator.' . $index, $editing ? $load->comment_operator : '')" maxlength="255" placeholder="Operator Comment" required></x-inputs.text>

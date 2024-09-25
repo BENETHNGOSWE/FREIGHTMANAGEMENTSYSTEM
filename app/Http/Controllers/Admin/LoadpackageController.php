@@ -55,7 +55,7 @@ class LoadpackageController extends Controller
             'load_transportfee.*' => ['required', 'string', 'max:255'],
             'load_transport_date.*' => ['required', 'date'],
             'load_delivery_date.*' => ['required', 'date'],
-            'load_status.*' => ['required', 'string', 'max:255'],
+            'load_status.*' => 'required|in:instock,onmovement,delivery,closed',
             'comment_operator.*' => ['nullable', 'string', 'max:255'],
             'load_weight_kg.*' => ['required', 'string', 'max:255'],
         ]);
