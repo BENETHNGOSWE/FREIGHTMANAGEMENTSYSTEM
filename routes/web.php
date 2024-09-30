@@ -32,20 +32,23 @@ use App\Http\Controllers\SubscriptionInvoiceController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/', function () {
+    return view('welcome');
+});
 
 
 Auth::routes();
+Route::redirect('/register', '/login', 301);
 
 // Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::get('/add-patient',[App\Http\Controllers\DashboardController::class,'add_patient'])->name('patient.add');
-Route::get('/list-patient',[App\Http\Controllers\DashboardController::class,'list_patient'])->name('patient.list');
-Route::get('/add-appointment',[App\Http\Controllers\DashboardController::class,'add_appointment'])->name('appointment.add');
-Route::get('/list-appointment',[App\Http\Controllers\DashboardController::class,'list_appointment'])->name('appointment.list');
-Route::get('/list-doctors-by-schedule',[App\Http\Controllers\DashboardController::class,'list_doctors_by_schedule'])->name('doctor.ondute');
-Route::get('/list-doctors',[App\Http\Controllers\DashboardController::class,'list_doctors'])->name('doctor.list');
-Route::get('/list-departments',[App\Http\Controllers\DashboardController::class,'department_list'])->name('department.list');
+// Route::get('/add-patient',[App\Http\Controllers\DashboardController::class,'add_patient'])->name('patient.add');
+// Route::get('/list-patient',[App\Http\Controllers\DashboardController::class,'list_patient'])->name('patient.list');
+// Route::get('/add-appointment',[App\Http\Controllers\DashboardController::class,'add_appointment'])->name('appointment.add');
+// Route::get('/list-appointment',[App\Http\Controllers\DashboardController::class,'list_appointment'])->name('appointment.list');
+// Route::get('/list-doctors-by-schedule',[App\Http\Controllers\DashboardController::class,'list_doctors_by_schedule'])->name('doctor.ondute');
+// Route::get('/list-doctors',[App\Http\Controllers\DashboardController::class,'list_doctors'])->name('doctor.list');
+// Route::get('/list-departments',[App\Http\Controllers\DashboardController::class,'department_list'])->name('department.list');
 
 Route::prefix('/')
     ->middleware('auth')

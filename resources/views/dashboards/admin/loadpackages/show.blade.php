@@ -44,7 +44,7 @@
                                                 <table class="table table-bordered table-responsive-sm">
                                                     <thead>
                                                         <tr>
-                                                            <th style="width: 20%">load Name</th>
+                                                            <th style="width: 20%">load No</th>
                                                             <th>{{ $loadpackage->load_no ?? '-' }}</th>
                                                         </tr>
 

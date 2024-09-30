@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
+use App\Models\Customer;
+use App\Models\Loadpackage;
 
 class AdminDashboardController extends Controller
 {
@@ -23,7 +26,11 @@ class AdminDashboardController extends Controller
         });
     }
 
-    public function index($fms_id){
+    public function index($fms_id): View
+    {
+        $clientid = auth()-> user()->client_id;
+        $this->data['customerCount'] = Customer::where('client_id', $clientid )->count();
+        $this->data['loadcreate'] = Loadpackage::where('client_id', $clientid)->count();
         return view('dashboards.admin.dashboard', $this->data);
     }
 }

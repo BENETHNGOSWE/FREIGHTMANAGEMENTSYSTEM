@@ -26,7 +26,7 @@
                         <div class="media align-items-center">
                             <div class="media-body mr-3">
                                 <h2 class="fs-34 text-black font-w600">2</h2>
-                                <span>Total Appointments</span>
+                                <span>Total Load in Stock</span>
                             </div>
                             <i class="fa fa-hospital-user text-primary" style="font-size:40px;"></i>
                         </div>
@@ -46,7 +46,7 @@
                             <div class="media align-items-center">
                                 <div class="media-body mr-3">
                                     <h2 class="fs-34 text-black font-w600">3</h2>
-                                    <span>Departments</span>
+                                    <span>Total Staff</span>
                                 </div>
                                 <i class="fa fa-house-medical text-primary" style="font-size:40px;"></i>
                             </div>
@@ -67,8 +67,8 @@
                         <div class="card-body">
                             <div class="media align-items-center">
                                 <div class="media-body mr-3">
-                                    <h2 class="fs-34 text-black font-w600">4</h2>
-                                    <span>Total Doctor</span>
+                                    <h2 class="fs-34 text-black font-w600">{{ $customerCount }}</h2>
+                                    <span>Total Customers</span>
                                 </div>
                                 <i class="fa fa-user-doctor text-primary" style="font-size:40px;"></i>
                             </div>
@@ -88,8 +88,8 @@
                     <div class="card-body">
                         <div class="media align-items-center">
                             <div class="media-body mr-3">
-                                <h2 class="fs-34 text-black font-w600">3</h2>
-                                <span>Total Nurces</span>
+                                <h2 class="fs-34 text-black font-w600">{{ $loadcreate }}</h2>
+                                <span>Total Loads</span>
                             </div>
                             <i class="fa-solid fa-user-nurse text-primary" style="font-size:40px;"></i>
                         </div>

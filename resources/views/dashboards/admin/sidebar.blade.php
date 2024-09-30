@@ -29,24 +29,7 @@
                     <li><a href="{{ route('admin.list.customer')}}">List Customers </a></li>
                 </ul>
             </li>
-            {{-- <li>
-                <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                    <i class="fa fa-flask"></i>
-                    <span class="nav-text">Laboratories</span>
-                </a>
-                <ul aria-expanded="false">
-                    <li><a href="#">
-                            <i class="fas fa-microscope"></i>
-                            <span>Lab Types</span>
-                        </a></li>
-                    <li><a href="#">
-                            <i class="fas fa-mercury"></i>
-                            <span>Diagnosis</span>
-                        </a></li>
-
-                </ul>
-            </li> --}}
-
+           
             <li>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                     <i class="fas fa-bed"></i>
@@ -63,6 +46,31 @@
                     <li><a href="{{ route('admin.list.loadpackagetpye')}}">
                             <i class="fa-solid fa-location-arrow"></i>
                             <span>Loads Types</span>
+                        </a></li>
+
+                </ul>
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('admin.loadtrackingpage.loadpackage')}}">
+                            <i class="fa-solid fa-location-arrow"></i>
+                            <span>Track Your Load</span>
+                        </a></li>
+
+                </ul>
+            </li>
+
+            <li>
+                <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    <i class="fa fa-flask"></i>
+                    <span class="nav-text">Message</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="#">
+                            <i class="fas fa-microscope"></i>
+                            <span>Chat With Customer</span>
+                        </a></li>
+                    <li><a href="#">
+                            <i class="fas fa-mercury"></i>
+                            <span>Diagnosis</span>
                         </a></li>
 
                 </ul>

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use App\Models\User;
 use App\Models\Client;
+use App\Models\Loadpackage;
 use App\Models\Loadpackagetype;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -116,7 +117,9 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
-        //
+        $this->data['customer'] = $customer;
+        $this->data['loadpackage'] = Loadpackage::all();
+        return view('dashboards.admin.customers.show', $this->data);
     }
 
     /**
@@ -126,7 +129,6 @@ class CustomerController extends Controller
     {
         $this->data['page_title'] = 'Edit Staff';
         $client_id = auth()->user()->client_id;
-        // $customer = Customer::find($employee);
         $this->data['customer'] = $customer;
         $this->data['clients'] = Client::pluck('client_name', 'id');
         $this->data['users'] = User::pluck('id');
@@ -139,32 +141,24 @@ class CustomerController extends Controller
      */
     public function update(Request $request, Customer $customer)
     {
-        // Validate the request, passing the associated user's id to ensure unique constraints are correctly applied
         $validated = $this->validate($request, $this->rules($customer->user->id));
     
         try {
-            // Begin the transaction
             DB::beginTransaction();
-    
-            // Update the user associated with the customer
             $user = $customer->user;
             $user->name = $validated['customer_firstname'] . ' ' . $validated['customer_middlename'] . ' ' . $validated['customer_lastname'];
             $user->email = $validated['customer_email'];
             $user->phone = $validated['phone'];
             $user->save();
-    
-            // Update customer details
             $customer->update($validated);
     
-            DB::commit(); // Commit if everything is fine
+            DB::commit(); 
         } catch (\Throwable $th) {
-            // Rollback on error
             DB::rollback();
             \Log::error($th->getMessage() . ' ' . $th->getTraceAsString());
             return back()->with('error', $th->getMessage());
         }
     
-        // Redirect with success message
         return redirect()->route('admin.list.customer')->with('success', 'Customer updated successfully');
     }
     

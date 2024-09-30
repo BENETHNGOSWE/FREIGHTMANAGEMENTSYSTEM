@@ -122,7 +122,7 @@ class LoadpackageController extends Controller
     public function update(Request $request, Loadpackage $loadpackage)
     {
         $this->authorize('update', $loadpackage);
-        
+
         $validate = $request->validate([
             // 'load_no' => ['required', 'string', 'max:255'],
             'load_name' => ['required', 'string', 'max:255'],
@@ -150,5 +150,24 @@ class LoadpackageController extends Controller
         $this->authorize('delete', $load);
         $load->delete();
         return redirect()->route('admin.list.loadpackage', $load)->with('success', 'load Deleted Successful');
+    }
+
+    public function loadtrackingpage()
+    {
+        return view('dashboards.admin.loadpackages.track', $this->data);
+    }
+
+    public function loadtracking(Request $request)
+    {
+        $request->validate([
+            'load_no' => 'required|string|max:255',
+        ]);
+        $loadpackage = LoadPackage::where('load_no', $request->load_no)->first();
+        if ($loadpackage) {
+            $this->data['loadpackage'] = $loadpackage;
+            return view('dashboards.admin.loadpackages.track', $this->data);
+        } else {
+            return redirect()->back()->with('error', 'Load not found. Please check your load number.');
+        }
     }
 }

@@ -20,7 +20,7 @@
                     @include('dashboards.admin.staffs.form-input')
 
                     <div class="mt-4">
-                        <a href="#" class="btn btn-light">
+                        <a href="{{route('admin.list.staff')}}" class="btn btn-light">
                             <i class="fa-solid fa-backward"></i>
                             @lang('crud.common.back')
                         </a>

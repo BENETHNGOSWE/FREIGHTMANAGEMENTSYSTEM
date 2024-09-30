@@ -10,9 +10,10 @@ Route::prefix('/')
         Route::get('staff',[App\Http\Controllers\Admin\StaffController::class, 'list_staffs'])->name('admin.list.staff');
         Route::get('staffcreate',[App\Http\Controllers\Admin\StaffController::class, 'create'])->name('admin.create.staff');
         Route::post('staffstore',[App\Http\Controllers\Admin\StaffController::class, 'store'])->name('admin.store.staff');
-        Route::get('staff-edit-staff/{staff}', [App\Http\Controllers\Admin\StaffController::class, 'edit'])->name('edit.clients');
-        Route::put('staff-update-staff/{staff}', [App\Http\Controllers\Admin\StaffController::class, 'update'])->name('update.clients');
-        Route::get('staff-show-staff/{staff}', [App\Http\Controllers\Admin\StaffController::class, 'show'])->name('show.clients');
+        Route::get('staff-edit-staff/{staff}', [App\Http\Controllers\Admin\StaffController::class, 'edit'])->name('admin.edit.staff');
+        Route::put('staff-update-staff/{staff}', [App\Http\Controllers\Admin\StaffController::class, 'update'])->name('admin.update.staff');
+        Route::get('staff-show-staff/{staff}', [App\Http\Controllers\Admin\StaffController::class, 'show'])->name('admin.show.staff');
+        Route::delete('staff-delete-staff/{staff}', [App\Http\Controllers\Admin\StaffController::class, 'delete'])->name('admin.delete.staff');
 
 
         // Manage loadpackagetype Here
@@ -34,6 +35,10 @@ Route::prefix('/')
         Route::get('loadpackage/show/{loadpackage}',[App\Http\Controllers\Admin\LoadpackageController::class, 'show'])->name('admin.show.loadpackage');
         Route::delete('loadpackage/delete/{loadpackage}',[App\Http\Controllers\Admin\LoadpackageController::class, 'delete'])->name('admin.delete.loadpackage');
 
+        // Tracking Manage Here
+        Route::get('loadtracking',[App\Http\Controllers\Admin\LoadpackageController::class, 'loadtrackingpage'])->name('admin.loadtrackingpage.loadpackage');
+        Route::post('tracking/load',[App\Http\Controllers\Admin\LoadpackageController::class, 'loadtracking'])->name('admin.loadtracking.loadpackage');
+
 
         // Manage Customer Here
         Route::get('customer',[App\Http\Controllers\Admin\CustomerController::class, 'index'])->name('admin.list.customer');
@@ -44,6 +49,10 @@ Route::prefix('/')
         Route::get('customer/show/{customer}',[App\Http\Controllers\Admin\CustomerController::class, 'show'])->name('admin.show.customer');
         Route::delete('customer/delete/{customer}',[App\Http\Controllers\Admin\CustomerController::class, 'delete'])->name('admin.delete.customer');
 
+
+        // Message Manage Here
+        Route::post('/message', [App\Http\Controllers\Admin\MessageController::class, 'sendMessage' ])->name('sendmessage');
+        Route::get('/message-form', [App\Http\Controllers\Admin\MessageController::class, 'showSendMessageForm' ])->name('message');
 
         
 
