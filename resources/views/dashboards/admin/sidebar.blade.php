@@ -76,15 +76,15 @@
                 </ul>
             </li>
 
-            {{-- <li>
+            <li>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                     <i class="fas fa-pills"></i>
-                    <span class="nav-text">Pharmacy</span>
+                    <span class="nav-text">Invoices</span>
                 </a>
                 <ul aria-expanded="false">
                     <li><a href="#">
                             <i class="fa-solid fa-list-ol"></i>
-                            <span>List Pharmacies</span>
+                            <span>Load Invoices</span>
                         </a></li>
 
                 </ul>
@@ -95,7 +95,7 @@
                         </a></li>
 
                 </ul>
-            </li> --}}
+            </li>
 
             {{-- <li>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">

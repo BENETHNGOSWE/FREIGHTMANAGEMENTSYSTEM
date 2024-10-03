@@ -112,22 +112,18 @@
                                             <table class="table table-bordered table-responsive-sm">
                                                 <thead>
                                                     <tr>
-                                                        <th style="width: 20%" class="text-capitalize">Admin Name</th>
-                                                        <th>{{ $admin->user->name ?? '-' }}</th>
+                                                        <th style="width: 20%" class="text-capitalize">Name</th>
+                                                        <th>{{ $loadpackage->load_name ?? '-' }}</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <tr>
-                                                        <td>Admin Email</td>
-                                                        <td>{{ $admin->email ?? '-' }}</td>
+                                                        <td>Load Price</td>
+                                                        <td>{{ $loadpackage->load_price ?? '-' }}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td>Admin Phone</td>
-                                                        <td>{{ $admin->phone ?? '-' }}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Admin Address</td>
-                                                        <td>{{ $admin->address ?? '-' }}</td>
+                                                        <td>Transport Fee</td>
+                                                        <td>{{ $loadpackage->load_transportfee ?? '-' }}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
