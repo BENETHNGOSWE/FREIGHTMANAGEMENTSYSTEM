@@ -36,4 +36,9 @@ class ClientAdmin extends Model
     {
         return $this->belongsTo(Client::class);
     }
+
+    public function invoiceload()
+    {
+        return $this->belongsTo(InvoiceLoad::class);
+    }
 }

@@ -82,7 +82,7 @@
                     <span class="nav-text">Invoices</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="#">
+                    <li><a href="{{ route('admin.list.invoice')}}">
                             <i class="fa-solid fa-list-ol"></i>
                             <span>Load Invoices</span>
                         </a></li>

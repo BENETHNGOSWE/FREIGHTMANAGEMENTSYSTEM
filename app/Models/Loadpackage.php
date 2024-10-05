@@ -40,4 +40,14 @@ class Loadpackage extends Model
     {
         return $this->belongsTo(Customer::class);
     }
+
+    public function invoiceload()
+    {
+        return $this->belongsTo(InvoiceLoad::class);
+    }
+
+    public function invoice()
+    {
+        return $this->belongsTo(Invoice::class);
+    }
 }

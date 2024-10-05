@@ -167,18 +167,19 @@ return [
         ],
     ],
 
-    'countries' => [
-        'name' => 'Countries',
-        'index_title' => 'Countries List',
-        'new_title' => 'New Country',
-        'create_title' => 'Create Country',
-        'edit_title' => 'Edit Country',
-        'show_title' => 'Show Country',
+    'invoices' => [
+        'name' => 'invoices',
+        'index_title' => 'invoices List',
+        'new_title' => 'New Invoive',
+        'create_title' => 'Create Invoive',
+        'edit_title' => 'Edit Invoive',
+        'show_title' => 'Show Invoive',
         'inputs' => [
-            'name' => 'Name',
-            'iso' => 'Iso',
-            'iso3' => 'Iso3',
-            'nicename' => 'Nicename',
+            'invoice_no' => 'Invoive No',
+            'prefix' => 'Prefix',
+            'total_amount' => 'Total Amount',
+            'total_balance' => 'Balance Amount',
+            'status' => 'Invoice Status',
         ],
     ],
 

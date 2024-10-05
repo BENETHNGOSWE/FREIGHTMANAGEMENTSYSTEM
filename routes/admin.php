@@ -54,6 +54,12 @@ Route::prefix('/')
         Route::post('/message', [App\Http\Controllers\Admin\MessageController::class, 'sendMessage' ])->name('sendmessage');
         Route::get('/message-form', [App\Http\Controllers\Admin\MessageController::class, 'showSendMessageForm' ])->name('message');
 
+
+        // Invoices Manage Here
+        Route::get('invoice', [App\Http\Controllers\Admin\InvoiceController::class, 'index'])->name('admin.list.invoice');
+        Route::get('invoiceshow/{invoice}', [App\Http\Controllers\Admin\InvoiceController::class, 'show'])->name('admin.show.invoice');
+        Route::get('invoice/edit/{invoice}', [App\Http\Controllers\Admin\InvoiceController::class, 'edit'])->name('admin.edit.invoice');
+        Route::put('invoice/update/{invoice}', [App\Http\Controllers\Admin\InvoiceController::class, 'update'])->name('admin.update.invoice');
         
 
         

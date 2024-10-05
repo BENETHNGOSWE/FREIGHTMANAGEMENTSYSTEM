@@ -39,4 +39,9 @@ class Customer extends Model
     {
         return $this->hasMany(Loadpackage::class);
     }
+
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class);
+    }
 }

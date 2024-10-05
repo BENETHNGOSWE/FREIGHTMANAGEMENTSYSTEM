@@ -315,3 +315,18 @@ function date_time($data){
     $formattedDate = $carbonDate->format('d/m/Y, h:i A');
     return $formattedDate;
 }
+
+function getStatusLabel($status)
+{
+    switch ($status) {
+        case 0:
+            return 'Pending';
+        case 1:
+            return 'Full Paid';
+        case 2:
+            return 'Partial Paid';
+        default:
+            return 'Unknown Status';
+    }
+}
+
