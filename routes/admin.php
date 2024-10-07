@@ -56,10 +56,11 @@ Route::prefix('/')
 
 
         // Invoices Manage Here
-        Route::get('invoice', [App\Http\Controllers\Admin\InvoiceController::class, 'index'])->name('admin.list.invoice');
+        Route::get('invoicelist', [App\Http\Controllers\Admin\InvoiceController::class, 'index'])->name('admin.list.invoice');
         Route::get('invoiceshow/{invoice}', [App\Http\Controllers\Admin\InvoiceController::class, 'show'])->name('admin.show.invoice');
         Route::get('invoice/edit/{invoice}', [App\Http\Controllers\Admin\InvoiceController::class, 'edit'])->name('admin.edit.invoice');
         Route::put('invoice/update/{invoice}', [App\Http\Controllers\Admin\InvoiceController::class, 'update'])->name('admin.update.invoice');
+        Route::get('invoice/pdf/{invoice}', [App\Http\Controllers\Admin\InvoiceController::class, 'generateInvoicePDF'])->name('admin.pdf.invoice');
         
 
         

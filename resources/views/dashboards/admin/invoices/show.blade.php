@@ -26,6 +26,7 @@
 
                         <div class="col-md-4">
                             <h4>status: <span>{!! invoice_status($invoice->status) !!}</span></h4>
+                            <a href="{{ route('admin.pdf.invoice', $invoice->id) }}" class="btn btn-primary mt-2">Download PDF</a>
                         </div>
                     </div>
 

@@ -10,7 +10,7 @@ use App\Models\Customer;
 use App\Models\Loadpackage;
 use App\Models\Client;
 use Illuminate\Support\Facades\Auth;
-
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class InvoiceController extends Controller
 {
@@ -43,8 +43,7 @@ class InvoiceController extends Controller
         return view('dashboards.admin.invoices.show', $this->data);
     }
 
-
-    public  function edit(Request $request, Invoice $invoice)
+    public function edit(Request $request, Invoice $invoice)
     {
         $this->data['invoice'] = $invoice;
         return view('dashboards.admin.invoices.edit', $this->data);
@@ -60,4 +59,19 @@ class InvoiceController extends Controller
         $invoice->update($validate);
         return redirect()->route('admin.list.invoice')->with('success', 'Invoice Status Updated Successfully');
     }
+
+    public function generateInvoicePDF($id)
+    {
+        $invoice = Invoice::with('invoiceLoad.loadpackage', 'customer')->findOrFail($id);
+        $client = Client::findOrFail($invoice->client_id);
+
+        $data = [
+            'invoice' => $invoice,
+            'client' => $client
+        ];
+
+        $pdf = Pdf::loadView('dashboards.admin.invoices.invoicepdf', $data);
+        return $pdf->download('invoice_' . $invoice->invoice_no . '.pdf');
+    }
+    
 }
