@@ -13,6 +13,7 @@ class Invoice extends Model
         'prefix',
         'total_amount',
         'total_balance',
+        'total_transportfee',
         'status',
         'customer_id',
         'client_id',

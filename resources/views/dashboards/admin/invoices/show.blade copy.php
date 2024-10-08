@@ -120,6 +120,13 @@
                                 <tbody>
 
                                     <tr>
+                                        <td class="left"><strong>Transport Fee </strong></td>
+                                        <td class="right">
+                                            <strong>{{ $invoice->total_amount }}</strong><br />
+                                        </td>
+                                    </tr>
+
+                                    <tr>
                                         <td class="left"><strong>Balance </strong></td>
                                         <td class="right">
                                             <strong>{{ $invoice->total_amount }}</strong><br />
@@ -129,7 +136,7 @@
                                     <tr>
                                         <td class="left"><strong>Total </strong></td>
                                         <td class="right">
-                                            <strong>{{ $invoice->total_amount }} /=</strong><br />
+                                            <strong>{{  $invoice->total_amount + $invoice->total_transportfee }} /=</strong><br />
 
                                         </td>
                                     </tr>

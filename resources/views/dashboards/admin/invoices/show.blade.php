@@ -118,6 +118,12 @@
                         <div class="col-lg-4 col-sm-5 ms-auto">
                             <table class="table table-clear">
                                 <tbody>
+                                    <tr>
+                                        <td class="left"><strong>Transport Fee </strong></td>
+                                        <td class="right">
+                                            <strong>{{ $invoice->total_transportfee }}</strong><br />
+                                        </td>
+                                    </tr>
 
                                     <tr>
                                         <td class="left"><strong>Balance </strong></td>
@@ -129,7 +135,7 @@
                                     <tr>
                                         <td class="left"><strong>Total </strong></td>
                                         <td class="right">
-                                            <strong>{{ $invoice->total_amount }} /=</strong><br />
+                                            <strong>{{ number_format($invoice->total_amount + $invoice->total_transportfee, 2) }} /=</strong><br />
 
                                         </td>
                                     </tr>

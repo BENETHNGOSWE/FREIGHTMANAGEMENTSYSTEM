@@ -5,6 +5,12 @@ Route::prefix('/')
     ->middleware('auth')
     ->group(function () {
 
+        //Profile Manage Here
+        Route::get('profile/edit/{clientadmin}',[App\Http\Controllers\Admin\AdminDashboardController::class, 'edit'])->name('admin.edit.profile'); 
+        Route::put('profile/update/{clientadmin}',[App\Http\Controllers\Admin\AdminDashboardController::class, 'update'])->name('admin.update.profile'); 
+        Route::get('profile-show/{clientadmin}',[App\Http\Controllers\Admin\AdminDashboardController::class, 'show'])->name('admin.show.profile'); 
+
+
         // Manage Clients Here
         // Route::get('index',[App\Http\Controllers\Admin\StaffController::class, 'list_staffs'])->name('admin.list.staff');
         Route::get('staff',[App\Http\Controllers\Admin\StaffController::class, 'list_staffs'])->name('admin.list.staff');

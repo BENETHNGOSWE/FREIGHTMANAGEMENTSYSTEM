@@ -128,6 +128,7 @@ class LoadpackageController extends Controller
                 $invoice->client_id = $clientId;
                 $invoice->total_amount = 0; 
                 $invoice->total_balance = 0;
+                $invoice->total_transportfee = 0;
                 $invoice->status = 0; 
                 $invoice->save();
             }
@@ -159,6 +160,7 @@ class LoadpackageController extends Controller
                     'load_price' => $load->load_price,
                 ]);
                 $invoice->total_amount += $load->load_price;
+                $invoice->total_transportfee += $load->load_transportfee;
                 $invoice->total_balance += $load->load_price;
             }
             $invoice->save();

@@ -204,18 +204,20 @@
         }
 
         table.inventory td:nth-child(1) {
-            width: 26%;
+            width: 5%;
         }
 
         table.inventory td:nth-child(2) {
-            width: 38%;
+            width: 12%;
         }
 
-        table.inventory td:nth-child(3),
+        table.inventory td:nth-child(3),{
+            width: 19%;
+        }
         table.inventory td:nth-child(4),
         table.inventory td:nth-child(5) {
             text-align: right;
-            width: 12%;
+            width: 10%;
         }
 
         /* table balance */
@@ -308,8 +310,8 @@
             @endif
         </span>
         <address style="margin-top: -1em">
-            <p style="color:#0118e4;"><strong>{{ $client->client_name }}</strong></p>
-            <p>{{ $client->client_address_one }}, {{ $client->client_city }}</p>
+            <p style="color:#0118e4;"><strong>{{ strtoupper($client->client_name) }}</strong></p>
+            <p>{{ $client->client_city }}, {{ $client->client_country }}</p>
             <p>{{ $client->client_phonenumber }}</p>
             <p>{{ $client->client_email }}</p>
         </address>
@@ -337,7 +339,7 @@
             </tr>
             <tr>
                 <th><span>Amount Due</span></th>
-                <td><span>Tsh</span><span>{{ number_format($invoice->total_amount, 2) }}</span></td>
+                <td><span>Tsh </span><span>{{ number_format($invoice->total_amount + $invoice->total_transportfee, 2) }}</span></td>
             </tr>
         </table>
 
@@ -345,20 +347,20 @@
             <thead>
                 <tr>
                     <th><span>S. No</span></th>
-                    <th><span>Description</span></th>
                     <th><span>Load Name</span></th>
+                    <th><span>Description</span></th>
                     <th><span>Load Price</span></th>
-                    <th><span>Amount</span></th>
+                    <th><span>Transport Fee</span></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($invoice->invoiceLoad as $invoiceLoad)
                     <tr>
                         <td><span>{{ $loop->iteration}}</span></td>
-                        <td><span>{{ $invoiceLoad->loadpackage->load_description }}</span></td>
                         <td><span>{{ $invoiceLoad->loadpackage->load_name }}</span></td>
+                        <td><span>{{ $invoiceLoad->loadpackage->load_description }}</span></td>
                         <td><span>{{ number_format($invoiceLoad->load_price, 2) }}</span></td>
-                        <td><span>{{ number_format($invoiceLoad->load_price, 2) }}</span></td>
+                        <td><span>{{ number_format($invoiceLoad->loadpackage->load_transportfee, 2) }}</span></td>
                     </tr>
                 @endforeach
             </tbody>
@@ -376,7 +378,7 @@
         <table class="balance" style="margin-top: -1em">
             <tr>
                 <th><span>Total</span></th>
-                <td><span>{{ number_format($invoice->total_amount, 2) }}</span></td>
+                <td><span>{{ number_format($invoice->total_amount + $invoice->total_transportfee, 2) }}</span></td>
             </tr>
         </table>
     </article>
