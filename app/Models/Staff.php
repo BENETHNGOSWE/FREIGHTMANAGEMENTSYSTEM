@@ -28,6 +28,7 @@ class Staff extends Model
         'client_id',
         'staff_type_id',
         'user_id',
+        'branch_id',
     ];
 
     protected $searchableFields = ['*'];
@@ -42,6 +43,11 @@ class Staff extends Model
     public function staffType()
     {
         return $this->belongsTo(StaffType::class);
+    }
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
     }
 
     public function user()

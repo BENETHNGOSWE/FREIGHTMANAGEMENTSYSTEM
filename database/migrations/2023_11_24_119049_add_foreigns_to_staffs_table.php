@@ -33,6 +33,13 @@ return new class extends Migration
                 ->on('users')
                 ->onUpdate('CASCADE')
                 ->onDelete('CASCADE');
+
+            $table
+                ->foreign('branch_id')
+                ->references('id')
+                ->on('branches')
+                ->onUpdate('CASCADE')
+                ->onDelete('CASCADE');    
         });
     }
 
@@ -45,6 +52,7 @@ return new class extends Migration
             $table->dropForeign(['client_id']);
             $table->dropForeign(['staff_type_id']);
             $table->dropForeign(['user_id']);
+            $table->dropForeign(['branch_id']);
         });
     }
 };

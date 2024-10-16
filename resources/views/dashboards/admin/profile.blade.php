@@ -22,7 +22,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="row">
-                    <div class="card col-md-8">
+                    <div class="card col-md-12">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-4">
@@ -111,13 +111,14 @@
 
         <!-- Modal for Update Profile Form -->
         <div class="modal fade" id="updateProfileModal" tabindex="-1" role="dialog" aria-labelledby="updateProfileModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog" role="document" style="max-width: 800px; width: 100%;">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="updateProfileModalLabel">Update Profile</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button type="button" class="btn btn-danger btn-lg" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                      
                     </div>
                     <div class="modal-body">
                         <!-- Update Profile Form -->

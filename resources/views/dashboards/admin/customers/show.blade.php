@@ -107,7 +107,7 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Location</td>
-                                                                    <td>{{ $load->load_location ?? '-' }}</td>
+                                                                    <td>{{ $load->load_trucking_number ?? '-' }}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Transport Fee</td>

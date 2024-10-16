@@ -20,7 +20,7 @@ class PermissionsSeeder extends Seeder
             'clienttypes', 'countries', 'messages', 'modules', 'packages',
             'loadpackagetypes', 'loadpackages', 'staffs', 'stafftypes', 'paymenttypes', 'role',
             'subscriptions', 'subscriptioninvoices', 'subscriptiontokens', 'userroles',
-            'roles', 'permissions', 'users'
+            'roles', 'permissions', 'users', 'invoices', 'invoice_loads', 'customers'
         ];
 
 
@@ -31,7 +31,7 @@ class PermissionsSeeder extends Seeder
         }
 
         $manager = Role::create(['name' => 'manager']);
-        $manager->givePermissionTo(['list loadpackagetypes', 'view loadpackagetypes', 'create loadpackagetypes', 'update loadpackagetypes', 'delete loadpackagetypes', 'list loadpackages', 'view loadpackages', 'create loadpackages', 'update loadpackages', 'delete loadpackages']);
+        $manager->givePermissionTo(['view invoices']);
 
         $allPermissions = Permission::all();
         $admin = Role::create(['name' => 'admin']);

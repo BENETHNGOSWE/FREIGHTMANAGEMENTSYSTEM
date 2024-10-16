@@ -19,7 +19,7 @@ class Loadpackage extends Model
         'load_status',           
         'comment_operator',       
         'load_weight_kg',        
-        'load_location',          
+        'load_trucking_number',          
         'client_id',             
         'loadpackagetype_id',     
         'customer_id',            

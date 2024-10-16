@@ -9,8 +9,8 @@
 @include('dashboards.owner.sidebar')
 @endif
 
-@if(Auth::user()->getRoleNames()[0] == 'patient')
-@include('dashboards.patient.sidebar')
+@if(Auth::user()->getRoleNames()[0] == 'manager')
+@include('dashboards.manager.sidebar')
 @endif
 
 @if(Auth::user()->getRoleNames()[0] == 'receptionist')

@@ -23,7 +23,7 @@ return new class extends Migration
             $table->enum('load_status', ['instock', 'onmovement', 'delivery', 'closed'])->default('instock');
             $table->string('comment_operator');
             $table->string('load_weight_kg');
-            $table->string('load_location')->nullable();
+            $table->string('load_trucking_number')->nullable();
             $table->foreignId('client_id');
             $table->foreignId('customer_id');
             $table->foreignId('loadpackagetype_id');

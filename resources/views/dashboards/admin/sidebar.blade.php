@@ -19,6 +19,7 @@
                     <li><a href="#">Staff Types</a></li>
                 </ul>
             </li>
+           
             <li>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                     <i class="fa fa-building"></i>
@@ -149,11 +150,21 @@
                     <span class="nav-text">Manage Profile</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{{ route('admin.show.profile', $clientadmin) }}">
+                    <li><a href="{{ route('list.clients')}}">
                             <i class="fas fa-building"></i>
                             <span>Your Profile</span>
                         </a></li>
 
+                </ul>
+            </li>
+            <li>
+                <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    <i class="fa fa-building"></i>
+                    <span class="nav-text">Branches</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('admin.create.branch') }}">+Add new</a></li>
+                    <li><a href="{{ route('admin.list.branch') }}">List Branches </a></li>
                 </ul>
             </li>
             <li>

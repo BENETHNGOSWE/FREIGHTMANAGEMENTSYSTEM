@@ -11,12 +11,17 @@ class Branch extends Model
     use HasFactory;
     use Searchable;
 
-    protected $fillable = ['client_id', 'branch_name'];
+    protected $fillable = ['client_id', 'branch_name', 'branch_code'];
 
     protected $searchableFields = ['*'];
 
     public function client()
     {
         return $this->belongsTo(Client::class);
+    }
+
+    public function staff()
+    {
+        return $this->hasMany(Staff::class);
     }
 }

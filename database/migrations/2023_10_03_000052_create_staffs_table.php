@@ -27,6 +27,7 @@ return new class extends Migration
             $table->unsignedBigInteger('client_id');
             $table->unsignedBigInteger('staff_type_id');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('branch_id');
 
             $table->timestamps();
             $table->softDeletes();

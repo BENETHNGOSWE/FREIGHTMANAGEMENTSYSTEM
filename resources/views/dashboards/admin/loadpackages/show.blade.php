@@ -61,7 +61,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td>Location</td>
-                                                            <td>{{ $loadpackage->load_location ?? '-' }}</td>
+                                                            <td>{{ $loadpackage->load_trucking_number ?? '-' }}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>Taransport Fee</td>

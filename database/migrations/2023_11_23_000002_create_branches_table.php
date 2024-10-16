@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('client_id');
             $table->string('branch_name');
+            $table->string('branch_code');
 
             $table->timestamps();
         });

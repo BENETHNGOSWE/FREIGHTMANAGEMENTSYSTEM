@@ -37,9 +37,9 @@
                 <!-- Second row with two fields -->
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="load_location">Load Location</label>
-                        <input type="text" value="{{ $loadpackage->load_location }}" name="load_location" class="form-control" placeholder="Load Location">
-                        @error('load_location') <div class="text-danger">{{ $message }}</div> @enderror
+                        <label for="load_trucking_number">Load Location</label>
+                        <input type="text" value="{{ $loadpackage->load_trucking_number }}" name="load_trucking_number" class="form-control" placeholder="Load Location">
+                        @error('load_trucking_number') <div class="text-danger">{{ $message }}</div> @enderror
                     </div>
                 </div>
                 <div class="col-md-6">

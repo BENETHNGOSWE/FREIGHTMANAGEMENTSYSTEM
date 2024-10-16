@@ -18,7 +18,7 @@ class InvoiceController extends Controller
     protected $data = [];
     public function __construct()
     {
-        $this->middleware('admin');
+        $this->middleware('multiple');
         $this->middleware(function ($request, $next) {
             if (Auth::check()) {
                 $this->fms_id = Auth::user()->client_id;

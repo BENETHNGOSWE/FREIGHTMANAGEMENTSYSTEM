@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Owner\OwnerController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Manager\ManagerDashboardController;
 
 class HomeController extends Controller
 {
@@ -40,6 +41,9 @@ class HomeController extends Controller
             case 'admin':
                 return $this->adminDashboard();
 
+            case 'manager':
+                return $this->managerDashboard();    
+
             default:
                 return view('home'); 
             }       
@@ -53,6 +57,11 @@ class HomeController extends Controller
 
     public function adminDashboard(){
         $dashboard = new AdminDashboardController();
+        return $dashboard->index($this->fms_id);
+    }
+
+    public function managerDashboard(){
+        $dashboard = new ManagerDashboardController();
         return $dashboard->index($this->fms_id);
     }
 }

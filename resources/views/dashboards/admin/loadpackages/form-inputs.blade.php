@@ -11,7 +11,7 @@
     </x-inputs.group>
 
     <x-inputs.group class="col-sm-4">
-        <x-inputs.text name="load_location[{{ $index }}]" label="Load Location" :value="old('load_location.' . $index, $editing ? $load->load_location : '')" maxlength="255" placeholder="Location" required></x-inputs.text>
+        <x-inputs.text name="load_trucking_number[{{ $index }}]" label="Load Trucking Number" :value="old('load_trucking_number.' . $index, $editing ? $load->load_trucking_number : '')" maxlength="255" placeholder="Trucking Number" required></x-inputs.text>
     </x-inputs.group>
 
     <x-inputs.group class="col-sm-4">

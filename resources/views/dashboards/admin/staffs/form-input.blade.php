@@ -41,16 +41,16 @@
             placeholder="Staff Address"></x-inputs.text>
     </x-inputs.group>
 
-    {{-- <x-inputs.group class="col-sm-4">
-        <x-inputs.select name="department_id" label="Department" required>
-            @php $selected = old('department_id', ($editing ? $staff->department_id : '')) @endphp
-            <option disabled {{ empty($selected) ? 'selected' : '' }}>Please select the Department</option>
-            @foreach ($departments as $value => $label)
+    <x-inputs.group class="col-sm-4">
+        <x-inputs.select name="branch_id" label="Branch" required>
+            @php $selected = old('branch_id', ($editing ? $staff->branch_id : '')) @endphp
+            <option disabled {{ empty($selected) ? 'selected' : '' }}>Please select the Branch</option>
+            @foreach ($branches as $value => $label)
                 <option value="{{ $value }}" {{ $selected == $value ? 'selected' : '' }}>{{ $label }}
                 </option>
             @endforeach
         </x-inputs.select>
-    </x-inputs.group> --}}
+    </x-inputs.group>
 
     <x-inputs.group class="col-sm-4">
         <x-inputs.select name="staff_type_id" label="Staff Type" required>

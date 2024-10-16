@@ -25,20 +25,29 @@
                                     <th>
                                         s/n
                                     </th>
-                                    <th class="text-left">
+                                    <th class="text-left" style="white-space: normal; word-wrap: break-word;">
+                                        Receipt Date
+                                    </th>
+                                    <th class="text-left" style="white-space: normal; word-wrap: break-word;">
+                                        @lang('crud.loadpackages.inputs.load_status')
+                                    </th>
+                                    <th class="text-left" style="white-space: normal; word-wrap: break-word;">
                                         @lang('crud.loadpackages.inputs.load_no')
                                     </th>
-                                    {{-- <th class="text-left">
-                                        @lang('crud.loadpackages.inputs.loadpackage_type_id')
-                                    </th> --}}
-                                    <th class="text-left">
-                                        @lang('crud.loadpackages.inputs.load_description')
-                                    </th>
-                                    <th class="text-left">
+                                    <th class="text-left" style="white-space: normal; word-wrap: break-word;">
                                         @lang('crud.loadpackages.inputs.load_name')
                                     </th>
-                                    <th class="text-left">
-                                        @lang('crud.loadpackages.inputs.load_location')
+                                    <th class="text-left" style="white-space: normal; word-wrap: break-word;">
+                                        Customer Mobile No.
+                                    </th>
+                                    <th class="text-left" style="white-space: normal; word-wrap: break-word;">
+                                        @lang('crud.loadpackages.inputs.load_description')
+                                    </th>
+                                    <th class="text-left" style="white-space: normal; word-wrap: break-word;">
+                                        @lang('crud.loadpackages.inputs.load_trucking_number')
+                                    </th>
+                                    <th class="text-left" style="white-space: normal; word-wrap: break-word;">
+                                        ETD
                                     </th>
                                     <th class="text-center">
                                         @lang('crud.common.actions')
@@ -51,11 +60,17 @@
                                         <td>
                                             {{ $loop->iteration }}
                                         </td>
+                                        <td>
+                                            {{ $loadpackage->created_at->format('d M Y') }}
+                                        </td>
+                                        <td>{{ strtoupper($loadpackage->load_status) ?? '-' }}</td>
                                         <td style="color: green; font-weight:700;">
                                             {{ strtoupper($loadpackage->load_no) ?? '-' }}</td>
                                         <td>{{ strtoupper($loadpackage->customer->customer_firstname) ?? '-' }}</td>
-                                        <td>{{ strtoupper($loadpackage->load_name) ?? '-' }}</td>
-                                        <td>{{ strtoupper($loadpackage->load_location) ?? '-' }}</td>
+                                        <td>{{ strtoupper($loadpackage->customer->phone) ?? '-' }}</td>
+                                        <td>{{ strtoupper($loadpackage->load_description) ?? '-' }}</td>
+                                        <td>{{ strtoupper($loadpackage->load_trucking_number) ?? '-' }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($loadpackage->load_transport_date)->format('d M Y') ?? '-' }}</td>
                                         <td class="text-center" style="width: 134px;">
                                             <div role="group" aria-label="Row Actions" class="btn-group">
                                                 @can('update', $loadpackage)

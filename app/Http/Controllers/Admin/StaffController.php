@@ -8,6 +8,7 @@ use App\Models\Client;
 use App\Models\StaffType;
 use App\Models\Staff;
 use App\Models\User;
+use App\Models\Branch;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -46,14 +47,15 @@ class StaffController extends Controller
     {
         $client_id = auth()->user()->client_id;
         $this->data['page_title'] = 'Create Staff';
-        // $departments = Department::where('client_id', $client_id)->pluck('department_name','id')->all();;
+
         $clients = Client::pluck('client_name', 'id');
         $staffTypes = StaffType::pluck('staff_type_name', 'id');
+        $branches = Branch::pluck('branch_name', 'id');
         $users = User::pluck('id');
-        // $hospitalType = HospitalType::pluck('name', 'id');
 
         $this->data['clients'] = $clients;
         $this->data['staffTypes'] = $staffTypes;
+        $this->data['branches'] = $branches;
         $this->data['users'] = $users;
 
         return view('dashboards.admin.staffs.create', $this->data);
@@ -69,6 +71,7 @@ class StaffController extends Controller
             'staff_email' => 'required|email|unique:users,email',
             'phone' => ['nullable', 'max:255', 'string', 'unique:users,phone'],
             'staff_type_id' => ['required', 'max:255', 'exists:staff_types,id'],
+            'branch_id' => ['required', 'max:255', 'exists:branches,id'],
             'staff_address' => ['required', 'max:255', 'string'],
         ];
         if ($id) {
@@ -133,6 +136,7 @@ class StaffController extends Controller
 
         $this->data['clients'] = Client::pluck('client_name', 'id');
         $this->data['staffTypes'] = StaffType::pluck('staff_type_name', 'id');
+        $this->data['branches'] = Branch::pluck('branch_name', 'id');
         $this->data['users'] = User::pluck('id');
 
         return view('dashboards.admin.staffs.edit', $this->data);

@@ -34,12 +34,12 @@ class AdminDashboardController extends Controller
     public function index($fms_id): View
     {
         $clientid = auth()->user()->client_id;
-        $clientadmin = ClientAdmin::where('client_id', $clientid)->first();
+        // $clientadmin = ClientAdmin::where('client_id', $clientid)->first();
 
         $this->data['customerCount'] = Customer::where('client_id', $clientid)->count();
         $this->data['loadcreate'] = Loadpackage::where('client_id', $clientid)->count();
 
-        $this->data['clientadmin'] = $clientadmin;
+        // $this->data['clientadmin'] = $clientadmin;
 
         return view('dashboards.admin.dashboard', $this->data);
     }
@@ -61,7 +61,6 @@ class AdminDashboardController extends Controller
 
     public function update(Request $request, ClientAdmin $clientadmin)
     {
-        // Validate request data
         $validated = $request->validate([
             'firstname' => ['required', 'max:255', 'string'],
             'middlename' => ['required', 'max:255', 'string'],
@@ -69,13 +68,12 @@ class AdminDashboardController extends Controller
             'username' => ['required', 'max:255', 'string'],
             'email' => ['required', 'max:255', 'string', 'email'],
             'phone' => ['required', 'max:255', 'string'],
-            'password' => ['nullable', 'max:255', 'string'], // password can be updated, but nullable
+            'password' => ['nullable', 'max:255', 'string'],
         ]);
     
         try {
             DB::beginTransaction();
-    
-            // Update clientAdmin details
+            
             $clientadmin->update([
                 'firstname' => $validated['firstname'],
                 'middlename' => $validated['middlename'],
@@ -84,8 +82,7 @@ class AdminDashboardController extends Controller
                 'email' => $validated['email'],
                 'phone' => $validated['phone'],
             ]);
-    
-            // Update associated User model
+
             $user = User::find($clientadmin->user_id);
             if ($user) {
                 $user->update([
@@ -98,10 +95,10 @@ class AdminDashboardController extends Controller
     
             DB::commit();
             if (auth()->id() === $clientadmin->user_id) {
-                auth()->user()->refresh(); // Refreshes the session data
+                auth()->user()->refresh();
             }
     
-            return redirect()->route('admin.show.admin', $clientadmin)->with('success', 'Admin Data Updated Successfully');
+            return redirect()->route('admin.show.profile', $clientadmin)->with('success', 'Your Profile Updated Successfully');
         } catch (\Exception $e) {
             DB::rollBack();
             \Log::error($e->getMessage());
