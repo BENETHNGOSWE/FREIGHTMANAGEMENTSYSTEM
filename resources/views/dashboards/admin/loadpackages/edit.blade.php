@@ -107,9 +107,9 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="load_weight_kg">Load Kg</label>
-                        <input type="number" value="{{ $loadpackage->load_weight_kg }}" name="load_weight_kg" class="form-control" placeholder="Load Kg">
-                        @error('load_weight_kg') <div class="text-danger">{{ $message }}</div> @enderror
+                        <label for="load_weight_unit">Load Kg</label>
+                        <input type="number" value="{{ $loadpackage->load_weight_unit }}" name="load_weight_unit" class="form-control" placeholder="Load Kg">
+                        @error('load_weight_unit') <div class="text-danger">{{ $message }}</div> @enderror
                     </div>
                 </div>
                
@@ -119,10 +119,10 @@
                 <!-- Sixth row with two fields -->
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="comment_operator">Operator Comment</label>
-                        <textarea class="form-control" name="comment_operator" rows="3">{{ $loadpackage->comment_operator }}</textarea>
-                        {{-- <input type="text" value="{{ $loadpackage->comment_operator }}" name="comment_operator" class="form-control" placeholder="Operator Comment"> --}}
-                        @error('comment_operator') <div class="text-danger">{{ $message }}</div> @enderror
+                        <label for="load_weight_value">Operator Comment</label>
+                        <textarea class="form-control" name="load_weight_value" rows="3">{{ $loadpackage->load_weight_value }}</textarea>
+                        {{-- <input type="text" value="{{ $loadpackage->load_weight_value }}" name="load_weight_value" class="form-control" placeholder="Operator Comment"> --}}
+                        @error('load_weight_value') <div class="text-danger">{{ $message }}</div> @enderror
                     </div>
                 </div>
                 <div class="col-md-6">

@@ -65,7 +65,7 @@
                     <span class="nav-text">Message</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="#">
+                    <li><a href="{{ route('admin.message')}}">
                             <i class="fas fa-microscope"></i>
                             <span>Chat With Customer</span>
                         </a></li>

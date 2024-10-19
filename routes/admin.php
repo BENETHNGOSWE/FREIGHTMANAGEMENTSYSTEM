@@ -26,8 +26,8 @@ Route::prefix('/')
 
 
         // Message Manage Here
-        Route::post('/message', [App\Http\Controllers\Admin\MessageController::class, 'sendMessage' ])->name('sendmessage');
-        Route::get('/message-form', [App\Http\Controllers\Admin\MessageController::class, 'showSendMessageForm' ])->name('message');
+        Route::post('/message', [App\Http\Controllers\Admin\MessageController::class, 'sendMessage' ])->name('admin.sendmessage');
+        Route::get('/message-form', [App\Http\Controllers\Admin\MessageController::class, 'showSendMessageForm' ])->name('admin.message');
 
 
        

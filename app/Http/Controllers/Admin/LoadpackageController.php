@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Loadpackage;
 use App\Models\Loadpackagetype;
 use App\Models\Invoice;
+use App\Models\Customer;
+use App\Models\Client;
 use App\Models\InvoiceLoad;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -58,8 +60,8 @@ class LoadpackageController extends Controller
             'load_transport_date.*' => ['required', 'date'],
             'load_delivery_date.*' => ['required', 'date'],
             'load_status.*' => 'required|in:instock,onmovement,delivery,closed',
-            'comment_operator.*' => ['nullable', 'string', 'max:255'],
-            'load_weight_kg.*' => ['required', 'string', 'max:255'],
+            'load_weight_value.*' => ['required', 'numeric'],
+            'load_weight_unit.*' => ['required', 'in:0,1'],
         ]);
     }
 
@@ -86,8 +88,8 @@ class LoadpackageController extends Controller
     //             $load->load_transport_date = $validated['load_transport_date'][$index];
     //             $load->load_delivery_date = $validated['load_delivery_date'][$index];
     //             $load->load_status = $validated['load_status'][$index];
-    //             $load->comment_operator = $validated['comment_operator'][$index];
-    //             $load->load_weight_kg = $validated['load_weight_kg'][$index];
+    //             $load->load_weight_value = $validated['load_weight_value'][$index];
+    //             $load->load_weight_unit = $validated['load_weight_unit'][$index];
     //             $load->loadpackagetype_id = $validated['loadpackagetype_id'][$index];
 
     //             $load->save();
@@ -149,8 +151,8 @@ class LoadpackageController extends Controller
     //             $load->load_transport_date = $validated['load_transport_date'][$index];
     //             $load->load_delivery_date = $validated['load_delivery_date'][$index];
     //             $load->load_status = $validated['load_status'][$index];
-    //             $load->comment_operator = $validated['comment_operator'][$index];
-    //             $load->load_weight_kg = $validated['load_weight_kg'][$index];
+    //             $load->load_weight_value = $validated['load_weight_value'][$index];
+    //             $load->load_weight_unit = $validated['load_weight_unit'][$index];
     //             $load->loadpackagetype_id = $validated['loadpackagetype_id'][$index];
     //             $load->save();
 
@@ -187,11 +189,11 @@ class LoadpackageController extends Controller
     
             $customerId = $request->input('customer_id');
             $clientId = $this->fms_id;
+
+            $client = Client::find($clientId);
     
-            // Generate a new invoice number for each load
             $invoice_no = 'INV-' . date('Ymd') . '-' . strtoupper(Str::random(5));
     
-            // Create a new invoice every time
             $invoice = new Invoice();
             $invoice->invoice_no = $invoice_no;
             $invoice->prefix = 'LOAD';
@@ -200,10 +202,9 @@ class LoadpackageController extends Controller
             $invoice->total_amount = 0; 
             $invoice->total_balance = 0;
             $invoice->total_transportfee = 0;
-            $invoice->status = 0; // Incomplete status
+            $invoice->status = 0;
             $invoice->save();
     
-            // Loop through the validated load data to create load packages
             foreach ($validated['load_name'] as $index => $load_name) {
                 $load_no = 'LOAD-' . date('Ymd') . '-' . strtoupper(Str::random(5));
     
@@ -219,8 +220,8 @@ class LoadpackageController extends Controller
                 $load->load_transport_date = $validated['load_transport_date'][$index];
                 $load->load_delivery_date = $validated['load_delivery_date'][$index];
                 $load->load_status = $validated['load_status'][$index];
-                $load->comment_operator = $validated['comment_operator'][$index];
-                $load->load_weight_kg = $validated['load_weight_kg'][$index];
+                $load->load_weight_value = $validated['load_weight_value'][$index];
+                $load->load_weight_unit = $validated['load_weight_unit'][$index];
                 $load->loadpackagetype_id = $validated['loadpackagetype_id'][$index];
                 $load->save();
     
@@ -237,11 +238,19 @@ class LoadpackageController extends Controller
                 $invoice->total_transportfee += $load->load_transportfee;
                 $invoice->total_balance += $load->load_price;
             }
-    
-            // Save the updated invoice totals
             $invoice->save();
     
             DB::commit();
+
+            $customer = Customer::find($customerId);
+           
+            $message = "Hello {$customer->customer_firstname} {$customer->customer_lastname}, Tunapenda Kukujulisha kuwa mzigo wako kutoka CHINA- GUANGZHOU Tracking No - {$load->load_no} umepokelewa kwenye warehouse yetu CHINA- GUANGZHOU.Mzigo utaondoka haraka iwezekanavyo. Ahsante kwa Kusafirisha na {$client->client_name}";
+            $response = sendMessage($customer->phone, $message);
+           
+            if (!$response['success']) {
+                return redirect()->back()->with('error', $response['message']);
+            }
+            
         } catch (\Throwable $th) {
             DB::rollback();
             \Log::error($th->getMessage() . ' ' . $th->getTraceAsString());
@@ -281,8 +290,8 @@ class LoadpackageController extends Controller
             'load_transport_date' => ['required', 'date'],
             'load_delivery_date' => ['required', 'date'],
             'load_status' => ['required', 'string', 'max:255'],
-            'comment_operator' => ['nullable', 'string', 'max:255'],
-            'load_weight_kg' => ['required', 'string', 'max:255'],
+            'load_weight_value' => ['nullable', 'string', 'max:255'],
+            'load_weight_unit' => ['required', 'string', 'max:255'],
         ]);
 
         $loadpackage->update($validate);

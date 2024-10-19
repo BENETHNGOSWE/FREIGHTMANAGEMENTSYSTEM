@@ -11,8 +11,7 @@ function trimValues(array $data): array
 
 function upload_image($image, $filename = null, $width = null, $height = null)
 {
-
-    $filename = $filename ? $filename : time().'.'.'jpg';
+    $filename = $filename ? $filename : time() . '.' . 'jpg';
 
     $image_resize = Image::make($image->getRealPath());
 
@@ -26,11 +25,11 @@ function upload_image($image, $filename = null, $width = null, $height = null)
                 $constraint->aspectRatio();
             });
         }
-    } elseif($height == null) {
+    } elseif ($height == null) {
         $image_resize->resize($width, null, function ($constraint) {
             $constraint->aspectRatio();
         });
-    } elseif($width == null) {
+    } elseif ($width == null) {
         $image_resize->resize(null, $height, function ($constraint) {
             $constraint->aspectRatio();
         });
@@ -39,28 +38,29 @@ function upload_image($image, $filename = null, $width = null, $height = null)
     }
 
     $path = public_path('storage/uploads/');
-    if (! File::isDirectory($path)) {
+    if (!File::isDirectory($path)) {
         File::makeDirectory($path, 0755, true);
     }
 
     $quality = 80;
     do {
         $image_resize->encode('jpg', $quality);
-        $image_resize->save($path.$filename);
+        $image_resize->save($path . $filename);
         clearstatcache(); // Clear cache to get actual file size
 
-        if (file_exists($path.$filename) && is_readable($path.$filename)) {
-            $fileSize = filesize($path.$filename) / 1024;
+        if (file_exists($path . $filename) && is_readable($path . $filename)) {
+            $fileSize = filesize($path . $filename) / 1024;
 
             if ($fileSize > 100) {
-                if ($quality - 10 < 0) { // Ensure quality doesn't go below 0
+                if ($quality - 10 < 0) {
+                    // Ensure quality doesn't go below 0
                     break;
                 }
                 try {
                     $quality -= 10;
                     $image_resize->encode('jpg', $quality);
                 } catch (InvalidArgumentException $e) {
-                    echo 'Error: '.$e->getMessage();
+                    echo 'Error: ' . $e->getMessage();
                 }
             }
         } else {
@@ -72,9 +72,9 @@ function upload_image($image, $filename = null, $width = null, $height = null)
 
 function upload_file($file, $filename = null)
 {
-    $filename = $filename ? $filename : time().'.'.$file->getClientOriginalExtension();
+    $filename = $filename ? $filename : time() . '.' . $file->getClientOriginalExtension();
     $path = public_path('storage/uploads/');
-    if (! File::isDirectory($path)) {
+    if (!File::isDirectory($path)) {
         File::makeDirectory($path, 0755, true);
     }
     $file->move($path, $filename);
@@ -85,8 +85,8 @@ function upload_file($file, $filename = null)
 function delete_file($filename)
 {
     $path = public_path('storage/uploads/');
-    if (File::exists($path.$filename) && ! File::isDirectory($path.$filename)) {
-        File::delete($path.$filename);
+    if (File::exists($path . $filename) && !File::isDirectory($path . $filename)) {
+        File::delete($path . $filename);
     }
 }
 
@@ -104,7 +104,7 @@ function generateInvoicePrefix()
     for ($i = 0; $i < 3; $i++) {
         $mixedPart .= $characters[rand(0, strlen($characters) - 1)];
     }
-    $prefix = 'HMS'.$numericPart.$capitalLetters.$mixedPart;
+    $prefix = 'HMS' . $numericPart . $capitalLetters . $mixedPart;
 
     return $prefix;
 }
@@ -122,34 +122,36 @@ function return_status_badge($status)
     return $badge;
 }
 
-function user_status($status){
+function user_status($status)
+{
     match ($status) {
-        '0' => $badge = '<span class="badge badge-rounded badge-secondary" >Disabled</span>',
-        '1' => $badge = '<span class="badge badge-rounded badge-success" >Active</span>',
-        '2' => $badge = '<span class="badge badge-rounded badge-primary" >leave</span>',
-        '3' => $badge = '<span class="badge badge-rounded badge-warning" >Sick</span>',
-        default => $badge = '<span class="badge badge-rounded badge-info" >Normal</span>',
+        '0' => ($badge = '<span class="badge badge-rounded badge-secondary" >Disabled</span>'),
+        '1' => ($badge = '<span class="badge badge-rounded badge-success" >Active</span>'),
+        '2' => ($badge = '<span class="badge badge-rounded badge-primary" >leave</span>'),
+        '3' => ($badge = '<span class="badge badge-rounded badge-warning" >Sick</span>'),
+        default => ($badge = '<span class="badge badge-rounded badge-info" >Normal</span>'),
     };
     return $badge;
 }
 
-function leave_status($status){
+function leave_status($status)
+{
     match ($status) {
-        '0' => $badge = '<span class="badge badge-rounded badge-warning" >new request</span>',
-        '1' => $badge = '<span class="badge badge-rounded badge-success" >accepted</span>',
-        '2' => $badge = '<span class="badge badge-rounded badge-danger" >Rejected</span>',
-        '3' => $badge = '<span class="badge badge-rounded badge-warning" >Sick</span>',
-        default => $badge = '<span class="badge badge-rounded badge-warning" >pending</span>',
+        '0' => ($badge = '<span class="badge badge-rounded badge-warning" >new request</span>'),
+        '1' => ($badge = '<span class="badge badge-rounded badge-success" >accepted</span>'),
+        '2' => ($badge = '<span class="badge badge-rounded badge-danger" >Rejected</span>'),
+        '3' => ($badge = '<span class="badge badge-rounded badge-warning" >Sick</span>'),
+        default => ($badge = '<span class="badge badge-rounded badge-warning" >pending</span>'),
     };
     return $badge;
 }
 
-function sick_status($status){
-    
+function sick_status($status)
+{
     match ($status) {
-        true => $badge = '<span class="badge badge-rounded badge-warning" >SICK</span>',
-        false => $badge = '<span class="badge badge-rounded badge-success" >RECOVERED</span>',
-        default => $badge = '<span class="badge badge-rounded badge-warning" >SICK</span>',
+        true => ($badge = '<span class="badge badge-rounded badge-warning" >SICK</span>'),
+        false => ($badge = '<span class="badge badge-rounded badge-success" >RECOVERED</span>'),
+        default => ($badge = '<span class="badge badge-rounded badge-warning" >SICK</span>'),
     };
     return $badge;
 }
@@ -201,14 +203,13 @@ function createStaffidNumber($client_id)
         $staff_id = explode('-', $staff_id);
         $staff_id = $staff_id[1];
         $staff_id = $staff_id + 1;
-        $staff_id = 'STF-'.$staff_id;
+        $staff_id = 'STF-' . $staff_id;
     } else {
         $staff_id = 'STF-1';
     }
 
     return $staff_id;
 }
-
 
 function createcustomeridNumber($client_id)
 {
@@ -218,15 +219,13 @@ function createcustomeridNumber($client_id)
         $customer_id = explode('-', $customer_id);
         $customer_id = $customer_id[1];
         $customer_id = $customer_id + 1;
-        $customer_id = 'CST-'.$customer_id;
+        $customer_id = 'CST-' . $customer_id;
     } else {
         $customer_id = 'CST-1';
     }
 
     return $customer_id;
 }
-
-
 
 function createLoadidNumber($client_id)
 {
@@ -236,7 +235,7 @@ function createLoadidNumber($client_id)
         $load_id = explode('-', $load_id);
         $load_id = $load_id[1];
         $load_id = $load_id + 1;
-        $load_id = 'DOC-'.$load_id;
+        $load_id = 'DOC-' . $load_id;
     } else {
         $load_id = 'DOC-1';
     }
@@ -252,7 +251,7 @@ function createPatientNumber($hospital_id)
         $patient_id = explode('-', $patient_id);
         $patient_id = $patient_id[1];
         $patient_id = $patient_id + 1;
-        $patient_id = 'PAT-'.$patient_id;
+        $patient_id = 'PAT-' . $patient_id;
     } else {
         $patient_id = 'PAT-1';
     }
@@ -260,19 +259,19 @@ function createPatientNumber($hospital_id)
     return $patient_id;
 }
 
-function createRandomEmail($hospital_id,$name){
-    $db_emails = \App\Models\User::where('hospital_id',$hospital_id)->pluck('email')->toArray();
+function createRandomEmail($hospital_id, $name)
+{
+    $db_emails = \App\Models\User::where('hospital_id', $hospital_id)->pluck('email')->toArray();
     do {
-        $new_email = strtolower($name).$hospital_id.rand(10,99).'@hms.com';
+        $new_email = strtolower($name) . $hospital_id . rand(10, 99) . '@hms.com';
     } while (in_array($new_email, $db_emails));
     return $new_email;
-    
 }
 
 function check_if_client_has_subscription($hospital_id)
 {
     $subscription = \App\Models\Subscription::where('hospital_id', $hospital_id)->where('expire_date', '>=', date('Y-m-d'))->latest()->first();
-    
+
     if ($subscription) {
         return true;
     } else {
@@ -282,22 +281,25 @@ function check_if_client_has_subscription($hospital_id)
 
 function check_if_client_validate_token($hospital_id)
 {
-    $token = \App\Models\SubscriptionToken::where('hospital_id',$hospital_id)->latest()->first();
-    if(!empty($token)){
-        $validated = \App\Models\SubscriptionToken::where('hospital_id', $hospital_id)->where('token_', $token->token_)->where('active', 0)->latest()->first();
-    if ($validated) {
-        return true;
+    $token = \App\Models\SubscriptionToken::where('hospital_id', $hospital_id)->latest()->first();
+    if (!empty($token)) {
+        $validated = \App\Models\SubscriptionToken::where('hospital_id', $hospital_id)
+            ->where('token_', $token->token_)
+            ->where('active', 0)
+            ->latest()
+            ->first();
+        if ($validated) {
+            return true;
+        } else {
+            return false;
+        }
     } else {
         return false;
     }
-
-    }else{
-        return false;
-    }
-   
 }
 
-function sendSMS($user_id,$sms,$h_id=null){
+function sendSMS($user_id, $sms, $h_id = null)
+{
     return Message::create([
         'user_id' => $user_id,
         'message' => $sms,
@@ -306,11 +308,13 @@ function sendSMS($user_id,$sms,$h_id=null){
     ]);
 }
 
-function patient_status($status){
+function patient_status($status)
+{
     //return badge to to show patient status
 }
 use Carbon\Carbon;
-function date_time($data){
+function date_time($data)
+{
     $carbonDate = Carbon::parse($data);
     $formattedDate = $carbonDate->format('d/m/Y, h:i A');
     return $formattedDate;
@@ -330,3 +334,65 @@ function getStatusLabel($status)
     }
 }
 
+function sendMessage($phoneNumbers, $message)
+{
+    // Ensure the phone numbers are in array form
+    if (!is_array($phoneNumbers)) {
+        $phoneNumbers = explode(',', $phoneNumbers);
+    }
+
+    foreach ($phoneNumbers as $phoneNumber) {
+        // Trim the phone number to remove extra spaces
+        $phoneNumber = trim($phoneNumber);
+
+        // Prepare data for sending the message
+        $postData = [
+            'from' => 'KODA TECH',
+            'to' => $phoneNumber,
+            'text' => $message,
+            'reference' => 'KODA TECH',
+        ];
+
+        // Initialize CURL and send the request
+        $curl = curl_init();
+        curl_setopt_array($curl, [
+            CURLOPT_URL => 'https://messaging-service.co.tz/api/sms/v1/text/single',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => json_encode($postData),
+            CURLOPT_HTTPHEADER => ['Authorization:Basic ' . base64_encode(env('SMS_API_KEY') . ':' . env('SMS_SECRET_KEY')), 'Content-Type: application/json', 'Accept: application/json'],
+            CURLOPT_SSL_VERIFYPEER => false,
+        ]);
+
+        // Get the response and close CURL
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+        // Decode the response
+        $response = json_decode($response, true);
+
+        // Handle the response
+        if (isset($response['success']) && !$response['success']) {
+            return [
+                'success' => false,
+                'message' => 'Failed to send message to ' . $phoneNumber,
+            ];
+        } elseif ($response['messages'][0]['status']['groupName'] != 'PENDING') {
+            return [
+                'success' => false,
+                'message' => 'Failed to send message to ' . $phoneNumber,
+            ];
+        }
+    }
+
+    // Return success if all messages are sent
+    return [
+        'success' => true,
+        'message' => 'Messages sent successfully!',
+    ];
+}

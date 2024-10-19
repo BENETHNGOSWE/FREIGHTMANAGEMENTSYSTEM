@@ -127,11 +127,11 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Comments</td>
-                                                                    <td>{{ $load->comment_operator ?? '-' }}</td>
+                                                                    <td>{{ $load->load_weight_value ?? '-' }}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Weight (Kg)</td>
-                                                                    <td>{{ $load->load_weight_kg ?? '-' }}</td>
+                                                                    <td>{{ $load->load_weight_unit ?? '-' }}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Description</td>

@@ -24,11 +24,11 @@
     @elseif(session('error'))
         <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
-    <form action="{{ route('sendmessage') }}" method="post">
+    <form action="{{ route('admin.sendmessage') }}" method="post">
         @csrf
         <div class="form-group">
-            <label for="phone_number">Phone Number:</label>
-            <input type="text" id="phone_number" name="phone_number" class="form-control" required>
+            <label for="phone_number">Phone Number(s) (Separate with commas):</label>
+            <input type="text" id="phone_number" name="phone_number" class="form-control" placeholder="Enter multiple phone numbers separated by commas" required>
         </div>
         <div class="form-group">
             <label for="message">Message:</label>
