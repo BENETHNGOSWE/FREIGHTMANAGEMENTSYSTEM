@@ -19,6 +19,17 @@
                     <li><a href="#">Staff Types</a></li>
                 </ul>
             </li>
+
+            <li>
+                <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    <i class="fa fa-building"></i>
+                    <span class="nav-text">Containers</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('admin.create.container') }}">+Add new</a></li>
+                    <li><a href="{{ route('admin.list.container') }}">List Containers </a></li>
+                </ul>
+            </li>
            
             <li>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">

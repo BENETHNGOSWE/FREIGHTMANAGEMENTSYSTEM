@@ -107,11 +107,18 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="load_weight_unit">Load Kg</label>
-                        <input type="number" value="{{ $loadpackage->load_weight_unit }}" name="load_weight_unit" class="form-control" placeholder="Load Kg">
-                        @error('load_weight_unit') <div class="text-danger">{{ $message }}</div> @enderror
+                        <label for="load_weight_unit">Unit</label>
+                        <select name="load_weight_unit" id="load_weight_unit" class="form-control" required>
+                            <option value="" disabled>Select Unit</option>
+                            <option value="0" {{ $loadpackage->load_weight_unit == '0' ? 'selected' : '' }}>CBM</option>
+                            <option value="1" {{ $loadpackage->load_weight_unit == '1' ? 'selected' : '' }}>KG</option>
+                        </select>
+                        @error('load_weight_unit') 
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
+                
                
             </div>
             

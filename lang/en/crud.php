@@ -112,6 +112,22 @@ return [
         ],
     ],
 
+
+    'containers' => [
+        'name' => 'Containers',
+        'index_title' => 'Containers List',
+        'new_title' => 'New Container',
+        'create_title' => 'Create Container',
+        'edit_title' => 'Edit Container',
+        'show_title' => 'Show Container',
+        'inputs' => [
+            'container_number' => 'Container Number',
+            'container_size' => 'Container Size',
+            'container_volume' => 'Container Volume',
+        ],
+    ],
+
+
     'customers' => [
         'name' => 'Customers',
         'index_title' => 'Customers List',

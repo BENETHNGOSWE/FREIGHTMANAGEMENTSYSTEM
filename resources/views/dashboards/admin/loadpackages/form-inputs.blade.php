@@ -57,17 +57,16 @@
         </x-inputs.select>
     </x-inputs.group>
     
-
-    <x-inputs.group class="col-sm-4">
-        <x-inputs.text name="load_weight_value[{{ $index }}]" label="Operator Comment" :value="old('load_weight_value.' . $index, $editing ? $load->load_weight_value : '')" maxlength="255" placeholder="Operator Comment" required></x-inputs.text>
-    </x-inputs.group>
-
     <x-inputs.group class="col-sm-4">
         <x-inputs.select name="load_weight_unit[{{ $index }}]" label="Unit" id="load_weight_unit_{{ $index }}" onchange="toggleWeightInputs({{ $index }})" required>
             <option value="" selected disabled>Select Unit</option>
             <option value="0" {{ old('load_weight_unit.' . $index, ($editing && $load->load_weight_unit == '0') ? 'selected' : '') }}>CBM</option>
             <option value="1" {{ old('load_weight_unit.' . $index, ($editing && $load->load_weight_unit == '1') ? 'selected' : '') }}>KG</option>
         </x-inputs.select>
+    </x-inputs.group>
+
+    <x-inputs.group class="col-sm-4">
+        <x-inputs.number name="load_weight_value[{{ $index }}]" label="Unit Value" :value="old('load_weight_value.' . $index, $editing ? $load->load_weight_value : '')" maxlength="255" placeholder="Enter Unit Value" required></x-inputs.number>
     </x-inputs.group>
 
     <div class="col-sm-4 mt-4">

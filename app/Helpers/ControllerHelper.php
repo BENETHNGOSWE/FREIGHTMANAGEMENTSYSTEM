@@ -336,16 +336,12 @@ function getStatusLabel($status)
 
 function sendMessage($phoneNumbers, $message)
 {
-    // Ensure the phone numbers are in array form
     if (!is_array($phoneNumbers)) {
         $phoneNumbers = explode(',', $phoneNumbers);
     }
 
     foreach ($phoneNumbers as $phoneNumber) {
-        // Trim the phone number to remove extra spaces
         $phoneNumber = trim($phoneNumber);
-
-        // Prepare data for sending the message
         $postData = [
             'from' => 'KODA TECH',
             'to' => $phoneNumber,
@@ -353,7 +349,6 @@ function sendMessage($phoneNumbers, $message)
             'reference' => 'KODA TECH',
         ];
 
-        // Initialize CURL and send the request
         $curl = curl_init();
         curl_setopt_array($curl, [
             CURLOPT_URL => 'https://messaging-service.co.tz/api/sms/v1/text/single',
@@ -369,14 +364,11 @@ function sendMessage($phoneNumbers, $message)
             CURLOPT_SSL_VERIFYPEER => false,
         ]);
 
-        // Get the response and close CURL
         $response = curl_exec($curl);
         curl_close($curl);
 
-        // Decode the response
         $response = json_decode($response, true);
 
-        // Handle the response
         if (isset($response['success']) && !$response['success']) {
             return [
                 'success' => false,
@@ -396,3 +388,59 @@ function sendMessage($phoneNumbers, $message)
         'message' => 'Messages sent successfully!',
     ];
 }
+
+// dynamic senderid changing function
+function sendMessagemultipesenderid($phoneNumbers, $message, $senderId)
+{
+    if (!is_array($phoneNumbers)) {
+        $phoneNumbers = explode(',', $phoneNumbers);
+    }
+
+    foreach ($phoneNumbers as $phoneNumber) {
+        $phoneNumber = trim($phoneNumber);
+        $postData = [
+            'from' => $senderId,
+            'to' => $phoneNumber,
+            'text' => $message,
+            'reference' => $senderId,
+        ];
+
+        $curl = curl_init();
+        curl_setopt_array($curl, [
+            CURLOPT_URL => 'https://messaging-service.co.tz/api/sms/v1/text/single',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => json_encode($postData),
+            CURLOPT_HTTPHEADER => ['Authorization:Basic ' . base64_encode(env('SMS_API_KEY') . ':' . env('SMS_SECRET_KEY')), 'Content-Type: application/json', 'Accept: application/json'],
+            CURLOPT_SSL_VERIFYPEER => false,
+        ]);
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+        $response = json_decode($response, true);
+
+        if (isset($response['success']) && !$response['success']) {
+            return [
+                'success' => false,
+                'message' => 'Failed to send message to ' . $phoneNumber,
+            ];
+        } elseif ($response['messages'][0]['status']['groupName'] != 'PENDING') {
+            return [
+                'success' => false,
+                'message' => 'Failed to send message to ' . $phoneNumber,
+            ];
+        }
+    }
+    // Return success if all messages are sent
+    return [
+        'success' => true,
+        'message' => 'Messages sent successfully!',
+    ];
+}
+

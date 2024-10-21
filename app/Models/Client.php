@@ -69,6 +69,11 @@ class Client extends Model
         return $this->hasMany(Branch::class);
     }
 
+    public function containers()
+    {
+        return $this->hasMany(Container::class);
+    }
+
     public function subscriptions()
     {
         return $this->hasMany(Subscription::class);

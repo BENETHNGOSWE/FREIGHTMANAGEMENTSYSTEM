@@ -16,7 +16,7 @@ class PermissionsSeeder extends Seeder
 
         $actions = ['list', 'view', 'create', 'update', 'delete'];
         $models = [
-            'banks', 'branches', 'clients', 'clientadmins', 'clientpayments',
+            'banks', 'branches', 'containers', 'clients', 'clientadmins', 'clientpayments',
             'clienttypes', 'countries', 'messages', 'modules', 'packages',
             'loadpackagetypes', 'loadpackages', 'staffs', 'stafftypes', 'paymenttypes', 'role',
             'subscriptions', 'subscriptioninvoices', 'subscriptiontokens', 'userroles',
