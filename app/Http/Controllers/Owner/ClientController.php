@@ -126,7 +126,7 @@ class ClientController extends Controller
                         'user_id' => $user->id,
                     ];
 
-                    $clientAdmin = new \App\Models\clientAdmin();
+                    $clientAdmin = new \App\Models\ClientAdmin();
                     $data = $clientAdmin->getFillable();
                     foreach ($data as $key => $value) {
                         $clientAdmin->$value = $adminData[$value];
