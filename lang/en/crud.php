@@ -337,6 +337,19 @@ return [
         ],
     ],
 
+    'unittypes' => [
+        'name' => 'Uni Types',
+        'index_title' => 'Unit Types List',
+        'new_title' => 'New Unit Type',
+        'create_title' => 'Create Unit Type',
+        'edit_title' => 'Edit Unit Type',
+        'show_title' => 'Show Unit Type',
+        'inputs' => [
+            'unittype_name' => 'Unit Type Name',
+            'unitytype_initial' => 'Unit Initial',
+        ],
+    ],
+
     'users' => [
         'name' => 'Users',
         'index_title' => 'Users List',

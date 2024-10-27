@@ -30,7 +30,7 @@
                     <li><a href="{{ route('admin.list.container') }}">List Containers </a></li>
                 </ul>
             </li>
-           
+
             <li>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                     <i class="fa fa-building"></i>
@@ -76,7 +76,7 @@
                     <span class="nav-text">Message</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{{ route('admin.message')}}">
+                    <li><a href="{{ route('admin.message') }}">
                             <i class="fas fa-microscope"></i>
                             <span>Chat With Customer</span>
                         </a></li>
@@ -109,80 +109,39 @@
                 </ul>
             </li>
 
-            {{-- <li>
-                <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                    <i class="fa-solid fa-database"></i>
-                    <span class="nav-text">Assets</span>
-                </a>
-
-                <ul aria-expanded="false">
-
-                    <li>
-
-                        <a href="#">
-                            <i class="fa-solid fa-list-ol"></i>
-
-                            ListAssets</a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="fas fa-suitcase"></i>
-                            Categories</a>
-                    </li>
-                    <li><a href="#">
-                            <i class="fas fa-tag"></i>
-                            Assets Types</a>
-                    </li>
-                    <li><a href="#">
-                            <i class="fas fa-clipboard"></i>
-                            Assignments</a></li>
-
-                    <li><a href="#">
-                            <i class="fas fa-clipboard"></i>
-                            Maintance</a></li>
-
-                    <li><a href="">
-                            <i class="fas fa-clipboard"></i>
-                            Maintanance Record</a></li>
-                </ul>
-
-
-
-
-
-
-
-
-            </li> --}}
-
             <li>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                     <i class="fas fa-building"></i>
                     <span class="nav-text">Manage Profile</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{{ route('list.clients')}}">
+                    <li><a href="{{ route('list.clients') }}">
                             <i class="fas fa-building"></i>
                             <span>Your Profile</span>
                         </a></li>
 
                 </ul>
             </li>
-            <li>
-                <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                    <i class="fa fa-building"></i>
-                    <span class="nav-text">Branches</span>
-                </a>
-                <ul aria-expanded="false">
-                    <li><a href="{{ route('admin.create.branch') }}">+Add new</a></li>
-                    <li><a href="{{ route('admin.list.branch') }}">List Branches </a></li>
-                </ul>
-            </li>
+
             <li>
                 <a class="has-arrow ai-icon" href="#" aria-expanded="false">
                     <i class="fa fa-cog"></i>
                     <span class="nav-text">Settings</span>
                 </a>
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('admin.list.branch') }}">
+                            <i class="fas fa-building"></i>
+                            <span>Branches</span>
+                        </a></li>
+
+                </ul>
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('admin.list.unittype') }}">
+                            <i class="fa-solid fa-location-arrow"></i>
+                            <span>Units</span>
+                        </a></li>
+
+                </ul>
             </li>
 
         </ul>

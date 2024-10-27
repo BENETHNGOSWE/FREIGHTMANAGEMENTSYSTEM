@@ -23,6 +23,7 @@ class Loadpackage extends Model
         'client_id',             
         'loadpackagetype_id',     
         'customer_id',            
+        'user_id',            
     ];
     
 
@@ -30,10 +31,20 @@ class Loadpackage extends Model
     {
         return $this->belongsTo(Client::class);
     }
+    
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function loadpackagetype()
     {
         return $this->belongsTo(Loadpackagetype::class);
+    }
+
+    public function unittype()
+    {
+        return $this->belongsTo(UnitType::class);
     }
 
     public function customer()

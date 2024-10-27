@@ -16,11 +16,11 @@ class PermissionsSeeder extends Seeder
 
         $actions = ['list', 'view', 'create', 'update', 'delete'];
         $models = [
-            'banks', 'branches', 'containers', 'clients', 'clientadmins', 'clientpayments',
-            'clienttypes', 'countries', 'messages', 'modules', 'packages',
-            'loadpackagetypes', 'loadpackages', 'staffs', 'stafftypes', 'paymenttypes', 'role',
-            'subscriptions', 'subscriptioninvoices', 'subscriptiontokens', 'userroles',
-            'roles', 'permissions', 'users', 'invoices', 'invoice_loads', 'customers'
+            'banks', 'branches', 'containers', 'clients', 'client_admins', 'clientpayments',
+            'client_types', 'countries', 'messages', 'modules', 'packages',
+            'loadpackagetypes', 'loadpackages', 'staffs', 'staff_types', 'paymenttypes', 'role',
+            'subscriptions', 'subscription_invoices', 'subscription_tokens', 'userroles',
+            'roles', 'permissions', 'users', 'unit_types', 'invoices', 'invoice_loads', 'customers'
         ];
 
 
@@ -31,7 +31,7 @@ class PermissionsSeeder extends Seeder
         }
 
         $manager = Role::create(['name' => 'manager']);
-        $manager->givePermissionTo(['view invoices']);
+        $manager->givePermissionTo(['view invoices', 'create loadpackages', 'update loadpackages', 'delete loadpackages', 'create loadpackagetypes', 'update loadpackagetypes', 'delete loadpackagetypes']);
 
         $allPermissions = Permission::all();
         $admin = Role::create(['name' => 'admin']);

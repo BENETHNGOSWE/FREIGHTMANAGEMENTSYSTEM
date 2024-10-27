@@ -41,4 +41,13 @@ Route::prefix('/')
         Route::put('container/update/{container}', [App\Http\Controllers\Admin\ContainerController::class, 'update'])->name('admin.update.container');
         Route::get('container/show/{container}', [App\Http\Controllers\Admin\ContainerController::class, 'show'])->name('admin.show.container');
         Route::delete('container/delete/{container}', [App\Http\Controllers\Admin\ContainerController::class, 'delete'])->name('admin.delete.container');
+
+        // Unity Type Manage Here
+        Route::get('unittype', [App\Http\Controllers\Admin\UnittypeController::class, 'index'])->name('admin.list.unittype');
+        Route::get('unittypecreate', [App\Http\Controllers\Admin\UnittypeController::class, 'create'])->name('admin.create.unittype');
+        Route::post('unittype/store', [App\Http\Controllers\Admin\UnittypeController::class, 'store'])->name('admin.store.unittype');
+        Route::get('unittype/edit/{unittype}', [App\Http\Controllers\Admin\UnittypeController::class, 'edit'])->name('admin.edit.unittype');
+        Route::put('unittype/update/{unittype}', [App\Http\Controllers\Admin\UnittypeController::class, 'update'])->name('admin.update.unittype');
+        Route::get('unittype/show/{unittype}', [App\Http\Controllers\Admin\UnittypeController::class, 'show'])->name('admin.show.unittype');
+        Route::delete('unittype/delete/{unittype}', [App\Http\Controllers\Admin\UnittypeController::class, 'delete'])->name('admin.delete.unittype');
     });

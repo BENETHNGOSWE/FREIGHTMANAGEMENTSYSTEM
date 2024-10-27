@@ -22,11 +22,12 @@ return new class extends Migration
             $table->string('load_delivery_date');
             $table->enum('load_status', ['instock', 'onmovement', 'delivery', 'closed'])->default('instock');
             $table->string('load_weight_value');
-            $table->enum('load_weight_unit', [0, 1]);
             $table->string('load_trucking_number')->nullable();
             $table->foreignId('client_id');
             $table->foreignId('customer_id');
             $table->foreignId('loadpackagetype_id');
+            $table->unsignedBigInteger('unittype_id');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
         });
     }

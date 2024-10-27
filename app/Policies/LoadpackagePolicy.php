@@ -19,7 +19,7 @@ class LoadpackagePolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Loadpackage $loadpackage): bool
+    public function view(User $user, Loadpackage $model): bool
     {
         return $user->hasPermissionTo('view loadpackages');
     }
@@ -35,7 +35,7 @@ class LoadpackagePolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Loadpackage $loadpackage): bool
+    public function update(User $user, Loadpackage $model): bool
     {
         return $user->hasPermissionTo('update loadpackages');
     }
@@ -43,7 +43,7 @@ class LoadpackagePolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Loadpackage $loadpackage): bool
+    public function delete(User $user, Loadpackage $model): bool
     {
         return $user->hasPermissionTo('delete loadpackages');
     }
@@ -51,7 +51,7 @@ class LoadpackagePolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Loadpackage $loadpackage): bool
+    public function restore(User $user, Loadpackage $model): bool
     {
         return false;
     }
@@ -59,7 +59,7 @@ class LoadpackagePolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Loadpackage $loadpackage): bool
+    public function forceDelete(User $user, Loadpackage $model): bool
     {
         return false;
     }

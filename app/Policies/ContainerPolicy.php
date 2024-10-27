@@ -19,7 +19,7 @@ class ContainerPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Container $container): bool
+    public function view(User $user, Container $model): bool
     {
         return $user->hasPermissionTo('view containers');
     }
@@ -35,7 +35,7 @@ class ContainerPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Container $container): bool
+    public function update(User $user, Container $model): bool
     {
         return $user->hasPermissionTo('update containers');
     }
@@ -43,7 +43,7 @@ class ContainerPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Container $container): bool
+    public function delete(User $user, Container $model): bool
     {
         return $user->hasPermissionTo('delete containers');
     }
@@ -51,7 +51,7 @@ class ContainerPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Container $container): bool
+    public function restore(User $user, Container $model): bool
     {
         return false;
     }
@@ -59,7 +59,7 @@ class ContainerPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Container $container): bool
+    public function forceDelete(User $user, Container $model): bool
     {
         return false;
     }

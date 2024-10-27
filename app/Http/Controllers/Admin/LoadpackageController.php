@@ -4,12 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Helpers\LoadPackageHelper;
 use App\Models\Loadpackage;
 use App\Models\Loadpackagetype;
 use App\Models\Invoice;
 use App\Models\Customer;
 use App\Models\Client;
 use App\Models\InvoiceLoad;
+use App\Models\UnitType;
+use App\Models\Staff;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -42,6 +45,7 @@ class LoadpackageController extends Controller
 
         $customer_id = $request->input('customer_id');
         $this->data['loadpackagetypes'] = Loadpackagetype::pluck('load_type_name', 'id');
+        $this->data['unittypes'] = UnitType::pluck('unittype_name', 'id');
         $this->data['customer_id'] = $customer_id;
 
         return view('dashboards.admin.loadpackages.create', $this->data);
@@ -61,123 +65,9 @@ class LoadpackageController extends Controller
             'load_delivery_date.*' => ['required', 'date'],
             'load_status.*' => 'required|in:instock,onmovement,delivery,closed',
             'load_weight_value.*' => ['required', 'numeric'],
-            'load_weight_unit.*' => ['required', 'in:0,1'],
+            'unittype_id.*' => ['required', 'max:255', 'exists:unit_types,id'],
         ]);
     }
-
-    // public function store(Request $request)
-    // {
-    //     $this->authorize('create', Loadpackage::class);
-    //     $validated = $this->validate_loadpackage($request);
-
-    //     try {
-    //         DB::beginTransaction();
-
-    //         foreach ($validated['load_name'] as $index => $load_name) {
-    //             $load_no = 'LOAD-' . date('Ymd') . '-' . strtoupper(Str::random(5));
-
-    //             $load = new Loadpackage();
-    //             $load->client_id = $this->fms_id;
-    //             $load->customer_id = $request->input('customer_id');
-    //             $load->load_no = $load_no;
-    //             $load->load_name = $validated['load_name'][$index];
-    //             $load->load_trucking_number = $validated['load_trucking_number'][$index];
-    //             $load->load_description = $validated['load_description'][$index];
-    //             $load->load_price = $validated['load_price'][$index];
-    //             $load->load_transportfee = $validated['load_transportfee'][$index];
-    //             $load->load_transport_date = $validated['load_transport_date'][$index];
-    //             $load->load_delivery_date = $validated['load_delivery_date'][$index];
-    //             $load->load_status = $validated['load_status'][$index];
-    //             $load->load_weight_value = $validated['load_weight_value'][$index];
-    //             $load->load_weight_unit = $validated['load_weight_unit'][$index];
-    //             $load->loadpackagetype_id = $validated['loadpackagetype_id'][$index];
-
-    //             $load->save();
-    //         }
-
-    //         DB::commit();
-    //     } catch (\Throwable $th) {
-    //         DB::rollback();
-    //         \Log::error($th->getMessage() . ' ' . $th->getTraceAsString());
-    //         return redirect()->back()->with('error', $th->getMessage());
-    //     }
-    //     return redirect()->route('admin.list.loadpackage')->with('success', 'Load packages added successfully');
-    // }
-    
-    //invoice automatic generation 
-    // public function store(Request $request)
-    // {
-    //     $this->authorize('create', Loadpackage::class);
-    //     $validated = $this->validate_loadpackage($request);
-
-    //     try {
-    //         DB::beginTransaction();
-
-    //         $customerId = $request->input('customer_id');
-    //         $clientId = $this->fms_id;
-
-    //         $invoice = Invoice::where('customer_id', $customerId)
-    //             ->where('client_id', $clientId)
-    //             ->where('status', 0)
-    //             ->first();
-
-    //         if (!$invoice) {
-    //             $invoice_no = 'INV-' . date('Ymd') . '-' . strtoupper(Str::random(5));
-
-    //             $invoice = new Invoice();
-    //             $invoice->invoice_no = $invoice_no;
-    //             $invoice->prefix = 'LOAD';
-    //             $invoice->customer_id = $customerId;
-    //             $invoice->client_id = $clientId;
-    //             $invoice->total_amount = 0; 
-    //             $invoice->total_balance = 0;
-    //             $invoice->total_transportfee = 0;
-    //             $invoice->status = 0; 
-    //             $invoice->save();
-    //         }
-
-    //         foreach ($validated['load_name'] as $index => $load_name) {
-    //             $load_no = 'LOAD-' . date('Ymd') . '-' . strtoupper(Str::random(5));
-
-    //             $load = new Loadpackage();
-    //             $load->client_id = $clientId;
-    //             $load->customer_id = $customerId;
-    //             $load->load_no = $load_no;
-    //             $load->load_name = $validated['load_name'][$index];
-    //             $load->load_trucking_number = $validated['load_trucking_number'][$index];
-    //             $load->load_description = $validated['load_description'][$index];
-    //             $load->load_price = $validated['load_price'][$index];
-    //             $load->load_transportfee = $validated['load_transportfee'][$index];
-    //             $load->load_transport_date = $validated['load_transport_date'][$index];
-    //             $load->load_delivery_date = $validated['load_delivery_date'][$index];
-    //             $load->load_status = $validated['load_status'][$index];
-    //             $load->load_weight_value = $validated['load_weight_value'][$index];
-    //             $load->load_weight_unit = $validated['load_weight_unit'][$index];
-    //             $load->loadpackagetype_id = $validated['loadpackagetype_id'][$index];
-    //             $load->save();
-
-    //             InvoiceLoad::create([
-    //                 'loadpackage_id' => $load->id,
-    //                 'invoice_id' => $invoice->id,
-    //                 'client_id' => $clientId,
-    //                 'load_price' => $load->load_price,
-    //             ]);
-    //             $invoice->total_amount += $load->load_price;
-    //             $invoice->total_transportfee += $load->load_transportfee;
-    //             $invoice->total_balance += $load->load_price;
-    //         }
-    //         $invoice->save();
-
-    //         DB::commit();
-    //     } catch (\Throwable $th) {
-    //         DB::rollback();
-    //         \Log::error($th->getMessage() . ' ' . $th->getTraceAsString());
-    //         return redirect()->back()->with('error', $th->getMessage());
-    //     }
-
-    //     return redirect()->route('admin.list.loadpackage')->with('success', 'Load packages added and invoice generated successfully');
-    // }
-    // *********************************
 
     public function store(Request $request)
     {
@@ -189,68 +79,28 @@ class LoadpackageController extends Controller
     
             $customerId = $request->input('customer_id');
             $clientId = $this->fms_id;
-
             $client = Client::find($clientId);
     
-            $invoice_no = 'INV-' . date('Ymd') . '-' . strtoupper(Str::random(5));
+           
+            $invoice = LoadPackageHelper::generateInvoice($customerId, $clientId);
     
-            $invoice = new Invoice();
-            $invoice->invoice_no = $invoice_no;
-            $invoice->prefix = 'LOAD';
-            $invoice->customer_id = $customerId;
-            $invoice->client_id = $clientId;
-            $invoice->total_amount = 0; 
-            $invoice->total_balance = 0;
-            $invoice->total_transportfee = 0;
-            $invoice->status = 0;
-            $invoice->save();
+           
+            $userId = auth()->user()->id;
+            $staff = Staff::where('user_id', $userId)->first();
+            $branchCode = $staff ? $staff->branch->branch_code : 'DEFAULT';
     
             foreach ($validated['load_name'] as $index => $load_name) {
-                $load_no = 'LOAD-' . date('Ymd') . '-' . strtoupper(Str::random(5));
-    
-                $load = new Loadpackage();
-                $load->client_id = $clientId;
-                $load->customer_id = $customerId;
-                $load->load_no = $load_no;
-                $load->load_name = $validated['load_name'][$index];
-                $load->load_trucking_number = $validated['load_trucking_number'][$index];
-                $load->load_description = $validated['load_description'][$index];
-                $load->load_price = $validated['load_price'][$index];
-                $load->load_transportfee = $validated['load_transportfee'][$index];
-                $load->load_transport_date = $validated['load_transport_date'][$index];
-                $load->load_delivery_date = $validated['load_delivery_date'][$index];
-                $load->load_status = $validated['load_status'][$index];
-                $load->load_weight_value = $validated['load_weight_value'][$index];
-                $load->load_weight_unit = $validated['load_weight_unit'][$index];
-                $load->loadpackagetype_id = $validated['loadpackagetype_id'][$index];
-                $load->save();
-    
-                // Link the load with the newly created invoice
-                InvoiceLoad::create([
-                    'loadpackage_id' => $load->id,
-                    'invoice_id' => $invoice->id,
-                    'client_id' => $clientId,
-                    'load_price' => $load->load_price,
-                ]);
-    
-                // Update the invoice totals
-                $invoice->total_amount += $load->load_price;
-                $invoice->total_transportfee += $load->load_transportfee;
-                $invoice->total_balance += $load->load_price;
+                $load = LoadPackageHelper::createLoad($validated, $index, $clientId, $customerId, $userId, $branchCode, $invoice->id);
+                LoadPackageHelper::updateInvoiceTotals($invoice, $load);
             }
-            $invoice->save();
     
             DB::commit();
-
-            $customer = Customer::find($customerId);
-           
-            $message = "Hello {$customer->customer_firstname} {$customer->customer_lastname}, Tunapenda Kukujulisha kuwa mzigo wako kutoka CHINA- GUANGZHOU Tracking No - {$load->load_no} umepokelewa kwenye warehouse yetu CHINA- GUANGZHOU.Mzigo utaondoka haraka iwezekanavyo. Ahsante kwa Kusafirisha na {$client->client_name}";
-            $response = sendMessage($customer->phone, $message);
-           
+            $response = LoadPackageHelper::sendCustomerNotification($customerId, $load->load_no, $client->client_name);
+    
             if (!$response['success']) {
                 return redirect()->back()->with('error', $response['message']);
             }
-            
+    
         } catch (\Throwable $th) {
             DB::rollback();
             \Log::error($th->getMessage() . ' ' . $th->getTraceAsString());
@@ -259,6 +109,7 @@ class LoadpackageController extends Controller
     
         return redirect()->route('admin.list.loadpackage')->with('success', 'Load packages added and invoice generated successfully');
     }
+    
 
     public function show(Request $request, Loadpackage $loadpackage): View
     {
@@ -327,3 +178,117 @@ class LoadpackageController extends Controller
         }
     }
 }
+
+// public function store(Request $request)
+// {
+//     $this->authorize('create', Loadpackage::class);
+//     $validated = $this->validate_loadpackage($request);
+
+//     try {
+//         DB::beginTransaction();
+
+//         foreach ($validated['load_name'] as $index => $load_name) {
+//             $load_no = 'LOAD-' . date('Ymd') . '-' . strtoupper(Str::random(5));
+
+//             $load = new Loadpackage();
+//             $load->client_id = $this->fms_id;
+//             $load->customer_id = $request->input('customer_id');
+//             $load->load_no = $load_no;
+//             $load->load_name = $validated['load_name'][$index];
+//             $load->load_trucking_number = $validated['load_trucking_number'][$index];
+//             $load->load_description = $validated['load_description'][$index];
+//             $load->load_price = $validated['load_price'][$index];
+//             $load->load_transportfee = $validated['load_transportfee'][$index];
+//             $load->load_transport_date = $validated['load_transport_date'][$index];
+//             $load->load_delivery_date = $validated['load_delivery_date'][$index];
+//             $load->load_status = $validated['load_status'][$index];
+//             $load->load_weight_value = $validated['load_weight_value'][$index];
+//             $load->load_weight_unit = $validated['load_weight_unit'][$index];
+//             $load->loadpackagetype_id = $validated['loadpackagetype_id'][$index];
+
+//             $load->save();
+//         }
+
+//         DB::commit();
+//     } catch (\Throwable $th) {
+//         DB::rollback();
+//         \Log::error($th->getMessage() . ' ' . $th->getTraceAsString());
+//         return redirect()->back()->with('error', $th->getMessage());
+//     }
+//     return redirect()->route('admin.list.loadpackage')->with('success', 'Load packages added successfully');
+// }
+
+//invoice automatic generation
+// public function store(Request $request)
+// {
+//     $this->authorize('create', Loadpackage::class);
+//     $validated = $this->validate_loadpackage($request);
+
+//     try {
+//         DB::beginTransaction();
+
+//         $customerId = $request->input('customer_id');
+//         $clientId = $this->fms_id;
+
+//         $invoice = Invoice::where('customer_id', $customerId)
+//             ->where('client_id', $clientId)
+//             ->where('status', 0)
+//             ->first();
+
+//         if (!$invoice) {
+//             $invoice_no = 'INV-' . date('Ymd') . '-' . strtoupper(Str::random(5));
+
+//             $invoice = new Invoice();
+//             $invoice->invoice_no = $invoice_no;
+//             $invoice->prefix = 'LOAD';
+//             $invoice->customer_id = $customerId;
+//             $invoice->client_id = $clientId;
+//             $invoice->total_amount = 0;
+//             $invoice->total_balance = 0;
+//             $invoice->total_transportfee = 0;
+//             $invoice->status = 0;
+//             $invoice->save();
+//         }
+
+//         foreach ($validated['load_name'] as $index => $load_name) {
+//             $load_no = 'LOAD-' . date('Ymd') . '-' . strtoupper(Str::random(5));
+
+//             $load = new Loadpackage();
+//             $load->client_id = $clientId;
+//             $load->customer_id = $customerId;
+//             $load->load_no = $load_no;
+//             $load->load_name = $validated['load_name'][$index];
+//             $load->load_trucking_number = $validated['load_trucking_number'][$index];
+//             $load->load_description = $validated['load_description'][$index];
+//             $load->load_price = $validated['load_price'][$index];
+//             $load->load_transportfee = $validated['load_transportfee'][$index];
+//             $load->load_transport_date = $validated['load_transport_date'][$index];
+//             $load->load_delivery_date = $validated['load_delivery_date'][$index];
+//             $load->load_status = $validated['load_status'][$index];
+//             $load->load_weight_value = $validated['load_weight_value'][$index];
+//             $load->load_weight_unit = $validated['load_weight_unit'][$index];
+//             $load->loadpackagetype_id = $validated['loadpackagetype_id'][$index];
+//             $load->save();
+
+//             InvoiceLoad::create([
+//                 'loadpackage_id' => $load->id,
+//                 'invoice_id' => $invoice->id,
+//                 'client_id' => $clientId,
+//                 'load_price' => $load->load_price,
+//             ]);
+//             $invoice->total_amount += $load->load_price;
+//             $invoice->total_transportfee += $load->load_transportfee;
+//             $invoice->total_balance += $load->load_price;
+//         }
+//         $invoice->save();
+
+//         DB::commit();
+//     } catch (\Throwable $th) {
+//         DB::rollback();
+//         \Log::error($th->getMessage() . ' ' . $th->getTraceAsString());
+//         return redirect()->back()->with('error', $th->getMessage());
+//     }
+
+//     return redirect()->route('admin.list.loadpackage')->with('success', 'Load packages added and invoice generated successfully');
+// }
+// *********************************

@@ -37,7 +37,8 @@
         },
 
         "files": [
-            "app/Helpers/ControllerHelper.php"
+            "app/Helpers/ControllerHelper.php",
+            "app/Helpers/LoadPackageHelper.php"
         ]
     },
     "autoload-dev": {
