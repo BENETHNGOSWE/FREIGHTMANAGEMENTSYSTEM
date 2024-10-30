@@ -21,10 +21,10 @@
             placeholder="Load Price" required></x-inputs.number>
     </x-inputs.group>
 
-    <x-inputs.group class="col-sm-4">
+    {{-- <x-inputs.group class="col-sm-4">
         <x-inputs.number name="load_transportfee[{{ $index }}]" label="Transport Fee" :value="old('load_transportfee.' . $index, $editing ? $load->load_transportfee : '')"
             maxlength="255" placeholder="Transport Fee" required></x-inputs.number>
-    </x-inputs.group>
+    </x-inputs.group> --}}
 
     <x-inputs.group class="col-sm-4">
         <x-inputs.date name="load_transport_date[{{ $index }}]" label="Transport Date" :value="old('load_transport_date.' . $index, $editing ? $load->load_transport_date : '')"

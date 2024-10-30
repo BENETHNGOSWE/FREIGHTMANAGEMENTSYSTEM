@@ -13,7 +13,7 @@ class Loadpackage extends Model
         'load_description',
         'load_name',
         'load_price',             
-        'load_transportfee',      
+        // 'load_transportfee',      
         'load_transport_date',    
         'load_delivery_date',    
         'load_status',           

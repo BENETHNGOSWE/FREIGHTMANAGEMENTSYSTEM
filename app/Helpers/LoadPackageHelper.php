@@ -42,7 +42,6 @@ class LoadPackageHelper
         $load->load_trucking_number = $validatedData['load_trucking_number'][$index];
         $load->load_description = $validatedData['load_description'][$index];
         $load->load_price = $validatedData['load_price'][$index];
-        $load->load_transportfee = $validatedData['load_transportfee'][$index];
         $load->load_transport_date = $validatedData['load_transport_date'][$index];
         $load->load_delivery_date = $validatedData['load_delivery_date'][$index];
         $load->load_status = $validatedData['load_status'][$index];
@@ -68,10 +67,10 @@ class LoadPackageHelper
         $invoice->save();
     }
 
-    public static function sendCustomerNotification($customerId, $load_no, $clientName)
+    public static function sendCustomerNotification($customerId, $load_no, $clientName, $load_weight_value, $load_price)
     {
         $customer = Customer::find($customerId);
-        $message = "Hello {$customer->customer_firstname} {$customer->customer_lastname}, Tunapenda Kukujulisha kuwa mzigo wako kutoka CHINA- GUANGZHOU Tracking No - {$load_no} umepokelewa kwenye warehouse yetu CHINA- GUANGZHOU. Mzigo utaondoka haraka iwezekanavyo. Ahsante kwa Kusafirisha na {$clientName}";
+        $message = "Hello {$customer->customer_firstname} {$customer->customer_lastname}, Tunapenda Kukujulisha kuwa mzigo wako kutoka CHINA- GUANGZHOU Tracking No - {$load_no} umepokelewa kwenye warehouse yetu CHINA- GUANGZHOU. Mzigo utaondoka haraka iwezekanavyo.Mzigo wako una {$load_weight_value}, utalipia {$load_price} baada ya Mzigo kufika Ofisini.Ahsante kwa Kusafirisha na {$clientName}";
 
         return sendMessage($customer->phone, $message);
     }

@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('phone');
             $table->string('customer_document')->nullable();
             $table->text('customer_bio')->nullable();
-            $table->enum('customer_gender', ['male', 'female', 'others']);
+            // $table->enum('customer_gender', ['male', 'female', 'others']);
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('client_id');
             $table->timestamps();

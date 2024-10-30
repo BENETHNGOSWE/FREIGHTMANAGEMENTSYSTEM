@@ -22,7 +22,6 @@ class Customer extends Model
         'customer_document',
         'customer_bio',
         'department_id',
-        'customer_gender',
         'user_id',
         'client_id',
     ];

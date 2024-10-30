@@ -35,7 +35,12 @@ class LoadpackageController extends Controller
 
     public function index()
     {
-        $this->data['loadpackages'] = Loadpackage::where('client_id', $this->fms_id)->get();
+        if (auth()->user()->hasRole('admin')){
+            $this->data['loadpackages'] = Loadpackage::where('client_id', $this->fms_id)->get();
+        }else{
+            $this->data['loadpackages'] = auth()->user()->loadpackages;
+        }
+        
         return view('dashboards.admin.loadpackages.index', $this->data);
     }
 
@@ -54,13 +59,12 @@ class LoadpackageController extends Controller
     public function validate_loadpackage(Request $request)
     {
         return $request->validate([
-            // 'load_no.*' => ['required', 'string', 'max:255'],
             'load_name.*' => ['required', 'string', 'max:255'],
             'load_trucking_number.*' => ['required', 'string', 'max:255'],
             'load_description.*' => ['required', 'string', 'max:255'],
             'loadpackagetype_id.*' => ['required', 'integer', 'exists:loadpackagetypes,id'],
             'load_price.*' => ['required', 'string', 'max:255'],
-            'load_transportfee.*' => ['required', 'string', 'max:255'],
+            // 'load_transportfee.*' => ['required', 'string', 'max:255'],
             'load_transport_date.*' => ['required', 'date'],
             'load_delivery_date.*' => ['required', 'date'],
             'load_status.*' => 'required|in:instock,onmovement,delivery,closed',
@@ -81,26 +85,32 @@ class LoadpackageController extends Controller
             $clientId = $this->fms_id;
             $client = Client::find($clientId);
     
-           
             $invoice = LoadPackageHelper::generateInvoice($customerId, $clientId);
     
-           
             $userId = auth()->user()->id;
             $staff = Staff::where('user_id', $userId)->first();
-            $branchCode = $staff ? $staff->branch->branch_code : 'DEFAULT';
+            $branchCode = $staff ? $staff->branch->branch_code : 'ADMIN';
     
             foreach ($validated['load_name'] as $index => $load_name) {
+                // Create the load here and get the load details.
                 $load = LoadPackageHelper::createLoad($validated, $index, $clientId, $customerId, $userId, $branchCode, $invoice->id);
                 LoadPackageHelper::updateInvoiceTotals($invoice, $load);
+                
+                // Pass the required values to the sendCustomerNotification method.
+                $response = LoadPackageHelper::sendCustomerNotification(
+                    $customerId,
+                    $load->load_no,
+                    $client->client_name,
+                    $load->load_weight_value,
+                    $load->load_price 
+                );
+    
+                if (!$response['success']) {
+                    return redirect()->back()->with('error', $response['message']);
+                }
             }
     
             DB::commit();
-            $response = LoadPackageHelper::sendCustomerNotification($customerId, $load->load_no, $client->client_name);
-    
-            if (!$response['success']) {
-                return redirect()->back()->with('error', $response['message']);
-            }
-    
         } catch (\Throwable $th) {
             DB::rollback();
             \Log::error($th->getMessage() . ' ' . $th->getTraceAsString());
@@ -109,6 +119,7 @@ class LoadpackageController extends Controller
     
         return redirect()->route('admin.list.loadpackage')->with('success', 'Load packages added and invoice generated successfully');
     }
+    
     
 
     public function show(Request $request, Loadpackage $loadpackage): View
@@ -137,7 +148,7 @@ class LoadpackageController extends Controller
             'load_description' => ['required', 'string', 'max:255'],
             'loadpackagetype_id' => ['required', 'integer', 'exists:loadpackagetypes,id'],
             'load_price' => ['required', 'string', 'max:255'],
-            'load_transportfee' => ['required', 'string', 'max:255'],
+            // 'load_transportfee' => ['required', 'string', 'max:255'],
             'load_transport_date' => ['required', 'date'],
             'load_delivery_date' => ['required', 'date'],
             'load_status' => ['required', 'string', 'max:255'],
@@ -178,6 +189,15 @@ class LoadpackageController extends Controller
         }
     }
 }
+
+
+
+
+
+
+
+
+
 
 // public function store(Request $request)
 // {

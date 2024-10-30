@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('load_description')->nullable();
             $table->string('load_name');
             $table->string('load_price');
-            $table->string('load_transportfee');
+            // $table->string('load_transportfee');
             $table->string('load_transport_date');
             $table->string('load_delivery_date');
             $table->enum('load_status', ['instock', 'onmovement', 'delivery', 'closed'])->default('instock');

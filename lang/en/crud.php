@@ -177,7 +177,6 @@ return [
             'load_trucking_number' => 'Product Trucking Number',
             'load_price' => 'Product Price',
             'load_status' => 'Shipment Status',
-            'load_transportfee' => 'Transport Fee',
             'load_transport_date' => 'ETD',
             'load_delivery_date' => 'Delivery Date',
             'load_type_id' => 'Load Type',
