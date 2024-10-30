@@ -42,7 +42,7 @@ class Loadpackage extends Model
         return $this->belongsTo(Loadpackagetype::class);
     }
 
-    public function unittype()
+    public function unittypes()
     {
         return $this->belongsTo(UnitType::class);
     }

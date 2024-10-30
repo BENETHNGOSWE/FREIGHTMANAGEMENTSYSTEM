@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('container_number');
             $table->string('container_size');
             $table->string('container_volume');
+            $table->enum('container_status', ['portstation', 'onmovement', 'delivery', 'closed'])->default('portstation');
             $table->timestamps();
         });
     }
