@@ -20,7 +20,7 @@ return new class extends Migration
             // $table->string('load_transportfee');
             $table->string('load_transport_date');
             $table->string('load_delivery_date');
-            $table->enum('load_status', ['instock', 'onmovement', 'delivery', 'closed'])->default('instock');
+            // $table->enum('load_status', ['instock', 'onmovement', 'delivery', 'closed'])->default('instock');
             $table->string('load_weight_value');
             $table->string('load_trucking_number')->nullable();
             $table->foreignId('client_id');

@@ -9,7 +9,7 @@ class Container extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['client_id', 'container_number', 'container_size', 'container_volume'];
+    protected $fillable = ['client_id', 'container_number', 'container_size', 'container_volume', 'container_status'];
 
     protected $searchableFields = ['*'];
 
