@@ -64,7 +64,6 @@ class LoadpackageController extends Controller
             'load_description.*' => ['required', 'string', 'max:255'],
             'loadpackagetype_id.*' => ['required', 'integer', 'exists:loadpackagetypes,id'],
             'load_price.*' => ['required', 'string', 'max:255'],
-            // 'load_transportfee.*' => ['required', 'string', 'max:255'],
             'load_transport_date.*' => ['required', 'date'],
             'load_delivery_date.*' => ['required', 'date'],
             'load_status.*' => 'required|in:instock,onmovement,delivery,closed',
@@ -133,6 +132,7 @@ class LoadpackageController extends Controller
     {
         $this->authorize('update', $loadpackage);
         $this->data['loadpackage'] = $loadpackage;
+        $this->data['unittypes'] = UnitType::pluck('unittype_name', 'id');
         $this->data['loadpackagetypes'] = Loadpackagetype::pluck('load_type_name', 'id');
         return view('dashboards.admin.loadpackages.edit', $this->data);
     }
@@ -142,18 +142,16 @@ class LoadpackageController extends Controller
         $this->authorize('update', $loadpackage);
 
         $validate = $request->validate([
-            // 'load_no' => ['required', 'string', 'max:255'],
             'load_name' => ['required', 'string', 'max:255'],
             'load_trucking_number' => ['required', 'string', 'max:255'],
             'load_description' => ['required', 'string', 'max:255'],
             'loadpackagetype_id' => ['required', 'integer', 'exists:loadpackagetypes,id'],
             'load_price' => ['required', 'string', 'max:255'],
-            // 'load_transportfee' => ['required', 'string', 'max:255'],
             'load_transport_date' => ['required', 'date'],
             'load_delivery_date' => ['required', 'date'],
             'load_status' => ['required', 'string', 'max:255'],
             'load_weight_value' => ['nullable', 'string', 'max:255'],
-            'load_weight_unit' => ['required', 'string', 'max:255'],
+            'unittype_id' => ['required', 'max:255', 'exists:unit_types,id'],
         ]);
 
         $loadpackage->update($validate);

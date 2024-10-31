@@ -37,7 +37,7 @@
                 <!-- Second row with two fields -->
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="load_trucking_number">Load Location</label>
+                        <label for="load_trucking_number">Trucking No</label>
                         <input type="text" value="{{ $loadpackage->load_trucking_number }}" name="load_trucking_number" class="form-control" placeholder="Load Location">
                         @error('load_trucking_number') <div class="text-danger">{{ $message }}</div> @enderror
                     </div>
@@ -69,11 +69,12 @@
                         @error('load_price') <div class="text-danger">{{ $message }}</div> @enderror
                     </div>
                 </div>
+
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="load_transportfee">Transport Fee</label>
-                        <input type="text" value="{{ $loadpackage->load_transportfee }}" name="load_transportfee" class="form-control" placeholder="Transport Fee">
-                        @error('load_transportfee') <div class="text-danger">{{ $message }}</div> @enderror
+                        <label for="load_status">Status</label>
+                        <input type="text" value="{{ $loadpackage->load_status }}" name="load_status" class="form-control" placeholder="Status">
+                        @error('load_status') <div class="text-danger">{{ $message }}</div> @enderror
                     </div>
                 </div>
             </div>
@@ -98,41 +99,34 @@
             
             <div class="row">
                 <!-- Fifth row with two fields -->
+               
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="load_status">Status</label>
-                        <input type="text" value="{{ $loadpackage->load_status }}" name="load_status" class="form-control" placeholder="Status">
-                        @error('load_status') <div class="text-danger">{{ $message }}</div> @enderror
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="load_weight_unit">Unit</label>
-                        <select name="load_weight_unit" id="load_weight_unit" class="form-control" required>
-                            <option value="" disabled>Select Unit</option>
-                            <option value="0" {{ $loadpackage->load_weight_unit == '0' ? 'selected' : '' }}>CBM</option>
-                            <option value="1" {{ $loadpackage->load_weight_unit == '1' ? 'selected' : '' }}>KG</option>
+                        <label for="unittype_id">Unit Type</label>
+                        <select name="unittype_id" id="unittype_id" class="form-control" required>
+                            <option value="" disabled>Select Unit Type</option>
+                            @foreach ($unittypes as $value => $label)
+                                <option value="{{ $value }}" {{ $loadpackage->unittype_id == $value ? 'selected' : '' }}>{{ $label }}</option>
+                            @endforeach
                         </select>
-                        @error('load_weight_unit') 
+                        @error('unittype_id') 
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
                 </div>
                 
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="load_weight_value">Unit Value </label>
+                        <input type="text" value="{{ $loadpackage->load_weight_value }}" name="load_weight_value" class="form-control" placeholder="Status">
+                        @error('load_weight_value') <div class="text-danger">{{ $message }}</div> @enderror
+                    </div>
+                </div>
                
             </div>
             
             <div class="row">
-                <!-- Sixth row with two fields -->
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="load_weight_value">Operator Comment</label>
-                        <textarea class="form-control" name="load_weight_value" rows="3">{{ $loadpackage->load_weight_value }}</textarea>
-                        {{-- <input type="text" value="{{ $loadpackage->load_weight_value }}" name="load_weight_value" class="form-control" placeholder="Operator Comment"> --}}
-                        @error('load_weight_value') <div class="text-danger">{{ $message }}</div> @enderror
-                    </div>
-                </div>
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="form-group">
                         <label for="load_description">Description</label>
                         <textarea class="form-control" name="load_description" rows="3">{{ $loadpackage->load_description }}</textarea>

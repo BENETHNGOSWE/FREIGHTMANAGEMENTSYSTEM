@@ -12,8 +12,8 @@
     </x-inputs.group>
 
     <x-inputs.group class="col-sm-4">
-        <x-inputs.text name="load_description[{{ $index }}]" label="Description" :value="old('load_description.' . $index, $editing ? $load->load_description : '')"
-            maxlength="255" placeholder="Description" required></x-inputs.text>
+        <x-inputs.textarea name="load_description[{{ $index }}]" label="Description" :value="old('load_description.' . $index, $editing ? $load->load_description : '')"
+            maxlength="255" placeholder="Description" required></x-inputs.textarea>
     </x-inputs.group>
 
     <x-inputs.group class="col-sm-4">
