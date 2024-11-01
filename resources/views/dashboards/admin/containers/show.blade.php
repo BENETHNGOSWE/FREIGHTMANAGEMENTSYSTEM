@@ -4,8 +4,8 @@
 <div class="container-fluid">
     <div class="form-head align-items-center d-flex mb-sm-4 mb-3">
         <div class="me-auto">
-            <h2 class="text-black font-w600">Branches</h2>
-            <p class="mb-1">Dashboard / <span><a class="text-primary" href="{{ route('admin.list.branch') }}">Branch
+            <h2 class="text-black font-w600">containeres</h2>
+            <p class="mb-1">Dashboard / <span><a class="text-primary" href="{{ route('admin.list.container') }}">container
                         Show</a></span></p>
         </div>
 
@@ -13,7 +13,7 @@
     <div class="row">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title">{{ $branch->branch_name ?? '-' }}</h4>
+                <h4 class="card-title">{{ $container->container_name ?? '-' }}</h4>
             </div>
             <div class="card-body">
 
@@ -24,7 +24,7 @@
                         <ul class="nav nav-tabs" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <a class="nav-link active" data-bs-toggle="tab" href="#load_info" aria-selected="true"
-                                    role="tab"><i class="la la-home me-2"></i>Branch Details</a>
+                                    role="tab"><i class="la la-home me-2"></i>container Details</a>
                             </li>
                         </ul>
                         <div class="tab-content">
@@ -36,16 +36,22 @@
                                                 <table class="table table-bordered table-responsive-sm">
                                                     <thead>
                                                         <tr>
-                                                            <th style="width: 20%">Branch Name</th>
-                                                            <th>{{ $branch->branch_name ?? '-' }}</th>
+                                                            <th style="width: 20%">Container Number</th>
+                                                            <th>{{ $container->container_number ?? '-' }}</th>
                                                         </tr>
-
-
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                            <td>Branch Code</td>
-                                                            <td>{{ $branch->branch_code ?? '-' }}</td>
+                                                            <td>Container Size</td>
+                                                            <td>{{ $container->container_size ?? '-' }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Container Volume</td>
+                                                            <td>{{ $container->container_volume ?? '-' }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Container Status</td>
+                                                            <td>{!! return_status_badge($container->container_status) !!}</td>
                                                         </tr>
                                                         
                                                     </tbody>
@@ -60,12 +66,12 @@
                 </div>
 
                 <div class="mt-4 d-flex ">
-                    <a href="{{ route('admin.edit.branch', $branch) }}" class="btn btn-outline-success">
+                    <a href="{{ route('admin.edit.container', $container) }}" class="btn btn-outline-success">
                         <i class="icon fa fa-add"></i>
                         Edit
                     </a>
 
-                    @can('delete', $branch)
+                    @can('delete', $container)
                         <form class="delete_form mx-3" action="#"
                             method="POST">
                             @csrf

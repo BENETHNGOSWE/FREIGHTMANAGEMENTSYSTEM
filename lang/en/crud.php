@@ -124,6 +124,7 @@ return [
             'container_number' => 'Container Number',
             'container_size' => 'Container Size',
             'container_volume' => 'Container Volume',
+            'container_status' => 'Container Status',
         ],
     ],
 

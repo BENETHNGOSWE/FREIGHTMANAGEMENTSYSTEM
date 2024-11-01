@@ -17,10 +17,10 @@ class PermissionsSeeder extends Seeder
         $actions = ['list', 'view', 'create', 'update', 'delete'];
         $models = [
             'banks', 'branches', 'containers', 'clients', 'client_admins', 'clientpayments',
-            'client_types', 'countries', 'messages', 'modules', 'packages',
+            'client_types', 'countries', 'customers', 'messages', 'modules', 'packages',
             'loadpackagetypes', 'loadpackages', 'staffs', 'staff_types', 'paymenttypes', 'role',
             'subscriptions', 'subscription_invoices', 'subscription_tokens', 'userroles',
-            'roles', 'permissions', 'users', 'unit_types', 'invoices', 'invoice_loads', 'customers'
+            'roles', 'permissions', 'users', 'unit_types', 'invoices', 'invoice_loads'
         ];
 
 

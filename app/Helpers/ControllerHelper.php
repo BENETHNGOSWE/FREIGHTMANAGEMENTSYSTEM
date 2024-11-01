@@ -111,16 +111,26 @@ function generateInvoicePrefix()
 
 function return_status_badge($status)
 {
-    if ($status == 1) {
-        $badge = '<span class="badge badge-success" >Active</span>';
-    } elseif ($status == 2) {
-        $badge = '<span class="badge badge-danger" >Failed</span>';
-    } else {
-        $badge = '<span class="badge badge-warning" >Pending</span>';
+    switch ($status) {
+        case 'portstation':
+            $badge = '<span class="badge badge-warning">Port Station</span>';
+            break;
+        case 'onmovement':
+            $badge = '<span class="badge badge-info">On Movement</span>';
+            break;
+        case 'delivery':
+            $badge = '<span class="badge badge-success">Delivery</span>';
+            break;
+        case 'closed':
+            $badge = '<span class="badge badge-dark">Closed</span>';
+            break;
+        default:
+            $badge = '<span class="badge badge-warning">Pending</span>';
     }
 
     return $badge;
 }
+
 
 function user_status($status)
 {

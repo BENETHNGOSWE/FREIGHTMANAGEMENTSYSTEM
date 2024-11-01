@@ -45,6 +45,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Customer::class);
         $client_id = auth()->user()->client_id;
         $clients = Client::pluck('client_name', 'id');
         $users = User::pluck('id');
@@ -79,6 +80,7 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Customer::class);
         $validated = $this->validate($request, $this->rules());
     
         if ($validated) {
@@ -127,6 +129,7 @@ class CustomerController extends Controller
      */
     public function edit(Customer $customer)
     {
+        $this->authorize('update', $customer);
         $this->data['page_title'] = 'Edit Staff';
         $client_id = auth()->user()->client_id;
         $this->data['customer'] = $customer;
@@ -141,6 +144,7 @@ class CustomerController extends Controller
      */
     public function update(Request $request, Customer $customer)
     {
+        $this->authorize('update', $customer);
         $validated = $this->validate($request, $this->rules($customer->user->id));
     
         try {
@@ -166,7 +170,7 @@ class CustomerController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function delete(Customer $customer)
+    public function delete(Request $request, $customer)
     {
         $customer = Customer::where('id', $customer)
             ->where('client_id', $this->fms_id)

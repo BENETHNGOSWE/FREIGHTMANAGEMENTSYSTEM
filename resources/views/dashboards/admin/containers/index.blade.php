@@ -34,6 +34,9 @@
                                     <th class="text-left">
                                         @lang('crud.containers.inputs.container_volume')
                                     </th>
+                                    <th class="text-left">
+                                        @lang('crud.containers.inputs.container_status')
+                                    </th>
                                     <th class="text-center">
                                         @lang('crud.common.actions')
                                     </th>
@@ -48,6 +51,7 @@
                                         <td>{{ strtoupper($container->container_number) ?? '-' }}</td>
                                         <td>{{ strtoupper($container->container_size) ?? '-' }}</td>
                                         <td>{{ strtoupper($container->container_volume) ?? '-' }}</td>
+                                        <td>{!! return_status_badge($container->container_status) !!}</td>
                                         <td class="text-center" style="width: 134px;">
                                             <div role="group" aria-label="Row Actions" class="btn-group">
                                                 @can('update', $container)

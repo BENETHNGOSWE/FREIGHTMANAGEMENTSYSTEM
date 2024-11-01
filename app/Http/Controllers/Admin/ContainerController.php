@@ -35,7 +35,7 @@ class ContainerController extends Controller
 
     public function create()
     {
-        // $this->authorize('create', Container::class);
+        $this->authorize('create', Container::class);
         return view('dashboards.admin.containers.create', $this->data);
     }
 
@@ -51,7 +51,7 @@ class ContainerController extends Controller
 
     public function store(Request $request)
     {
-        // $this->authorize('create', container::class);
+        $this->authorize('create', Container::class);
         $validated = $this->validated_container($request);
         try {
             DB::beginTransaction();
@@ -93,7 +93,7 @@ class ContainerController extends Controller
         ]);
         $validated['client_id'] = $this->fms_id;
         $container->update($validated);
-        return redirect()->route('admin.list.container')->with('success', 'container Updated Successfuly');
+        return redirect()->route('admin.list.container')->with('success', 'Container Updated Successfuly');
     }
 
     public function delete(Request $request, $container)
@@ -103,6 +103,6 @@ class ContainerController extends Controller
             ->first();
         $this->authorize('delete', $container);
         $container->delete();
-        return redirect()->route('admin.list.container')->with('success', 'container Deleted Successfuly ');
+        return redirect()->route('admin.list.container')->with('success', 'Container Deleted Successfuly ');
     }
 }

@@ -4,13 +4,13 @@
 <div class="container-fluid">
     <div class="form-head align-items-center d-flex mb-sm-4 mb-3">
         <div class="me-auto">
-            <h2 class="text-black font-w600">Edit Branch</h2>
+            <h2 class="text-black font-w600">Edit container</h2>
             
         </div>
 
         <div>
            <p class="mb-1">Dashboard / <span><a class="text-primary"
-                        href="{{ route('admin.list.branch') }}">Edit Branch</a></span></p>
+                        href="{{ route('admin.list.container') }}">Edit container</a></span></p>
         </div>
     </div>
     <div class="card">
@@ -18,14 +18,14 @@
 
             <x-form
                 method="PUT"
-                action="{{ route('admin.update.branch', $branch ) }}"
+                action="{{ route('admin.update.container', $container ) }}"
                 class="mt-4"
             >
-            @include('dashboards.admin.branches.form-inputs')
+            @include('dashboards.admin.containers.form-inputs')
 
                 <div class="mt-4">
                     <a
-                        href="{{ route('admin.list.branch') }}"
+                        href="{{ route('admin.list.container') }}"
                         class="btn btn-light"
                     >
                         <i class="fa-solid fa-backward"></i>
@@ -33,7 +33,7 @@
                     </a>
 
                     <a
-                        href="{{ route('admin.create.branch') }}"
+                        href="{{ route('admin.create.container') }}"
                         class="btn btn-light"
                     >
                         <i class="icon ion-md-add text-primary"></i>
