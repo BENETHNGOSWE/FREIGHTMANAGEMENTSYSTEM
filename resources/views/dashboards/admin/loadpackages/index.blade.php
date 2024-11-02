@@ -22,11 +22,14 @@
                         <table id="labtypeTable" class="table table-borderless table-hover">
                             <thead>
                                 <tr>
-                                    <th>
-                                        s/n
-                                    </th>
                                     <th class="text-left" style="white-space: normal; word-wrap: break-word;">
                                         Receipt Date
+                                    </th>
+                                    <th class="text-left" style="white-space: normal; word-wrap: break-word;">
+                                        Customer Name
+                                    </th>
+                                    <th class="text-left" style="white-space: normal; word-wrap: break-word;">
+                                        Customer Mobile
                                     </th>
                                     <th class="text-left" style="white-space: normal; word-wrap: break-word;">
                                         @lang('crud.loadpackages.inputs.load_status')
@@ -38,8 +41,12 @@
                                         @lang('crud.loadpackages.inputs.load_name')
                                     </th>
                                     <th class="text-left" style="white-space: normal; word-wrap: break-word;">
-                                        Customer Mobile No.
+                                        Load Weight
                                     </th>
+                                    <th class="text-left" style="white-space: normal; word-wrap: break-word;">
+                                        Total Price($)
+                                    </th>
+                                   
                                     <th class="text-left" style="white-space: normal; word-wrap: break-word;">
                                         @lang('crud.loadpackages.inputs.load_description')
                                     </th>
@@ -49,6 +56,9 @@
                                     <th class="text-left" style="white-space: normal; word-wrap: break-word;">
                                         ETD
                                     </th>
+                                    <th class="text-left" style="white-space: normal; word-wrap: break-word;">
+                                        ETA
+                                    </th>
                                     <th class="text-center">
                                         @lang('crud.common.actions')
                                     </th>
@@ -57,20 +67,24 @@
                             <tbody>
                                 @forelse($loadpackages as $loadpackage)
                                     <tr>
-                                        <td>
-                                            {{ $loop->iteration }}
-                                        </td>
+
                                         <td>
                                             {{ $loadpackage->created_at->format('d M Y') }}
                                         </td>
-                                        <td>{{ strtoupper($loadpackage->load_status) ?? '-' }}</td>
+                                        <td>{{ strtoupper($loadpackage->customer->customer_firstname . ' ' . $loadpackage->customer->customer_lastname) ?? '-' }}
+                                        </td>
+                                        <td>{{ strtoupper($loadpackage->customer->phone) ?? '-' }}</td>
+                                        <td>{!! return_status_badge($loadpackage->container->container_status) !!}</td>
                                         <td style="color: green; font-weight:700;">
                                             {{ strtoupper($loadpackage->load_no) ?? '-' }}</td>
-                                        <td>{{ strtoupper($loadpackage->customer->customer_firstname) ?? '-' }}</td>
-                                        <td>{{ strtoupper($loadpackage->customer->phone) ?? '-' }}</td>
+                                        <td>{{ strtoupper($loadpackage->load_name) ?? '-' }}</td>
+                                        <td>{{ strtoupper($loadpackage->load_weight_value . ' ' . $loadpackage->unittype->unittype_name) ?? '-' }}</td>
+                                        <td>{{ strtoupper($loadpackage->load_price) ?? '-' }}</td>
+                                       
                                         <td>{{ strtoupper($loadpackage->load_description) ?? '-' }}</td>
                                         <td>{{ strtoupper($loadpackage->load_trucking_number) ?? '-' }}</td>
                                         <td>{{ \Carbon\Carbon::parse($loadpackage->load_transport_date)->format('d M Y') ?? '-' }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($loadpackage->load_delivery_date)->format('d M Y') ?? '-' }}</td>
                                         <td class="text-center" style="width: 134px;">
                                             <div role="group" aria-label="Row Actions" class="btn-group">
                                                 @can('update', $loadpackage)

@@ -18,5 +18,11 @@ class Container extends Model
         return $this->belongsTo(Client::class);
     }
 
+
+    public function loadpackages()
+    {
+        return $this->hasMany(Loadpackage::class, 'container_id');
+    }
+
     
 }

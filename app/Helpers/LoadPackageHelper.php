@@ -44,7 +44,7 @@ class LoadPackageHelper
         $load->load_price = $validatedData['load_price'][$index];
         $load->load_transport_date = $validatedData['load_transport_date'][$index];
         $load->load_delivery_date = $validatedData['load_delivery_date'][$index];
-        $load->load_status = $validatedData['load_status'][$index];
+        $load->container_id = $validatedData['container_id'][$index];
         $load->load_weight_value = $validatedData['load_weight_value'][$index];
         $load->loadpackagetype_id = $validatedData['loadpackagetype_id'][$index];
         $load->unittype_id = $validatedData['unittype_id'][$index];

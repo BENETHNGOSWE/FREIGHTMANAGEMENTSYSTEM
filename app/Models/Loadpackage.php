@@ -13,23 +13,27 @@ class Loadpackage extends Model
         'load_description',
         'load_name',
         'load_price',             
-        // 'load_transportfee',      
         'load_transport_date',    
-        'load_delivery_date',    
-        'load_status',           
-        'load_weight_value',       
-        'load_weight_unit',        
+        'load_delivery_date',         
+        'load_weight_value',         
         'load_trucking_number',          
         'client_id',             
         'loadpackagetype_id',     
-        'customer_id',            
-        'user_id',            
+        'customer_id',
+        'unittype_id',            
+        'user_id',
+        'container_id',            
     ];
     
 
     public function client()
     {
         return $this->belongsTo(Client::class);
+    }
+
+    public function container()
+    {
+        return $this->belongsTo(Container::class, 'container_id');
     }
     
     public function user()
@@ -42,9 +46,9 @@ class Loadpackage extends Model
         return $this->belongsTo(Loadpackagetype::class);
     }
 
-    public function unittypes()
+    public function unittype()
     {
-        return $this->belongsTo(UnitType::class);
+        return $this->belongsTo(UnitType::class, 'unittype_id');
     }
 
     public function customer()

@@ -20,6 +20,8 @@ return new class extends Migration {
             $table->foreign('unittype_id')->references('id')->on('unit_types')->onUpdate('CASCADE')->onDelete('CASCADE');
 
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
+
+            $table->foreign('container_id')->references('id')->on('containers')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
 
@@ -34,6 +36,7 @@ return new class extends Migration {
             $table->dropForeign(['loadpackagetype_id']);
             $table->dropForeign(['unittype_id']);
             $table->dropForeign(['user_id']);
+            $table->dropForeign(['container_id']);
         });
     }
 };

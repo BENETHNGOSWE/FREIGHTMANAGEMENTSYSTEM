@@ -18,8 +18,8 @@ class UnitType extends Model
         return $this->belongsTo(Client::class);
     }
 
-    public function loadpackage()
+    public function loadpackages()
     {
-        return $this->belongsTo(Loadpackage::class);
+        return $this->hasmany(Loadpackage::class, 'unittype_id');
     }
 }

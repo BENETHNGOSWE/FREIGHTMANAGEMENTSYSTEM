@@ -17,10 +17,8 @@ return new class extends Migration
             $table->string('load_description')->nullable();
             $table->string('load_name');
             $table->string('load_price');
-            // $table->string('load_transportfee');
             $table->string('load_transport_date');
             $table->string('load_delivery_date');
-            // $table->enum('load_status', ['instock', 'onmovement', 'delivery', 'closed'])->default('instock');
             $table->string('load_weight_value');
             $table->string('load_trucking_number')->nullable();
             $table->foreignId('client_id');
@@ -28,6 +26,7 @@ return new class extends Migration
             $table->foreignId('loadpackagetype_id');
             $table->unsignedBigInteger('unittype_id');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('container_id');
             $table->timestamps();
         });
     }

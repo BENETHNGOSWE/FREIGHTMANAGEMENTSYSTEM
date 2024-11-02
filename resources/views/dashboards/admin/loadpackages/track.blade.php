@@ -41,24 +41,16 @@
                             <td>{{ $loadpackage->load_trucking_number }}</td>
                         </tr>
                         <tr>
-                            <th>Transport Fee:</th>
-                            <td>{{ $loadpackage->load_transportfee }}</td>
+                            <th>Load Weight:</th>
+                            <td>{{ $loadpackage->load_weight_value .' '.$loadpackage->unittype->unittype_name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Load Price:</th>
+                            <td>$ {{ $loadpackage->load_price }}</td>
                         </tr>
                         <tr>
                             <th>Status:</th>
-                            <td>
-                                @if($loadpackage->load_status == 'instock')
-                                    <span style="background-color: red; color: white; padding: 4px; border-radius: 4px;">{{ $loadpackage->load_status }}</span>
-                                @elseif($loadpackage->load_status == 'onmovement')
-                                    <span style="background-color: green; color: white; padding: 4px; border-radius: 4px;">{{ $loadpackage->load_status }}</span>
-                                @elseif($loadpackage->load_status == 'delivery')
-                                    <span style="background-color: yellow; color: black; padding: 4px; border-radius: 4px;">{{ $loadpackage->load_status }}</span>
-                                @elseif($loadpackage->load_status == 'closed')
-                                    <span style="background-color: blue; color: white; padding: 4px; border-radius: 4px;">{{ $loadpackage->load_status }}</span>
-                                @else
-                                    <span>{{ $loadpackage->load_status }}</span> <!-- Default if status doesn't match -->
-                                @endif
-                            </td>
+                            <td>{!! return_status_badge($loadpackage->container->container_status) !!}</td>
                         </tr>
                         
                         

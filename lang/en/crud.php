@@ -172,10 +172,10 @@ return [
         'edit_title' => 'Edit Load',
         'show_title' => 'Show Load',
         'inputs' => [
-            'load_no' => 'Product No',
+            'load_no' => 'Product Number',
             'load_name' => 'Product Name',
-            'load_description' => 'Product Description',
-            'load_trucking_number' => 'Product Trucking Number',
+            'load_description' => 'Product  Description',
+            'load_trucking_number' => 'Product Trucking No',
             'load_price' => 'Product Price',
             'load_status' => 'Shipment Status',
             'load_transport_date' => 'ETD',
