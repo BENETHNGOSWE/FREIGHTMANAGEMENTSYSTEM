@@ -70,7 +70,7 @@ class LoadPackageHelper
     public static function sendCustomerNotification($customerId, $load_no, $clientName, $load_weight_value, $load_price)
     {
         $customer = Customer::find($customerId);
-        $message = "Hello {$customer->customer_firstname} {$customer->customer_lastname}, Tunapenda Kukujulisha kuwa mzigo wako kutoka CHINA- GUANGZHOU Tracking No - {$load_no} umepokelewa kwenye warehouse yetu CHINA- GUANGZHOU. Mzigo utaondoka haraka iwezekanavyo.Mzigo wako una {$load_weight_value}, utalipia {$load_price} baada ya Mzigo kufika Ofisini.Ahsante kwa Kusafirisha na {$clientName}";
+        $message = "Hello {$customer->customer_firstname} {$customer->customer_lastname}, Tunapenda Kukujulisha kuwa mzigo wako kutoka CHINA- GUANGZHOU Tracking No - {$load_no} umepokelewa kwenye warehouse yetu CHINA- GUANGZHOU. Mzigo utaondoka haraka iwezekanavyo.Mzigo wako una {$load_weight_value}Kg, utalipia TSH {$load_price} baada ya Mzigo kufika Ofisini.Ahsante kwa Kusafirisha na {$clientName}";
 
         return sendMessage($customer->phone, $message);
     }

@@ -25,8 +25,8 @@
                     <div class="card-body">
                         <div class="media align-items-center">
                             <div class="media-body mr-3">
-                                <h2 class="fs-34 text-black font-w600">2</h2>
-                                <span>Total Load in Stock</span>
+                                <h2 class="fs-34 text-black font-w600">{{ $containerCount }}</h2>
+                                <span>Total Containers</span>
                             </div>
                             <i class="fa fa-hospital-user text-primary" style="font-size:40px;"></i>
                         </div>
@@ -45,7 +45,7 @@
                         <div class="card-body">
                             <div class="media align-items-center">
                                 <div class="media-body mr-3">
-                                    <h2 class="fs-34 text-black font-w600">3</h2>
+                                    <h2 class="fs-34 text-black font-w600">{{$staffCount}}</h2>
                                     <span>Total Staff</span>
                                 </div>
                                 <i class="fa fa-house-medical text-primary" style="font-size:40px;"></i>

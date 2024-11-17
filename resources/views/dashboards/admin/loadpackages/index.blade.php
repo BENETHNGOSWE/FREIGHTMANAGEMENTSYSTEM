@@ -9,7 +9,7 @@
                 </p>
             </div>
             <div>
-                <a href="{{ route('admin.create.loadpackage') }}" class="btn btn-primary me-3">+ Add Load</a>
+                <a href="{{ route('admin.list.customer') }}" class="btn btn-primary me-3"> + Go to Customers</a>
             </div>
         </div>
         <div class="row">

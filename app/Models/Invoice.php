@@ -35,7 +35,7 @@ class Invoice extends Model
         return $this->belongsTo(ClientAdmin::class);
     }
 
-    public function invoiceload()
+    public function invoiceLoads()
     {
         return $this->hasMany(InvoiceLoad::class);
     }

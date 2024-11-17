@@ -93,7 +93,6 @@ class LoadpackageController extends Controller
             $branchCode = $staff ? $staff->branch->branch_code : 'TANZANIA';
     
             foreach ($validated['load_name'] as $index => $load_name) {
-                // Create the load here and get the load details.
                 $load = LoadPackageHelper::createLoad($validated, $index, $clientId, $customerId, $userId, $branchCode, $invoice->id);
                 LoadPackageHelper::updateInvoiceTotals($invoice, $load);
                 

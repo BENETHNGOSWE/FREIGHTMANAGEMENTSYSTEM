@@ -56,9 +56,31 @@ class Loadpackage extends Model
         return $this->belongsTo(Customer::class);
     }
 
-    public function invoiceload()
+    public function invoiceLoads()
     {
-        return $this->belongsTo(InvoiceLoad::class);
+        return $this->hasMany(InvoiceLoad::class, 'loadpackage_id');
+    }
+
+    public function getRelatedInvoiceIds()
+    {
+        return $this->invoiceLoads()->pluck('invoice_id')->unique();
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($loadPackage) {
+            $invoiceIds = $loadPackage->getRelatedInvoiceIds();
+                     
+            $loadPackage->invoiceLoads()->delete();
+            foreach ($invoiceIds as $invoiceId) {
+                $remainingLoads = InvoiceLoad::where('invoice_id', $invoiceId)->count();
+                if ($remainingLoads === 0) {
+                    Invoice::find($invoiceId)->delete();
+                }
+            }
+        });
     }
 
     public function invoice()

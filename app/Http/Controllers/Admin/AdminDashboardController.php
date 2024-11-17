@@ -7,8 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Models\Customer;
 use App\Models\User;
+use App\Models\Staff;
 use App\Models\Loadpackage;
 use App\Models\ClientAdmin;
+use App\Models\Container;
 use illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -38,6 +40,8 @@ class AdminDashboardController extends Controller
 
         $this->data['customerCount'] = Customer::where('client_id', $clientid)->count();
         $this->data['loadcreate'] = Loadpackage::where('client_id', $clientid)->count();
+        $this->data['staffCount'] = Staff::where('client_id', $clientid)->count();
+        $this->data['containerCount'] = Container::where('client_id', $clientid)->count();
 
         // $this->data['clientadmin'] = $clientadmin;
 
