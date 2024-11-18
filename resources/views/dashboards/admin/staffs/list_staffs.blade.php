@@ -33,10 +33,6 @@
                                         Employee Name
                                     </th>
                                     <th>
-                                        Departement
-                                    </th>
-
-                                    <th>
                                         Role
                                     </th>
                                     <th>
@@ -63,7 +59,6 @@
                                         
                                         <td style="width: 10%;">{{ $staff->staff_no ?? '-' }}</td>
                                         <td  style="width: 40%;">{{ $staff->staff_firstname . " " . $staff->staff_middlename . " " . $staff->staff_lastname  ?? '-' }}</td>
-                                        <td  style="width: 20%;">{{ $staff->department->department_name ?? '-' }}</td>
                                         <td  style="width: 20%;">{{ $staff->user->user_type ?? '-' }}</td>
                                         <td>
                                             {!! user_status($staff->user->status)!!}

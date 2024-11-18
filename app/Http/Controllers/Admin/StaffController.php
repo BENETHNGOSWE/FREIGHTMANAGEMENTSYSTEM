@@ -4,14 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Client;
 use App\Models\StaffType;
 use App\Models\Staff;
 use App\Models\User;
 use App\Models\Branch;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
+
+
+
 
 class StaffController extends Controller
 {
@@ -50,7 +53,8 @@ class StaffController extends Controller
 
         $clients = Client::pluck('client_name', 'id');
         $staffTypes = StaffType::pluck('staff_type_name', 'id');
-        $branches = Branch::pluck('branch_name', 'id');
+        $branches = Branch::where('client_id', $client_id) 
+                            ->pluck('branch_name', 'id');
         $users = User::pluck('id');
 
         $this->data['clients'] = $clients;
@@ -84,14 +88,20 @@ class StaffController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $this->validate($request, $this->rules());
-        $staff_type = StaffType::find($validated['staff_type_id']);
-
-        if ($staff_type) {
+        DB::beginTransaction(); 
+    
+        try {
+            $validated = $this->validate($request, $this->rules());
+            $staff_type = StaffType::find($validated['staff_type_id']);
+    
+            if (!$staff_type) {
+                return redirect()->back()->with('error', 'Invalid staff type selected');
+            }
+    
             $staff_type_name = $staff_type->staff_type_name;
             $name = $validated['staff_firstname'] . ' ' . $validated['staff_middlename'] . ' ' . $validated['staff_lastname'];
             $password = Hash::make('123456');
-
+    
             $user = User::create([
                 'name' => $name,
                 'email' => $validated['staff_email'],
@@ -100,26 +110,27 @@ class StaffController extends Controller
                 'user_type' => $staff_type_name,
                 'client_id' => $this->fms_id,
             ]);
-
+    
             $user->assignRole(\Spatie\Permission\Models\Role::findByName($staff_type_name));
+    
+            $id_number = createStaffidNumber($this->fms_id);
+            $validated['user_id'] = $user->id;
+            $validated['staff_no'] = $id_number;
+            $validated['client_id'] = $user->client_id;
+    
+            $employee = Staff::create($validated);
 
-            if ($user) {
-                $id_number = createStaffidNumber($this->fms_id);
-                $validated['user_id'] = $user->id;
-                $validated['staff_no'] = $id_number;
-                $validated['client_id'] = $user->client_id;
-
-                $employee = Staff::create($validated);
-                if ($employee) {
-                    // $message = 'Dear ' . $user->name . ', your account has been created successfully. Your have been Registered as '.strtoupper($user->user_type).'. Your login details are as follows: Email: ' . $user->email . ' Password: 123456 , Please change your password after login. Thank you.';
-                    // sendSMS($user->id,$message,$this->fms_id);
-                    return redirect()->route('admin.list.staff')->with('success', 'Employee added successfully');
-                } else {
-                    return redirect()->back()->with('error', 'Something went wrong');
-                }
-            }
+            DB::commit();
+    
+            return redirect()->route('admin.list.staff')->with('success', 'Employee added successfully');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            \Log::error('Error creating employee: ' . $e->getMessage());
+    
+            return redirect()->back()->with('error', 'Something went wrong: ' . $e->getMessage());
         }
     }
+    
 
     public function show(Request $request, Staff $staff) 
     {
