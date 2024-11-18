@@ -94,13 +94,6 @@
                         </a></li>
 
                 </ul>
-                <ul aria-expanded="false">
-                    <li><a href="#">
-                            <i class="fa fa-plus"></i>
-                            <span>Add new</span>
-                        </a></li>
-
-                </ul>
             </li>
 
             <li>
