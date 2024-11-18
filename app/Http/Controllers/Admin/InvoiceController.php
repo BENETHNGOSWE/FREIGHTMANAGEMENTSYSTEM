@@ -38,7 +38,7 @@ class InvoiceController extends Controller
 
     public function show(Request $request, Invoice $invoice)
     {
-        $this->data['invoice'] = Invoice::with('invoiceLoad.loadpackage')->findOrFail($invoice->id);
+        $this->data['invoice'] = Invoice::with('invoiceLoads.loadpackage')->findOrFail($invoice->id);
         $this->data['client'] = Client::findOrFail($invoice->client_id);
         return view('dashboards.admin.invoices.show', $this->data);
     }
@@ -62,7 +62,7 @@ class InvoiceController extends Controller
 
     public function generateInvoicePDF($id)
     {
-        $invoice = Invoice::with('invoiceLoad.loadpackage', 'customer')->findOrFail($id);
+        $invoice = Invoice::with('invoiceLoads.loadpackage', 'customer')->findOrFail($id);
         $client = Client::findOrFail($invoice->client_id);
 
         $data = [

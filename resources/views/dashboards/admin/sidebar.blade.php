@@ -80,9 +80,9 @@
                             <i class="fas fa-microscope"></i>
                             <span>Chat With Customer</span>
                         </a></li>
-                    <li><a href="#">
+                    <li><a href="{{ route('admin.message.index')}}">
                             <i class="fas fa-mercury"></i>
-                            <span>Diagnosis</span>
+                            <span>Message List</span>
                         </a></li>
 
                 </ul>

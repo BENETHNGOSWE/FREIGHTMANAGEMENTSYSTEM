@@ -97,7 +97,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($invoice->invoiceLoad as $invoiceLoad)
+                                        @foreach ($invoice->invoiceLoads as $invoiceLoad)
                                             <tr>
                                                 <td>{{ $invoiceLoad->invoice->invoice_no }}</td>
                                                 <td>{{ $invoiceLoad->loadpackage->load_description }}</td>

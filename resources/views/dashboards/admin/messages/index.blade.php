@@ -4,12 +4,12 @@
     <div class="container-fluid">
         <div class="form-head align-items-center d-flex mb-sm-4 mb-3">
             <div class="me-auto">
-                <h2 class="text-black font-w600">Staff Type</h2>
-                <p class="mb-1">Dashboard / <span><a class="text-primary" href="appointment-add.html">Staff Type List</a></span>
+                <h2 class="text-black font-w600">Message</h2>
+                <p class="mb-1">Dashboard / <span><a class="text-primary" href="appointment-add.html">Message List</a></span>
                 </p>
             </div>
             <div>
-                <a href="{{ route('create.stafftypes') }}" class="btn btn-primary me-3">+ Add Staff Type</a>
+                <a href="{{ route('admin.message') }}" class="btn btn-primary me-3">+ Add Message</a>
             </div>
         </div>
         <div class="row">
@@ -17,19 +17,22 @@
                 <div class="card-body">
                     <div class="table-responsive">
                         <div style="display: flex; justify-content: space-between;">
-                            <h4 class="card-title">@lang('crud.stafftypes.index_title')</h4>
+                            <h4 class="card-title">@lang('crud.messages.index_title')</h4>
                         </div>
-                        <table id="stafftypeTable"  class="table table-borderless table-hover">
+                        <table id="messageTable" class="table table-borderless table-hover">
                             <thead>
                                 <tr>
                                     <th>
                                         s/n
-                                    </th>    
-                                    <th class="text-left">
-                                        @lang('crud.stafftypes.inputs.staff_type_name')
                                     </th>
                                     <th class="text-left">
-                                        @lang('crud.stafftypes.inputs.staff_type_description')
+                                        Customer Number
+                                    </th>
+                                    <th class="text-left">
+                                        Message Content
+                                    </th>
+                                    <th class="text-left">
+                                        Message Status
                                     </th>
                                     <th class="text-center">
                                         @lang('crud.common.actions')
@@ -37,31 +40,21 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($stafftypes as $stafftype)
+                                @forelse($messages as $message)
                                     <tr>
                                         <td>
                                             {{ $loop->iteration }}
                                         </td>
-                                        <td>{{ strtoupper($stafftype->staff_type_name) ?? '-' }}</td>
-                                        <td>{{ strtoupper($stafftype->staff_type_description) ?? '-' }}</td>
+                                        <td>{{ strtoupper($message->customer_number) ?? '-' }}</td>
+                                        <td>{{ strtoupper($message->content) ?? '-' }}</td>
+                                        <td>{!! return_message_status_badge($message->status) !!}</td>
                                         <td class="text-center" style="width: 134px;">
                                             <div role="group" aria-label="Row Actions" class="btn-group">
-                                                @can('update', $stafftype)
-                                                    <a href="{{ route('edit.stafftypes', $stafftype) }}">
-                                                        <button type="button" class="btn btn-outline-success">
-                                                            <i class="fas fa-edit"></i>
-                                                        </button>
-                                                    </a>
-                                                    @endcan @can('view', $stafftype)
-                                                    <a href="{{ route('show.stafftypes', $stafftype) }}">
-                                                        <button type="button" class="btn btn-outline-primary mx-2">
-                                                            <i class="fas fa-eye"></i>
-                                                        </button>
-                                                    </a>
-                                                    @endcan @can('delete', $stafftype)
-                                                    <form class="delete_form" action="{{ route('delete.stafftypes', $stafftype) }}" method="POST"
-                                                    >
-                                                        @csrf 
+
+                                                @can('delete', $message)
+                                                    <form class="delete_form" action="#"
+                                                        method="POST">
+                                                        @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-outline-danger delete_button">
                                                             <i class="fas fa-trash"></i>
@@ -73,12 +66,12 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td  class="text-center py-5" colspan="5">
+                                        <td class="text-center py-5" colspan="5">
                                             @lang('crud.common.no_items_found')
                                         </td>
                                     </tr>
                                 @endforelse
-                                </tbody>
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -92,7 +85,7 @@
 @push('scripts')
     <script>
         (function($) {
-            var table = $("#stafftypeTable").DataTable({
+            var table = $("#messageTable").DataTable({
                 searching: true,
                 paging: true,
                 select: false,
@@ -101,8 +94,8 @@
         })(jQuery);
     </script>
 
-<script>
-   const deleteButtons = document.querySelectorAll(".delete_button");
+    <script>
+        const deleteButtons = document.querySelectorAll(".delete_button");
 
         deleteButtons.forEach(function(button) {
             button.addEventListener("click", function(e) {

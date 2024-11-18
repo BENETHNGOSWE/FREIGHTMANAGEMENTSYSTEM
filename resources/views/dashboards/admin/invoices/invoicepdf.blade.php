@@ -354,7 +354,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($invoice->invoiceLoad as $invoiceLoad)
+                @foreach ($invoice->invoiceLoads as $invoiceLoad)
                     <tr>
                         <td><span>{{ $loop->iteration}}</span></td>
                         <td><span>{{ $invoiceLoad->loadpackage->load_name }}</span></td>

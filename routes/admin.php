@@ -21,7 +21,8 @@ Route::prefix('/')
         Route::delete('staff-delete-staff/{staff}', [App\Http\Controllers\Admin\StaffController::class, 'delete'])->name('admin.delete.staff');
 
         // Message Manage Here
-        Route::post('/message', [App\Http\Controllers\Admin\MessageController::class, 'sendMessage'])->name('admin.sendmessage');
+        Route::get('/message', [App\Http\Controllers\Admin\MessageController::class, 'index'])->name('admin.message.index');
+        Route::post('/messagecreate', [App\Http\Controllers\Admin\MessageController::class, 'sendMessage'])->name('admin.sendmessage');
         Route::get('/message-form', [App\Http\Controllers\Admin\MessageController::class, 'showSendMessageForm'])->name('admin.message');
 
         // Branches Manage Here

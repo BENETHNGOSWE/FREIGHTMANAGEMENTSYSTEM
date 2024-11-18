@@ -4,7 +4,7 @@
 <div class="container-fluid">
     <div class="form-head align-items-center d-flex mb-sm-4 mb-3">
         <div class="me-auto">
-            <h2 class="text-black font-w600">Add Container</h2>
+            <h2 class="text-black font-w600">Add Unit Type</h2>
             
         </div>
 

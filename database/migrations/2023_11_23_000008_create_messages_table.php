@@ -12,13 +12,11 @@ return new class extends Migration {
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreignId('sender_id')->nullable();
-            $table->foreignId('receiver_id')->nullable();
-            $table->text('body');
-            $table->enum('status', ['0', '1', '2'])->default('0');
-            $table->boolean('opened')->default(0);
+            $table->string('customer_number'); 
+            $table->text('content'); 
+            $table->enum('status', ['pending', 'delivered', 'failed'])->default('pending'); 
+            $table->string('sender_id')->nullable();
             $table->unsignedBigInteger('client_id');
-
             $table->timestamps();
         });
     }

@@ -12,12 +12,11 @@ class Message extends Model
     use Searchable;
 
     protected $fillable = [
-        'sender_id',
-        'receiver_id',
-        'body',
-        'status',
-        'opened',
         'client_id',
+        'customer_number',
+        'content',
+        'status',
+        'sender_id',
     ];
 
     protected $searchableFields = ['*'];

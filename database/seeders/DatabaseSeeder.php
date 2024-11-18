@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ClientPaymentSeeder::class);
         $this->call(ClientTypeSeeder::class);
         $this->call(CountrySeeder::class);
-        $this->call(MessageSeeder::class);
+        // $this->call(MessageSeeder::class);
         $this->call(ModuleSeeder::class);
         $this->call(PackageSeeder::class);
         $this->call(PatientSeeder::class);

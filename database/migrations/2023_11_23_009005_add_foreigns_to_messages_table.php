@@ -12,20 +12,6 @@ return new class extends Migration {
     {
         Schema::table('messages', function (Blueprint $table) {
             $table
-                ->foreign('sender_id')
-                ->references('id')
-                ->on('users')
-                ->onUpdate('CASCADE')
-                ->onDelete('CASCADE');
-
-            $table
-                ->foreign('receiver_id')
-                ->references('id')
-                ->on('users')
-                ->onUpdate('CASCADE')
-                ->onDelete('CASCADE');
-
-            $table
                 ->foreign('client_id')
                 ->references('id')
                 ->on('clients')
@@ -40,8 +26,6 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table('messages', function (Blueprint $table) {
-            $table->dropForeign(['sender_id']);
-            $table->dropForeign(['receiver_id']);
             $table->dropForeign(['client_id']);
         });
     }

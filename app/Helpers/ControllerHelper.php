@@ -131,6 +131,23 @@ function return_status_badge($status)
     return $badge;
 }
 
+function return_message_status_badge($status)
+{
+    switch ($status) {
+        case 'pending':
+            $badge = '<span class="badge badge-warning">Port Station</span>';
+            break;
+            
+        case 'delivered':
+            $badge = '<span class="badge badge-success">Delivery</span>';
+            break;
+        default:
+            $badge = '<span class="badge badge-warning">Pending</span>';
+    }
+
+    return $badge;
+}
+
 
 function user_status($status)
 {

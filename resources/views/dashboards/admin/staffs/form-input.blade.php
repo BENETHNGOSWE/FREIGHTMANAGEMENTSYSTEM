@@ -33,7 +33,7 @@
 
     <x-inputs.group class="col-sm-4">
         <x-inputs.text name="phone" label="Phone" :value="old('phone', $editing ? $staff->phone : '')" maxlength="255" placeholder="Phone"
-            required></x-inputs.text>
+            required  type="tel" pattern="^\+255[0-9]{9}$" inputmode="numeric" title="Phone number must start with +255 and be followed by 9 digits."></x-inputs.text>
     </x-inputs.group>
 
     <x-inputs.group class="col-sm-4">
