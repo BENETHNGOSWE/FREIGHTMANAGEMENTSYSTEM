@@ -3,7 +3,7 @@
 <head>
     @include('layouts.partials._meta')
 	<title>Freight Management System</title>
-    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('assets/images/mini.png')}}" />
+    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('assets/images/profile/user.png')}}" />
     <link href="{{asset('assets/css/style.css')}}" rel="stylesheet" />
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&amp;family=Roboto:wght@100;300;400;500;700;900&amp;display=swap"
@@ -21,7 +21,7 @@
                             <div class="col-xl-12">
                                 <div class="auth-form">
 									<div class="text-center mb-3">
-										<a href="{{url('/')}}"><img src="{{asset('assets/images/mini.png')}}" style="max-height: 55px; max-width: 55px;border-radius:50%;" alt="logo"></a>
+										<a href="{{url('/')}}"><img src="{{asset('assets/images/profile/user.png')}}" style="max-height: 55px; max-width: 55px;border-radius:50%;" alt="logo"></a>
 									</div>
                                     <h4 class="text-center mb-4 text-white">@yield('heading')</h4>
                                     <form action="@yield('formRoute')" method="POST">
