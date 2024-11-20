@@ -24,22 +24,22 @@ class DatabaseSeeder extends Seeder
             ]);
         $this->call(PermissionsSeeder::class);
 
-        $this->call(BankSeeder::class);
+        // $this->call(BankSeeder::class);
         // $this->call(BranchSeeder::class);
-        $this->call(ClientSeeder::class);
-        $this->call(ClientAdminSeeder::class);
-        $this->call(ClientPaymentSeeder::class);
-        $this->call(ClientTypeSeeder::class);
+        // $this->call(ClientSeeder::class);
+        // $this->call(ClientAdminSeeder::class);
+        // $this->call(ClientPaymentSeeder::class);
+        // $this->call(ClientTypeSeeder::class);
         $this->call(CountrySeeder::class);
         // $this->call(MessageSeeder::class);
         $this->call(ModuleSeeder::class);
         $this->call(PackageSeeder::class);
-        $this->call(PatientSeeder::class);
+        // $this->call(PatientSeeder::class);
         $this->call(PaymentTypeSeeder::class);
         // $this->call(RoleSeeder::class);
-        $this->call(SubscriptionSeeder::class);
-        $this->call(SubscriptionInvoiceSeeder::class);
-        $this->call(SubscriptionTokenSeeder::class);
+        // $this->call(SubscriptionSeeder::class);
+        // $this->call(SubscriptionInvoiceSeeder::class);
+        // $this->call(SubscriptionTokenSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(StafftypeSeeder::class);
     }

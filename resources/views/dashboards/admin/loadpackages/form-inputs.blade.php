@@ -61,10 +61,19 @@
         </x-inputs.select>
     </x-inputs.group>
 
-    <x-inputs.group class="col-sm-4 weight-value-group" style="display: none !important">
-        <x-inputs.number name="load_weight_value[{{ $index }}]" label="Unit Value" :value="old('load_weight_value.' . $index, $editing ? $load->load_weight_value : '')"
-            maxlength="255" placeholder="Enter Unit Value" required disabled></x-inputs.number>
-    </x-inputs.group>
+   <x-inputs.group class="col-sm-4 weight-value-group" style="display: none !important">
+    <x-inputs.number 
+        name="load_weight_value[{{ $index }}]" 
+        label="Unit Value" 
+        :value="old('load_weight_value.' . $index, $editing ? $load->load_weight_value : '')"
+        step="0.0000001" 
+        min="0" 
+        max="9.9999999" 
+        placeholder="Enter Unit Value (e.g., 0.0000067)" 
+        required 
+        disabled>
+    </x-inputs.number>
+</x-inputs.group>
 
     <x-inputs.group class="col-sm-4">
         <x-inputs.number name="load_price[{{ $index }}]" label="Load Price" :value="old('load_price.' . $index, $editing ? $load->load_price : '')" maxlength="255"
