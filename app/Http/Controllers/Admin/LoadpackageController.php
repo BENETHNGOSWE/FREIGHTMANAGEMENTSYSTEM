@@ -47,14 +47,17 @@ class LoadpackageController extends Controller
 
     public function create(Request $request)
     {
+        $client_id = auth()->user()->client_id;
         $this->authorize('create', Loadpackage::class);
 
         $customer_id = $request->input('customer_id');
-        $this->data['loadpackagetypes'] = Loadpackagetype::pluck('load_type_name', 'id');
-        $this->data['unittypes'] = UnitType::pluck('unittype_name', 'id');
-        $this->data['containers'] = Container::pluck('container_number', 'id');
+        $this->data['loadpackagetypes'] = Loadpackagetype::where('client_id', $client_id)
+                                                            ->pluck('load_type_name', 'id');
+        $this->data['unittypes'] = UnitType::where('client_id', $client_id)
+                                            ->pluck('unittype_name', 'id');
+        $this->data['containers'] = Container::where('client_id', $client_id)
+                                                ->pluck('container_number', 'id');
         $this->data['customer_id'] = $customer_id;
-
         return view('dashboards.admin.loadpackages.create', $this->data);
     }
 

@@ -108,7 +108,7 @@
 
 
 
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
                 <div class="widget-stat card">
                     <div class="card-body p-4">
@@ -177,10 +177,10 @@
                     </div>
                 </a>
             </div>
-        </div>
+        </div> -->
 
         {{-- //assets,buildings,wards,etc  --}}
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
                 <a href="#">
                     <div class="widget-stat card bg-secondary">
@@ -257,14 +257,14 @@
                 </a>
             </div>
 
-        </div>
+        </div> -->
     </div>
 
 
 
 
     {{-- Today Apppointment --}}
-    <div class="container-fluid">
+    <!-- <div class="container-fluid">
         <div class="row">
             <div class="col-xl-3 col-lg-6 col-sm-6">
                 <div class="widget-stat card">
@@ -286,7 +286,7 @@
         </div>
 
     </div>
-
+ -->
 
 
 
