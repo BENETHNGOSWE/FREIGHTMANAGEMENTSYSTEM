@@ -42,4 +42,13 @@ Route::prefix('/')
         Route::get('invoice/edit/{invoice}', [App\Http\Controllers\Admin\InvoiceController::class, 'edit'])->name('admin.edit.invoice');
         Route::put('invoice/update/{invoice}', [App\Http\Controllers\Admin\InvoiceController::class, 'update'])->name('admin.update.invoice');
         Route::get('invoice/pdf/{invoice}', [App\Http\Controllers\Admin\InvoiceController::class, 'generateInvoicePDF'])->name('admin.pdf.invoice');
+
+          // Payment Manage Here
+          Route::get('payment', [App\Http\Controllers\Admin\PaymentController::class, 'index'])->name('admin.list.payment');
+          Route::get('paymentcreate', [App\Http\Controllers\Admin\PaymentController::class, 'create'])->name('admin.create.payment');
+          Route::post('payment/store', [App\Http\Controllers\Admin\PaymentController::class, 'store'])->name('admin.store.payment');
+          Route::get('payment/edit/{payment}', [App\Http\Controllers\Admin\PaymentController::class, 'edit'])->name('admin.edit.payment');
+          Route::put('payment/update/{payment}', [App\Http\Controllers\Admin\PaymentController::class, 'update'])->name('admin.update.payment');
+          Route::get('payment/show/{payment}', [App\Http\Controllers\Admin\PaymentController::class, 'show'])->name('admin.show.payment');
+          Route::delete('payment/delete/{payment}', [App\Http\Controllers\Admin\PaymentController::class, 'delete'])->name('admin.delete.payment');
     });

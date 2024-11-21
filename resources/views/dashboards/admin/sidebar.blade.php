@@ -116,6 +116,13 @@
                     <span class="nav-text">Settings</span>
                 </a>
                 <ul aria-expanded="false">
+                    <li><a href="{{ route('admin.list.payment') }}">
+                            <i class="fas fa-building"></i>
+                            <span>Payment Infomation</span>
+                        </a></li>
+
+                </ul>
+                <ul aria-expanded="false">
                     <li><a href="{{ route('admin.list.branch') }}">
                             <i class="fas fa-building"></i>
                             <span>Branches</span>

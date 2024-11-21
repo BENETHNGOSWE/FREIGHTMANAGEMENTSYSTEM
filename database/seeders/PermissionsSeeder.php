@@ -18,7 +18,7 @@ class PermissionsSeeder extends Seeder
         $models = [
             'banks', 'branches', 'containers', 'clients', 'client_admins', 'clientpayments',
             'client_types', 'countries', 'customers', 'messages', 'modules', 'packages',
-            'loadpackagetypes', 'loadpackages', 'staffs', 'staff_types', 'paymenttypes', 'role',
+            'loadpackagetypes', 'loadpackages', 'staffs', 'staff_types', 'payments', 'role',
             'subscriptions', 'subscription_invoices', 'subscription_tokens', 'userroles',
             'roles', 'permissions', 'users', 'unit_types', 'invoices', 'invoice_loads'
         ];

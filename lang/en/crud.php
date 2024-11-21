@@ -247,6 +247,20 @@ return [
         ],
     ],
 
+    'paymentInformations' => [
+        'name' => 'Payment Info',
+        'index_title' => 'Payment Info List',
+        'new_title' => 'New Payment Info',
+        'create_title' => 'Create Payment Info',
+        'edit_title' => 'Edit Payment Info',
+        'show_title' => 'Show Payment Info',
+        'inputs' => [
+            'Bank_name' => 'Bank Name',
+            'account_name' => 'Account Name',
+            'account_number' => 'Account Number',
+        ],
+    ],
+
     'patients' => [
         'name' => 'Patients',
         'index_title' => 'Patients List',

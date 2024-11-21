@@ -368,22 +368,37 @@
 
         <div class="payment-info" style="font-size: 12px; margin-top: -1em;">
             <h2 style="margin: 0; padding: 0;">Payment Info</h2>
-            <p><strong>Bank Name:</strong> NMB BANK (T) LTD</p>
-            <p><strong>Acc Name:</strong> KODA.KODA INVESTMENT</p>
-            <p><strong>Acc No:</strong> 62110028276</p><br>
-            <p><strong>Bank Name:</strong> CRDB BANK (T) LTD</p>
-            <p><strong>Acc Name:</strong>  KODA.KODA INVESTMENT</p>
-            <p><strong>Acc No:</strong> 62110028276</p>
-        </div>
+            @forelse ($paymentInfo as $payment)
+                <p><strong>Bank Name:</strong> {{ $payment->Bank_name }}</p>
+                <p><strong>Acc Name:</strong> {{ $payment->account_name }}</p>
+                <p><strong>Acc No:</strong> {{ $payment->account_number }}</p><br>
+            @empty
+                <p>No payment information available.</p>
+            @endforelse
+        </div>        
         <table class="balance" style="margin-top: -1em">
             <tr>
                 <th><span>Total</span></th>
                 <td><span>{{ number_format($invoice->total_amount + $invoice->total_transportfee, 2) }}</span></td>
             </tr>
         </table>
-    </article>
+    </article><br>
+    <header>
+        <br>
+        <span style="margin-top: -1em; font-size: 10px">
+            <p style="margin: 0; font-weight: bold;">Approved By:</p>
+            <p style="margin: 5px 0;">Signature: __________________________</p>
+            <p style="margin: 5px 0;">Name: __________________________</p>
+            <p style="margin: 5px 0;">Date: __________________________</p>
+        </span>
+        <address style="margin-top: -1em; font-size: 10px">
+            <p style="margin: 0; font-weight: bold;">Printed By:</p>
+        <p style="margin: 5px 0;">Name: <strong>{{ auth()->user()->name }}</strong></p>
+        <p style="margin: 5px 0;">Date: <strong>{{ now()->format('F j, Y, g:i A') }}</strong></p>
+        </address>
+    </header>
     <hr>
-    <aside style="font-size: 12px; margin-top:-5em">
+    <aside style="font-size: 12px; margin-top:-3em">
         <h4>Terms & Conditions</h4>
         <div>
             <p style="margin: 0; padding: 0;"><strong>Delivery Timeline:</strong> Products will be delivered within 7

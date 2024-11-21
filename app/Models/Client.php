@@ -104,6 +104,11 @@ class Client extends Model
         return $this->hasMany(Package::class);
     }
 
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
     public function subscriptionInvoices()
     {
         return $this->hasMany(SubscriptionInvoice::class);

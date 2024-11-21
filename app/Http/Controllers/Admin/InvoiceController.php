@@ -9,6 +9,7 @@ use App\Models\InvoiceLoad;
 use App\Models\Customer;
 use App\Models\Loadpackage;
 use App\Models\Client;
+use App\Models\Payment;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -64,14 +65,15 @@ class InvoiceController extends Controller
     {
         $invoice = Invoice::with('invoiceLoads.loadpackage', 'customer')->findOrFail($id);
         $client = Client::findOrFail($invoice->client_id);
+        $paymentInfo= Payment::where('client_id', $invoice->client_id)->get();
 
         $data = [
             'invoice' => $invoice,
-            'client' => $client
+            'client' => $client,
+            'paymentInfo' => $paymentInfo,
         ];
 
         $pdf = Pdf::loadView('dashboards.admin.invoices.invoicepdf', $data);
         return $pdf->download('invoice_' . $invoice->invoice_no . '.pdf');
     }
-    
 }
