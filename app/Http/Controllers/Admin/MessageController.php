@@ -34,7 +34,8 @@ class MessageController extends Controller
 
     public function showSendMessageForm()
     {
-        $customers = Customer::all();
+        $client_id = auth()->user()->client_id;
+        $customers = Customer::where('client_id', $client_id)->get();
         return view('dashboards.admin.messages.create', compact('customers'));
     }
 
