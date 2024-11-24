@@ -9,7 +9,7 @@
 
         <div>
            <p class="mb-1">Dashboard / <span><a class="text-primary"
-                        href="{{ route('admin.list.invoice') }}">Edit Invoice</a></span></p>
+                        href="#">Edit Client Admin</a></span></p>
         </div>
     </div>
     <div class="card">
@@ -96,7 +96,7 @@
 
             <!-- Buttons -->
             <div class="mt-4">
-                <a href="{{ route('admin.list.invoice') }}" class="btn btn-light">
+                <a href="#" class="btn btn-light">
                     <i class="fa-solid fa-backload"></i> @lang('crud.common.back')
                 </a>
 

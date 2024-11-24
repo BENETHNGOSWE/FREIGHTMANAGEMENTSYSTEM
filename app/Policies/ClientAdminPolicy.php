@@ -15,7 +15,7 @@ class ClientAdminPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasPermissionTo('list clientadmins');
+        return $user->hasPermissionTo('list client_admins');
     }
 
     /**
@@ -23,7 +23,7 @@ class ClientAdminPolicy
      */
     public function view(User $user, ClientAdmin $model): bool
     {
-        return $user->hasPermissionTo('view clientadmins');
+        return $user->hasPermissionTo('view client_admins');
     }
 
     /**
@@ -31,7 +31,7 @@ class ClientAdminPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo('create clientadmins');
+        return $user->hasPermissionTo('create client_admins');
     }
 
     /**
@@ -39,7 +39,7 @@ class ClientAdminPolicy
      */
     public function update(User $user, ClientAdmin $model): bool
     {
-        return $user->hasPermissionTo('update clientadmins');
+        return $user->hasPermissionTo('update client_admins');
     }
 
     /**
@@ -47,7 +47,7 @@ class ClientAdminPolicy
      */
     public function delete(User $user, ClientAdmin $model): bool
     {
-        return $user->hasPermissionTo('delete clientadmins');
+        return $user->hasPermissionTo('delete client_admins');
     }
 
     /**
@@ -55,7 +55,7 @@ class ClientAdminPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->hasPermissionTo('delete clientadmins');
+        return $user->hasPermissionTo('delete client_admins');
     }
 
     /**

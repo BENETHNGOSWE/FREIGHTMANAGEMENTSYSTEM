@@ -36,7 +36,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
 Auth::routes();
 Route::redirect('/register', '/login', 301);
 
@@ -53,11 +52,11 @@ Route::redirect('/register', '/login', 301);
 Route::prefix('/')
     ->middleware('auth')
     ->group(function () {
+        Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+        Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
 
-        Route::get('/',[App\Http\Controllers\HomeController::class,'index'])->name('home');
-        Route::get('/dashboard',[App\Http\Controllers\HomeController::class,'index'])->name('dashboard');
         
-        
+
         Route::resource('roles', RoleController::class);
         Route::resource('permissions', PermissionController::class);
 
@@ -75,14 +74,8 @@ Route::prefix('/')
         Route::resource('payment-types', PaymentTypeController::class);
         Route::resource('roles', RoleController::class);
         Route::resource('subscriptions', SubscriptionController::class);
-        Route::resource(
-            'subscription-invoices',
-            SubscriptionInvoiceController::class
-        );
-        Route::resource(
-            'subscription-tokens',
-            SubscriptionTokenController::class
-        );
+        Route::resource('subscription-invoices', SubscriptionInvoiceController::class);
+        Route::resource('subscription-tokens', SubscriptionTokenController::class);
         Route::resource('users', UserController::class);
         Route::resource('user-roles', UserRoleController::class);
     });

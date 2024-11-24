@@ -23,7 +23,7 @@ class AdminDashboardController extends Controller
 
     public function __construct()
     {
-        $this->middleware('admin');
+        // $this->middleware('admin');
         $this->middleware(function ($request, $next) {
             if (Auth::check()) {
                 $this->fms_id = Auth::user()->client_id;
@@ -36,14 +36,14 @@ class AdminDashboardController extends Controller
     public function index($fms_id): View
     {
         $clientid = auth()->user()->client_id;
-        // $clientadmin = ClientAdmin::where('client_id', $clientid)->first();
+        $clientadmin = ClientAdmin::where('client_id', $clientid)->first();
 
         $this->data['customerCount'] = Customer::where('client_id', $clientid)->count();
         $this->data['loadcreate'] = Loadpackage::where('client_id', $clientid)->count();
         $this->data['staffCount'] = Staff::where('client_id', $clientid)->count();
         $this->data['containerCount'] = Container::where('client_id', $clientid)->count();
 
-        // $this->data['clientadmin'] = $clientadmin;
+        $this->data['clientadmin'] = $clientadmin;
 
         return view('dashboards.admin.dashboard', $this->data);
     }
@@ -57,6 +57,7 @@ class AdminDashboardController extends Controller
 
     public function edit(Request $request, $id)
     {
+        // $this->authorize('update', $clientAdmin);
         $clientadmin = ClientAdmin::findOrFail($id);
 
         $this->data['clientadmin'] = $clientadmin;
@@ -65,6 +66,7 @@ class AdminDashboardController extends Controller
 
     public function update(Request $request, ClientAdmin $clientadmin)
     {
+        // $this->authorize('update', $clientAdmin);
         $validated = $request->validate([
             'firstname' => ['required', 'max:255', 'string'],
             'middlename' => ['required', 'max:255', 'string'],
