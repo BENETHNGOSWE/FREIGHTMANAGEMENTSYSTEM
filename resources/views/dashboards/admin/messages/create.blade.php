@@ -1,5 +1,3 @@
-
-
 @extends('layouts._master')
 
 @section('content')
@@ -73,40 +71,30 @@
 <script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
 
 <script>
-    // Initialize CKEditor on the 'message' textarea
+    // Initialize CKEditor
     CKEDITOR.replace('message', {
         height: 300,
-        removePlugins: 'elementspath',  // Removes the bottom "Element path"
-        resize_enabled: false  // Disables resizing
+        removePlugins: 'elementspath',
+        resize_enabled: false
     });
-</script>
 
-<script>
-    // Disable customer checkboxes when "Send to All" is checked
+    // Replace &nbsp; with a normal space on form submission
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const editorData = CKEDITOR.instances.message.getData();
+        const cleanData = editorData.replace(/&nbsp;/g, ' '); // Replace non-breaking spaces
+        CKEDITOR.instances.message.setData(cleanData);
+    });
+
+    // Enable or disable checkboxes based on 'Send to All' checkbox
     document.getElementById('send_to_all').addEventListener('change', function() {
-        var checkboxes = document.querySelectorAll('input[name="customers[]"]');
+        const checkboxes = document.querySelectorAll('input[name="customers[]"]');
         checkboxes.forEach(function(checkbox) {
             checkbox.disabled = this.checked;
         }.bind(this));
     });
-
-    // Store selected customer names and their phone numbers
-    document.querySelector('form').addEventListener('submit', function(event) {
-        var selectedCustomers = [];
-        var checkboxes = document.querySelectorAll('input[name="customers[]"]:checked');
-        checkboxes.forEach(function(checkbox) {
-            var customerName = checkbox.nextSibling.textContent.trim();
-            selectedCustomers.push(customerName);
-        });
-
-        // Set the hidden input value with customer names
-        document.getElementById('selected_customers').value = selectedCustomers.join(', ');
-
-        // You can also use this for logging or checking the selected customers
-        console.log(selectedCustomers);
-    });
 </script>
 @endsection
+
 @push('scripts')
     <script>
         (function($) {
@@ -118,8 +106,7 @@
             });
         })(jQuery);
     </script>
-
-   
 @endpush
+
 @include('layouts.partials.datatable')
 @include('layouts.partials.sweetalert')

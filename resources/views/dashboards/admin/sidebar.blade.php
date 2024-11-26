@@ -102,7 +102,8 @@
                     <span class="nav-text">Manage Profile</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{{ route('admin.edit.profile', $clientadmin) }}">
+                    <li><a href="#">
+                        {{-- <li><a href="{{ route('admin.edit.profile', $clientadmin) }}"> --}}
                             <i class="fas fa-building"></i>
                             <span>Your Profile</span>
                         </a></li>
