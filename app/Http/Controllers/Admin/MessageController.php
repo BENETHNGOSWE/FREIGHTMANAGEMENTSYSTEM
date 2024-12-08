@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Models\Customer;
+use App\Models\ClientAdmin;
 use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,6 +22,7 @@ class MessageController extends Controller
         $this->middleware(function ($request, $next) {
             if (Auth::check()) {
                 $this->fms_id = Auth::user()->client_id;
+                $this->data['clientadmin'] = ClientAdmin::where('client_id', $this->fms_id)->first();
             }
 
             return $next($request);
@@ -32,11 +34,25 @@ class MessageController extends Controller
         return view('dashboards.admin.messages.index', $this->data);
     }
 
+    public function indexmultiple(){
+        $this->data['multipesender'] = Message::where('client_id', $this->fms_id)->get();
+        return view('dashboards.admin.messages.indexmultiple', $this->data);
+    }
+
     public function showSendMessageForm()
     {
-        $client_id = auth()->user()->client_id;
-        $customers = Customer::where('client_id', $client_id)->get();
-        return view('dashboards.admin.messages.create', compact('customers'));
+        // $client_id = auth()->user()->client_id;
+        $customers = Customer::where('client_id', $this->fms_id)->get();
+        $this->data['customers'] = $customers;
+        return view('dashboards.admin.messages.create', $this->data);
+    }
+
+    public function showSendMessageFormmultiple()
+    {
+        // $client_id = auth()->user()->client_id;
+        $customers = Customer::where('client_id', $this->fms_id)->get();
+        $this->data['customers'] = $customers;
+        return view('dashboards.admin.messages.createmultiple', $this->data);
     }
 
     public function sendMessage(Request $request)
@@ -80,7 +96,7 @@ class MessageController extends Controller
         $selectedPhones = $request->input('customers', []);
 
         if ($sendToAll) {
-            $customers = Customer::all();
+            $customers = Customer::where('client_id', $this->fms_id)->get();
         } else {
             if (empty($selectedPhones)) {
                 return redirect()->back()->with('error', 'No customers selected.');
@@ -100,7 +116,7 @@ class MessageController extends Controller
 
             $plainMessage = strip_tags($personalizedMessage);
 
-            $response = sendMessage([$customer->phone], $plainMessage, $senderId);
+            $response = sendMessagemultipesenderid([$customer->phone], $plainMessage, $senderId);
 
             if (!$response['success']) {
                 $allSuccess = false;

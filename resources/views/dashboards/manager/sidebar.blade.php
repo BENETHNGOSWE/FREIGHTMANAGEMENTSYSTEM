@@ -144,7 +144,23 @@
                     <i class="fa fa-cog"></i>
                     <span class="nav-text">Settings</span>
                 </a>
+                
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('admin.list.unittype') }}">
+                            <i class="fa-solid fa-location-arrow"></i>
+                            <span>Units</span>
+                        </a></li>
+
+                </ul>
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('admin.list.loadpackagetpye') }}">
+                            <i class="fa-solid fa-location-arrow"></i>
+                            <span>Loads Types</span>
+                        </a></li>
+
+                </ul>
             </li>
+
 
         </ul>
 

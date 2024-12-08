@@ -10,6 +10,7 @@ use App\Models\Loadpackagetype;
 use App\Models\Invoice;
 use App\Models\Customer;
 use App\Models\Client;
+use App\Models\ClientAdmin;
 use App\Models\Container;
 use App\Models\InvoiceLoad;
 use App\Models\UnitType;
@@ -29,34 +30,35 @@ class LoadpackageController extends Controller
         $this->middleware(function ($request, $next) {
             if (Auth::check()) {
                 $this->fms_id = Auth::user()->client_id;
+                $this->data['clientadmin'] = ClientAdmin::where('client_id', $this->fms_id)->first();
             }
+
             return $next($request);
         });
     }
 
     public function index()
     {
-        if (auth()->user()->hasRole('admin')){
-            $this->data['loadpackages'] = Loadpackage::where('client_id', $this->fms_id)->with('container')->get();
-        }else{
+        if (auth()->user()->hasRole('admin')) {
+            $this->data['loadpackages'] = Loadpackage::where('client_id', $this->fms_id)
+                ->with('container')
+                ->get();
+        } else {
             $this->data['loadpackages'] = auth()->user()->loadpackages;
         }
-        
+
         return view('dashboards.admin.loadpackages.index', $this->data);
     }
 
     public function create(Request $request)
     {
-        $client_id = auth()->user()->client_id;
+        // $client_id = auth()->user()->client_id;
         $this->authorize('create', Loadpackage::class);
 
         $customer_id = $request->input('customer_id');
-        $this->data['loadpackagetypes'] = Loadpackagetype::where('client_id', $client_id)
-                                                            ->pluck('load_type_name', 'id');
-        $this->data['unittypes'] = UnitType::where('client_id', $client_id)
-                                            ->pluck('unittype_name', 'id');
-        $this->data['containers'] = Container::where('client_id', $client_id)
-                                                ->pluck('container_number', 'id');
+        $this->data['loadpackagetypes'] = Loadpackagetype::where('client_id', $this->fms_id)->pluck('load_type_name', 'id');
+        $this->data['unittypes'] = UnitType::where('client_id', $this->fms_id)->pluck('unittype_name', 'id');
+        $this->data['containers'] = Container::where('client_id', $this->fms_id)->pluck('container_number', 'id');
         $this->data['customer_id'] = $customer_id;
         return view('dashboards.admin.loadpackages.create', $this->data);
     }
@@ -64,6 +66,7 @@ class LoadpackageController extends Controller
     public function validate_loadpackage(Request $request)
     {
         return $request->validate([
+            'mode.*' => 'nullable|string|in:ocean,air',
             'load_name.*' => ['required', 'string', 'max:255'],
             'load_trucking_number.*' => ['required', 'string', 'max:255'],
             'load_description.*' => ['required', 'string', 'max:255'],
@@ -73,7 +76,7 @@ class LoadpackageController extends Controller
             'load_delivery_date.*' => ['required', 'date'],
             'load_weight_value.*' => ['required', 'numeric'],
             'unittype_id.*' => ['required', 'max:255', 'exists:unit_types,id'],
-            'container_id.*' =>['required', 'max:255', 'exists:containers,id'],
+            'container_id.*' => ['required', 'max:255', 'exists:containers,id'],
         ]);
     }
 
@@ -81,49 +84,43 @@ class LoadpackageController extends Controller
     {
         $this->authorize('create', Loadpackage::class);
         $validated = $this->validate_loadpackage($request);
-    
+
         try {
             DB::beginTransaction();
-    
+
             $customerId = $request->input('customer_id');
             $clientId = $this->fms_id;
             $client = Client::find($clientId);
-    
+
             $invoice = LoadPackageHelper::generateInvoice($customerId, $clientId);
-    
+
             $userId = auth()->user()->id;
             $staff = Staff::where('user_id', $userId)->first();
             $branchCode = $staff ? $staff->branch->branch_code : 'TANZANIA';
-    
+
             foreach ($validated['load_name'] as $index => $load_name) {
                 $load = LoadPackageHelper::createLoad($validated, $index, $clientId, $customerId, $userId, $branchCode, $invoice->id);
                 LoadPackageHelper::updateInvoiceTotals($invoice, $load);
-                
+
                 // Pass the required values to the sendCustomerNotification method.
-                $response = LoadPackageHelper::sendCustomerNotification(
-                    $customerId,
-                    $load->load_no,
-                    $client->client_name,
-                    $load->load_weight_value,
-                    $load->load_price 
-                );
-    
+                $response = LoadPackageHelper::sendCustomerNotification($customerId, $load->load_no, $client->client_name, $load->load_weight_value, $load->load_price);
+
                 if (!$response['success']) {
-                    return redirect()->back()->with('error', $response['message']);
+                    return redirect()
+                        ->back()
+                        ->with('error', $response['message']);
                 }
             }
-    
+
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollback();
             \Log::error($th->getMessage() . ' ' . $th->getTraceAsString());
             return redirect()->back()->with('error', $th->getMessage());
         }
-    
+
         return redirect()->route('admin.list.loadpackage')->with('success', 'Load packages added and invoice generated successfully');
     }
-    
-    
 
     public function show(Request $request, Loadpackage $loadpackage): View
     {
@@ -156,7 +153,7 @@ class LoadpackageController extends Controller
             'load_delivery_date' => ['required', 'date'],
             'load_weight_value' => ['nullable', 'string', 'max:255'],
             'unittype_id' => ['required', 'max:255', 'exists:unit_types,id'],
-            'container_id.*' =>['required', 'max:255', 'exists:containers,id'],
+            'container_id.*' => ['required', 'max:255', 'exists:containers,id'],
         ]);
 
         $loadpackage->update($validate);
@@ -192,15 +189,6 @@ class LoadpackageController extends Controller
         }
     }
 }
-
-
-
-
-
-
-
-
-
 
 // public function store(Request $request)
 // {

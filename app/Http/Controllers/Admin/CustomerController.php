@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use App\Models\User;
 use App\Models\Client;
+use App\Models\ClientAdmin;
 use App\Models\Loadpackage;
 use App\Models\Loadpackagetype;
 use Illuminate\Http\Request;
@@ -24,6 +25,7 @@ class CustomerController extends Controller
         $this->middleware(function ($request, $next) {
             if (Auth::check()) {
                 $this->fms_id = Auth::user()->client_id;
+                $this->data['clientadmin'] = ClientAdmin::where('client_id', $this->fms_id)->first();
             }
 
             return $next($request);

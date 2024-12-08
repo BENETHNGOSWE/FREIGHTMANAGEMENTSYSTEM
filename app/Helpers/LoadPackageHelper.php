@@ -32,7 +32,7 @@ class LoadPackageHelper
     public static function createLoad($validatedData, $index, $clientId, $customerId, $userId, $branchCode, $invoiceId)
     {
         $load_no = 'LOAD-' . $branchCode . '-' . date('Ymd') . '-' . strtoupper(Str::random(5));
-
+    
         $load = new Loadpackage();
         $load->client_id = $clientId;
         $load->customer_id = $customerId;
@@ -44,20 +44,29 @@ class LoadPackageHelper
         $load->load_price = $validatedData['load_price'][$index];
         $load->load_transport_date = $validatedData['load_transport_date'][$index];
         $load->load_delivery_date = $validatedData['load_delivery_date'][$index];
-        $load->container_id = $validatedData['container_id'][$index];
+    
+        // Check if 'mode' exists and handle appropriately
+        if (isset($validatedData['mode'][$index]) && $validatedData['mode'][$index] === 'ocean') {
+            $load->container_id = $validatedData['container_id'][$index] ?? null;
+        } else {
+            $load->container_id = null;
+        }
+    
         $load->load_weight_value = $validatedData['load_weight_value'][$index];
         $load->loadpackagetype_id = $validatedData['loadpackagetype_id'][$index];
         $load->unittype_id = $validatedData['unittype_id'][$index];
         $load->save();
+    
         InvoiceLoad::create([
             'loadpackage_id' => $load->id,
             'invoice_id' => $invoiceId,
             'client_id' => $clientId,
             'load_price' => $load->load_price,
         ]);
-
+    
         return $load;
     }
+    
 
     public static function updateInvoiceTotals($invoice, $load)
     {

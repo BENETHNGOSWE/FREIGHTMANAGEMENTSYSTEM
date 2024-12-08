@@ -25,9 +25,9 @@
                         <i class="fa-solid fa-backLoadpackage"></i>
                         @lang('crud.common.back')
                     </a>
-                    <button type="button" class="btn btn-secondary" id="add-loadpackage-btn">
+                    {{-- <button type="button" class="btn btn-secondary" id="add-loadpackage-btn">
                         Add Another Load 
-                    </button>
+                    </button> --}}
                     <button type="submit" class="btn btn-primary float-right">
                         <i class="icon ion-md-save"></i>
                         @lang('crud.common.create')

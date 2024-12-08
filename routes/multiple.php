@@ -51,4 +51,14 @@ Route::prefix('/')
           Route::put('payment/update/{payment}', [App\Http\Controllers\Admin\PaymentController::class, 'update'])->name('admin.update.payment');
           Route::get('payment/show/{payment}', [App\Http\Controllers\Admin\PaymentController::class, 'show'])->name('admin.show.payment');
           Route::delete('payment/delete/{payment}', [App\Http\Controllers\Admin\PaymentController::class, 'delete'])->name('admin.delete.payment');
+
+
+            // Unity Type Manage Here
+        Route::get('unittype', [App\Http\Controllers\Admin\UnittypeController::class, 'index'])->name('admin.list.unittype');
+        Route::get('unittypecreate', [App\Http\Controllers\Admin\UnittypeController::class, 'create'])->name('admin.create.unittype');
+        Route::post('unittype/store', [App\Http\Controllers\Admin\UnittypeController::class, 'store'])->name('admin.store.unittype');
+        Route::get('unittype/edit/{unittype}', [App\Http\Controllers\Admin\UnittypeController::class, 'edit'])->name('admin.edit.unittype');
+        Route::put('unittype/update/{unittype}', [App\Http\Controllers\Admin\UnittypeController::class, 'update'])->name('admin.update.unittype');
+        Route::get('unittype/show/{unittype}', [App\Http\Controllers\Admin\UnittypeController::class, 'show'])->name('admin.show.unittype');
+        Route::delete('unittype/delete/{unittype}', [App\Http\Controllers\Admin\UnittypeController::class, 'delete'])->name('admin.delete.unittype');
     });

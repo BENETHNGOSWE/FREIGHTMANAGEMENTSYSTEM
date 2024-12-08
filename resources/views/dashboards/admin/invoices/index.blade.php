@@ -46,7 +46,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($invoice as $invoice)
+                                @forelse($invoices as $invoice)
                                     <tr>
                                         <td>
                                             {{ $loop->iteration }}

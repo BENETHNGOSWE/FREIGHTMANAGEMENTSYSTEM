@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Container;
+use App\Models\ClientAdmin;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\View\View;
@@ -21,6 +22,7 @@ class ContainerController extends Controller
         $this->middleware(function ($request, $next) {
             if (Auth::check()) {
                 $this->fms_id = Auth::user()->client_id;
+                $this->data['clientadmin'] = ClientAdmin::where('client_id', $this->fms_id)->first();
             }
 
             return $next($request);

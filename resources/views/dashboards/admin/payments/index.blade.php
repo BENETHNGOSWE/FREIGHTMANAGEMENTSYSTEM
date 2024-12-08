@@ -58,8 +58,7 @@
                                                     </a>
                                                     @endcan
                                                     @can('delete', $payment)
-                                                    <form class="delete_form" action="{{ route('admin.delete.payment', $payment)}}" method="POST"
-                                                    >
+                                                    <form class="delete_form" action="{{ route('admin.delete.payment', $payment)}}" method="POST">
                                                         @csrf 
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-outline-danger delete_button">

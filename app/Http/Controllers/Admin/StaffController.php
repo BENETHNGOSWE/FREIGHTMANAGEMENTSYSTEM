@@ -12,6 +12,7 @@ use App\Models\StaffType;
 use App\Models\Staff;
 use App\Models\User;
 use App\Models\Branch;
+use App\Models\ClientAdmin;
 
 
 
@@ -29,18 +30,19 @@ class StaffController extends Controller
         $this->middleware(function ($request, $next) {
             if (Auth::check()) {
                 $this->fms_id = Auth::user()->client_id;
+                $this->data['clientadmin'] = ClientAdmin::where('client_id', $this->fms_id)->first();
             }
 
             return $next($request);
         });
+        
     }
 
     public function list_staffs()
     {
-        $clientId = auth()->user()->client_id;
         $this->data['page_title'] = 'List Staff';
         $employees = Staff::with('user')
-            ->where('client_id', $clientId) // Filter by hospital ID
+            ->where('client_id', $this->fms_id)
             ->get();
         $this->data['employees'] = $employees;
         return view('dashboards.admin.staffs.list_staffs', $this->data);
@@ -48,15 +50,14 @@ class StaffController extends Controller
 
     public function create(Request $request)
     {
-        $client_id = auth()->user()->client_id;
         $this->data['page_title'] = 'Create Staff';
 
         $clients = Client::pluck('client_name', 'id');
         $staffTypes = StaffType::pluck('staff_type_name', 'id');
-        $branches = Branch::where('client_id', $client_id) 
+        $branches = Branch::where('client_id', $this->fms_id) 
                             ->pluck('branch_name', 'id');
         $users = User::pluck('id');
-
+ 
         $this->data['clients'] = $clients;
         $this->data['staffTypes'] = $staffTypes;
         $this->data['branches'] = $branches;

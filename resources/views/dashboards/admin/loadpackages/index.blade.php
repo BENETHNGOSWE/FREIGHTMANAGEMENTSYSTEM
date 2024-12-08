@@ -74,7 +74,7 @@
                                         <td>{{ strtoupper($loadpackage->customer->customer_firstname . ' ' . $loadpackage->customer->customer_lastname) ?? '-' }}
                                         </td>
                                         <td>{{ strtoupper($loadpackage->customer->phone) ?? '-' }}</td>
-                                        <td>{!! return_status_badge($loadpackage->container->container_status) !!}</td>
+                                        <td>{!! return_status_badge(optional($loadpackage->container)->container_status) !!}</td>
                                         <td style="color: green; font-weight:700;">
                                             {{ strtoupper($loadpackage->load_no) ?? '-' }}</td>
                                         <td>{{ strtoupper($loadpackage->load_name) ?? '-' }}</td>

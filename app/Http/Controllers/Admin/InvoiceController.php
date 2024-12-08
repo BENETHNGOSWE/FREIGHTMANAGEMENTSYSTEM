@@ -33,7 +33,7 @@ class InvoiceController extends Controller
     {
         $this->data['customer'] = Customer::all();
         $this->data['Load'] = Loadpackage::all();
-        $this->data['invoice'] = Invoice::where('client_id', $this->fms_id)->get();
+        $this->data['invoices'] = Invoice::where('client_id', $this->fms_id)->get();
         return view('dashboards.admin.invoices.index', $this->data);
     }
 

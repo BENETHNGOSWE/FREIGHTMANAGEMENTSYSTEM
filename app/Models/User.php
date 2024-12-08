@@ -50,8 +50,9 @@ class User extends Authenticatable
 
     public function customer()
     {
-        return $this->belongsTo(Customer::class);
+        return $this->hasOne(Customer::class, 'user_id'); // Assuming 'user_id' exists in 'customers' table
     }
+    
 
     public function patients()
     {
