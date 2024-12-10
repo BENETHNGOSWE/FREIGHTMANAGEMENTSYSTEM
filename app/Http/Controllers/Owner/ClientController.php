@@ -100,7 +100,7 @@ class ClientController extends Controller
                     'password' => Hash::make($validated['password']),
                     'client_id' => $client->id,
                     'phone' => $validated['phone'],
-                    'user_type' => 'admin',
+                    'user_type' => 'user',
                     'status' => '1',
                     'photo' => 'user_default.png',
                 ];
@@ -111,7 +111,7 @@ class ClientController extends Controller
                     $user->$value = $userData[$value];
                 }
                 $user->save();
-                $user->assignRole(Role::findByName('admin'));
+                // $user->assignRole(Role::findByName('admin'));
 
                 if ($user) {
                     $adminData = [
@@ -135,7 +135,6 @@ class ClientController extends Controller
                 }
             }
             DB::commit();
-            
         } catch (\Throwable $th) {
             DB::rollBack();
             \Log::error($th->getMessage() . '' . $th->getTraceAsString() . '');
@@ -165,7 +164,7 @@ class ClientController extends Controller
         $this->data['client'] = $client;
         $this->data['client_list'] = client::all();
         $this->data['clienttypes'] = clientType::pluck('name', 'id');
-        $this->data['admin'] = clientAdmin::where('client_id', $client->id)->first(); 
+        $this->data['admin'] = clientAdmin::where('client_id', $client->id)->first();
         return view('dashboards.owner.clients.show', $this->data);
     }
 
@@ -186,30 +185,29 @@ class ClientController extends Controller
     public function update(Request $request, client $client)
     {
         $validated = $this->validate_client($request, $client);
-    
+
         try {
             DB::beginTransaction();
-            $client ->getFillable();
-            foreach($client->getFillable() as $key => $value) {
-                if($value != 'client_logo') {
+            $client->getFillable();
+            foreach ($client->getFillable() as $key => $value) {
+                if ($value != 'client_logo') {
                     $client->$value = $validated[$value]; // Handle missing attributes gracefully
                 }
             }
-    
+
             $client->save();
             DB::commit();
-    
         } catch (\Throwable $th) {
             DB::rollBack();
-            \Log::error($th->getMessage(). ' ' . $th->getTraceAsString().'');
+            \Log::error($th->getMessage() . ' ' . $th->getTraceAsString() . '');
             return redirect()->back()->with('error', $th->getMessage());
         }
 
         if ($request->hasFile('client_logo')) {
             $old_image = $client->client_logo;
-            delete_file($old_image); 
+            delete_file($old_image);
             $image = $request->file('client_logo');
-            $filename = \Str::slug($validated['client_name']).'.'.$image->getClientOriginalExtension();
+            $filename = \Str::slug($validated['client_name']) . '.' . $image->getClientOriginalExtension();
             upload_image($image, $filename, 200);
             $validated['client_logo'] = $filename;
             $client->update(['client_logo' => $validated['client_logo']]);
@@ -218,7 +216,6 @@ class ClientController extends Controller
 
         return redirect()->route('list.clients')->with('success', 'client updated successfully');
     }
-    
 
     /**
      * Remove the specified resource from storage.
@@ -226,5 +223,50 @@ class ClientController extends Controller
     public function destroy(client $client)
     {
         //
+    }
+
+    public function assignPackage(Client $client, $stafftype_id)
+    {
+        try {
+            DB::beginTransaction();
+
+            // Find the package
+            $package = Stafftype::findOrFail($stafftype_id);
+
+            // Get the roles associated with this package
+            $packageRoles = $package->roles;
+
+            // Find the primary admin user for this client
+            $adminUser = User::where('client_id', $client->id)
+                ->where('user_type', 'user')
+                ->first();
+
+            if ($adminUser) {
+                // Remove any existing roles
+                $adminUser->roles()->detach();
+
+                // Assign new roles from the package
+                foreach ($packageRoles as $role) {
+                    $adminUser->assignRole($role);
+                }
+
+                // Optionally update user type to admin if the package warrants it
+                $adminUser->user_type = 'admin';
+                $adminUser->save();
+
+                // Optionally attach package to client
+                $client->package_id = $stafftype_id;
+                $client->save();
+            }
+
+            DB::commit();
+
+            return redirect()->back()->with('success', 'Package assigned successfully');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            \Log::error($th->getMessage() . '' . $th->getTraceAsString() . '');
+
+            return redirect()->back()->with('error', 'Failed to assign package');
+        }
     }
 }
