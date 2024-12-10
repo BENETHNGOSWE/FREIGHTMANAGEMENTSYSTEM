@@ -74,6 +74,16 @@ class Client extends Model
         return $this->hasMany(Container::class);
     }
 
+    public function customercategory()
+    {
+        return $this->hasMany(Customercategory::class);
+    }
+
+    public function customerlead()
+    {
+        return $this->hasMany(Customerlead::class);
+    }
+
     public function subscriptions()
     {
         return $this->hasMany(Subscription::class);

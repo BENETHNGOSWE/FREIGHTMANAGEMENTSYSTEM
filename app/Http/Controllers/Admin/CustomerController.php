@@ -106,7 +106,6 @@ class CustomerController extends Controller
                 $customer = Customer::create($validated);
     
                 if ($customer) {
-                    // Redirect to the load creation page
                     return redirect()->route('admin.create.loadpackage', ['customer_id' => $customer->id])
                         ->with('success', 'Customer added successfully! You can now add a load package.');
                 }

@@ -61,4 +61,23 @@ Route::prefix('/')
         Route::put('unittype/update/{unittype}', [App\Http\Controllers\Admin\UnittypeController::class, 'update'])->name('admin.update.unittype');
         Route::get('unittype/show/{unittype}', [App\Http\Controllers\Admin\UnittypeController::class, 'show'])->name('admin.show.unittype');
         Route::delete('unittype/delete/{unittype}', [App\Http\Controllers\Admin\UnittypeController::class, 'delete'])->name('admin.delete.unittype');
+
+          // Customercategories Manage Here
+          Route::get('category', [App\Http\Controllers\Admin\CustomercategoryController::class, 'index'])->name('admin.list.customercategory');
+          Route::get('categorycreate', [App\Http\Controllers\Admin\CustomercategoryController::class, 'create'])->name('admin.create.customercategory');
+          Route::post('category/store', [App\Http\Controllers\Admin\CustomercategoryController::class, 'store'])->name('admin.store.customercategory');
+          Route::get('category/edit/{customercategory}', [App\Http\Controllers\Admin\CustomercategoryController::class, 'edit'])->name('admin.edit.customercategory');
+          Route::put('category/update/{customercategory}', [App\Http\Controllers\Admin\CustomercategoryController::class, 'update'])->name('admin.update.customercategory');
+          Route::get('category/show/{customercategory}', [App\Http\Controllers\Admin\CustomercategoryController::class, 'show'])->name('admin.show.customercategory');
+          Route::delete('category/delete/{customercategory}', [App\Http\Controllers\Admin\CustomercategoryController::class, 'delete'])->name('admin.delete.customercategory');
+
+
+          // Customerleads Manage Here
+          Route::get('customerlead', [App\Http\Controllers\Admin\CustomerleadController::class, 'index'])->name('admin.list.customerlead');
+          Route::get('customerleadcreate', [App\Http\Controllers\Admin\CustomerleadController::class, 'create'])->name('admin.create.customerlead');
+          Route::post('customerlead/store', [App\Http\Controllers\Admin\CustomerleadController::class, 'store'])->name('admin.store.customerlead');
+          Route::get('customerlead/edit/{customerlead}', [App\Http\Controllers\Admin\CustomerleadController::class, 'edit'])->name('admin.edit.customerlead');
+          Route::put('customerlead/update/{customerlead}', [App\Http\Controllers\Admin\CustomerleadController::class, 'update'])->name('admin.update.customerlead');
+          Route::get('customerlead/show/{customerlead}', [App\Http\Controllers\Admin\CustomerleadController::class, 'show'])->name('admin.show.customerlead');
+          Route::delete('customerlead/delete/{customerlead}', [App\Http\Controllers\Admin\CustomerleadController::class, 'delete'])->name('admin.delete.customerlead');
     });

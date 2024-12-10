@@ -54,7 +54,7 @@
                         </a></li>
 
                 </ul>
-               
+
                 <ul aria-expanded="false">
                     <li><a href="{{ route('admin.loadtrackingpage.loadpackage') }}">
                             <i class="fa-solid fa-location-arrow"></i>
@@ -74,7 +74,7 @@
                             <i class="fas fa-microscope"></i>
                             <span>Chat With Customer</span>
                         </a></li>
-                    <li><a href="{{ route('admin.message.index')}}">
+                    <li><a href="{{ route('admin.message.index') }}">
                             <i class="fas fa-mercury"></i>
                             <span>Message List</span>
                         </a></li>
@@ -120,10 +120,48 @@
                             <i class="fas fa-microscope"></i>
                             <span>Chat With Customer</span>
                         </a></li>
-                    <li><a href="{{ route('admin.message.index')}}">
+                    <li><a href="{{ route('admin.message.index') }}">
                             <i class="fas fa-mercury"></i>
                             <span>Message List</span>
                         </a></li>
+
+                </ul>
+            </li>
+
+            <li>
+                <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    <i class="fas fa-pills"></i>
+                    <span class="nav-text">Category</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('admin.create.customercategory') }}">
+                            <i class="fa-solid fa-list-ol"></i>
+                            <span>Customer Categories</span>
+                        </a></li>
+                    
+                    <li><a href="{{ route('admin.list.customercategory') }}">
+                            <i class="fa-solid fa-list-ol"></i>
+                            <span>Categories List</span>
+                        </a></li>    
+
+                </ul>
+            </li>
+
+            <li>
+                <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    <i class="fas fa-pills"></i>
+                    <span class="nav-text">Leads</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('admin.create.customerlead') }}">
+                            <i class="fa-solid fa-list-ol"></i>
+                            <span>Customer Leads</span>
+                        </a></li>
+                    
+                    <li><a href="{{ route('admin.list.customerlead') }}">
+                            <i class="fa-solid fa-list-ol"></i>
+                            <span>Leads List</span>
+                        </a></li>    
 
                 </ul>
             </li>

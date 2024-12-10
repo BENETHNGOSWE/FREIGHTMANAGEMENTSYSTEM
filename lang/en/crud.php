@@ -152,6 +152,18 @@ return [
             'customer_gender' => 'Gender',
         ],
     ],
+    
+    'customercategories' => [
+        'name' => 'Category',
+        'index_title' => 'Category List',
+        'create_title' => 'Create Category',
+        'edit_title' => 'Edit Category',
+        'show_title' => 'Show Category',
+        'inputs' => [
+            'categoryname' => 'Category Name',
+            'categorydescription' => 'Category Description',
+        ],
+    ],
 
     'loadpackagetypes' => [
         'name' => 'Load Types',

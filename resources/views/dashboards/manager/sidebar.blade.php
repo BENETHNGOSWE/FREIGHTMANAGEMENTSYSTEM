@@ -80,6 +80,25 @@
                 </ul>
             </li>
 
+            <li>
+                <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    <i class="fas fa-pills"></i>
+                    <span class="nav-text">Category</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('admin.create.customercategory') }}">
+                            <i class="fa-solid fa-list-ol"></i>
+                            <span>Customer Categories</span>
+                        </a></li>
+                    
+                    <li><a href="{{ route('admin.list.customercategory') }}">
+                            <i class="fa-solid fa-list-ol"></i>
+                            <span>Categories List</span>
+                        </a></li>    
+
+                </ul>
+            </li>
+
             {{-- <li>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                     <i class="fa-solid fa-database"></i>
