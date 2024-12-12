@@ -24,4 +24,13 @@ Route::prefix('/')
 
         Route::resource('users', App\Http\Controllers\User\UserController::class);
         Route::get('users/{userId}/delete', [App\Http\Controllers\User\UserController::class, 'destroy']);
+
+        // Package Manage Here
+        Route::get('package', [App\Http\Controllers\Owner\PackageController::class, 'index'])->name('owner.list.package');
+        Route::get('packagecreate', [App\Http\Controllers\Owner\PackageController::class, 'create'])->name('owner.create.package');
+        Route::post('packagestore', [App\Http\Controllers\Owner\PackageController::class, 'store'])->name('owner.store.package');
+        Route::get('package-edit-package/{package}', [App\Http\Controllers\Owner\PackageController::class, 'edit'])->name('owner.edit.package');
+        Route::put('package-update-package/{package}', [App\Http\Controllers\Owner\PackageController::class, 'update'])->name('owner.update.package');
+        Route::get('package-show-package/{package}', [App\Http\Controllers\Owner\PackageController::class, 'show'])->name('owner.show.package');
+        Route::delete('package-delete-package/{package}', [App\Http\Controllers\Owner\PackageController::class, 'delete'])->name('owner.delete.package');
     });

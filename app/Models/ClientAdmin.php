@@ -41,4 +41,9 @@ class ClientAdmin extends Model
     {
         return $this->belongsTo(InvoiceLoad::class);
     }
+
+    public function kodapackage()
+    {
+        return $this->belongsTo(Kodapackage::class);
+    }
 }

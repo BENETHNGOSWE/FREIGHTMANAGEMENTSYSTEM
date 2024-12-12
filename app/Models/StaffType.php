@@ -21,4 +21,9 @@ class StaffType extends Model
     {
         return $this->hasMany(Staff::class);
     }
+
+    public function kodapackage()
+    {
+        return $this->belongsTo(Kodapackage::class);
+    }
 }

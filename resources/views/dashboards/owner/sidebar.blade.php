@@ -19,6 +19,19 @@
             <li><a href="#"><i class="fa fa-file" style="font-size: 16px;"></i> Onboard Details</a></li>
           </ul>
         </li>
+
+        <li>
+          <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+            <i class="fa fa-circle-h"></i>
+            <span class="nav-text">Packages</span>
+          </a>
+          <ul aria-expanded="false">
+            <li><a href="{{ route('owner.create.package') }}"><i class="fa fa-house-medical" style="font-size: 16px;"></i> Create</a></li>
+            <li><a href="{{ route('owner.list.package') }}"><i class="fa fa-file" style="font-size: 16px;"></i> List</a></li>
+          </ul>
+        </li>
+
+
         <li>
           <a class="ai-icon" href="#" aria-expanded="false">
             <i class="fa fa-filter-circle-dollar"></i>
@@ -46,7 +59,7 @@
           </a>
         </li>
         <li>
-          <a class="ai-icon" href="#" aria-expanded="false">
+          <a class="ai-icon" href="{{ route('owner.create.package') }}" aria-expanded="false">
             <i class="fa fa-box-open"></i>
             <span class="nav-text">Packages</span>
           </a>
