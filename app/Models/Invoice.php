@@ -17,6 +17,7 @@ class Invoice extends Model
         'status',
         'customer_id',
         'client_id',
+        'user_id',
     ];
 
     // Optional: Define relationships if needed
@@ -43,5 +44,10 @@ class Invoice extends Model
     public function loadpackage()
     {
         return $this->hasMany(Loadpackage::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

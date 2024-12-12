@@ -80,4 +80,9 @@ Route::prefix('/')
           Route::put('customerlead/update/{customerlead}', [App\Http\Controllers\Admin\CustomerleadController::class, 'update'])->name('admin.update.customerlead');
           Route::get('customerlead/show/{customerlead}', [App\Http\Controllers\Admin\CustomerleadController::class, 'show'])->name('admin.show.customerlead');
           Route::delete('customerlead/delete/{customerlead}', [App\Http\Controllers\Admin\CustomerleadController::class, 'delete'])->name('admin.delete.customerlead');
+
+          // Message Manage Here
+        Route::get('/message', [App\Http\Controllers\Admin\MessageController::class, 'index'])->name('admin.message.index');
+        Route::post('/messagecreate', [App\Http\Controllers\Admin\MessageController::class, 'sendMessage'])->name('admin.sendmessage');
+        Route::get('/message-form', [App\Http\Controllers\Admin\MessageController::class, 'showSendMessageForm'])->name('admin.message');
     });

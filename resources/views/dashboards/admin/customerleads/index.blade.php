@@ -5,12 +5,12 @@
         <div class="form-head align-items-center d-flex mb-sm-4 mb-3">
             <div class="me-auto">
                 <h2 class="text-black font-w600">Customer Leads List</h2>
-                <p class="mb-1">Dashboard / <span><a class="text-primary" href="appointment-add.html">Customer
+                <p class="mb-1">Dashboard / <span><a class="text-primary" href="#">Customer Leads
                             List</a></span>
                 </p>
             </div>
             <div>
-                <a href="{{ route('admin.create.customer') }}" class="btn btn-primary me-3">+ Add Costomer</a>
+                <a href="{{ route('admin.create.customerlead') }}" class="btn btn-primary me-3">+ Add Leads</a>
             </div>
         </div>
         <div class="row">

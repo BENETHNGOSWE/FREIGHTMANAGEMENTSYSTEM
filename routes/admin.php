@@ -20,10 +20,7 @@ Route::prefix('/')
         Route::get('staff-show-staff/{staff}', [App\Http\Controllers\Admin\StaffController::class, 'show'])->name('admin.show.staff');
         Route::delete('staff-delete-staff/{staff}', [App\Http\Controllers\Admin\StaffController::class, 'delete'])->name('admin.delete.staff');
 
-        // Message Manage Here
-        Route::get('/message', [App\Http\Controllers\Admin\MessageController::class, 'index'])->name('admin.message.index');
-        Route::post('/messagecreate', [App\Http\Controllers\Admin\MessageController::class, 'sendMessage'])->name('admin.sendmessage');
-        Route::get('/message-form', [App\Http\Controllers\Admin\MessageController::class, 'showSendMessageForm'])->name('admin.message');
+        
 
         
         // Route::get('/messagemultiple', [App\Http\Controllers\Admin\MessageController::class, 'indexmultiple'])->name('admin.message.indexmultiple');

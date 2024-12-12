@@ -31,9 +31,14 @@ class InvoiceController extends Controller
 
     public function index()
     {
-        $this->data['customer'] = Customer::all();
-        $this->data['Load'] = Loadpackage::all();
-        $this->data['invoices'] = Invoice::where('client_id', $this->fms_id)->get();
+        if (auth()->user()->hasRole('admin')){
+            $this->data['customer'] = Customer::all();
+            $this->data['Load'] = Loadpackage::all();
+            $this->data['invoices'] = Invoice::where('client_id', $this->fms_id)->get();
+            
+        }else {
+            $this->data['invoices'] = auth()->user()->invoices;
+        }
         return view('dashboards.admin.invoices.index', $this->data);
     }
 

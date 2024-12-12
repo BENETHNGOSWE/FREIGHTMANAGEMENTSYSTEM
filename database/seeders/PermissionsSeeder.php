@@ -15,7 +15,10 @@ class PermissionsSeeder extends Seeder
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         $actions = ['list', 'view', 'create', 'update', 'delete'];
-        $models = ['banks', 'branches', 'containers', 'clients', 'client_admins', 'clientpayments', 'client_types', 'countries', 'customers', 'customercategories', 'customerleads', 'messages', 'modules', 'packages', 'loadpackagetypes', 'loadpackages', 'staffs', 'staff_types', 'payments', 'role', 'subscriptions', 'subscription_invoices', 'subscription_tokens', 'userroles', 'roles', 'permissions', 'users', 'unit_types', 'invoices', 'invoice_loads'];
+        $models = ['banks', 'branches', 'containers', 'clients', 'client_admins', 'clientpayments', 'client_types',
+                    'countries', 'customers', 'customercategories', 'customerleads', 'messages', 'modules', 'packages', 
+                    'loadpackagetypes', 'loadpackages', 'staffs', 'staff_types', 'payments', 'role', 'subscriptions', 'subscription_invoices',
+                    'subscription_tokens', 'userroles', 'roles', 'permissions', 'users', 'unit_types', 'invoices', 'invoice_loads'];
 
         foreach ($models as $model) {
             foreach ($actions as $action) {
@@ -27,7 +30,21 @@ class PermissionsSeeder extends Seeder
         }
 
         $manager = Role::firstOrCreate(['name' => 'manager', 'guard_name' => 'web']);
-        $manager->syncPermissions(['view invoices', 'create customerleads', 'update customerleads', 'delete customerleads', 'create customercategories', 'update customercategories', 'delete customercategories', 'create loadpackages', 'update loadpackages', 'delete loadpackages', 'create loadpackagetypes', 'update loadpackagetypes', 'delete loadpackagetypes']);
+        $manager->syncPermissions([
+            'view banks', 'create banks', 'update banks', 'delete banks',
+            'view branches', 'create branches', 'update branches', 'delete branches',
+            'view containers', 'create containers', 'update containers', 'delete containers',
+            'view customers', 'create customers', 'update customers', 'delete customers',
+            'view customercategories', 'create customercategories', 'update customercategories', 'delete customercategories',
+            'view customerleads', 'create customerleads', 'update customerleads', 'delete customerleads',
+            'view messages', 'create messages', 'update messages', 'delete messages',
+            'view loadpackagetypes', 'create loadpackagetypes', 'update loadpackagetypes', 'delete loadpackagetypes',
+            'view loadpackages', 'create loadpackages', 'update loadpackages', 'delete loadpackages',
+            'view unit_types', 'create unit_types', 'update unit_types', 'delete unit_types',
+            'view invoices', 'create invoices', 'update invoices', 'delete invoices',
+            'view invoice_loads', 'create invoice_loads', 'update invoice_loads', 'delete invoice_loads',
+        ]);
+        
 
         $admin = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
         $admin->syncPermissions(Permission::all()->except(['create clients', 'update clients', 'delete clients', 'create clientadmins', 'update clientadmins', 'delete clientadmins']));
@@ -42,3 +59,5 @@ class PermissionsSeeder extends Seeder
         }
     }
 }
+
+

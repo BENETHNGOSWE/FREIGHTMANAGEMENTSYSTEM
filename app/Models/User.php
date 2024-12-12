@@ -48,9 +48,9 @@ class User extends Authenticatable
         return $this->belongsTo(Client::class);
     }
 
-    public function customer()
+    public function customers()
     {
-        return $this->hasOne(Customer::class, 'user_id'); // Assuming 'user_id' exists in 'customers' table
+        return $this->hasMany(Customer::class, 'user_id'); // Assuming 'user_id' exists in 'customers' table
     }
     
     public function customerlead()
@@ -81,5 +81,10 @@ class User extends Authenticatable
     public function loadpackages()
     {
         return $this->hasMany(Loadpackage::class);
+    }
+
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class);
     }
 }
