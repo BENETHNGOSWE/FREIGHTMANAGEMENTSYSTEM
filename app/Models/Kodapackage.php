@@ -29,4 +29,9 @@ class Kodapackage extends Model
     {
         return $this->belongsTo(StaffType::class);
     }
+
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class, 'package_id');
+    }
 }

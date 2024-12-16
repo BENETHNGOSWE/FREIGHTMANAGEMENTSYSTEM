@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Models\Customer;
 use App\Models\ClientAdmin;
+use App\Models\Customerlead;
 use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
 
@@ -34,17 +35,19 @@ class MessageController extends Controller
         return view('dashboards.admin.messages.index', $this->data);
     }
 
-    public function indexmultiple(){
-        $this->data['multipesender'] = Message::where('client_id', $this->fms_id)->get();
-        return view('dashboards.admin.messages.indexmultiple', $this->data);
-    }
-
     public function showSendMessageForm()
     {
         // $client_id = auth()->user()->client_id;
         $customers = Customer::where('client_id', $this->fms_id)->get();
         $this->data['customers'] = $customers;
         return view('dashboards.admin.messages.create', $this->data);
+    }
+
+// ************************************************************************************
+    // Multiple SenderID
+    public function indexmultiple(){
+        $this->data['multipesender'] = Message::where('client_id', $this->fms_id)->get();
+        return view('dashboards.admin.messages.indexmultiple', $this->data);
     }
 
     public function showSendMessageFormmultiple()
@@ -54,6 +57,23 @@ class MessageController extends Controller
         $this->data['customers'] = $customers;
         return view('dashboards.admin.messages.createmultiple', $this->data);
     }
+
+// ************************************************************************************    
+    // Customer Leads
+    public function indexcustomerlead(){
+        $this->data['customerleads'] = Customerlead::where('client_id', $this->fms_id)->get();
+        return view('dashboards.kodasms.messages.indexlead', $this->data);
+    }
+
+    public function showSendMessageFormlead()
+    {
+        // $client_id = auth()->user()->client_id;
+        $customerleads = Customerlead::where('client_id', $this->fms_id)->get();
+        $this->data['customerleads'] = $customerleads;
+        return view('dashboards.kodasms.messages.createleads', $this->data);
+    }
+
+// ************************************************************************************
 
     public function sendMessage(Request $request)
     {

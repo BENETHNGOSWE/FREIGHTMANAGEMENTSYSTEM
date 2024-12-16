@@ -38,18 +38,15 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($clientadmins as $package)
+                                @forelse($kodapackages as $package)
                                     <tr>
                                         <td>
                                             {{ $loop->iteration }}
                                         </td>
                                         
                                         
-                                        <td  style="width: 40%;">{{ $package->package_firstname . " " . $package->package_middlename . " " . $package->package_lastname  ?? '-' }}</td>
+                                        <td  style="width: 40%;">{{ $package->name  ?? '-' }}</td>
                                         <td  style="width: 20%;">{{ $package->user->user_type ?? '-' }}</td>
-                                        <td>
-                                            {!! user_status($package->user->status)!!}
-                                        </td>
                                         <td class="text-center" style="width: 134px;">
                                             <div role="group" aria-label="Row Actions" class="btn-group">
 

@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('/')
     ->middleware('auth')
     ->group(function () {
+
+        Route::get('/validate_token', [\App\Http\Controllers\Admin\AdminDashboardController::class, 'validate_subscription_token'])->name('admin.validate_subscription_token');
+
         //Profile Manage Here
         Route::get('profile', [App\Http\Controllers\Admin\AdminDashboardController::class, 'indexprofile'])->name('admin.list.profile');
         Route::get('profile/edit/{clientadmin}', [App\Http\Controllers\Admin\AdminDashboardController::class, 'edit'])->name('admin.edit.profile');

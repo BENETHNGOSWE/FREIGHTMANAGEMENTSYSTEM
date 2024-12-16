@@ -119,6 +119,11 @@ class Client extends Model
         return $this->hasMany(Payment::class);
     }
 
+    public function sendernames()
+    {
+        return $this->belongsToMany(Sendername::class, 'client_sendername');
+    }
+
     public function subscriptionInvoices()
     {
         return $this->hasMany(SubscriptionInvoice::class);

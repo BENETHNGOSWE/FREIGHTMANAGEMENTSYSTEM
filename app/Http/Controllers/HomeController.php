@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Owner\OwnerController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Manager\ManagerDashboardController;
+use App\Http\Controllers\KodaSMS\SMSManagerDashboardController;
 
 class HomeController extends Controller
 {
@@ -42,7 +43,10 @@ class HomeController extends Controller
                 return $this->adminDashboard();
 
             case 'manager':
-                return $this->managerDashboard();    
+                return $this->managerDashboard();  
+                
+            case 'kodasmspackage' :
+                return $this->smsadminDashboard();   
 
             default:
                 return view('home'); 
@@ -64,4 +68,11 @@ class HomeController extends Controller
         $dashboard = new ManagerDashboardController();
         return $dashboard->index($this->fms_id);
     }
+
+    public function smsadminDashboard(){
+        $dashboard = new SMSManagerDashboardController();
+        return $dashboard->index($this->fms_id);
+    }
+
+
 }

@@ -312,6 +312,18 @@ return [
         ],
     ],
 
+    'sendernames' => [
+        'name' => 'Sender Name',
+        'index_title' => 'Sender Name List',
+        'new_title' => 'New Sender Name',
+        'create_title' => 'Create Sender Name',
+        'edit_title' => 'Edit Sender Name',
+        'show_title' => 'Show Sender Name',
+        'inputs' => [
+            'name' => 'Sender Name',
+        ],
+    ],
+
     'subscriptions' => [
         'name' => 'Subscriptions',
         'index_title' => 'Subscriptions List',
@@ -364,7 +376,7 @@ return [
     ],
 
     'unittypes' => [
-        'name' => 'Uni Types',
+        'name' => 'Unit Types',
         'index_title' => 'Unit Types List',
         'new_title' => 'New Unit Type',
         'create_title' => 'Create Unit Type',

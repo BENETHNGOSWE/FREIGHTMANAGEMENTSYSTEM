@@ -33,16 +33,16 @@
 
 
         <li>
-          <a class="ai-icon" href="#" aria-expanded="false">
+          <a class="ai-icon" href="{{route('list.subscriptions')}}" aria-expanded="false">
             <i class="fa fa-filter-circle-dollar"></i>
             <span class="nav-text">Subscription</span>
           </a>
         </li>
         <li>
-          <a class="ai-icon" href="{#" aria-expanded="false">
+          <a class="ai-icon" href="{{ route('owner.list.sendername')}}" aria-expanded="false">
             {{-- <i class="fa fa-filter-circle-dollar"></i> --}}
             <i class="fa-solid fa-file-invoice-dollar"></i>
-            <span class="nav-text">Invoices</span>
+            <span class="nav-text">Sender Name</span>
           </a>
         </li>
         <li>

@@ -16,6 +16,7 @@ class Subscription extends Model
         'start_date',
         'expire_date',
         'package_id',
+        'duration_in_month',
         'status',
     ];
 
@@ -28,12 +29,12 @@ class Subscription extends Model
 
     public function client()
     {
-        return $this->belongsTo(Client::class);
+        return $this->belongsTo(Client::class, 'client_id');
     }
 
-    public function package()
+    public function kodapackages()
     {
-        return $this->belongsTo(Package::class);
+        return $this->belongsTo(Kodapackage::class, 'package_id');
     }
 
     public function subscriptionInvoice()

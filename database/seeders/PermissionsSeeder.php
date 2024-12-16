@@ -17,8 +17,8 @@ class PermissionsSeeder extends Seeder
         $actions = ['list', 'view', 'create', 'update', 'delete'];
         $models = ['banks', 'branches', 'containers', 'clients', 'client_admins', 'clientpayments', 'client_types',
                     'countries', 'customers', 'customercategories', 'customerleads', 'messages', 'modules', 'packages', 
-                    'loadpackagetypes', 'loadpackages', 'staffs', 'staff_types', 'payments', 'role', 'subscriptions', 'subscription_invoices',
-                    'subscription_tokens', 'userroles', 'roles', 'permissions', 'users', 'unit_types', 'invoices', 'invoice_loads'];
+                    'loadpackagetypes', 'loadpackages', 'staffs', 'staff_types', 'payments', 'role', 'sendernames', 'subscriptions', 'subscription_invoices',
+                    'subscription_tokens',  'userroles', 'roles', 'permissions', 'users', 'unit_types', 'invoices', 'invoice_loads'];
 
         foreach ($models as $model) {
             foreach ($actions as $action) {
@@ -45,6 +45,12 @@ class PermissionsSeeder extends Seeder
             'view invoice_loads', 'create invoice_loads', 'update invoice_loads', 'delete invoice_loads',
         ]);
         
+        $kodasmspackage = Role::firstOrCreate(['name' => 'kodasmspackage', 'guard_name' => 'web']);
+        $kodasmspackage->syncPermissions([
+            'view customercategories', 'create customercategories', 'update customercategories', 'delete customercategories',
+            'view customerleads', 'create customerleads', 'update customerleads', 'delete customerleads',
+            'view messages', 'create messages', 'update messages', 'delete messages',
+        ]);
 
         $admin = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
         $admin->syncPermissions(Permission::all()->except(['create clients', 'update clients', 'delete clients', 'create clientadmins', 'update clientadmins', 'delete clientadmins']));

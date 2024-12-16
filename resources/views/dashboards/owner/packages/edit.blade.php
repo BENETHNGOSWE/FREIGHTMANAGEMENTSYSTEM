@@ -16,11 +16,11 @@
         <div class="card">
             <div class="card-body">
 
-                <x-form method="PUT" action="{{ route('admin.update.staff', $staff) }}" has-files class="mt-4">
-                    @include('dashboards.admin.staffs.form-input')
+                <x-form method="PUT" action="{{ route('owner.update.package', $kodapackage) }}" has-files class="mt-4">
+                    @include('dashboards.owner.packages.form-input')
 
                     <div class="mt-4">
-                        <a href="{{ route('admin.list.staff') }}" class="btn btn-light">
+                        <a href="{{ route('owner.list.package') }}" class="btn btn-light">
                             <i class="fa-solid fa-backward"></i>
                             @lang('crud.common.back')
                         </a>

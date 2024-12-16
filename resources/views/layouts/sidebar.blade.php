@@ -13,8 +13,8 @@
 @include('dashboards.manager.sidebar')
 @endif
 
-@if(Auth::user()->getRoleNames()[0] == 'receptionist')
-@include('dashboards.receptionist.sidebar')
+@if(Auth::user()->getRoleNames()[0] == 'kodasmspackage')
+@include('dashboards.kodasms.sidebar')
 @endif
 
 @if(Auth::user()->getRoleNames()[0] == 'pharmacist')
