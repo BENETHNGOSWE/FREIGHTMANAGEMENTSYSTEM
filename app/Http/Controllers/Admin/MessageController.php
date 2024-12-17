@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Models\Customer;
+use App\Models\Client;
 use App\Models\ClientAdmin;
 use App\Models\Customerlead;
+use App\Models\Sendername;
 use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
 
@@ -54,7 +56,12 @@ class MessageController extends Controller
     {
         // $client_id = auth()->user()->client_id;
         $customers = Customer::where('client_id', $this->fms_id)->get();
+        $sendernames = Sendername::whereHas('clients', function ($query) {
+            $query->where('clients.id', $this->fms_id);
+        })->get();
+
         $this->data['customers'] = $customers;
+        $this->data['sendernames'] = $sendernames;
         return view('dashboards.admin.messages.createmultiple', $this->data);
     }
 
@@ -67,9 +74,13 @@ class MessageController extends Controller
 
     public function showSendMessageFormlead()
     {
-        // $client_id = auth()->user()->client_id;
         $customerleads = Customerlead::where('client_id', $this->fms_id)->get();
         $this->data['customerleads'] = $customerleads;
+        $sendernames = Sendername::whereHas('clients', function ($query) {
+            $query->where('clients.id', $this->fms_id);
+        })->get();
+    
+        $this->data['sendernames'] = $sendernames;
         return view('dashboards.kodasms.messages.createleads', $this->data);
     }
 
@@ -122,6 +133,52 @@ class MessageController extends Controller
                 return redirect()->back()->with('error', 'No customers selected.');
             }
             $customers = Customer::whereIn('phone', $selectedPhones)->get();
+        }
+
+        if ($customers->isEmpty()) {
+            return redirect()->back()->with('error', 'No customers found.');
+        }
+
+        $allSuccess = true;
+        $failedNumbers = [];
+
+        foreach ($customers as $customer) {
+            $personalizedMessage = str_replace('{{ customer_firstname }}', $customer->customer_firstname, $message);
+
+            $plainMessage = strip_tags($personalizedMessage);
+
+            $response = sendMessagemultipesenderid([$customer->phone], $plainMessage, $senderId);
+
+            if (!$response['success']) {
+                $allSuccess = false;
+                $failedNumbers[] = $customer->phone;
+            }
+        }
+
+        if ($allSuccess) {
+            return redirect()->back()->with('success', 'Messages sent successfully!');
+        } else {
+            $failedMessage = 'Some messages failed to send to the following numbers: ' . implode(', ', $failedNumbers);
+            return redirect()->back()->with('error', $failedMessage);
+        }
+    }
+
+
+    // ************************************
+    public function sendMessageleadsenderid(Request $request)
+    {
+        $senderId = $request->input('sender_id');
+        $sendToAll = $request->input('send_to_all');
+        $message = $request->input('message');
+        $selectedPhones = $request->input('customers', []);
+
+        if ($sendToAll) {
+            $customers = Customerlead::where('client_id', $this->fms_id)->get();
+        } else {
+            if (empty($selectedPhones)) {
+                return redirect()->back()->with('error', 'No customers selected.');
+            }
+            $customers = Customerlead::whereIn('phone', $selectedPhones)->get();
         }
 
         if ($customers->isEmpty()) {

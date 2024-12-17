@@ -1,109 +1,112 @@
 @extends('layouts._master')
 
 @section('content')
-<div class="container-fluid">
-    <div class="form-head align-items-center d-flex mb-sm-4 mb-3">
-        <div class="me-auto">
-            <h2 class="text-black font-w600">Send Message</h2>
-        </div>
-        <div>
-           <p class="mb-1">Dashboard / <span><a class="text-primary" href="{{ route('admin.create.loadpackage') }}">Send Message</a></span></p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="card">
-            <div class="card-body">
-                <form action="{{ route('admin.sendmessage.multiple') }}" method="POST">
-                    @csrf
-                    <div class="form-group">
-                        <label for="sender_id">Sender ID:</label>
-                        <select id="sender_id" name="sender_id" class="form-control" required>
-                            <option value="" disabled selected>Select Sender ID</option>
-                            <option value="KODA TECH">KODA TECH</option>
-                            <option value="BusaraPrint">BusaraPrint</option>
-                            <option value="INFO_SUPPORT">INFO_SUPPORT</option>
-                            <!-- Add more sender IDs here -->
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="send_to_all">
-                            <input type="checkbox" id="send_to_all" name="send_to_all" value="1"> Send to All Customers
-                        </label>
-                    </div>
-                    <div class="table-responsive">
-                        <table id="labtypeTable" class="table table-borderless table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Select</th>
-                                    <th class="text-left" style="white-space: normal; word-wrap: break-word;">
-                                       Customer Name
-                                    </th>
-                                    <th class="text-left" style="white-space: normal; word-wrap: break-word;">
-                                        Customer Mobile No.
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($customers as $customer)
-                                    <tr>
-                                        <td>
-                                            <input type="checkbox" name="customers[]" value="{{ $customer->phone }}">
-                                        </td>
-                                        <td>{{ strtoupper($customer->customer_firstname) }} {{ strtoupper($customer->customer_lastname) }}</td>
-                                        <td>{{ strtoupper($customer->phone) }}</td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td class="text-center py-5" colspan="10">
-                                            @lang('crud.common.no_items_found')
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-    
-                    <!-- Message Input -->
-                    <div class="form-group mt-3">
-                        <label for="message">Message:</label>
-                        <textarea id="message" name="message" class="form-control" required></textarea>
-                    </div>
-    
-                    <!-- Submit Button -->
-                    <button type="submit" class="btn btn-primary">Send Message</button>
-                </form>
+    <div class="container-fluid">
+        <div class="form-head align-items-center d-flex mb-sm-4 mb-3">
+            <div class="me-auto">
+                <h2 class="text-black font-w600">Send Message</h2>
+            </div>
+            <div>
+                <p class="mb-1">Dashboard / <span><a class="text-primary" href="{{ route('admin.create.loadpackage') }}">Send
+                            Message</a></span></p>
             </div>
         </div>
+        <div class="row">
+            <div class="card">
+                <div class="card-body">
+                    <form action="{{ route('admin.sendmessage.multiple') }}" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <label for="sender_id">Select Sender Name:</label>
+                            <select id="sender_id" name="sender_id" class="form-control" required>
+                                <option value="" disabled selected>Select Sender Name</option>
+                                @foreach ($sendernames as $sendername)
+                                    <option value="{{ $sendername->name }}">{{ $sendername->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        
+
+                        <div class="form-group">
+                            <label for="send_to_all">
+                                <input type="checkbox" id="send_to_all" name="send_to_all" value="1"> Send to All
+                                Customers
+                            </label>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="labtypeTable" class="table table-borderless table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Select</th>
+                                        <th class="text-left" style="white-space: normal; word-wrap: break-word;">
+                                            Customer Name
+                                        </th>
+                                        <th class="text-left" style="white-space: normal; word-wrap: break-word;">
+                                            Customer Mobile No.
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse($customers as $customer)
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" name="customers[]" value="{{ $customer->phone }}">
+                                            </td>
+                                            <td>{{ strtoupper($customer->customer_firstname) }}
+                                                {{ strtoupper($customer->customer_lastname) }}</td>
+                                            <td>{{ strtoupper($customer->phone) }}</td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td class="text-center py-5" colspan="10">
+                                                @lang('crud.common.no_items_found')
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Message Input -->
+                        <div class="form-group mt-3">
+                            <label for="message">Message:</label>
+                            <textarea id="message" name="message" class="form-control" required></textarea>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
     </div>
-    
-</div>
 
-<script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
 
-<script>
-    // Initialize CKEditor
-    CKEDITOR.replace('message', {
-        height: 300,
-        removePlugins: 'elementspath',
-        resize_enabled: false
-    });
+    <script>
+        // Initialize CKEditor
+        CKEDITOR.replace('message', {
+            height: 300,
+            removePlugins: 'elementspath',
+            resize_enabled: false
+        });
 
-    // Replace &nbsp; with a normal space on form submission
-    document.querySelector('form').addEventListener('submit', function(e) {
-        const editorData = CKEDITOR.instances.message.getData();
-        const cleanData = editorData.replace(/&nbsp;/g, ' '); // Replace non-breaking spaces
-        CKEDITOR.instances.message.setData(cleanData);
-    });
+        // Replace &nbsp; with a normal space on form submission
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const editorData = CKEDITOR.instances.message.getData();
+            const cleanData = editorData.replace(/&nbsp;/g, ' '); // Replace non-breaking spaces
+            CKEDITOR.instances.message.setData(cleanData);
+        });
 
-    // Enable or disable checkboxes based on 'Send to All' checkbox
-    document.getElementById('send_to_all').addEventListener('change', function() {
-        const checkboxes = document.querySelectorAll('input[name="customers[]"]');
-        checkboxes.forEach(function(checkbox) {
-            checkbox.disabled = this.checked;
-        }.bind(this));
-    });
-</script>
+        // Enable or disable checkboxes based on 'Send to All' checkbox
+        document.getElementById('send_to_all').addEventListener('change', function() {
+            const checkboxes = document.querySelectorAll('input[name="customers[]"]');
+            checkboxes.forEach(function(checkbox) {
+                checkbox.disabled = this.checked;
+            }.bind(this));
+        });
+    </script>
 @endsection
 
 @push('scripts')

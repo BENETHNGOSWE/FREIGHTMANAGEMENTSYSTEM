@@ -180,9 +180,15 @@
                         </a></li>
 
                 </ul>
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('owner.list.assignname') }}">
+                            <i class="fa-solid fa-location-arrow"></i>
+                            <span>Sender Name</span>
+                        </a></li>
+                </ul>
             </li>
 
         </ul>
 
     </div>
-</div>
+</div>>

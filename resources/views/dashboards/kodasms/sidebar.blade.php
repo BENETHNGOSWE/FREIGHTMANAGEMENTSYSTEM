@@ -14,7 +14,7 @@
                     <span class="nav-text">Message</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{{ route('admin.messagelead') }}">
+                    <li><a href="{{ route('admin.message.lead') }}">
                             <i class="fas fa-microscope"></i>
                             <span>Chat With Customer</span>
                         </a></li>
@@ -66,33 +66,12 @@
                     <span class="nav-text">Settings</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{{ route('admin.list.payment') }}">
-                            <i class="fas fa-building"></i>
-                            <span>Payment Infomation</span>
-                        </a></li>
-
-                </ul>
-                <ul aria-expanded="false">
-                    <li><a href="{{ route('admin.list.branch') }}">
-                            <i class="fas fa-building"></i>
-                            <span>Branches</span>
-                        </a></li>
-
-                </ul>
-                <ul aria-expanded="false">
-                    <li><a href="{{ route('admin.list.unittype') }}">
+                    <li><a href="{{ route('owner.list.assignname') }}">
                             <i class="fa-solid fa-location-arrow"></i>
-                            <span>Units</span>
+                            <span>Sender Name</span>
                         </a></li>
-
                 </ul>
-                <ul aria-expanded="false">
-                    <li><a href="{{ route('admin.list.loadpackagetpye') }}">
-                            <i class="fa-solid fa-location-arrow"></i>
-                            <span>Loads Types</span>
-                        </a></li>
-
-                </ul>
+                
             </li>
         </ul>
 

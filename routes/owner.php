@@ -44,6 +44,7 @@ Route::prefix('/')
         Route::get('sendername/show/{sendername}', [App\Http\Controllers\Owner\SendernameController::class, 'show'])->name('owner.show.sendername');
         Route::delete('sendername/delete/{sendername}', [App\Http\Controllers\Owner\SendernameController::class, 'delete'])->name('owner.delete.sendername');
 
+      
          //Owner Manage Subscription
          Route::get('/owner-list-subscriptions', [\App\Http\Controllers\Owner\SubscriptionController::class, 'list_subscriptions'])->name('list.subscriptions');
          Route::get('/owner-create-subscriptions', [\App\Http\Controllers\Owner\SubscriptionController::class, 'create'])->name('create.subscriptions');

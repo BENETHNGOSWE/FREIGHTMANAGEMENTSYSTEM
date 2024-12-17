@@ -55,7 +55,11 @@ Route::prefix('/')
         Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
         Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
 
-        
+          // Assignsendername Manage Here
+          Route::get('assignname', [App\Http\Controllers\Owner\AssignnameController::class, 'index'])->name('owner.list.assignname');
+          Route::get('assignnamecreate', [App\Http\Controllers\Owner\AssignnameController::class, 'create'])->name('owner.create.assignname');
+          Route::post('assignname/store', [App\Http\Controllers\Owner\AssignnameController::class, 'store'])->name('owner.store.assignname');
+  
 
         Route::resource('roles', RoleController::class);
         Route::resource('permissions', PermissionController::class);

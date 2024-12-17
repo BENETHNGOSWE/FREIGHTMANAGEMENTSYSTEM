@@ -4,7 +4,7 @@
       <ul class="metismenu" id="menu">
        
         <li>
-          <a href="#" class="ai-icon" aria-expanded="false">
+          <a href="{{ route('home')}}" class="ai-icon" aria-expanded="false">
             <i class="fa fa-gauge"></i>
             <span class="nav-text">Dashboard</span>
           </a>
@@ -46,10 +46,10 @@
           </a>
         </li>
         <li>
-          <a class="ai-icon" href="#" aria-expanded="false">
+          <a class="ai-icon" href="{{ route('owner.list.assignname')}}" aria-expanded="false">
             {{-- <i class="fa fa-filter-circle-dollar"></i> --}}
             <i class="fa-solid fa-money-check-dollar"></i>
-            <span class="nav-text">Payments</span>
+            <span class="nav-text">Assign Name</span>
           </a>
         </li>
         <li>

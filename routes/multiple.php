@@ -88,6 +88,6 @@ Route::prefix('/')
 
         // CustomerLead Manage Here
         Route::post('/messagecreatelead', [App\Http\Controllers\Admin\MessageController::class, 'sendMessageleadsenderid'])->name('admin.sendmessage.lead');        
-        Route::get('/message-form-lead', [App\Http\Controllers\Admin\MessageController::class, 'showSendMessageFormmultiple'])->name('admin.message.lead');
-        Route::get('/message-form-lead', [App\Http\Controllers\Admin\MessageController::class, 'showSendMessageFormlead'])->name('admin.messagelead');
+        Route::get('/message-form-lead', [App\Http\Controllers\Admin\MessageController::class, 'showSendMessageFormmultiple'])->name('admin.message.multple');
+        Route::get('/message-form-lead', [App\Http\Controllers\Admin\MessageController::class, 'showSendMessageFormlead'])->name('admin.message.lead');
     });
