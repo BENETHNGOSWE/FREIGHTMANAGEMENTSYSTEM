@@ -20,6 +20,7 @@ class LoadPackageHelper
         $invoice->prefix = 'LOAD';
         $invoice->customer_id = $customerId;
         $invoice->client_id = $clientId;
+        $invoice->user_id = auth()->id();   
         $invoice->total_amount = 0;
         $invoice->total_balance = 0;
         $invoice->total_transportfee = 0;

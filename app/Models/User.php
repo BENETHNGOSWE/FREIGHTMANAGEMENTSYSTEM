@@ -53,9 +53,9 @@ class User extends Authenticatable
         return $this->hasMany(Customer::class, 'user_id'); // Assuming 'user_id' exists in 'customers' table
     }
     
-    public function customerlead()
+    public function customerleads()
     {
-        return $this->hasOne(Customerlead::class, 'user_id');
+        return $this->hasMany(Customerlead::class, 'user_id');
     }
 
     public function patients()

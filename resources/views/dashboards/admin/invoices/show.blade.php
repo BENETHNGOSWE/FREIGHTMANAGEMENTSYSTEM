@@ -160,57 +160,7 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="card">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        S/N
-                                    </th>
-                                    <th class="text-left">
-                                        Prefix
-                                    </th>
-
-                                    <th class="text-left">
-                                        Payment Type
-                                    </th>
-                                    <th class="text-left">
-                                        Amount
-                                    </th>
-
-                                    <th class="text-left">
-                                        Date Paid
-                                    </th>
-
-                                    <th class="text-center">
-                                        @lang('crud.common.actions')
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                                <tr>
-                                    <td style="width: 30px !important;"></td>
-                                    <td></td>
-
-                                </tr>
-
-                                <tr>
-                                    <td class="text-center py-5" colspan="5">
-                                        @lang('crud.common.no_items_found')
-                                    </td>
-                                </tr>
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+    
 
     </div>
     @push('scripts')

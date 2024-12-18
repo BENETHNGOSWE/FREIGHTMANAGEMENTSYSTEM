@@ -17,7 +17,7 @@
     </x-inputs.group>
 
     <x-inputs.group class="col-sm-4">
-        <x-inputs.select name="category_id" label="Branch" required>
+        <x-inputs.select name="category_id" label="Category" required>
             @php $selected = old('category_id', ($editing ? $customerlead->category_id : '')) @endphp
             <option disabled {{ empty($selected) ? 'selected' : '' }}>Please select the Category</option>
             @foreach ($customercategories as $value => $label)

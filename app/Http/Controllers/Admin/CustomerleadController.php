@@ -36,9 +36,12 @@ class CustomerleadController extends Controller
      */
     public function index()
     {
-        $this->data['customerleads'] = Customerlead::where('client_id', $this->fms_id)
-            ->latest()
-            ->get();
+        if(auth()->user()->hasRole('admin')){
+            $this->data['customerleads'] = Customerlead::where('client_id', $this->fms_id)->get();
+        } else {
+            $this->data['customerleads'] = auth()->user()->customerleads;
+        }
+       
         return view('dashboards.admin.customerleads.index', $this->data);
     }
 
