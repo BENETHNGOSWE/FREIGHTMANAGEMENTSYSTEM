@@ -53,6 +53,11 @@ class User extends Authenticatable
         return $this->hasMany(Customer::class, 'user_id'); // Assuming 'user_id' exists in 'customers' table
     }
     
+    public function customercategories()
+    {
+        return $this->hasMany(Customercategory::class, 'user_id');
+    }
+
     public function customerleads()
     {
         return $this->hasMany(Customerlead::class, 'user_id');

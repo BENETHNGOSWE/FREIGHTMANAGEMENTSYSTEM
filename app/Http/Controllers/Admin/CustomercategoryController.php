@@ -32,6 +32,7 @@ class CustomercategoryController extends Controller
     public function index()
     {
         $this->data['customercategories'] = Customercategory::where('client_id', $this->fms_id)->get();
+
         return view('dashboards.admin.customercategories.index', $this->data);
     }
 
@@ -67,7 +68,6 @@ class CustomercategoryController extends Controller
         }
         return redirect()->route('admin.list.customercategory')->with('success', 'Category Added Successfuly');
     }
-
 
     public function show(Request $request, Customercategory $customercategory): View
     {
