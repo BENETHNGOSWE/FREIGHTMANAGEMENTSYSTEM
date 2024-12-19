@@ -5,6 +5,9 @@ namespace App\Http\Controllers\KodaSMS;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use App\Models\Customerlead;
+use App\Models\Customercategory;
+use App\Models\Message;
 
 class SMSManagerDashboardController extends Controller
 {
@@ -26,12 +29,16 @@ class SMSManagerDashboardController extends Controller
 
     public function index($fms_id): View
     {
+        $clientid = auth()->user()->client_id;
+        $this->data['customerleads'] = Customerlead::where('client_id', $clientid)->count();
+        $this->data['customercategories'] = Customercategory::where('client_id', $clientid)->count();
+        $this->data['messentsent'] = Message::where('client_id', $clientid)->count();
+        $this->data['messagefailed'] = Message::where('client_id', $clientid)->where('status', 'failed')->count();
         return view('dashboards.kodasms.dashboard', $this->data);
     }
 
     public function validate_subscription_token(): View
     {
-            return view('dashboards.admin.validate_subscription_token',$this->data);
-
+        return view('dashboards.admin.validate_subscription_token', $this->data);
     }
 }

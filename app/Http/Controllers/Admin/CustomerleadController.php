@@ -36,12 +36,12 @@ class CustomerleadController extends Controller
      */
     public function index()
     {
-        if(auth()->user()->hasRole('admin')){
-            $this->data['customerleads'] = Customerlead::where('client_id', $this->fms_id)->get();
-        } else {
-            $this->data['customerleads'] = auth()->user()->customerleads;
-        }
-       
+        // if(auth()->user()->hasRole('admin')){
+        //     $this->data['customerleads'] = Customerlead::where('client_id', $this->fms_id)->get();
+        // } else {
+        //     $this->data['customerleads'] = auth()->user()->customerleads;
+        // }
+        $this->data['customerleads'] = Customerlead::where('client_id', $this->fms_id)->get();
         return view('dashboards.admin.customerleads.index', $this->data);
     }
 
@@ -70,8 +70,7 @@ class CustomerleadController extends Controller
             'customer_lastname' => ['required', 'max:255', 'string'],
             'category_id' => ['required', 'exists:customercategories,id'],
             'customer_email' => 'required|email|unique:users,email' . $id,
-            'phone' => ['nullable', 'max:255', 'string', 'unique:users,phone'],
-            // 'customer_address' => ['required', 'max:255', 'string'],
+            'phone' => ['nullable', 'max:255', 'string'],
         ];
         if ($id) {
             $rules['customer_email'] = 'required|email|unique:users,email,' . $id;

@@ -74,7 +74,7 @@ class StaffController extends Controller
             'staff_lastname' => ['required', 'max:255', 'string'],
             'staff_gender' => ['required', 'max:255', 'string'],
             'staff_email' => 'required|email|unique:users,email',
-            'phone' => ['nullable', 'max:255', 'string', 'unique:users,phone'],
+            'phone' => ['nullable', 'max:255', 'string'],
             'staff_type_id' => ['required', 'max:255', 'exists:staff_types,id'],
             'branch_id' => ['required', 'max:255', 'exists:branches,id'],
             'staff_address' => ['required', 'max:255', 'string'],

@@ -25,8 +25,8 @@
                     <div class="card-body">
                         <div class="media align-items-center">
                             <div class="media-body mr-3">
-                                <h2 class="fs-34 text-black font-w600">2</h2>
-                                <span>Total Containers</span>
+                                <h2 class="fs-34 text-black font-w600">{{$customerleads}}</h2>
+                                <span>Total Leads</span>
                             </div>
                             <i class="fa fa-hospital-user text-primary" style="font-size:40px;"></i>
                         </div>
@@ -45,8 +45,8 @@
                         <div class="card-body">
                             <div class="media align-items-center">
                                 <div class="media-body mr-3">
-                                    <h2 class="fs-34 text-black font-w600">2</h2>
-                                    <span>Total Staff</span>
+                                <h2 class="fs-34 text-black font-w600">{{$customercategories}}</h2>
+                                    <span>Total Categories</span>
                                 </div>
                                 <i class="fa fa-house-medical text-primary" style="font-size:40px;"></i>
                             </div>
@@ -67,8 +67,8 @@
                         <div class="card-body">
                             <div class="media align-items-center">
                                 <div class="media-body mr-3">
-                                    <h2 class="fs-34 text-black font-w600">2</h2>
-                                    <span>Total Customers</span>
+                                    <h2 class="fs-34 text-black font-w600">{{$messentsent}}</h2>
+                                    <span>Total Message Sent</span>
                                 </div>
                                 <i class="fa fa-user-doctor text-primary" style="font-size:40px;"></i>
                             </div>
@@ -88,8 +88,8 @@
                     <div class="card-body">
                         <div class="media align-items-center">
                             <div class="media-body mr-3">
-                                <h2 class="fs-34 text-black font-w600">2</h2>
-                                <span>Total Loads</span>
+                                <h2 class="fs-34 text-black font-w600">{{$messagefailed}}</h2>
+                                <span>Total Message Fail</span>
                             </div>
                             <i class="fa-solid fa-user-nurse text-primary" style="font-size:40px;"></i>
                         </div>

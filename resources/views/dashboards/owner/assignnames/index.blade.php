@@ -55,7 +55,7 @@
                                                 <em>No sender names assigned</em>
                                             @endif
                                         </td>
-                                        <td class="text-center" style="width: 134px;">
+                                        {{-- <td class="text-center" style="width: 134px;">
                                             <div role="group" aria-label="Row Actions" class="btn-group">
                                                 @can('update', $sendername)
                                                     <a href="{{ route('owner.edit.sendername', $sendername) }}">
@@ -81,7 +81,7 @@
                                                     </form>
                                                 @endcan
                                             </div>
-                                        </td>
+                                        </td> --}}
                                     </tr>
                                 @empty
                                     <tr>

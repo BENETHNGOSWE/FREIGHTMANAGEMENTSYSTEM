@@ -153,6 +153,13 @@ class MessageController extends Controller
                 $allSuccess = false;
                 $failedNumbers[] = $customer->phone;
             }
+
+            Message::create([
+                'customer_number' => $customer->phone,
+                'content' => $plainMessage,
+                'status' => $response['success'] ? 'delivered' : 'failed',
+                'client_id' => $this->fms_id, 
+            ]);
         }
 
         if ($allSuccess) {
@@ -170,25 +177,25 @@ class MessageController extends Controller
         $senderId = $request->input('sender_id');
         $sendToAll = $request->input('send_to_all');
         $message = $request->input('message');
-        $selectedPhones = $request->input('customers', []);
+        $selectedPhones = $request->input('customerleads', []);
 
         if ($sendToAll) {
-            $customers = Customerlead::where('client_id', $this->fms_id)->get();
+            $customerleads = Customerlead::where('client_id', $this->fms_id)->get();
         } else {
             if (empty($selectedPhones)) {
                 return redirect()->back()->with('error', 'No customers selected.');
             }
-            $customers = Customerlead::whereIn('phone', $selectedPhones)->get();
+            $customerleads = Customerlead::whereIn('phone', $selectedPhones)->get();
         }
 
-        if ($customers->isEmpty()) {
+        if ($customerleads->isEmpty()) {
             return redirect()->back()->with('error', 'No customers found.');
         }
 
         $allSuccess = true;
         $failedNumbers = [];
 
-        foreach ($customers as $customer) {
+        foreach ($customerleads as $customer) {
             $personalizedMessage = str_replace('{{ customer_firstname }}', $customer->customer_firstname, $message);
 
             $plainMessage = strip_tags($personalizedMessage);
@@ -199,6 +206,13 @@ class MessageController extends Controller
                 $allSuccess = false;
                 $failedNumbers[] = $customer->phone;
             }
+
+            Message::create([
+                'customer_number' => $customer->phone,
+                'content' => $plainMessage,
+                'status' => $response['success'] ? 'delivered' : 'failed',
+                'client_id' => $this->fms_id, 
+            ]);
         }
 
         if ($allSuccess) {

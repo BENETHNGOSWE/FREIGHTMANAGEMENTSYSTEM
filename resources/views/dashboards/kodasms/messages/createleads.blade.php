@@ -95,7 +95,7 @@
         // Replace &nbsp; with a normal space on form submission
         document.querySelector('form').addEventListener('submit', function(e) {
             const editorData = CKEDITOR.instances.message.getData();
-            const cleanData = editorData.replace(/&nbsp;/g, ' '); // Replace non-breaking spaces
+            const cleanData = editorData.replace(/&nbsp;/g, ' '); 
             CKEDITOR.instances.message.setData(cleanData);
         });
 

@@ -65,10 +65,8 @@ class CustomerController extends Controller
             'customer_firstname' => ['required', 'max:255', 'string'],
             'customer_middlename' => ['nullable', 'max:255', 'string'],
             'customer_lastname' => ['required', 'max:255', 'string'],
-            // 'customer_gender' => ['required', 'in:male,female'],
             'customer_email' => 'required|email|unique:users,email' . $id,
-            'phone' => ['nullable', 'max:255', 'string', 'unique:users,phone'],
-            // 'customer_address' => ['required', 'max:255', 'string'],
+            'phone' => ['nullable', 'max:255', 'string'],
         ];
         if ($id) {
             $rules['customer_email'] = 'required|email|unique:users,email,' . $id;

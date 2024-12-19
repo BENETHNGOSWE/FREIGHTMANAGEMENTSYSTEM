@@ -20,15 +20,13 @@ class AssignnameController extends Controller
         $user = auth()->user();
 
         if (auth()->user()->hasRole('owner')) {
-
             $this->data['clients'] = Client::with('sendernames')->get();
-
         } else {
             $this->data['clients'] = Client::with('sendernames')
-                ->where('id', $user->client_id) 
+                ->where('id', $user->client_id)
                 ->get();
         }
-        return view('dashboards.owner.assignnames.index',$this->data);
+        return view('dashboards.owner.assignnames.index', $this->data);
     }
 
     public function create()
@@ -61,7 +59,7 @@ class AssignnameController extends Controller
         // Attach the sender name to the client
         $client->sendernames()->syncWithoutDetaching([$request->sendername_id]);
         $client->load('sendernames');
-        
+
         return response()->json([
             'message' => 'Sender name assigned successfully!',
             'client' => $client,
