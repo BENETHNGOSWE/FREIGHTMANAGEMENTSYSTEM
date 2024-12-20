@@ -3,12 +3,19 @@
 @section('content')
     <div class="container-fluid">
         <div class="form-head align-items-center d-flex mb-sm-4 mb-3">
+
+
+        </div>
+
+        <div class="form-head align-items-center d-flex mb-sm-4 mb-3">
             <div class="me-auto">
                 <h2 class="text-black font-w600">Invoice</h2>
                 <p class="mb-1">Dashboard / <span><a class="text-primary" href="">Invoice
                             Show</a></span></p>
             </div>
-
+            <div>
+                <a href="{{ route('admin.pdf.invoice', $invoice->id) }}" class="btn btn-primary me-3">Download PDF</a>
+            </div>
         </div>
         <div class="row">
             <div class="card">
@@ -21,12 +28,11 @@
                         </div>
 
                         <div class="col-md-4">
-                            <h4>04/10/2024</h4>
-                        </div>
+                            <h4>{{ \Carbon\Carbon::today()->format('d/m/Y') }}</h4>
+                        </div>                        
 
                         <div class="col-md-4">
                             <h4>status: <span>{!! invoice_status($invoice->status) !!}</span></h4>
-                            <a href="{{ route('admin.pdf.invoice', $invoice->id) }}" class="btn btn-primary mt-2">Download PDF</a>
                         </div>
                     </div>
 
@@ -135,7 +141,8 @@
                                     <tr>
                                         <td class="left"><strong>Total </strong></td>
                                         <td class="right">
-                                            <strong>{{ number_format($invoice->total_amount + $invoice->total_transportfee, 2) }} /=</strong><br />
+                                            <strong>{{ number_format($invoice->total_amount + $invoice->total_transportfee, 2) }}
+                                                /=</strong><br />
 
                                         </td>
                                     </tr>
@@ -160,7 +167,7 @@
             </div>
         </div>
 
-    
+
 
     </div>
     @push('scripts')

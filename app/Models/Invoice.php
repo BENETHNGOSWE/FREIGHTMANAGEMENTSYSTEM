@@ -41,7 +41,7 @@ class Invoice extends Model
         return $this->hasMany(InvoiceLoad::class);
     }
 
-    public function loadpackage()
+    public function loadpackages()
     {
         return $this->hasMany(Loadpackage::class);
     }

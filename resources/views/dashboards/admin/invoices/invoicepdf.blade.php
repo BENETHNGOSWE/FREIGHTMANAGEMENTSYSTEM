@@ -394,7 +394,7 @@
         <address style="margin-top: -1em; font-size: 10px">
             <p style="margin: 0; font-weight: bold;">Printed By:</p>
         <p style="margin: 5px 0;">Name: <strong>{{ auth()->user()->name }}</strong></p>
-        <p style="margin: 5px 0;">Date: <strong>{{ now()->format('F j, Y, g:i A') }}</strong></p>
+        <p style="margin: 5px 0;">Date: <strong>{{ \Carbon\Carbon::now('Africa/Nairobi')->format('F j, Y, g:i A') }}</strong></p>
         </address>
     </header>
     <hr>

@@ -143,6 +143,8 @@ class LoadpackageController extends Controller
     {
         $this->authorize('update', $loadpackage);
 
+        $oldPrice = $loadpackage->load_price;
+
         $validate = $request->validate([
             'load_name' => ['required', 'string', 'max:255'],
             'load_trucking_number' => ['required', 'string', 'max:255'],
@@ -157,6 +159,24 @@ class LoadpackageController extends Controller
         ]);
 
         $loadpackage->update($validate);
+
+        $priceDifference = floatval($validate['load_price']) - floatval($oldPrice);
+
+        $invoiceLoad = InvoiceLoad::where('loadpackage_id', $loadpackage->id)->first();
+
+        if ($invoiceLoad) {
+            $invoice = Invoice::find($invoiceLoad->invoice_id);
+
+            if ($invoice) {
+                $invoice->total_amount += $priceDifference;
+                $invoice->total_balance += $priceDifference;
+                $invoice->save();
+
+                $invoiceLoad->load_price = $validate['load_price'];
+                $invoiceLoad->save();
+            }
+        }
+
         return redirect()->route('admin.list.loadpackage')->with('success', 'Load updated successfully');
     }
 
