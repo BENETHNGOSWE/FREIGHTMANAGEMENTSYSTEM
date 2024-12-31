@@ -89,22 +89,51 @@
         CKEDITOR.replace('message', {
             height: 300,
             removePlugins: 'elementspath',
-            resize_enabled: false
+            resize_enabled: false,
+            enterMode: CKEDITOR.ENTER_BR,
+            shiftEnterMode: CKEDITOR.ENTER_P,
+            // Configure entities handling
+            entities: false,
+            entities_latin: false,
+            entities_greek: false,
+            entities_processNumerical: false,
+            // Configure how spaces are handled
+            basicEntities: true,
+            forceSimpleAmpersand: true
         });
 
-        // Replace &nbsp; with a normal space on form submission
+        // Handle form submission
         document.querySelector('form').addEventListener('submit', function(e) {
-            const editorData = CKEDITOR.instances.message.getData();
-            const cleanData = editorData.replace(/&nbsp;/g, ' '); 
-            CKEDITOR.instances.message.setData(cleanData);
+            // Get the editor instance
+            const editor = CKEDITOR.instances.message;
+
+            // Get the editor content
+            let content = editor.getData();
+
+            // Clean up the content
+            content = content
+                // Replace &nbsp; with regular spaces
+                .replace(/&nbsp;/g, ' ')
+                // Replace multiple consecutive spaces with a single space
+                .replace(/\s+/g, ' ')
+                // Replace <p> tags with newlines
+                .replace(/<p>/g, '\n')
+                .replace(/<\/p>/g, '')
+                // Remove any remaining HTML tags
+                .replace(/<[^>]*>/g, '')
+                // Trim extra whitespace
+                .trim();
+
+            // Update the editor content with cleaned text
+            editor.setData(content);
         });
 
         // Enable or disable checkboxes based on 'Send to All' checkbox
         document.getElementById('send_to_all').addEventListener('change', function() {
             const checkboxes = document.querySelectorAll('input[name="customerleads[]"]');
-            checkboxes.forEach(function(checkbox) {
+            checkboxes.forEach(checkbox => {
                 checkbox.disabled = this.checked;
-            }.bind(this));
+            });
         });
     </script>
 @endsection

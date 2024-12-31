@@ -67,10 +67,10 @@ class CustomerleadController extends Controller
         $rules = [
             'customer_firstname' => ['required', 'max:255', 'string'],
             'customer_middlename' => ['nullable', 'max:255', 'string'],
-            'customer_lastname' => ['required', 'max:255', 'string'],
+            'customer_lastname' => ['nullable', 'max:255', 'string'],
             'category_id' => ['required', 'exists:customercategories,id'],
-            'customer_email' => 'required|email|unique:users,email' . $id,
-            'phone' => ['nullable', 'max:255', 'string'],
+            'customer_email' => 'nullable|email|unique:users,email' . $id,
+            'phone' => ['required', 'max:255', 'string'],
         ];
         if ($id) {
             $rules['customer_email'] = 'required|email|unique:users,email,' . $id;

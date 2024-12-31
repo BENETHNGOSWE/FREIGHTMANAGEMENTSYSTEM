@@ -13,7 +13,7 @@
 
     <x-inputs.group class="col-sm-4">
         <x-inputs.text name="customer_lastname" label="Last Name" :value="old('lastname', $editing ? $customerlead->customer_lastname : '')" maxlength="255"
-            placeholder="Last name" required></x-inputs.text>
+            placeholder="Last name" ></x-inputs.text>
     </x-inputs.group>
 
     <x-inputs.group class="col-sm-4">
@@ -29,7 +29,7 @@
 
     <x-inputs.group class="col-sm-4">
         <x-inputs.email name="customer_email" label="Email" :value="old('email', $editing ? $customerlead->customer_email : '')" maxlength="255" placeholder="Email"
-            required></x-inputs.email>
+            ></x-inputs.email>
     </x-inputs.group>
 
     <x-inputs.group class="col-sm-4">
