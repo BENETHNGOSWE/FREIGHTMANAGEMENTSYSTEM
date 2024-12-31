@@ -17,6 +17,7 @@
             <div class="card-body">
 
                 <x-form method="POST" action="{{ route('store.clients') }}" has-files class="mt-4">
+                    @csrf
                     @include('dashboards.owner.clients.form-inputs')
 
                     <div class="mt-4">
