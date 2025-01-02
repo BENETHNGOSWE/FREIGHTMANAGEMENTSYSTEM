@@ -57,7 +57,7 @@
                                         </td>
                                         <td>{{ strtoupper($customer->customer_firstname . ' ' . $customer->customer_middlename . ' ' . $customer->customer_lastname) ?? '-' }}
                                         </td>
-                                        <td>{{ strtoupper($customer->customer_no) ?? '-' }}</td>
+                                        <td>{{ strtoupper($customer->phone) ?? '-' }}</td>
                                        
                                         <td class="text-center" style="width: 134px;">
                                             <div role="group" aria-label="Row Actions" class="btn-group">
