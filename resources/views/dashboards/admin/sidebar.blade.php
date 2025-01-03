@@ -134,12 +134,12 @@
             </li>
 
             <li>
-                <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                <a class="has-arrow ai-icon" href="#" aria-expanded="false">
                     <i class="fas fa-building"></i>
                     <span class="nav-text">Manage Profile</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="#">
+                    <li><a href="{{ route('admin.show.profile', $clientadmin) }}">
                             <i class="fas fa-building"></i>
                             <span>Your Profile</span>
                         </a></li>

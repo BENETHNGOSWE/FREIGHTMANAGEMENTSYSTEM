@@ -4,7 +4,7 @@
 <div class="container-fluid">
     <div class="form-head align-items-center d-flex mb-sm-4 mb-3">
         <div class="me-auto">
-            <h2 class="text-black font-w600">Edit Invoice Status</h2>
+            <h2 class="text-black font-w600">Edit Your Profile</h2>
         </div>
 
         <div>

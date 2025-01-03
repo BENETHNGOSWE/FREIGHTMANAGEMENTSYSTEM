@@ -59,6 +59,11 @@ Route::prefix('/')
           Route::get('assignname', [App\Http\Controllers\Owner\AssignnameController::class, 'index'])->name('owner.list.assignname');
           Route::get('assignnamecreate', [App\Http\Controllers\Owner\AssignnameController::class, 'create'])->name('owner.create.assignname');
           Route::post('assignname/store', [App\Http\Controllers\Owner\AssignnameController::class, 'store'])->name('owner.store.assignname');
+        
+          Route::get('profile', [App\Http\Controllers\Admin\AdminDashboardController::class, 'indexprofile'])->name('admin.list.profile');
+          Route::get('profile/edit/{clientadmin}', [App\Http\Controllers\Admin\AdminDashboardController::class, 'edit'])->name('admin.edit.profile');
+          Route::put('profile/update/{clientadmin}', [App\Http\Controllers\Admin\AdminDashboardController::class, 'update'])->name('admin.update.profile');
+          Route::get('profile-show/{clientadmin}', [App\Http\Controllers\Admin\AdminDashboardController::class, 'show'])->name('admin.show.profile');
   
 
         Route::resource('roles', RoleController::class);

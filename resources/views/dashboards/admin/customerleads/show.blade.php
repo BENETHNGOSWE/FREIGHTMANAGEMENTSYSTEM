@@ -4,8 +4,8 @@
     <div class="container-fluid">
         <div class="form-head align-items-center d-flex mb-sm-4 mb-3">
             <div class="me-auto">
-                <h2 class="text-black font-w600">Loads</h2>
-                <p class="mb-1">Dashboard / <span><a class="text-primary" href="">Load
+                <h2 class="text-black font-w600">Customer Leads</h2>
+                <p class="mb-1">Dashboard / <span><a class="text-primary" href="">Leads
                             Show</a></span></p>
             </div>
 
@@ -46,34 +46,27 @@
                                                         <thead>
                                                             <tr>
                                                                 <th style="width: 20%">First Name</th>
-                                                                <th>{{ $customer->customer_firstname ?? '-' }}</th>
+                                                                <th>{{ $customerlead->customer_firstname ?? '-' }}</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             <tr>
                                                                 <td>Middle Name</td>
-                                                                <td>{{ $customer->customer_middlename ?? '-' }}</td>
+                                                                <td>{{ $customerlead->customer_middlename ?? '-' }}</td>
                                                             </tr>
                                                             <tr>
                                                                 <td>Last Name</td>
-                                                                <td>{{ $customer->customer_lastname ?? '-' }}</td>
+                                                                <td>{{ $customerlead->customer_lastname ?? '-' }}</td>
                                                             </tr>
                                                             <tr>
                                                                 <td>Email</td>
-                                                                <td>{{ $customer->customer_email ?? '-' }}</td>
+                                                                <td>{{ $customerlead->customer_email ?? '-' }}</td>
                                                             </tr>
                                                             <tr>
                                                                 <td>Phone</td>
-                                                                <td>{{ $customer->phone ?? '-' }}</td>
+                                                                <td>{{ $customerlead->phone ?? '-' }}</td>
                                                             </tr>
-                                                            <tr>
-                                                                <td>Gender</td>
-                                                                <td>{{ ucfirst($customer->customer_gender) ?? '-' }}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Address</td>
-                                                                <td>{{ $customer->customer_address ?? '-' }}</td>
-                                                            </tr>
+                                                          
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -93,14 +86,14 @@
                     </div>
 
                     <div class="mt-4 d-flex">
-                        <a href="{{ route('admin.edit.customerlead', $customer) }}" class="btn btn-outline-success">
+                        <a href="{{ route('admin.edit.customerlead', $customerlead) }}" class="btn btn-outline-success">
                             <i class="icon fa fa-add"></i>
                             Edit
                         </a>
 
-                        @can('delete', $customer)
+                        @can('delete', $customerlead)
                             <form class="delete_form mx-3"
-                                action="{{ route('admin.delete.customer', ['customer' => $customer->id]) }}" method="POST">
+                                action="{{ route('admin.delete.customer', ['customer' => $customerlead->id]) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-outline-danger delete_button">

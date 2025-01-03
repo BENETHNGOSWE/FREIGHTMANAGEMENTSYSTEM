@@ -20,7 +20,7 @@
                         <div style="display: flex; justify-content: space-between;">
                             <h4 class="card-title">@lang('crud.customers.index_title')</h4>
                         </div>
-                        <table id="customerTable" class="table table-borderless table-hover">
+                        <table id="loadtypeTable" class="table table-borderless table-hover">
                             <thead>
                                 <tr>
                                     <th>
@@ -107,7 +107,7 @@
 @push('scripts')
     <script>
         (function($) {
-            var table = $("#customerTable").DataTable({
+            var table = $("#loadtypeTable").DataTable({
                 searching: true,
                 paging: true,
                 select: false,

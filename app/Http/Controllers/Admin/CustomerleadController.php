@@ -174,7 +174,7 @@ class CustomerleadController extends Controller
      */
     public function delete(Request $request, $customerlead)
     {
-        $customer = Customerlead::where('id', $customerlead)
+        $customerlead = Customerlead::where('id', $customerlead)
             ->where('client_id', $this->fms_id)
             ->first();
         $this->authorize('delete', $customerlead);
