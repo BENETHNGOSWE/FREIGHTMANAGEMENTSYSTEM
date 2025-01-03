@@ -68,7 +68,6 @@ class ClientController extends Controller
                 'email' => ['required', 'string', 'max:255', 'unique:users,email'],
                 'password' => ['required', 'string', 'max:255', 'confirmed'],
                 'phone' => ['required', 'string', 'max:15'],
-                // 'address' => ['required', 'string', 'max:255'],
             ]);
         }
 

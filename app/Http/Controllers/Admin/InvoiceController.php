@@ -9,6 +9,7 @@ use App\Models\InvoiceLoad;
 use App\Models\Customer;
 use App\Models\Loadpackage;
 use App\Models\Client;
+use App\Models\ClientAdmin;
 use App\Models\Payment;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
