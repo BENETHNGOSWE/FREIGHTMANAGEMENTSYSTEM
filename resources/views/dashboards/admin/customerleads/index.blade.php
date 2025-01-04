@@ -4,13 +4,13 @@
     <div class="container-fluid">
         <div class="form-head align-items-center d-flex mb-sm-4 mb-3">
             <div class="me-auto">
-                <h2 class="text-black font-w600">Customer Leads List</h2>
-                <p class="mb-1">Dashboard / <span><a class="text-primary" href="#">Customer Leads
+                <h2 class="text-black font-w600">Customer List</h2>
+                <p class="mb-1">Dashboard / <span><a class="text-primary" href="appointment-add.html">Customer
                             List</a></span>
                 </p>
             </div>
             <div>
-                <a href="{{ route('admin.create.customerlead') }}" class="btn btn-primary me-3">+ Add Leads</a>
+                <a href="{{ route('admin.create.customer') }}" class="btn btn-primary me-3">+ Add Costomer</a>
             </div>
         </div>
         <div class="row">
@@ -20,7 +20,7 @@
                         <div style="display: flex; justify-content: space-between;">
                             <h4 class="card-title">@lang('crud.customers.index_title')</h4>
                         </div>
-                        <table id="loadtypeTable" class="table table-borderless table-hover">
+                        <table id="customerTable" class="table table-borderless table-hover">
                             <thead>
                                 <tr>
                                     <th>
@@ -35,47 +35,49 @@
                                     <th class="text-left">
                                         @lang('crud.customers.inputs.customer_no')
                                     </th>
+                                    <th class="text-left">
+                                        Add load
+                                    </th>
                                     <th class="text-center">
                                         @lang('crud.common.actions')
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($customerleads as $customer)
+                                @forelse($customerleads as $customerlead)
                                     <tr>
                                         <td>
                                             {{ $loop->iteration }}
                                         </td>
                                         <td class="text-center" style="width: 10%;">
-                                            @if ($customer->image)
-                                                <img src="{{ asset('storage/' . $customer->image) }}" alt=""
+                                            @if ($customerlead->image)
+                                                <img src="{{ asset('storage/' . $customerlead->image) }}" alt=""
                                                     width="50px" height="50px">
                                             @else
                                                 <img src="{{ asset('images/default-user.png') }}" alt=""
                                                     width="50px" height="50px">
                                             @endif
                                         </td>
-                                        <td>{{ strtoupper($customer->customer_firstname . ' ' . $customer->customer_middlename . ' ' . $customer->customer_lastname) ?? '-' }}
+                                        <td>{{ strtoupper($customerlead->customer_firstname . ' ' . $customerlead->customer_middlename . ' ' . $customerlead->customer_lastname) ?? '-' }}
                                         </td>
-                                        <td>{{ strtoupper($customer->phone) ?? '-' }}</td>
-                                       
+                                        <td>{{ strtoupper($customerlead->phone) ?? '-' }}</td>
                                         <td class="text-center" style="width: 134px;">
                                             <div role="group" aria-label="Row Actions" class="btn-group">
 
-                                                <a href="{{ route('admin.edit.customerlead', $customer) }}">
+                                                <a href="{{ route('admin.edit.customerlead', $customerlead) }}">
                                                     <button type="button" class="btn btn-outline-success">
                                                         <i class="fas fa-edit"></i>
                                                     </button>
                                                 </a>
 
-                                                <a href="{{ route('admin.show.customerlead', $customer) }}">
+                                                <a href="{{ route('admin.show.customerlead', $customerlead) }}">
                                                     <button type="button" class="btn btn-outline-primary mx-2">
                                                         <i class="fas fa-eye"></i>
                                                     </button>
                                                 </a>
 
                                                 <form class="delete_form"
-                                                    action="{{ route('admin.delete.customerlead', $customer) }}" method="POST">
+                                                    action="{{ route('admin.delete.customerlead', $customerlead) }}" method="POST">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-outline-danger delete_button">
@@ -107,7 +109,7 @@
 @push('scripts')
     <script>
         (function($) {
-            var table = $("#loadtypeTable").DataTable({
+            var table = $("#customerTable").DataTable({
                 searching: true,
                 paging: true,
                 select: false,

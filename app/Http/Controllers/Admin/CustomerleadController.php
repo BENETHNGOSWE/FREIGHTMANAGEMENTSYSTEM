@@ -106,7 +106,7 @@ class CustomerleadController extends Controller
                 $validated['user_id'] = $user->id;
                 $validated['customer_no'] = $id_number;
                 $validated['client_id'] = $user->client_id;
-                $customer = Customerlead::create($validated);
+                $customerlead = Customerlead::create($validated);
     
                 return redirect()->route('admin.list.customerlead')->with('success', 'Customer Leads created Successfully');
             }
@@ -120,7 +120,7 @@ class CustomerleadController extends Controller
      */
     public function show(Customerlead $customerlead)
     {
-        $this->data['customer'] = $customerlead;
+        $this->data['customerlead'] = $customerlead;
         $this->data['customercategory'] = Customercategory::where('client_id', $this->fms_id)->get();
         return view('dashboards.admin.customerleads.show', $this->data);
     }
