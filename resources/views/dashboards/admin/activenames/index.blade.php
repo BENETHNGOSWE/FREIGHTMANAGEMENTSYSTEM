@@ -9,7 +9,7 @@
                 </p>
             </div>
             <div>
-                <a href="{{ route('home') }}" class="btn btn-primary me-3">Home</a>
+                <a href="{{ route('admin.create.activename') }}" class="btn btn-primary me-3">+ Add Name</a>
             </div>
         </div>
         <div class="row">
