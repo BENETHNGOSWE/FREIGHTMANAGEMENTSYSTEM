@@ -10,7 +10,7 @@
                 </p>
             </div>
             <div>
-                <a href="{{ route('admin.create.customer') }}" class="btn btn-primary me-3">+ Add Costomer</a>
+                <a href="{{ route('admin.create.customerlead') }}" class="btn btn-primary me-3">+ Add Costomer</a>
             </div>
         </div>
         <div class="row">
@@ -18,7 +18,7 @@
                 <div class="card-body">
                     <div class="table-responsive">
                         <div style="display: flex; justify-content: space-between;">
-                            <h4 class="card-title">@lang('crud.customers.index_title')</h4>
+                            <h4 class="card-title">@lang('crud.customerleads.index_title')</h4>
                         </div>
                         <table id="customerTable" class="table table-borderless table-hover">
                             <thead>
@@ -30,10 +30,10 @@
                                         image
                                     </th>
                                     <th class="text-left">
-                                        @lang('crud.customers.inputs.customer_firstname')
+                                        @lang('crud.customerleads.inputs.customer_firstname')
                                     </th>
                                     <th class="text-left">
-                                        @lang('crud.customers.inputs.customer_no')
+                                        @lang('crud.customerleads.inputs.customer_no')
                                     </th>
                                     <th class="text-left">
                                         Add load
@@ -44,48 +44,40 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($customers as $customer)
+                                @forelse($customerleads as $customerlead)
                                     <tr>
                                         <td>
                                             {{ $loop->iteration }}
                                         </td>
                                         <td class="text-center" style="width: 10%;">
-                                            @if ($customer->image)
-                                                <img src="{{ asset('storage/' . $customer->image) }}" alt=""
+                                            @if ($customerlead->image)
+                                                <img src="{{ asset('storage/' . $customerlead->image) }}" alt=""
                                                     width="50px" height="50px">
                                             @else
                                                 <img src="{{ asset('images/default-user.png') }}" alt=""
                                                     width="50px" height="50px">
                                             @endif
                                         </td>
-                                        <td>{{ strtoupper($customer->customer_firstname . ' ' . $customer->customer_middlename . ' ' . $customer->customer_lastname) ?? '-' }}
+                                        <td>{{ strtoupper($customerlead->customer_firstname . ' ' . $customerlead->customer_middlename . ' ' . $customerlead->customer_lastname) ?? '-' }}
                                         </td>
-                                        <td>{{ strtoupper($customer->customer_no) ?? '-' }}</td>
-                                        <td>
-                                            <a
-                                                href="{{ route('admin.create.loadpackage', ['customer_id' => $customer->id]) }}">
-                                                <button type="button" class="btn btn-outline-primary mx-2">
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
-                                            </a>
-                                        </td>
+                                        <td>{{ strtoupper($customerlead->phone) ?? '-' }}</td>
                                         <td class="text-center" style="width: 134px;">
                                             <div role="group" aria-label="Row Actions" class="btn-group">
 
-                                                <a href="{{ route('admin.edit.customer', $customer) }}">
+                                                <a href="{{ route('admin.edit.customerlead', $customerlead) }}">
                                                     <button type="button" class="btn btn-outline-success">
                                                         <i class="fas fa-edit"></i>
                                                     </button>
                                                 </a>
 
-                                                <a href="{{ route('admin.show.customer', $customer) }}">
+                                                <a href="{{ route('admin.show.customerlead', $customerlead) }}">
                                                     <button type="button" class="btn btn-outline-primary mx-2">
                                                         <i class="fas fa-eye"></i>
                                                     </button>
                                                 </a>
 
                                                 <form class="delete_form"
-                                                    action="{{ route('admin.delete.customer', $customer) }}" method="POST">
+                                                    action="{{ route('admin.delete.customerlead', $customerlead) }}" method="POST">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-outline-danger delete_button">
@@ -154,29 +146,6 @@
         });
     </script>
 
-    @if (session('success'))
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                Swal.fire({
-                    title: '{{ session('success') }}',
-                    text: 'Do you want to add a load package now?',
-                    icon: 'success',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, add load package!',
-                    cancelButtonText: 'No, go to customer list'
-                }).then((result) => {
-                    if (result.value) {
-                        window.location.href =
-                            "{{ route('admin.create.loadpackage', ['customer_id' => session('customer_id')]) }}";
-                    } else {
-                        window.location.href = "{{ route('admin.list.customer') }}";
-                    }
-                });
-            });
-        </script>
-    @endif
 @endpush
 @include('layouts.partials.datatable')
 @include('layouts.partials.sweetalert')

@@ -53,5 +53,12 @@ Route::prefix('/')
         Route::get('unittype/show/{unittype}', [App\Http\Controllers\Admin\UnittypeController::class, 'show'])->name('admin.show.unittype');
         Route::delete('unittype/delete/{unittype}', [App\Http\Controllers\Admin\UnittypeController::class, 'delete'])->name('admin.delete.unittype');
 
-      
+        // Activename Manage Here
+        Route::get('activename', [App\Http\Controllers\Admin\ActivesendernameController::class, 'index'])->name('admin.list.activename');
+        Route::get('activenamecreate', [App\Http\Controllers\Admin\ActivesendernameController::class, 'create'])->name('admin.create.activename');
+        Route::post('activename/store', [App\Http\Controllers\Admin\ActivesendernameController::class, 'store'])->name('admin.store.activename');
+        Route::get('activename/edit/{activename}', [App\Http\Controllers\Admin\ActivesendernameController::class, 'edit'])->name('admin.edit.activename');
+        Route::put('activename/update/{activename}', [App\Http\Controllers\Admin\ActivesendernameController::class, 'update'])->name('admin.update.activename');
+        Route::get('activename/show/{activename}', [App\Http\Controllers\Admin\ActivesendernameController::class, 'show'])->name('admin.show.activename');
+        Route::delete('activename/delete/{activename}', [App\Http\Controllers\Admin\ActivesendernameController::class, 'delete'])->name('admin.delete.activename');
     });

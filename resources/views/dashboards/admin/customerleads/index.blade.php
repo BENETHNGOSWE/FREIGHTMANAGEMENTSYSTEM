@@ -5,12 +5,12 @@
         <div class="form-head align-items-center d-flex mb-sm-4 mb-3">
             <div class="me-auto">
                 <h2 class="text-black font-w600">Customer List</h2>
-                <p class="mb-1">Dashboard / <span><a class="text-primary" href="appointment-add.html">Customer
+                <p class="mb-1">Dashboard / <span><a class="text-primary" href="appointment-add.html">Leads
                             List</a></span>
                 </p>
             </div>
             <div>
-                <a href="{{ route('admin.create.customer') }}" class="btn btn-primary me-3">+ Add Costomer</a>
+                <a href="{{ route('admin.create.customerlead') }}" class="btn btn-primary me-3">+ Add Lead</a>
             </div>
         </div>
         <div class="row">
@@ -18,7 +18,7 @@
                 <div class="card-body">
                     <div class="table-responsive">
                         <div style="display: flex; justify-content: space-between;">
-                            <h4 class="card-title">@lang('crud.customers.index_title')</h4>
+                            <h4 class="card-title">@lang('crud.customerleads.index_title')</h4>
                         </div>
                         <table id="customerTable" class="table table-borderless table-hover">
                             <thead>
@@ -30,10 +30,10 @@
                                         image
                                     </th>
                                     <th class="text-left">
-                                        @lang('crud.customers.inputs.customer_firstname')
+                                        @lang('crud.customerleads.inputs.customer_firstname')
                                     </th>
                                     <th class="text-left">
-                                        @lang('crud.customers.inputs.customer_no')
+                                        @lang('crud.customerleads.inputs.customer_no')
                                     </th>
                                     <th class="text-left">
                                         Add load
@@ -44,40 +44,48 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($customerleads as $customerlead)
+                                @forelse($customerleads as $customer)
                                     <tr>
                                         <td>
                                             {{ $loop->iteration }}
                                         </td>
                                         <td class="text-center" style="width: 10%;">
-                                            @if ($customerlead->image)
-                                                <img src="{{ asset('storage/' . $customerlead->image) }}" alt=""
+                                            @if ($customer->image)
+                                                <img src="{{ asset('storage/' . $customer->image) }}" alt=""
                                                     width="50px" height="50px">
                                             @else
                                                 <img src="{{ asset('images/default-user.png') }}" alt=""
                                                     width="50px" height="50px">
                                             @endif
                                         </td>
-                                        <td>{{ strtoupper($customerlead->customer_firstname . ' ' . $customerlead->customer_middlename . ' ' . $customerlead->customer_lastname) ?? '-' }}
+                                        <td>{{ strtoupper($customer->customer_firstname . ' ' . $customer->customer_middlename . ' ' . $customer->customer_lastname) ?? '-' }}
                                         </td>
-                                        <td>{{ strtoupper($customerlead->phone) ?? '-' }}</td>
+                                        <td>{{ strtoupper($customer->phone) ?? '-' }}</td>
+                                        <td>
+                                            <a
+                                                href="{{ route('admin.create.loadpackage', ['customer_id' => $customer->id]) }}">
+                                                <button type="button" class="btn btn-outline-primary mx-2">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                            </a>
+                                        </td>
                                         <td class="text-center" style="width: 134px;">
                                             <div role="group" aria-label="Row Actions" class="btn-group">
 
-                                                <a href="{{ route('admin.edit.customerlead', $customerlead) }}">
+                                                <a href="{{ route('admin.edit.customer', $customer) }}">
                                                     <button type="button" class="btn btn-outline-success">
                                                         <i class="fas fa-edit"></i>
                                                     </button>
                                                 </a>
 
-                                                <a href="{{ route('admin.show.customerlead', $customerlead) }}">
+                                                <a href="{{ route('admin.show.customer', $customer) }}">
                                                     <button type="button" class="btn btn-outline-primary mx-2">
                                                         <i class="fas fa-eye"></i>
                                                     </button>
                                                 </a>
 
                                                 <form class="delete_form"
-                                                    action="{{ route('admin.delete.customerlead', $customerlead) }}" method="POST">
+                                                    action="{{ route('admin.delete.customer', $customer) }}" method="POST">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-outline-danger delete_button">
@@ -145,7 +153,6 @@
             });
         });
     </script>
-
 @endpush
 @include('layouts.partials.datatable')
 @include('layouts.partials.sweetalert')

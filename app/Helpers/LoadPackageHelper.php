@@ -6,6 +6,8 @@ use App\Models\Invoice;
 use App\Models\Loadpackage;
 use App\Models\InvoiceLoad;
 use App\Models\Customer;
+use App\Models\Clientactivename;
+use App\Models\Sendername;
 use Illuminate\Support\Str;
 use DB;
 
@@ -14,13 +16,13 @@ class LoadPackageHelper
     public static function generateInvoice($customerId, $clientId)
     {
         $invoice_no = 'INV-' . date('Ymd') . '-' . strtoupper(Str::random(5));
-        
+
         $invoice = new Invoice();
         $invoice->invoice_no = $invoice_no;
         $invoice->prefix = 'LOAD';
         $invoice->customer_id = $customerId;
         $invoice->client_id = $clientId;
-        $invoice->user_id = auth()->id();   
+        $invoice->user_id = auth()->id();
         $invoice->total_amount = 0;
         $invoice->total_balance = 0;
         $invoice->total_transportfee = 0;
@@ -33,7 +35,7 @@ class LoadPackageHelper
     public static function createLoad($validatedData, $index, $clientId, $customerId, $userId, $branchCode, $invoiceId)
     {
         $load_no = 'LOAD-' . $branchCode . '-' . date('Ymd') . '-' . strtoupper(Str::random(5));
-    
+
         $load = new Loadpackage();
         $load->client_id = $clientId;
         $load->customer_id = $customerId;
@@ -45,29 +47,28 @@ class LoadPackageHelper
         $load->load_price = $validatedData['load_price'][$index];
         $load->load_transport_date = $validatedData['load_transport_date'][$index];
         $load->load_delivery_date = $validatedData['load_delivery_date'][$index];
-    
+
         // Check if 'mode' exists and handle appropriately
         if (isset($validatedData['mode'][$index]) && $validatedData['mode'][$index] === 'ocean') {
             $load->container_id = $validatedData['container_id'][$index] ?? null;
         } else {
             $load->container_id = null;
         }
-    
+
         $load->load_weight_value = $validatedData['load_weight_value'][$index];
         $load->loadpackagetype_id = $validatedData['loadpackagetype_id'][$index];
         $load->unittype_id = $validatedData['unittype_id'][$index];
         $load->save();
-    
+
         InvoiceLoad::create([
             'loadpackage_id' => $load->id,
             'invoice_id' => $invoiceId,
             'client_id' => $clientId,
             'load_price' => $load->load_price,
         ]);
-    
+
         return $load;
     }
-    
 
     public static function updateInvoiceTotals($invoice, $load)
     {
@@ -80,8 +81,14 @@ class LoadPackageHelper
     public static function sendCustomerNotification($customerId, $load_no, $clientName, $load_weight_value, $load_price)
     {
         $customer = Customer::find($customerId);
+        $clientActiveName = Clientactivename::where('client_id', $customer->client_id)->first();
+        $senderName = Sendername::find($clientActiveName->sendername_id)->name;
+
+       
         $message = "Hello {$customer->customer_firstname} {$customer->customer_lastname}, Tunapenda Kukujulisha kuwa mzigo wako kutoka CHINA- GUANGZHOU Tracking No - {$load_no} umepokelewa kwenye warehouse yetu CHINA- GUANGZHOU. Mzigo utaondoka haraka iwezekanavyo.Mzigo wako una {$load_weight_value}Kg, utalipia TSH {$load_price} baada ya Mzigo kufika Ofisini.Ahsante kwa Kusafirisha na {$clientName}";
 
-        return sendMessage($customer->phone, $message);
+        return sendMessage($customer->phone, $message, $senderName);
     }
+
+
 }

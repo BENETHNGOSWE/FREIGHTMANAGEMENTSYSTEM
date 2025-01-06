@@ -3,6 +3,8 @@
 use App\Models\Message;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
+use App\Models\Clientactivename;
+
 
 function trimValues(array $data): array
 {
@@ -361,60 +363,60 @@ function getStatusLabel($status)
     }
 }
 
-function sendMessage($phoneNumbers, $message)
-{
-    if (!is_array($phoneNumbers)) {
-        $phoneNumbers = explode(',', $phoneNumbers);
-    }
+// function sendMessage($phoneNumbers, $message)
+// {
+//     if (!is_array($phoneNumbers)) {
+//         $phoneNumbers = explode(',', $phoneNumbers);
+//     }
 
-    foreach ($phoneNumbers as $phoneNumber) {
-        $phoneNumber = trim($phoneNumber);
-        $postData = [
-            'from' => 'KODA TECH',
-            'to' => $phoneNumber,
-            'text' => $message,
-            'reference' => 'KODA TECH',
-        ];
+//     foreach ($phoneNumbers as $phoneNumber) {
+//         $phoneNumber = trim($phoneNumber);
+//         $postData = [
+//             'from' => 'KODA TECH',
+//             'to' => $phoneNumber,
+//             'text' => $message,
+//             'reference' => 'KODA TECH',
+//         ];
 
-        $curl = curl_init();
-        curl_setopt_array($curl, [
-            CURLOPT_URL => 'https://messaging-service.co.tz/api/sms/v1/text/single',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => json_encode($postData),
-            CURLOPT_HTTPHEADER => ['Authorization:Basic ' . base64_encode(env('SMS_API_KEY') . ':' . env('SMS_SECRET_KEY')), 'Content-Type: application/json', 'Accept: application/json'],
-            CURLOPT_SSL_VERIFYPEER => false,
-        ]);
+//         $curl = curl_init();
+//         curl_setopt_array($curl, [
+//             CURLOPT_URL => 'https://messaging-service.co.tz/api/sms/v1/text/single',
+//             CURLOPT_RETURNTRANSFER => true,
+//             CURLOPT_ENCODING => '',
+//             CURLOPT_MAXREDIRS => 10,
+//             CURLOPT_TIMEOUT => 0,
+//             CURLOPT_FOLLOWLOCATION => true,
+//             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+//             CURLOPT_CUSTOMREQUEST => 'POST',
+//             CURLOPT_POSTFIELDS => json_encode($postData),
+//             CURLOPT_HTTPHEADER => ['Authorization:Basic ' . base64_encode(env('SMS_API_KEY') . ':' . env('SMS_SECRET_KEY')), 'Content-Type: application/json', 'Accept: application/json'],
+//             CURLOPT_SSL_VERIFYPEER => false,
+//         ]);
 
-        $response = curl_exec($curl);
-        curl_close($curl);
+//         $response = curl_exec($curl);
+//         curl_close($curl);
 
-        $response = json_decode($response, true);
+//         $response = json_decode($response, true);
 
-        if (isset($response['success']) && !$response['success']) {
-            return [
-                'success' => false,
-                'message' => 'Failed to send message to ' . $phoneNumber,
-            ];
-        } elseif ($response['messages'][0]['status']['groupName'] != 'PENDING') {
-            return [
-                'success' => false,
-                'message' => 'Failed to send message to ' . $phoneNumber,
-            ];
-        }
-    }
+//         if (isset($response['success']) && !$response['success']) {
+//             return [
+//                 'success' => false,
+//                 'message' => 'Failed to send message to ' . $phoneNumber,
+//             ];
+//         } elseif ($response['messages'][0]['status']['groupName'] != 'PENDING') {
+//             return [
+//                 'success' => false,
+//                 'message' => 'Failed to send message to ' . $phoneNumber,
+//             ];
+//         }
+//     }
 
-    // Return success if all messages are sent
-    return [
-        'success' => true,
-        'message' => 'Messages sent successfully!',
-    ];
-}
+//     // Return success if all messages are sent
+//     return [
+//         'success' => true,
+//         'message' => 'Messages sent successfully!',
+//     ];
+// }
 
 // dynamic senderid changing function
 function sendMessagemultipesenderid($phoneNumbers, $message, $senderId)
@@ -471,3 +473,57 @@ function sendMessagemultipesenderid($phoneNumbers, $message, $senderId)
     ];
 }
 
+function sendMessage($phoneNumbers, $message, $senderName)
+{
+    if (!is_array($phoneNumbers)) {
+        $phoneNumbers = explode(',', $phoneNumbers);
+    }
+
+    foreach ($phoneNumbers as $phoneNumber) {
+        $phoneNumber = trim($phoneNumber);
+        $postData = [
+            'from' => $senderName,
+            'to' => $phoneNumber,
+            'text' => $message,
+            'reference' => 'KODA TECH',
+        ];
+
+        $curl = curl_init();
+        curl_setopt_array($curl, [
+            CURLOPT_URL => 'https://messaging-service.co.tz/api/sms/v1/text/single',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => json_encode($postData),
+            CURLOPT_HTTPHEADER => ['Authorization:Basic ' . base64_encode(env('SMS_API_KEY') . ':' . env('SMS_SECRET_KEY')), 'Content-Type: application/json', 'Accept: application/json'],
+            CURLOPT_SSL_VERIFYPEER => false,
+        ]);
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+        $response = json_decode($response, true);
+
+        if (isset($response['success']) && !$response['success']) {
+            return [
+                'success' => false,
+                'message' => 'Failed to send message to ' . $phoneNumber,
+            ];
+        } elseif ($response['messages'][0]['status']['groupName'] != 'PENDING') {
+            return [
+                'success' => false,
+                'message' => 'Failed to send message to ' . $phoneNumber,
+            ];
+        }
+    }
+
+    // Return success if all messages are sent
+    return [
+        'success' => true,
+        'message' => 'Messages sent successfully!',
+    ];
+}

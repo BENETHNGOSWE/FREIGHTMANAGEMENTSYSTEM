@@ -165,6 +165,30 @@ return [
         ],
     ],
 
+    'customerleads' => [
+        'name' => 'Customer Leads',
+        'index_title' => 'Customer Leads List',
+        'new_title' => 'New Customer Leads',
+        'create_title' => 'Create Customer Leads',
+        'edit_title' => 'Edit Customer Leads',
+        'show_title' => 'Show Customer Leads',
+        'inputs' => [
+            'customer_no' => 'Customer No',
+            'customer_firstname' => 'First Name',
+            'customer_middlename' => 'Middle Name',
+            'customer_lastname' => 'Last Name',
+            'customer_address' => 'Address',
+            'customer_photo' => 'Photo',
+            'customer_city' => 'City',
+            'customer_country' => 'Country',
+            'customer_email' => 'Email',
+            'phone' => 'Phone',
+            'customer_document' => 'Document',
+            'customer_bio' => 'Bio',
+            'customer_gender' => 'Gender',
+        ],
+    ],
+
     'loadpackagetypes' => [
         'name' => 'Load Types',
         'index_title' => 'Load Types List',

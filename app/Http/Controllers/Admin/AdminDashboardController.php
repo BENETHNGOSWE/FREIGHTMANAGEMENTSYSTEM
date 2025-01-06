@@ -27,6 +27,7 @@ class AdminDashboardController extends Controller
         $this->middleware(function ($request, $next) {
             if (Auth::check()) {
                 $this->fms_id = Auth::user()->client_id;
+                $this->data['clientadmin'] = ClientAdmin::where('client_id', $this->fms_id)->first();
             }
 
             return $next($request);

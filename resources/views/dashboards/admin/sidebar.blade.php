@@ -139,7 +139,7 @@
                     <span class="nav-text">Manage Profile</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{{ route('admin.show.profile', $clientadmin) }}">
+                    <li><a href="{{ route('admin.create.activename') }}">
                             <i class="fas fa-building"></i>
                             <span>Your Profile</span>
                         </a></li>
@@ -186,9 +186,15 @@
                             <span>Sender Name</span>
                         </a></li>
                 </ul>
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('admin.list.activename') }}">
+                            <i class="fa-solid fa-location-arrow"></i>
+                            <span>Active Name</span>
+                        </a></li>
+                </ul>
             </li>
 
         </ul>
 
     </div>
-</div>>
+</div>
