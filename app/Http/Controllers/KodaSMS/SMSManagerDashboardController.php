@@ -8,6 +8,7 @@ use Illuminate\View\View;
 use App\Models\Customerlead;
 use App\Models\ClientAdmin;
 use App\Models\Customercategory;
+use App\Models\Customermessage;
 use App\Models\Message;
 
 class SMSManagerDashboardController extends Controller
@@ -31,11 +32,15 @@ class SMSManagerDashboardController extends Controller
     public function index($fms_id): View
     {
         $clientid = auth()->user()->client_id;
+
+        // Fetching relevant data
         $this->data['clientadmin'] = ClientAdmin::where('client_id', $clientid)->first();
         $this->data['customerleads'] = Customerlead::where('client_id', $clientid)->count();
         $this->data['customercategories'] = Customercategory::where('client_id', $clientid)->count();
         $this->data['messentsent'] = Message::where('client_id', $clientid)->count();
         $this->data['messagefailed'] = Message::where('client_id', $clientid)->where('status', 'failed')->count();
+        $this->data['messageLimit'] = Customermessage::where('client_id', $clientid)->value('messageamount') ?? 0;
+
         return view('dashboards.kodasms.dashboard', $this->data);
     }
 

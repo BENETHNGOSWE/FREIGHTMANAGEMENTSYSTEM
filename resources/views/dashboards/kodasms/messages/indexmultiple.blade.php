@@ -34,9 +34,6 @@
                                     <th class="text-left">
                                         Message Status
                                     </th>
-                                    <th class="text-center">
-                                        @lang('crud.common.actions')
-                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -48,21 +45,6 @@
                                         <td>{{ strtoupper($message->customer_number) ?? '-' }}</td>
                                         <td>{{ strtoupper($message->content) ?? '-' }}</td>
                                         <td>{!! return_message_status_badge($message->status) !!}</td>
-                                        <td class="text-center" style="width: 134px;">
-                                            <div role="group" aria-label="Row Actions" class="btn-group">
-
-                                                @can('delete', $message)
-                                                    <form class="delete_form" action="#"
-                                                        method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-outline-danger delete_button">
-                                                            <i class="fas fa-trash"></i>
-                                                        </button>
-                                                    </form>
-                                                @endcan
-                                            </div>
-                                        </td>
                                     </tr>
                                 @empty
                                     <tr>

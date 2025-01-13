@@ -14,7 +14,8 @@
         <div class="row">
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('admin.sendmessage.lead') }}" method="POST">
+                    <form action="{{ route('admin.sendmessage.lead') }}" method="POST"
+                        {{ $canSendMessages ? '' : 'disabled' }}>
                         @csrf
                         <div class="form-group">
                             <label for="sender_id">Sender ID:</label>
@@ -74,8 +75,15 @@
                         </div>
 
                         <!-- Submit Button -->
-                        <button type="submit" class="btn btn-primary">Send Message</button>
+                        <button type="submit" class="btn btn-primary" {{ $canSendMessages ? '' : 'disabled' }}>Send
+                            Message</button>
                     </form>
+                    @if (!$canSendMessages)
+                        <div class="alert alert-warning mt-3">
+                            You have reached your message limit. Please contact the administrator to reset your limit or
+                            assign more messages.
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -85,55 +93,86 @@
     <script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
 
     <script>
-        // Initialize CKEditor
         CKEDITOR.replace('message', {
             height: 300,
             removePlugins: 'elementspath',
             resize_enabled: false,
             enterMode: CKEDITOR.ENTER_BR,
             shiftEnterMode: CKEDITOR.ENTER_P,
-            // Configure entities handling
+            fillEmptyBlocks: false,
+            tabSpaces: 0,
+            basicEntities: false,
             entities: false,
             entities_latin: false,
             entities_greek: false,
             entities_processNumerical: false,
-            // Configure how spaces are handled
-            basicEntities: true,
-            forceSimpleAmpersand: true
+            forceSimpleAmpersand: true,
+            contentsCss: ['body { font-family: sans-serif; }'],
+            autoParagraph: false,
+            allowedContent: true
         });
 
-        // Handle form submission
-        document.querySelector('form').addEventListener('submit', function(e) {
-            // Get the editor instance
-            const editor = CKEDITOR.instances.message;
+        CKEDITOR.instances.message.on('instanceReady', function(ev) {
+            const editor = ev.editor;
 
-            // Get the editor content
+            editor.dataProcessor.htmlFilter.addRules({
+                text: function(text) {
+                    return text
+                        .replace(/&nbsp;/g, ' ')
+                        .replace(/\s+/g, ' ');
+                }
+            });
+
+            editor.on('paste', function(ev) {
+                const text = ev.data.dataValue
+                    .replace(/<p>/g, '\n')
+                    .replace(/<\/p>/g, '')
+                    .replace(/<br>/g, '\n')
+                    .replace(/&nbsp;/g, ' ')
+                    .replace(/<[^>]*>/g, '')
+                    .trim();
+                ev.data.dataValue = text;
+            });
+        });
+
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const editor = CKEDITOR.instances.message;
             let content = editor.getData();
 
-            // Clean up the content
-            content = content
-                // Replace &nbsp; with regular spaces
-                .replace(/&nbsp;/g, ' ')
-                // Replace multiple consecutive spaces with a single space
-                .replace(/\s+/g, ' ')
-                // Replace <p> tags with newlines
-                .replace(/<p>/g, '\n')
-                .replace(/<\/p>/g, '')
-                // Remove any remaining HTML tags
-                .replace(/<[^>]*>/g, '')
-                // Trim extra whitespace
-                .trim();
-
-            // Update the editor content with cleaned text
+            content = processMessageContent(content);
             editor.setData(content);
         });
 
-        // Enable or disable checkboxes based on 'Send to All' checkbox
+        function processMessageContent(content) {
+            return content
+                .replace(/&nbsp;/g, ' ')
+                .replace(/\s+/g, ' ')
+                .replace(/<p>\s*<\/p>/g, '\n')
+                .replace(/<p>/g, '')
+                .replace(/<\/p>/g, '\n')
+                .replace(/<br\s*\/?>/g, '\n')
+                .replace(/<[^>]*>/g, '')
+                .replace(/\n\s*\n/g, '\n')
+                .trim();
+        }
+
         document.getElementById('send_to_all').addEventListener('change', function() {
             const checkboxes = document.querySelectorAll('input[name="customerleads[]"]');
+            const isChecked = this.checked;
+
             checkboxes.forEach(checkbox => {
-                checkbox.disabled = this.checked;
+                checkbox.disabled = isChecked;
+                if (isChecked) {
+                    checkbox.checked = false;
+                }
             });
+
+            if (!isChecked && !Array.from(checkboxes).some(cb => cb.checked)) {
+                const firstCheckbox = checkboxes[0];
+                if (firstCheckbox) {
+                    firstCheckbox.checked = true;
+                }
+            }
         });
     </script>
 @endsection

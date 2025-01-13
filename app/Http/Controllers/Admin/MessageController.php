@@ -9,6 +9,7 @@ use App\Models\Customer;
 use App\Models\Client;
 use App\Models\ClientAdmin;
 use App\Models\Customerlead;
+use App\Models\Customermessage;
 use App\Models\Sendername;
 use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
@@ -32,7 +33,8 @@ class MessageController extends Controller
         });
     }
 
-    public function index(){
+    public function index()
+    {
         $this->data['messages'] = Message::where('client_id', $this->fms_id)->get();
         return view('dashboards.admin.messages.index', $this->data);
     }
@@ -45,9 +47,10 @@ class MessageController extends Controller
         return view('dashboards.admin.messages.create', $this->data);
     }
 
-// ************************************************************************************
+    // ************************************************************************************
     // Multiple SenderID
-    public function indexmultiple(){
+    public function indexmultiple()
+    {
         $this->data['multipesender'] = Message::where('client_id', $this->fms_id)->get();
         return view('dashboards.admin.messages.indexmultiple', $this->data);
     }
@@ -65,9 +68,10 @@ class MessageController extends Controller
         return view('dashboards.admin.messages.createmultiple', $this->data);
     }
 
-// ************************************************************************************    
+    // ************************************************************************************
     // Customer Leads
-    public function indexcustomerlead(){
+    public function indexcustomerlead()
+    {
         $this->data['customerleads'] = Customerlead::where('client_id', $this->fms_id)->get();
         return view('dashboards.kodasms.messages.indexlead', $this->data);
     }
@@ -76,15 +80,23 @@ class MessageController extends Controller
     {
         $customerleads = Customerlead::where('client_id', $this->fms_id)->get();
         $this->data['customerleads'] = $customerleads;
+
+       
         $sendernames = Sendername::whereHas('clients', function ($query) {
             $query->where('clients.id', $this->fms_id);
         })->get();
-    
         $this->data['sendernames'] = $sendernames;
+
+        
+        $clientMessageLimit = Customermessage::where('client_id', $this->fms_id)->value('messageamount');
+        $messageCount = Message::where('client_id', $this->fms_id)->count();
+
+        $this->data['canSendMessages'] = $messageCount < $clientMessageLimit;
+        
         return view('dashboards.kodasms.messages.createleads', $this->data);
     }
 
-// ************************************************************************************
+    // ************************************************************************************
 
     public function sendMessage(Request $request)
     {
@@ -95,7 +107,7 @@ class MessageController extends Controller
         $customers = $sendToAll
             ? Customer::where('client_id', $this->fms_id)->get()
             : Customer::whereIn('phone', $selectedPhones)
-                ->where('client_id', $this->fms_id) 
+                ->where('client_id', $this->fms_id)
                 ->get();
 
         if ($customers->isEmpty()) {
@@ -112,7 +124,7 @@ class MessageController extends Controller
                 'customer_number' => $customer->phone,
                 'content' => $plainMessage,
                 'status' => $response['success'] ? 'delivered' : 'failed',
-                'client_id' => $this->fms_id, 
+                'client_id' => $this->fms_id,
             ]);
         }
 
@@ -158,7 +170,7 @@ class MessageController extends Controller
                 'customer_number' => $customer->phone,
                 'content' => $plainMessage,
                 'status' => $response['success'] ? 'delivered' : 'failed',
-                'client_id' => $this->fms_id, 
+                'client_id' => $this->fms_id,
             ]);
         }
 
@@ -169,7 +181,6 @@ class MessageController extends Controller
             return redirect()->back()->with('error', $failedMessage);
         }
     }
-
 
     // ************************************
     public function sendMessageleadsenderid(Request $request)
@@ -211,7 +222,7 @@ class MessageController extends Controller
                 'customer_number' => $customer->phone,
                 'content' => $plainMessage,
                 'status' => $response['success'] ? 'delivered' : 'failed',
-                'client_id' => $this->fms_id, 
+                'client_id' => $this->fms_id,
             ]);
         }
 

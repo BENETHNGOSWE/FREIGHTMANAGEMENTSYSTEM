@@ -13,6 +13,8 @@ Route::prefix('/')
         Route::put('client-update-client/{client}', [App\Http\Controllers\Owner\ClientController::class, 'update'])->name('update.clients');
         Route::get('client-show-client/{client}', [App\Http\Controllers\Owner\ClientController::class, 'show'])->name('show.clients');
 
+        Route::get('impersonate/{client}', [App\Http\Controllers\Owner\ClientController::class, 'impersonate'])->name('impersonate.clients');
+
         
         Route::resource('permissions', App\Http\Controllers\Permission\PermissionController::class);
         Route::get('permissions/{permissionId}/delete', [App\Http\Controllers\Permission\PermissionController::class, 'destroy']);
@@ -44,6 +46,15 @@ Route::prefix('/')
         Route::get('sendername/show/{sendername}', [App\Http\Controllers\Owner\SendernameController::class, 'show'])->name('owner.show.sendername');
         Route::delete('sendername/delete/{sendername}', [App\Http\Controllers\Owner\SendernameController::class, 'delete'])->name('owner.delete.sendername');
 
+
+        // Message Amount Manage Here
+        Route::get('customermessage', [App\Http\Controllers\Owner\CustomermessageController::class, 'index'])->name('owner.list.customermessage');
+        Route::get('customermessagecreate', [App\Http\Controllers\Owner\CustomermessageController::class, 'create'])->name('owner.create.customermessage');
+        Route::post('customermessage/store', [App\Http\Controllers\Owner\CustomermessageController::class, 'store'])->name('owner.store.customermessage');
+        Route::get('customermessage/edit/{customermessage}', [App\Http\Controllers\Owner\CustomermessageController::class, 'edit'])->name('owner.edit.customermessage');
+        Route::put('customermessage/update/{customermessage}', [App\Http\Controllers\Owner\CustomermessageController::class, 'update'])->name('owner.update.customermessage');
+        Route::get('customermessage/show/{customermessage}', [App\Http\Controllers\Owner\CustomermessageController::class, 'show'])->name('owner.show.customermessage');
+        Route::delete('customermessage/delete/{customermessage}', [App\Http\Controllers\Owner\CustomermessageController::class, 'delete'])->name('owner.delete.customermessage');
       
          //Owner Manage Subscription
          Route::get('/owner-list-subscriptions', [\App\Http\Controllers\Owner\SubscriptionController::class, 'list_subscriptions'])->name('list.subscriptions');

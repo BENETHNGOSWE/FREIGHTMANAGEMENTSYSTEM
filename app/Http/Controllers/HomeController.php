@@ -34,6 +34,10 @@ class HomeController extends Controller
     public function index()
     {
         $role = auth()->user()->getRoleNames()[0];
+        if (!$role && session()->has('impersonator_id')) {
+            $role = 'admin';
+        }
+    
 
         switch ($role){
             case 'owner':

@@ -4,9 +4,8 @@
     <div class="container-fluid">
         <div class="form-head align-items-center d-flex mb-sm-4 mb-3">
             <div class="me-auto">
-                <h2 class="text-black font-w600">Customer List</h2>
-                <p class="mb-1">Dashboard / <span><a class="text-primary" href="appointment-add.html">Leads
-                            List</a></span>
+                <h2 class="text-black font-w600">Category</h2>
+                <p class="mb-1">Dashboard / <span><a class="text-primary" href="appointment-add.html">Category List</a></span>
                 </p>
             </div>
             <div>
@@ -18,9 +17,9 @@
                 <div class="card-body">
                     <div class="table-responsive">
                         <div style="display: flex; justify-content: space-between;">
-                            <h4 class="card-title">@lang('crud.customerleads.index_title')</h4>
+                            <h4 class="card-title">@lang('crud.customercategories.index_title')</h4>
                         </div>
-                        <table id="customerTable" class="table table-borderless table-hover">
+                        <table id="customerTable"  class="table table-borderless table-hover">
                             <thead>
                                 <tr>
                                     <th>
@@ -35,75 +34,65 @@
                                     <th class="text-left">
                                         @lang('crud.customerleads.inputs.customer_no')
                                     </th>
-                                    <th class="text-left">
-                                        Add load
-                                    </th>
                                     <th class="text-center">
                                         @lang('crud.common.actions')
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($customerleads as $customer)
+                                @forelse($customerleads as $customerlead)
                                     <tr>
                                         <td>
                                             {{ $loop->iteration }}
                                         </td>
                                         <td class="text-center" style="width: 10%;">
-                                            @if ($customer->image)
-                                                <img src="{{ asset('storage/' . $customer->image) }}" alt=""
+                                            @if ($customerlead->image)
+                                                <img src="{{ asset('storage/' . $customerlead->image) }}" alt=""
                                                     width="50px" height="50px">
                                             @else
                                                 <img src="{{ asset('images/default-user.png') }}" alt=""
                                                     width="50px" height="50px">
                                             @endif
                                         </td>
-                                        <td>{{ strtoupper($customer->customer_firstname . ' ' . $customer->customer_middlename . ' ' . $customer->customer_lastname) ?? '-' }}
+                                        <td>{{ strtoupper($customerlead->customer_firstname . ' ' . $customerlead->customer_middlename . ' ' . $customerlead->customer_lastname) ?? '-' }}
                                         </td>
-                                        <td>{{ strtoupper($customer->phone) ?? '-' }}</td>
-                                        <td>
-                                            <a
-                                                href="{{ route('admin.create.loadpackage', ['customer_id' => $customer->id]) }}">
-                                                <button type="button" class="btn btn-outline-primary mx-2">
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
-                                            </a>
-                                        </td>
+                                        <td>{{ strtoupper($customerlead->phone) ?? '-' }}</td>
                                         <td class="text-center" style="width: 134px;">
                                             <div role="group" aria-label="Row Actions" class="btn-group">
-
-                                                <a href="{{ route('admin.edit.customer', $customer) }}">
-                                                    <button type="button" class="btn btn-outline-success">
-                                                        <i class="fas fa-edit"></i>
-                                                    </button>
-                                                </a>
-
-                                                <a href="{{ route('admin.show.customer', $customer) }}">
-                                                    <button type="button" class="btn btn-outline-primary mx-2">
-                                                        <i class="fas fa-eye"></i>
-                                                    </button>
-                                                </a>
-
-                                                <form class="delete_form"
-                                                    action="{{ route('admin.delete.customer', $customer) }}" method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-outline-danger delete_button">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </form>
-
+                                                @can('update', $customerlead)
+                                                    <a href="{{ route('admin.edit.customerlead', $customerlead) }}">
+                                                        <button type="button" class="btn btn-outline-success">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                    </a>
+                                                    @endcan @can('view', $customerlead)
+                                                    <a href="{{ route('admin.show.customerlead', $customerlead) }}">
+                                                        <button type="button" class="btn btn-outline-primary mx-2">
+                                                            <i class="fas fa-eye"></i>
+                                                        </button>
+                                                    </a>
+                                                    @endcan 
+                                                    @can('delete', $customerlead)
+                                                    <form class="delete_form" action="{{ route('admin.delete.customerlead', $customerlead)}}" method="POST"
+                                                    >
+                                                        @csrf 
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-outline-danger delete_button">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </form>
+                                                @endcan
                                             </div>
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td class="text-center py-5" colspan="5">
+                                        <td  class="text-center py-5" colspan="5">
                                             @lang('crud.common.no_items_found')
                                         </td>
                                     </tr>
                                 @endforelse
-                            </tbody>
+                                </tbody>
                         </table>
                     </div>
                 </div>
@@ -126,8 +115,8 @@
         })(jQuery);
     </script>
 
-    <script>
-        const deleteButtons = document.querySelectorAll(".delete_button");
+<script>
+   const deleteButtons = document.querySelectorAll(".delete_button");
 
         deleteButtons.forEach(function(button) {
             button.addEventListener("click", function(e) {

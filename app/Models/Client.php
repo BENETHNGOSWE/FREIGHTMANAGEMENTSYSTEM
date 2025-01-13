@@ -13,50 +13,30 @@ class Client extends Model
     use HasFactory;
     use Searchable;
 
-    protected $fillable = [
-        'client_name',
-        'client_logo',
-        'client_location',
-        'client_address_one',
-        'client_address_two',
-        'client_tinnumber',
-        'client_phonenumber',
-        'client_email',
-        'client_city',
-        'client_country',
-        'client_zipcode',
-        'client_fax',
-        'client_website_link',
-        'client_type_id',
-    ];
-    
+    protected $fillable = ['client_name', 'client_logo', 'client_location', 'client_address_one', 'client_address_two', 'client_tinnumber', 'client_phonenumber', 'client_email', 'client_city', 'client_country', 'client_zipcode', 'client_fax', 'client_website_link', 'client_type_id'];
 
     protected $searchableFields = ['*'];
 
+    // public function admin()
+    // {
+    //     $admin = ClientAdmin::where('client_id', $this->id)->first();
+    //     if ($admin) {
+    //         $user = User::where('id', $admin->user_id)->first();
 
+    //         return $user;
+    //     } else {
+    //         return null;
+    //     }
+
+    // }
     public function admin()
     {
-        $admin = ClientAdmin::where('client_id', $this->id)->first();
-        if ($admin) {
-            $user = User::where('id', $admin->user_id)->first();
-
-            return $user;
-        } else {
-            return null;
-        }
-
+        return $this->hasOne(ClientAdmin::class);
     }
-
-
-    // public function country()
-    // {
-    //     return $this->belongsTo(Country::class);
-    // }
 
     public function clientType()
     {
         return $this->belongsTo(ClientType::class)->value('name');
-    
     }
 
     public function users()
@@ -82,6 +62,11 @@ class Client extends Model
     public function customerlead()
     {
         return $this->hasMany(Customerlead::class);
+    }
+
+    public function customermessages()
+    {
+        return $this->hasMany(Customermessage::class);
     }
 
     public function subscriptions()

@@ -33,12 +33,11 @@ class InvoiceController extends Controller
 
     public function index()
     {
-        if (auth()->user()->hasRole('admin')){
+        if (auth()->user()->hasRole('admin')) {
             $this->data['customer'] = Customer::all();
             $this->data['Load'] = Loadpackage::all();
             $this->data['invoices'] = Invoice::where('client_id', $this->fms_id)->get();
-            
-        }else {
+        } else {
             $this->data['invoices'] = auth()->user()->invoices;
         }
         return view('dashboards.admin.invoices.index', $this->data);
@@ -72,7 +71,7 @@ class InvoiceController extends Controller
     {
         $invoice = Invoice::with('invoiceLoads.loadpackage', 'customer')->findOrFail($id);
         $client = Client::findOrFail($invoice->client_id);
-        $paymentInfo= Payment::where('client_id', $invoice->client_id)->get();
+        $paymentInfo = Payment::where('client_id', $invoice->client_id)->get();
 
         $data = [
             'invoice' => $invoice,
@@ -82,5 +81,19 @@ class InvoiceController extends Controller
 
         $pdf = Pdf::loadView('dashboards.admin.invoices.invoicepdf', $data);
         return $pdf->download('invoice_' . $invoice->invoice_no . '.pdf');
+    }
+
+    public function generatereleasePDF($id)
+    {
+        $invoice = Invoice::findOrFail($id);
+
+        if ($invoice->status != 1) {
+            return redirect()->back()->with('error', 'Invoice must be fully paid to generate a release order.');
+        }
+
+        $client = $invoice->client;
+
+        $pdf = Pdf::loadview('dashboards.admin.invoices.releasepdf', ['invoice' => $invoice, 'client' => $client]);
+        return $pdf->download('release_order.pdf');
     }
 }

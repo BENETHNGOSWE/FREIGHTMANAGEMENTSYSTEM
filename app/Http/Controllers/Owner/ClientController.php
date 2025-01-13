@@ -9,9 +9,12 @@ use App\Models\ClientAdmin;
 use App\Models\Client;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Session;
+
 
 class ClientController extends Controller
 {
@@ -268,4 +271,35 @@ class ClientController extends Controller
             return redirect()->back()->with('error', 'Failed to assign package');
         }
     }
+
+    public function impersonate(Client $client)
+    {
+        // Store the current admin ID in the session
+        Session::put('admin_id', Auth::id());
+    
+        // Get the client admin
+        $clientAdmin = $client->admin;
+    
+        // Check if the client admin exists
+        if ($clientAdmin) {
+            $adminUser = User::find($clientAdmin->user_id);
+            if ($adminUser) {
+                // Login as the client admin
+                Auth::login($adminUser);
+    
+                return redirect()
+                    ->route('dashboard')
+                    ->with('success', 'You are now logged in as ' . $client->client_name);
+            } else {
+                return redirect()
+                    ->route('client.list')
+                    ->with('error', 'Client admin user not found.');
+            }
+        } else {
+            return redirect()
+                ->route('client.list')
+                ->with('error', 'Client admin not found.');
+        }
+    }
+    
 }

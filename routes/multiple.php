@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('/')
     ->middleware('auth')
     ->group(function () {
-        
         // Manage loadpackagetype Here
         Route::get('loadtype', [App\Http\Controllers\Admin\LoadpackagetypeController::class, 'index'])->name('admin.list.loadpackagetpye');
         Route::get('loadtypecreate', [App\Http\Controllers\Admin\LoadpackagetypeController::class, 'create'])->name('admin.create.loadpackagetpye');
@@ -43,17 +42,19 @@ Route::prefix('/')
         Route::put('invoice/update/{invoice}', [App\Http\Controllers\Admin\InvoiceController::class, 'update'])->name('admin.update.invoice');
         Route::get('invoice/pdf/{invoice}', [App\Http\Controllers\Admin\InvoiceController::class, 'generateInvoicePDF'])->name('admin.pdf.invoice');
 
-          // Payment Manage Here
-          Route::get('payment', [App\Http\Controllers\Admin\PaymentController::class, 'index'])->name('admin.list.payment');
-          Route::get('paymentcreate', [App\Http\Controllers\Admin\PaymentController::class, 'create'])->name('admin.create.payment');
-          Route::post('payment/store', [App\Http\Controllers\Admin\PaymentController::class, 'store'])->name('admin.store.payment');
-          Route::get('payment/edit/{payment}', [App\Http\Controllers\Admin\PaymentController::class, 'edit'])->name('admin.edit.payment');
-          Route::put('payment/update/{payment}', [App\Http\Controllers\Admin\PaymentController::class, 'update'])->name('admin.update.payment');
-          Route::get('payment/show/{payment}', [App\Http\Controllers\Admin\PaymentController::class, 'show'])->name('admin.show.payment');
-          Route::delete('payment/delete/{payment}', [App\Http\Controllers\Admin\PaymentController::class, 'delete'])->name('admin.delete.payment');
+        // Release Order Manage Here
+        Route::get('release/pdf/{id}', [App\Http\Controllers\Admin\InvoiceController::class, 'generatereleasePDF'])->name('admin.pdf.release');
 
+        // Payment Manage Here
+        Route::get('payment', [App\Http\Controllers\Admin\PaymentController::class, 'index'])->name('admin.list.payment');
+        Route::get('paymentcreate', [App\Http\Controllers\Admin\PaymentController::class, 'create'])->name('admin.create.payment');
+        Route::post('payment/store', [App\Http\Controllers\Admin\PaymentController::class, 'store'])->name('admin.store.payment');
+        Route::get('payment/edit/{payment}', [App\Http\Controllers\Admin\PaymentController::class, 'edit'])->name('admin.edit.payment');
+        Route::put('payment/update/{payment}', [App\Http\Controllers\Admin\PaymentController::class, 'update'])->name('admin.update.payment');
+        Route::get('payment/show/{payment}', [App\Http\Controllers\Admin\PaymentController::class, 'show'])->name('admin.show.payment');
+        Route::delete('payment/delete/{payment}', [App\Http\Controllers\Admin\PaymentController::class, 'delete'])->name('admin.delete.payment');
 
-            // Unity Type Manage Here
+        // Unity Type Manage Here
         Route::get('unittype', [App\Http\Controllers\Admin\UnittypeController::class, 'index'])->name('admin.list.unittype');
         Route::get('unittypecreate', [App\Http\Controllers\Admin\UnittypeController::class, 'create'])->name('admin.create.unittype');
         Route::post('unittype/store', [App\Http\Controllers\Admin\UnittypeController::class, 'store'])->name('admin.store.unittype');
@@ -62,32 +63,31 @@ Route::prefix('/')
         Route::get('unittype/show/{unittype}', [App\Http\Controllers\Admin\UnittypeController::class, 'show'])->name('admin.show.unittype');
         Route::delete('unittype/delete/{unittype}', [App\Http\Controllers\Admin\UnittypeController::class, 'delete'])->name('admin.delete.unittype');
 
-          // Customercategories Manage Here
-          Route::get('category', [App\Http\Controllers\Admin\CustomercategoryController::class, 'index'])->name('admin.list.customercategory');
-          Route::get('categorycreate', [App\Http\Controllers\Admin\CustomercategoryController::class, 'create'])->name('admin.create.customercategory');
-          Route::post('category/store', [App\Http\Controllers\Admin\CustomercategoryController::class, 'store'])->name('admin.store.customercategory');
-          Route::get('category/edit/{customercategory}', [App\Http\Controllers\Admin\CustomercategoryController::class, 'edit'])->name('admin.edit.customercategory');
-          Route::put('category/update/{customercategory}', [App\Http\Controllers\Admin\CustomercategoryController::class, 'update'])->name('admin.update.customercategory');
-          Route::get('category/show/{customercategory}', [App\Http\Controllers\Admin\CustomercategoryController::class, 'show'])->name('admin.show.customercategory');
-          Route::delete('category/delete/{customercategory}', [App\Http\Controllers\Admin\CustomercategoryController::class, 'delete'])->name('admin.delete.customercategory');
+        // Customercategories Manage Here
+        Route::get('category', [App\Http\Controllers\Admin\CustomercategoryController::class, 'index'])->name('admin.list.customercategory');
+        Route::get('categorycreate', [App\Http\Controllers\Admin\CustomercategoryController::class, 'create'])->name('admin.create.customercategory');
+        Route::post('category/store', [App\Http\Controllers\Admin\CustomercategoryController::class, 'store'])->name('admin.store.customercategory');
+        Route::get('category/edit/{customercategory}', [App\Http\Controllers\Admin\CustomercategoryController::class, 'edit'])->name('admin.edit.customercategory');
+        Route::put('category/update/{customercategory}', [App\Http\Controllers\Admin\CustomercategoryController::class, 'update'])->name('admin.update.customercategory');
+        Route::get('category/show/{customercategory}', [App\Http\Controllers\Admin\CustomercategoryController::class, 'show'])->name('admin.show.customercategory');
+        Route::delete('category/delete/{customercategory}', [App\Http\Controllers\Admin\CustomercategoryController::class, 'delete'])->name('admin.delete.customercategory');
 
+        // Customerleads Manage Here
+        Route::get('customerlead', [App\Http\Controllers\Admin\CustomerleadController::class, 'index'])->name('admin.list.customerlead');
+        Route::get('customerleadcreate', [App\Http\Controllers\Admin\CustomerleadController::class, 'create'])->name('admin.create.customerlead');
+        Route::post('customerlead/store', [App\Http\Controllers\Admin\CustomerleadController::class, 'store'])->name('admin.store.customerlead');
+        Route::get('customerlead/edit/{customerlead}', [App\Http\Controllers\Admin\CustomerleadController::class, 'edit'])->name('admin.edit.customerlead');
+        Route::put('customerlead/update/{customerlead}', [App\Http\Controllers\Admin\CustomerleadController::class, 'update'])->name('admin.update.customerlead');
+        Route::get('customerlead/show/{customerlead}', [App\Http\Controllers\Admin\CustomerleadController::class, 'show'])->name('admin.show.customerlead');
+        Route::delete('customerlead/delete/{customerlead}', [App\Http\Controllers\Admin\CustomerleadController::class, 'delete'])->name('admin.delete.customerlead');
 
-          // Customerleads Manage Here
-          Route::get('customerlead', [App\Http\Controllers\Admin\CustomerleadController::class, 'index'])->name('admin.list.customerlead');
-          Route::get('customerleadcreate', [App\Http\Controllers\Admin\CustomerleadController::class, 'create'])->name('admin.create.customerlead');
-          Route::post('customerlead/store', [App\Http\Controllers\Admin\CustomerleadController::class, 'store'])->name('admin.store.customerlead');
-          Route::get('customerlead/edit/{customerlead}', [App\Http\Controllers\Admin\CustomerleadController::class, 'edit'])->name('admin.edit.customerlead');
-          Route::put('customerlead/update/{customerlead}', [App\Http\Controllers\Admin\CustomerleadController::class, 'update'])->name('admin.update.customerlead');
-          Route::get('customerlead/show/{customerlead}', [App\Http\Controllers\Admin\CustomerleadController::class, 'show'])->name('admin.show.customerlead');
-          Route::delete('customerlead/delete/{customerlead}', [App\Http\Controllers\Admin\CustomerleadController::class, 'delete'])->name('admin.delete.customerlead');
-
-          // Message Manage Here
+        // Message Manage Here
         Route::get('/message', [App\Http\Controllers\Admin\MessageController::class, 'index'])->name('admin.message.index');
         Route::post('/messagecreate', [App\Http\Controllers\Admin\MessageController::class, 'sendMessage'])->name('admin.sendmessage');
         Route::get('/message-form', [App\Http\Controllers\Admin\MessageController::class, 'showSendMessageForm'])->name('admin.message');
 
         // CustomerLead Manage Here
-        Route::post('/messagecreatelead', [App\Http\Controllers\Admin\MessageController::class, 'sendMessageleadsenderid'])->name('admin.sendmessage.lead');        
+        Route::post('/messagecreatelead', [App\Http\Controllers\Admin\MessageController::class, 'sendMessageleadsenderid'])->name('admin.sendmessage.lead');
         // Route::get('/message-form-multiple', [App\Http\Controllers\Admin\MessageController::class, 'showSendMessageFormmultiple'])->name('admin.message.multple');
         Route::get('/message-form-lead', [App\Http\Controllers\Admin\MessageController::class, 'showSendMessageFormlead'])->name('admin.message.lead');
     });

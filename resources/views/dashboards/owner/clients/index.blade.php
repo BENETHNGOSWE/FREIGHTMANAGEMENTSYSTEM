@@ -21,7 +21,7 @@
                                     s/n
                                 </th>
                                 <th class="text-left">
-                                   
+
                                     @lang('crud.clients.inputs.client_logo')
                                 </th>
                                 <th class="text-left">
@@ -30,7 +30,7 @@
                                 <th class="text-left">
                                     @lang('crud.clients.inputs.client_type_id')
                                 </th>
-                               
+
                                 <th class="text-left">
                                     Admin name
                                 </th>
@@ -38,9 +38,9 @@
                                     Admin phone
                                 </th>
                                 <th class="text-left">
-                                    @lang('crud.clients.inputs.client_city')
+                                    LOGIN
                                 </th>
-                                
+
                                 <th class="text-center">
                                     @lang('crud.common.actions')
                                 </th>
@@ -52,7 +52,7 @@
                                     <td>
                                         {{ $loop->iteration }}
                                     </td>
-                                    
+
                                     <td>
                                         <img src="{{ asset('storage/uploads/' . $client->client_logo) }}" alt="client Logo"
                                             style="width: 50px; height: 50px; object-fit: cover;">
@@ -63,21 +63,28 @@
                                         {{ $client->clientType() ?? '-' }}
                                     </td>
                                     <td>
-                                        {{ $client->admin() ? $client->admin()->name : '-'}}
+                                        {{ $client->admin ? $client->admin->user->name : '-' }}
                                     </td>
-                                    <td>{{ $client->admin() ? $client->admin()->phone : '-' }}</td>
-                                    <td>{{ $client->client_city ?? '-' }}</td>
-                                    
+                                    <td>
+                                        {{ $client->admin ? $client->admin->user->phone : '-' }}
+                                    </td>
+
+                                    <td> <a href="{{ route('impersonate.clients', $client) }}">
+                                            <button type="button" class="btn btn-outline-warning">
+                                                <i class="fas fa-sign-in-alt"></i> Login as Client
+                                            </button>
+                                        </a></td>
+
                                     <td class="text-center" style="width: 134px;">
                                         <div role="group" aria-label="Row Actions" class="btn-group">
                                             @can('update', $client)
-                                                <a href="{{ route('edit.clients', $client )}}">
+                                                <a href="{{ route('edit.clients', $client) }}">
                                                     <button type="button" class="btn btn-outline-success">
                                                         <i class="fas fa-edit"></i>
                                                     </button>
                                                 </a>
                                                 @endcan @can('view', $client)
-                                                <a href="{{ route('show.clients', $client)}}">
+                                                <a href="{{ route('show.clients', $client) }}">
                                                     <button type="button" class="btn btn-outline-primary mx-2">
                                                         <i class="fas fa-eye"></i>
                                                     </button>
@@ -85,9 +92,7 @@
                                             @endcan
 
                                             @can('delete', $client)
-                                                <form class="delete_form"
-                                                    action="#"
-                                                    method="POST">
+                                                <form class="delete_form" action="#" method="POST">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-outline-danger delete_button">
@@ -101,7 +106,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td  class="text-center py-5" colspan="15">
+                                    <td class="text-center py-5" colspan="15">
                                         @lang('crud.common.no_items_found')
                                     </td>
                                 </tr>
@@ -125,8 +130,8 @@
         })(jQuery);
     </script>
 
-<script>
-   const deleteButtons = document.querySelectorAll(".delete_button");
+    <script>
+        const deleteButtons = document.querySelectorAll(".delete_button");
 
         deleteButtons.forEach(function(button) {
             button.addEventListener("click", function(e) {
