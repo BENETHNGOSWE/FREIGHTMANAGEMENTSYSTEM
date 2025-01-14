@@ -212,6 +212,11 @@
             width: 60%;
         }
 
+        .status-paid {
+            color: #28a745;
+            font-weight: bold;
+        }
+
 
         /* Footer absolute positioning */
         footer {
@@ -301,12 +306,13 @@
                 </tr>
                 <tr>
                     <th><span>Customer Name</span></th>
-                    <td><span>{{ strtoupper($invoice->customer->customer_firstname . ' ' . $invoice->customer->customer_middlename . ' ' . $invoice->customer->customer_lastname) ?? '-' }}</span></td>
+                    <td><span>{{ strtoupper($invoice->customer->customer_firstname . ' ' . $invoice->customer->customer_middlename . ' ' . $invoice->customer->customer_lastname) ?? '-' }}</span>
+                    </td>
                 </tr>
-                
+
                 <tr>
-                    <th><span>Total Amount</span></th>
-                    <td><span>Tsh {{ number_format($invoice->total_amount, 2) }}</span></td>
+                    <th><span>Customer Number</span></th>
+                    <td><span>{{ strtoupper($invoice->customer->phone) }}</span></td>
                 </tr>
 
                 <tr>

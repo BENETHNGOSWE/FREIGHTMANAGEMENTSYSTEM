@@ -26,7 +26,7 @@ class StaffController extends Controller
 
     public function __construct()
     {
-        $this->middleware('admin');
+        $this->middleware('multiple');
         $this->middleware(function ($request, $next) {
             if (Auth::check()) {
                 $this->fms_id = Auth::user()->client_id;
@@ -145,12 +145,13 @@ class StaffController extends Controller
         $client_id = auth()->user()->client_id;
         $staff = Staff::find($employee);
         $this->data['staff'] = $staff;
-
+        $this->data['editing'] = true;  // Add this line
+    
         $this->data['clients'] = Client::pluck('client_name', 'id');
         $this->data['staffTypes'] = StaffType::pluck('staff_type_name', 'id');
         $this->data['branches'] = Branch::pluck('branch_name', 'id');
         $this->data['users'] = User::pluck('id');
-
+    
         return view('dashboards.admin.staffs.edit', $this->data);
     }
 

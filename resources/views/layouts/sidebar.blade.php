@@ -17,8 +17,8 @@
 @include('dashboards.kodasms.sidebar')
 @endif
 
-@if(Auth::user()->getRoleNames()[0] == 'pharmacist')
-@include('dashboards.pharmacist.sidebar')
+@if(Auth::user()->getRoleNames()[0] == 'chiefoperation')
+@include('dashboards.chiefoperation.sidebar')
 @endif
 
 @if(Auth::user()->getRoleNames()[0] == 'laboratorist')

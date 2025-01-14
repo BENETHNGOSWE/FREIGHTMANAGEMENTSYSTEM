@@ -15,7 +15,7 @@ class Multiple
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->check() && (auth()->user()->hasRole('manager') || auth()->user()->hasRole('admin') || auth()->user()->hasRole('kodasmspackage'))){
+        if (auth()->check() && (auth()->user()->hasRole('manager') || auth()->user()->hasRole('admin') || auth()->user()->hasRole('kodasmspackage') || auth()->user()->hasRole('chiefoperation'))){
             return $next($request);
         }
         abort(403);

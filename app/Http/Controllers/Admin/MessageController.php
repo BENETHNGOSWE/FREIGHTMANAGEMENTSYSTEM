@@ -10,6 +10,7 @@ use App\Models\Client;
 use App\Models\ClientAdmin;
 use App\Models\Customerlead;
 use App\Models\Customermessage;
+use App\Models\Customercategory;
 use App\Models\Sendername;
 use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
@@ -78,21 +79,23 @@ class MessageController extends Controller
 
     public function showSendMessageFormlead()
     {
-        $customerleads = Customerlead::where('client_id', $this->fms_id)->get();
+        $customerleads = Customerlead::with('customercategory')
+            ->where('client_id', $this->fms_id)
+            ->get();
         $this->data['customerleads'] = $customerleads;
 
-       
+        $categories = Customercategory::all();
+        $this->data['categories'] = $categories;
+
         $sendernames = Sendername::whereHas('clients', function ($query) {
             $query->where('clients.id', $this->fms_id);
         })->get();
         $this->data['sendernames'] = $sendernames;
 
-        
         $clientMessageLimit = Customermessage::where('client_id', $this->fms_id)->value('messageamount');
         $messageCount = Message::where('client_id', $this->fms_id)->count();
 
         $this->data['canSendMessages'] = $messageCount < $clientMessageLimit;
-        
         return view('dashboards.kodasms.messages.createleads', $this->data);
     }
 

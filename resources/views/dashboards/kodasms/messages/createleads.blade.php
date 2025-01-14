@@ -44,6 +44,9 @@
                                         <th class="text-left" style="white-space: normal; word-wrap: break-word;">
                                             Customer Mobile No.
                                         </th>
+                                        <th class="text-left" style="white-space: normal; word-wrap: break-word;">
+                                            Customer Category
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -56,6 +59,7 @@
                                             <td>{{ strtoupper($customer->customer_firstname) }}
                                                 {{ strtoupper($customer->customer_lastname) }}</td>
                                             <td>{{ strtoupper($customer->phone) }}</td>
+                                            <td>{{ strtoupper($customer->customercategory->categoryname) }}</td>
                                         </tr>
                                     @empty
                                         <tr>

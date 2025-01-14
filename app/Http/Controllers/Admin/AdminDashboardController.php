@@ -49,9 +49,9 @@ class AdminDashboardController extends Controller
         return view('dashboards.admin.dashboard', $this->data);
     }
 
-    public function show(Request $request, $id)
+    public function show($clientadmin)
     {
-        $clientadmin = ClientAdmin::findOrFail($id);
+        $clientadmin = ClientAdmin::findOrFail($clientadmin);
         $this->data['clientadmin'] = $clientadmin;
         return view('dashboards.admin.profile', $this->data);
     }

@@ -33,13 +33,17 @@ class InvoiceController extends Controller
 
     public function index()
     {
-        if (auth()->user()->hasRole('admin')) {
+        $rolesAllowedHere = ['admin','chiefoperation'];
+
+        if (auth()->user()->hasAnyRole($rolesAllowedHere)) {
             $this->data['customer'] = Customer::all();
             $this->data['Load'] = Loadpackage::all();
             $this->data['invoices'] = Invoice::where('client_id', $this->fms_id)->get();
         } else {
             $this->data['invoices'] = auth()->user()->invoices;
         }
+
+        $this->data['canPrintReleaseOrder'] = auth()->user()->hasAnyRole($rolesAllowedHere);
         return view('dashboards.admin.invoices.index', $this->data);
     }
 

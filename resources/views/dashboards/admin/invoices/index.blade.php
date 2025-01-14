@@ -5,7 +5,8 @@
         <div class="form-head align-items-center d-flex mb-sm-4 mb-3">
             <div class="me-auto">
                 <h2 class="text-black font-w600">Invoice</h2>
-                <p class="mb-1">Dashboard / <span><a class="text-primary" href="appointment-add.html">Invoice List</a></span></p>
+                <p class="mb-1">Dashboard / <span><a class="text-primary" href="appointment-add.html">Invoice List</a></span>
+                </p>
             </div>
             <div>
                 <a href="{{ route('admin.list.invoice') }}" class="btn btn-primary me-3">+ Add Load</a>
@@ -53,10 +54,13 @@
                                                         <i class="fas fa-eye"></i>
                                                     </button>
                                                 </a>
-                                                <button type="button" class="btn btn-outline-secondary print-release-order" data-invoice-id="{{ $invoice->id }}">
-                                                    Print Release Order
-                                                </button>
-                                                
+                                                @if ($canPrintReleaseOrder)
+                                                    <button type="button"
+                                                        class="btn btn-outline-secondary print-release-order"
+                                                        data-invoice-id="{{ $invoice->id }}">
+                                                        Print Release Order
+                                                    </button>
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>

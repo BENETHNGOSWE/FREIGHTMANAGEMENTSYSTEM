@@ -36,6 +36,25 @@ class PermissionsSeeder extends Seeder
             'view branches', 'create branches', 'update branches', 'delete branches',
             'view containers', 'create containers', 'update containers', 'delete containers',
             'view customers', 'create customers', 'update customers', 'delete customers',
+            'view staffs', 'update staffs',
+            'view customercategories', 'create customercategories', 'update customercategories', 'delete customercategories',
+            'view customerleads', 'create customerleads', 'update customerleads', 'delete customerleads',
+            'view messages', 'create messages', 'update messages', 'delete messages',
+            'view loadpackagetypes', 'create loadpackagetypes', 'update loadpackagetypes', 'delete loadpackagetypes',
+            'view loadpackages', 'create loadpackages', 'update loadpackages', 'delete loadpackages',
+            'view unit_types', 'create unit_types', 'update unit_types', 'delete unit_types',
+            'view invoices', 'create invoices', 'update invoices', 'delete invoices',
+            'view invoice_loads', 'create invoice_loads', 'update invoice_loads', 'delete invoice_loads',
+        ]);
+
+        $chiefoperation = Role::firstOrCreate(['name' => 'chiefoperation', 'guard_name' => 'web']);
+        $chiefoperation->syncPermissions([
+            'view client_sendername',
+            'view banks', 'create banks', 'update banks', 'delete banks',
+            'view staffs', 'update staffs',
+            'view branches', 'create branches', 'update branches', 'delete branches',
+            'view containers', 'create containers', 'update containers', 'delete containers',
+            'view customers', 'create customers', 'update customers', 'delete customers',
             'view customercategories', 'create customercategories', 'update customercategories', 'delete customercategories',
             'view customerleads', 'create customerleads', 'update customerleads', 'delete customerleads',
             'view messages', 'create messages', 'update messages', 'delete messages',

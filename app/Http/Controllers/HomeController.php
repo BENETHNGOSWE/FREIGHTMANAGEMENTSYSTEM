@@ -7,6 +7,7 @@ use App\Http\Controllers\Owner\OwnerController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Manager\ManagerDashboardController;
 use App\Http\Controllers\KodaSMS\SMSManagerDashboardController;
+use App\Http\Controllers\Chiefoperation\ChiefOperationController;
 
 class HomeController extends Controller
 {
@@ -46,6 +47,9 @@ class HomeController extends Controller
             case 'admin':
                 return $this->adminDashboard();
 
+            case 'chiefoperation':
+                return $this->chiefoperationDashboard();    
+
             case 'manager':
                 return $this->managerDashboard();  
                 
@@ -67,6 +71,12 @@ class HomeController extends Controller
         $dashboard = new AdminDashboardController();
         return $dashboard->index($this->fms_id);
     }
+
+    public function chiefoperationDashboard(){
+        $dashboard = new ChiefOperationController();
+        return $dashboard->index($this->fms_id);
+    }
+
 
     public function managerDashboard(){
         $dashboard = new ManagerDashboardController();

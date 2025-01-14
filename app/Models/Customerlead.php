@@ -29,7 +29,7 @@ class Customerlead extends Model
 
     public function customercategory()
     {
-        return $this->hasMany( Customercategory::class, 'category_id');
+        return $this->belongsTo( Customercategory::class, 'category_id');
     }
    
     public function user()

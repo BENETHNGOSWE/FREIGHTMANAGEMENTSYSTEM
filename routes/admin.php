@@ -7,21 +7,6 @@ Route::prefix('/')
 
         Route::get('/validate_token', [\App\Http\Controllers\Admin\AdminDashboardController::class, 'validate_subscription_token'])->name('admin.validate_subscription_token');
 
-        //Profile Manage Here
-       
-        // Manage Clients Here
-        // Route::get('index',[App\Http\Controllers\Admin\StaffController::class, 'list_staffs'])->name('admin.list.staff');
-        Route::get('staff', [App\Http\Controllers\Admin\StaffController::class, 'list_staffs'])->name('admin.list.staff');
-        Route::get('staffcreate', [App\Http\Controllers\Admin\StaffController::class, 'create'])->name('admin.create.staff');
-        Route::post('staffstore', [App\Http\Controllers\Admin\StaffController::class, 'store'])->name('admin.store.staff');
-        Route::get('staff-edit-staff/{staff}', [App\Http\Controllers\Admin\StaffController::class, 'edit'])->name('admin.edit.staff');
-        Route::put('staff-update-staff/{staff}', [App\Http\Controllers\Admin\StaffController::class, 'update'])->name('admin.update.staff');
-        Route::get('staff-show-staff/{staff}', [App\Http\Controllers\Admin\StaffController::class, 'show'])->name('admin.show.staff');
-        Route::delete('staff-delete-staff/{staff}', [App\Http\Controllers\Admin\StaffController::class, 'delete'])->name('admin.delete.staff');
-
-        
-
-        
         // Route::get('/messagemultiple', [App\Http\Controllers\Admin\MessageController::class, 'indexmultiple'])->name('admin.message.indexmultiple');
         Route::post('/messagecreatemultipe', [App\Http\Controllers\Admin\MessageController::class, 'sendMessagemultipesenderid'])->name('admin.sendmessage.multiple');        
         Route::get('/message-form-multiple', [App\Http\Controllers\Admin\MessageController::class, 'showSendMessageFormmultiple'])->name('admin.message.multiple');
