@@ -4,10 +4,10 @@
     <x-inputs.group class="col-sm-6">
         <x-inputs.text
             name="driver_name"
-            label="load Type Name"
+            label="Driver Name"
             :value="old('driver_name', ($editing ? $deriveryorder->driver_name : ''))"
             maxlength="255"
-            placeholder="Load type Name"
+            placeholder="Driver Name"
             required
         ></x-inputs.text>
     </x-inputs.group>
@@ -15,20 +15,20 @@
     <x-inputs.group class="col-sm-6">
         <x-inputs.text
             name="driver_number"
-            label="Load Type Description"
+            label="Driver Number"
             :value="old('driver_number', ($editing ? $deriveryorder->driver_number : ''))"
             maxlength="255"
-            placeholder="Load Type Description"
+            placeholder="Driver Number"
         ></x-inputs.text>
     </x-inputs.group>
 
     <x-inputs.group class="col-sm-6">
         <x-inputs.text
             name="vehicle_reg_no"
-            label="Load Type Description"
+            label="Vehicle No"
             :value="old('vehicle_reg_no', ($editing ? $deriveryorder->vehicle_reg_no : ''))"
             maxlength="255"
-            placeholder="Load Type Description"
+            placeholder="Vehicle No"
         ></x-inputs.text>
     </x-inputs.group>
 

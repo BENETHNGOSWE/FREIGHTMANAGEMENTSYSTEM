@@ -160,69 +160,70 @@
             color: #dc3545;
             font-weight: bold;
         }
-/* Table Styling */
-.table-bordered {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 1em;
-}
 
-.table-bordered th,
-.table-bordered td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
+        /* Table Styling */
+        .table-bordered {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1em;
+        }
 
-.table-bordered th {
-    background-color: #f4f4f4;
-    font-weight: bold;
-    color: #333;
-}
+        .table-bordered th,
+        .table-bordered td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
 
-.table-bordered td {
-    background-color: #fff;
-}
+        .table-bordered th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+            color: #333;
+        }
 
-.table-header {
-    background-color: #007bff;
-    color: white;
-    padding: 8px;
-}
+        .table-bordered td {
+            background-color: #fff;
+        }
 
-/* Status Colors */
-.status-paid {
-    color: #28a745;
-    font-weight: bold;
-}
+        .table-header {
+            background-color: #007bff;
+            color: white;
+            padding: 8px;
+        }
 
-.status-unpaid {
-    color: #dc3545;
-    font-weight: bold;
-}
+        /* Status Colors */
+        .status-paid {
+            color: #28a745;
+            font-weight: bold;
+        }
 
-/* Styling for Table Borders */
-.table-bordered {
-    border: 1px solid #ddd;
-    border-radius: 0.25rem;
-}
+        .status-unpaid {
+            color: #dc3545;
+            font-weight: bold;
+        }
 
-.table-bordered th,
-.table-bordered td {
-    border: 1px solid #ddd;
-}
+        /* Styling for Table Borders */
+        .table-bordered {
+            border: 1px solid #ddd;
+            border-radius: 0.25rem;
+        }
+
+        .table-bordered th,
+        .table-bordered td {
+            border: 1px solid #ddd;
+        }
 
 
-.table thead th {
-    vertical-align: bottom;
-    border-bottom: 2px solid #ddd;
-}
+        .table thead th {
+            vertical-align: bottom;
+            border-bottom: 2px solid #ddd;
+        }
 
-.table td {
-    padding: 0.75rem;
-    vertical-align: top;
-    border-top: 1px solid #ddd;
-}
+        .table td {
+            padding: 0.75rem;
+            vertical-align: top;
+            border-top: 1px solid #ddd;
+        }
 
         /* Footer absolute positioning */
         footer {
@@ -305,7 +306,8 @@
                     <thead>
                         <tr>
                             <th class="table-header">Invoice No:</th>
-                            <td style="padding-left: 20px;">{{ $invoice->invoice_no }}</td> <!-- Added left padding for space -->
+                            <td style="padding-left: 20px;">{{ $invoice->invoice_no }}</td>
+                            <!-- Added left padding for space -->
                         </tr>
                         <tr>
                             <th class="table-header">Customer:</th>
@@ -325,7 +327,7 @@
                         </tr>
                     </thead>
                 </table>
-                
+
 
 
                 <header>
@@ -334,7 +336,8 @@
                         <p style="margin: 0; font-weight: bold;">Release By:</p>
                         <p style="margin: 5px 0;">Name: <strong>{{ auth()->user()->name }}</strong></p>
                         <p style="margin: 5px 0;">Date:
-                            <strong>{{ \Carbon\Carbon::now('Africa/Nairobi')->format('F j, Y, g:i A') }}</strong></p>
+                            <strong>{{ \Carbon\Carbon::now('Africa/Nairobi')->format('F j, Y, g:i A') }}</strong>
+                        </p>
                     </address>
                     <span style="margin-top: -1em; font-size: 10px">
                         <p style="margin: 0; font-weight: bold;">Approved By:</p>
@@ -359,3 +362,49 @@
 </body>
 
 </html>
+
+
+
+
+
+
+<article>
+    <table class="meta">
+        <tr>
+            <th><span>Invoice Number</span></th>
+            <td><span>{{ $invoice->invoice_no }}</span></td>
+        </tr>
+        <tr>
+            <th><span>Customer Name</span></th>
+            <td><span>{{ strtoupper($invoice->customer->customer_firstname . ' ' . $invoice->customer->customer_middlename . ' ' . $invoice->customer->customer_lastname) ?? '-' }}</span>
+            </td>
+        </tr>
+
+        <tr>
+            <th><span>Customer Number</span></th>
+            <td><span>{{ strtoupper($invoice->customer->phone) }}</span></td>
+        </tr>
+
+        <tr>
+            <th><span>Status</span></th>
+            <td><span class="{{ $invoice->status == 1 ? 'status-paid' : 'status-unpaid' }}">
+                    {{ $invoice->status == 1 ? 'Full Paid' : 'Not Paid' }}
+                </span></td>
+        </tr>
+    </table>
+</article>
+<header>
+    <address style="margin-top: -1em; font-size: 10px">
+        <p style="margin: 0; font-weight: bold;">Released By:</p>
+        <p style="margin: 5px 0;">Name: <strong>{{ auth()->user()->name }}</strong></p>
+        <p style="margin: 5px 0;">Date:
+            <strong>{{ \Carbon\Carbon::now('Africa/Nairobi')->format('F j, Y, g:i A') }}</strong>
+        </p>
+    </address>
+    <span style="margin-top: -1em; font-size: 10px">
+        <p style="margin: 0; font-weight: bold;">Approved By:</p>
+        <p style="margin: 5px 0;">Signature: __________________________</p>
+        <p style="margin: 5px 0;">Name: __________________________</p>
+        <p style="margin: 5px 0;">Date: __________________________</p>
+    </span>
+</header>

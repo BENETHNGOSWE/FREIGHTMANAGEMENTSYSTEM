@@ -41,7 +41,7 @@
                                         <td>{{ strtoupper($invoice->customer->customer_firstname) ?? '-' }}</td>
                                         <td>{{ strtoupper($invoice->total_amount) ?? '-' }}</td>
                                         <td>{{ strtoupper($invoice->total_balance) ?? '-' }}</td>
-                                        <td class="invoice-status">{{ strtoupper($invoice->status) ?? '-' }}</td>
+                                        <td class="invoice-status">{!! invoice_status($invoice->status)!!}</td>
                                         <td class="text-center" style="width: 200px;">
                                             <div role="group" aria-label="Row Actions" class="btn-group">
                                                 <a href="{{ route('admin.edit.invoice', $invoice) }}">

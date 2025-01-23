@@ -1,10 +1,13 @@
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Release Order</title>
+    <title>Derivery Order</title>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -170,7 +173,7 @@
         article address,
         table.meta,
         table.inventory {
-            margin: 0 0 3em;
+            margin: 0 0 1em;
         }
 
         article:after {
@@ -203,6 +206,7 @@
             display: table;
         }
 
+
         /* table meta */
         table.meta th {
             width: 40%;
@@ -217,6 +221,82 @@
             font-weight: bold;
         }
 
+        table.inventory {
+            clear: both;
+            width: 100%;
+        }
+
+        table.inventory th:first-child {
+            width: 50px;
+        }
+
+        table.inventory th:nth-child(2) {
+            width: 300px;
+        }
+
+        table.inventory th {
+            font-weight: bold;
+            text-align: center;
+        }
+
+        table.inventory td:nth-child(1) {
+            width: 5%;
+        }
+
+        table.inventory td:nth-child(2) {
+            width: 12%;
+        }
+
+        table.inventory td:nth-child(3),{
+            width: 19%;
+        }
+        table.inventory td:nth-child(4),
+        table.inventory td:nth-child(5) {
+            text-align: right;
+            width: 10%;
+        }
+
+
+        .company-header {
+    text-align: left;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.company-logo {
+    flex: 0 0 150px; /* Fixed width for logo container */
+    margin-top: 10px;
+}
+
+.company-logo img {
+    max-width: 100%;
+    height: auto;
+}
+
+.company-info {
+    flex: 1;
+    text-align: left;
+}
+
+.company-name {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.company-details {
+    font-size: 14px;
+    line-height: 1.4;
+    margin-bottom: 15px;
+}
+
+
+.order-number {
+    text-align: right;
+    margin-top: 5px;
+}
 
         /* Footer absolute positioning */
         footer {
@@ -297,7 +377,23 @@
     <div class="page-border">
         <header>
             <h1>Release Order</h1>
-        </header><br>
+            <div class="company-header">
+                <div class="company-logo">
+                    @if ($client->client_logo)
+                        <img alt="logo" src="{{ public_path('storage/uploads/' . $client->client_logo) }}">
+                    @endif
+                </div>
+                <div class="company-info">
+                    <div class="company-name">{{ strtoupper($client->client_name) }}</div>
+                    <div class="company-details">
+                        Office Address: {{ strtoupper($client->client_address_one) }}<br>
+                        Office Phone: {{ strtoupper($client->client_phonenumber) }}<br>
+                        TIN Number: {{ strtoupper($client->client_tinnumber) }}<br>
+                        {{ strtoupper($client->client_city. ' ' .$client->client_country) }}
+                    </div>
+                </div>
+            </div>
+        </header><hr><br>
         <article>
             <table class="meta">
                 <tr>
@@ -309,12 +405,12 @@
                     <td><span>{{ strtoupper($invoice->customer->customer_firstname . ' ' . $invoice->customer->customer_middlename . ' ' . $invoice->customer->customer_lastname) ?? '-' }}</span>
                     </td>
                 </tr>
-
+        
                 <tr>
                     <th><span>Customer Number</span></th>
                     <td><span>{{ strtoupper($invoice->customer->phone) }}</span></td>
                 </tr>
-
+        
                 <tr>
                     <th><span>Status</span></th>
                     <td><span class="{{ $invoice->status == 1 ? 'status-paid' : 'status-unpaid' }}">
@@ -323,6 +419,7 @@
                 </tr>
             </table>
         </article>
+        <br>
         <header>
             <address style="margin-top: -1em; font-size: 10px">
                 <p style="margin: 0; font-weight: bold;">Released By:</p>
@@ -338,7 +435,6 @@
                 <p style="margin: 5px 0;">Date: __________________________</p>
             </span>
         </header>
-
         <footer>
             <span class="footer-left" style="display: inline-block; width: 48%; text-align: left;">
                 <p>Released From: {{ strtoupper($client->client_name) }}</p>
