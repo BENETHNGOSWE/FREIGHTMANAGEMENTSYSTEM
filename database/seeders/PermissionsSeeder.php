@@ -16,7 +16,7 @@ class PermissionsSeeder extends Seeder
 
         $actions = ['list', 'view', 'create', 'update', 'delete'];
         $models = ['banks', 'branches', 'containers', 'clients', 'client_admins', 'clientpayments', 'client_types',
-                    'countries', 'customers', 'customercategories', 'customerleads', 'client_sendername', 'messages', 'modules', 'packages', 
+                    'countries', 'customers', 'customercategories', 'customerleads', 'client_sendername', 'derivery_orders', 'messages', 'modules', 'packages', 
                     'loadpackagetypes', 'loadpackages', 'staffs', 'staff_types', 'payments', 'role', 'sendernames', 'subscriptions', 'subscription_invoices',
                     'subscription_tokens',  'userroles', 'roles', 'permissions', 'users', 'unit_types', 'invoices', 'invoice_loads'];
 
@@ -63,6 +63,19 @@ class PermissionsSeeder extends Seeder
             'view unit_types', 'create unit_types', 'update unit_types', 'delete unit_types',
             'view invoices', 'create invoices', 'update invoices', 'delete invoices',
             'view invoice_loads', 'create invoice_loads', 'update invoice_loads', 'delete invoice_loads',
+        ]);
+
+
+        $godownmanager = Role::firstOrCreate(['name' => 'godownmanager', 'guard_name' => 'web']);
+        $godownmanager->syncPermissions([
+           
+            'view customers',
+            'view customercategories',
+            'view loadpackagetypes',
+            'view loadpackages',
+            'view invoices', 
+            'view invoice_loads',
+            'view derivery_orders', 'create derivery_orders', 'update derivery_orders', 'delete derivery_orders',
         ]);
         
         $kodasmspackage = Role::firstOrCreate(['name' => 'kodasmspackage', 'guard_name' => 'web']);

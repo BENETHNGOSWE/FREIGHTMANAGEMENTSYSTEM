@@ -189,38 +189,45 @@ class MessageController extends Controller
     public function sendMessageleadsenderid(Request $request)
     {
         $senderId = $request->input('sender_id');
-        $sendToAll = $request->input('send_to_all');
+        $sendToAll = $request->boolean('send_to_all');
         $message = $request->input('message');
-        $selectedPhones = $request->input('customerleads', []);
-
+        $selectedCustomers = $request->input('selected_customers', '');
+    
+        $request->validate([
+            'sender_id' => 'required|string|max:11',
+            'message' => 'required|string',
+        ]);
+    
         if ($sendToAll) {
             $customerleads = Customerlead::where('client_id', $this->fms_id)->get();
         } else {
+            $selectedPhones = array_filter(explode(',', $selectedCustomers));
             if (empty($selectedPhones)) {
                 return redirect()->back()->with('error', 'No customers selected.');
             }
             $customerleads = Customerlead::whereIn('phone', $selectedPhones)->get();
         }
-
+    
         if ($customerleads->isEmpty()) {
             return redirect()->back()->with('error', 'No customers found.');
         }
-
+    
         $allSuccess = true;
         $failedNumbers = [];
-
+        $successCount = 0;
+    
         foreach ($customerleads as $customer) {
             $personalizedMessage = str_replace('{{ customer_firstname }}', $customer->customer_firstname, $message);
-
             $plainMessage = strip_tags($personalizedMessage);
-
             $response = sendMessagemultipesenderid([$customer->phone], $plainMessage, $senderId);
-
+    
             if (!$response['success']) {
                 $allSuccess = false;
                 $failedNumbers[] = $customer->phone;
+            } else {
+                $successCount++;
             }
-
+    
             Message::create([
                 'customer_number' => $customer->phone,
                 'content' => $plainMessage,
@@ -228,12 +235,16 @@ class MessageController extends Controller
                 'client_id' => $this->fms_id,
             ]);
         }
-
+    
         if ($allSuccess) {
-            return redirect()->back()->with('success', 'Messages sent successfully!');
+            return redirect()->back()->with('success', "All messages sent successfully to {$successCount} customers!");
         } else {
-            $failedMessage = 'Some messages failed to send to the following numbers: ' . implode(', ', $failedNumbers);
-            return redirect()->back()->with('error', $failedMessage);
+            $failedMessage = "Some messages failed to send to the following numbers: " . implode(', ', $failedNumbers);
+            return redirect()->back()->with([
+                'error' => $failedMessage,
+                'success' => "{$successCount} messages sent successfully.",
+            ]);
         }
     }
+    
 }

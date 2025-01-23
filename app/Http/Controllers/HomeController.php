@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Manager\ManagerDashboardController;
 use App\Http\Controllers\KodaSMS\SMSManagerDashboardController;
 use App\Http\Controllers\Chiefoperation\ChiefOperationController;
+use App\Http\Controllers\Godownmanager\GodownmanagerDashboardController;
 
 class HomeController extends Controller
 {
@@ -38,9 +39,8 @@ class HomeController extends Controller
         if (!$role && session()->has('impersonator_id')) {
             $role = 'admin';
         }
-    
 
-        switch ($role){
+        switch ($role) {
             case 'owner':
                 return $this->ownerDashboard();
 
@@ -48,45 +48,55 @@ class HomeController extends Controller
                 return $this->adminDashboard();
 
             case 'chiefoperation':
-                return $this->chiefoperationDashboard();    
+                return $this->chiefoperationDashboard();
 
             case 'manager':
-                return $this->managerDashboard();  
-                
-            case 'kodasmspackage' :
-                return $this->smsadminDashboard();   
+                return $this->managerDashboard();
+
+            case 'godownmanager':
+                return $this->GodownmanagerDashboard();
+
+            case 'kodasmspackage':
+                return $this->smsadminDashboard();
 
             default:
-                return view('home'); 
-            }       
+                return view('home');
+        }
     }
 
     public function ownerDashboard()
     {
         $dashboard = new OwnerController();
-        return $dashboard ->index($this->fms_id);
+        return $dashboard->index($this->fms_id);
     }
 
-    public function adminDashboard(){
+    public function adminDashboard()
+    {
         $dashboard = new AdminDashboardController();
         return $dashboard->index($this->fms_id);
     }
 
-    public function chiefoperationDashboard(){
+    public function chiefoperationDashboard()
+    {
         $dashboard = new ChiefOperationController();
         return $dashboard->index($this->fms_id);
     }
 
-
-    public function managerDashboard(){
+    public function managerDashboard()
+    {
         $dashboard = new ManagerDashboardController();
         return $dashboard->index($this->fms_id);
     }
 
-    public function smsadminDashboard(){
-        $dashboard = new SMSManagerDashboardController();
+    public function GodownmanagerDashboard()
+    {
+        $dashboard = new GodownmanagerDashboardController();
         return $dashboard->index($this->fms_id);
     }
 
-
+    public function smsadminDashboard()
+    {
+        $dashboard = new SMSManagerDashboardController();
+        return $dashboard->index($this->fms_id);
+    }
 }

@@ -19,7 +19,7 @@ class StafftypeSeeder extends Seeder
             ['staff_type_name'=>'manager','staff_type_description'=>'Manager','is_system'=>true,'is_admin'=>false],
             ['staff_type_name'=>'admin','staff_type_description'=>'Admin','is_system'=>true,'is_admin'=>true],
             ['staff_type_name' => 'chiefoperation', 'staff_type_description' => 'Chiefoperation', 'is_system' => true, 'is_admin' => false],
-            // ['staff_type_name' => 'parent', 'staff_type_description' => 'Parent', 'is_system' => true, 'is_admin' => false],
+            ['staff_type_name' => 'godownmanager', 'staff_type_description' => 'GodownManager', 'is_system' => true, 'is_admin' => false],
             // ['staff_type_name' => 'lab_technician', 'staff_type_description' => 'Lab Technician', 'is_system' => true, 'is_admin' => false],
             // ['staff_type_name' => 'accountant', 'staff_type_description' => 'Accountant', 'is_system' => true, 'is_admin' => false],
             // ['staff_type_name' => 'hr', 'staff_type_description' => 'Human Resources', 'is_system' => true, 'is_admin' => false],
@@ -29,7 +29,10 @@ class StafftypeSeeder extends Seeder
         ];
         
         foreach ($stafftypes as $type) {
-            Stafftype::create($type);
+            Stafftype::firstOrCreate(
+                ['staff_type_name' => $type['staff_type_name']], // Check if exists based on name
+                $type // Additional data to set if creating new record
+            );
         }
     }
 }

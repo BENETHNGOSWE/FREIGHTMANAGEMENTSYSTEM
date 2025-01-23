@@ -69,6 +69,11 @@ class Client extends Model
         return $this->hasMany(Customermessage::class);
     }
 
+    public function deriveryorders()
+    {
+        return $this->hasMany(DeriveryOrder::class);
+    }
+
     public function subscriptions()
     {
         return $this->hasMany(Subscription::class);

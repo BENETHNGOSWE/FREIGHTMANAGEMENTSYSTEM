@@ -21,8 +21,8 @@
 @include('dashboards.chiefoperation.sidebar')
 @endif
 
-@if(Auth::user()->getRoleNames()[0] == 'laboratorist')
-@include('dashboards.laboratorist.sidebar')
+@if(Auth::user()->getRoleNames()[0] == 'godownmanager')
+@include('dashboards.godownmanager.sidebar')
 @endif
 
 @if(Auth::user()->getRoleNames()[0] == 'accountant')

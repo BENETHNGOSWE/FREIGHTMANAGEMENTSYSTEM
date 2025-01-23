@@ -14,8 +14,7 @@
         <div class="row">
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('admin.sendmessage.lead') }}" method="POST"
-                        {{ $canSendMessages ? '' : 'disabled' }}>
+                    <form action="{{ route('admin.sendmessage.lead') }}" method="POST" {{ $canSendMessages ? '' : 'disabled' }}>
                         @csrf
                         <div class="form-group">
                             <label for="sender_id">Sender ID:</label>
@@ -26,61 +25,51 @@
                                 @endforeach
                             </select>
                         </div>
-
+                    
                         <div class="form-group">
                             <label for="send_to_all">
-                                <input type="checkbox" id="send_to_all" name="send_to_all" value="1"> Send to All
-                                Customers
+                                <input type="checkbox" id="send_to_all" name="send_to_all" value="1"> Send to All Customers
                             </label>
                         </div>
+                    
+                        <!-- Hidden field to store selected phone numbers -->
+                        <input type="hidden" id="selected_customers" name="selected_customers" value="">
+                    
                         <div class="table-responsive">
                             <table id="labtypeTable" class="table table-borderless table-hover">
                                 <thead>
                                     <tr>
                                         <th>Select</th>
-                                        <th class="text-left" style="white-space: normal; word-wrap: break-word;">
-                                            Customer Name
-                                        </th>
-                                        <th class="text-left" style="white-space: normal; word-wrap: break-word;">
-                                            Customer Mobile No.
-                                        </th>
-                                        <th class="text-left" style="white-space: normal; word-wrap: break-word;">
-                                            Customer Category
-                                        </th>
+                                        <th>Customer Name</th>
+                                        <th>Customer Mobile No.</th>
+                                        <th>Customer Category</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @forelse($customerleads as $customer)
                                         <tr>
                                             <td>
-                                                <input type="checkbox" name="customerleads[]"
-                                                    value="{{ $customer->phone }}">
+                                                <input type="checkbox" name="customerleads[]" class="customer-checkbox" value="{{ $customer->phone }}">
                                             </td>
-                                            <td>{{ strtoupper($customer->customer_firstname) }}
-                                                {{ strtoupper($customer->customer_lastname) }}</td>
+                                            <td>{{ strtoupper($customer->customer_firstname) }} {{ strtoupper($customer->customer_lastname) }}</td>
                                             <td>{{ strtoupper($customer->phone) }}</td>
                                             <td>{{ strtoupper($customer->customercategory->categoryname) }}</td>
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td class="text-center py-5" colspan="10">
-                                                @lang('crud.common.no_items_found')
-                                            </td>
+                                            <td class="text-center py-5" colspan="4">No items found</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
                             </table>
                         </div>
-
-                        <!-- Message Input -->
+                    
                         <div class="form-group mt-3">
                             <label for="message">Message:</label>
                             <textarea id="message" name="message" class="form-control" required></textarea>
                         </div>
-
-                        <!-- Submit Button -->
-                        <button type="submit" class="btn btn-primary" {{ $canSendMessages ? '' : 'disabled' }}>Send
-                            Message</button>
+                    
+                        <button type="submit" class="btn btn-primary" {{ $canSendMessages ? '' : 'disabled' }}>Send Message</button>
                     </form>
                     @if (!$canSendMessages)
                         <div class="alert alert-warning mt-3">
@@ -160,6 +149,40 @@
                 .trim();
         }
 
+        const selectedCustomers = new Set();
+
+        // Handle checkbox selection
+        document.querySelectorAll('.customer-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    selectedCustomers.add(this.value);
+                } else {
+                    selectedCustomers.delete(this.value);
+                }
+                updateHiddenField();
+            });
+        });
+
+        // Update hidden field with selected customers
+        function updateHiddenField() {
+            document.getElementById('selected_customers').value = Array.from(selectedCustomers).join(',');
+        }
+
+        // Restore selections when the page is reloaded
+        document.addEventListener('DOMContentLoaded', function() {
+            const hiddenField = document.getElementById('selected_customers');
+            if (hiddenField.value) {
+                hiddenField.value.split(',').forEach(phone => {
+                    selectedCustomers.add(phone);
+                    const checkbox = document.querySelector(`.customer-checkbox[value="${phone}"]`);
+                    if (checkbox) {
+                        checkbox.checked = true;
+                    }
+                });
+            }
+        });
+
+        // Handle the 'Send to All' checkbox
         document.getElementById('send_to_all').addEventListener('change', function() {
             const checkboxes = document.querySelectorAll('input[name="customerleads[]"]');
             const isChecked = this.checked;
@@ -188,11 +211,13 @@
                 searching: true,
                 paging: true,
                 select: false,
-                lengthChange: false,
+                lengthChange: true,  // Enables the length menu
+                lengthMenu: [[10, 20, 50, -1], [10, 20, 50, "All"]], // Records per page options
             });
         })(jQuery);
     </script>
 @endpush
+
 
 @include('layouts.partials.datatable')
 @include('layouts.partials.sweetalert')

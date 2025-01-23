@@ -46,4 +46,6 @@ Route::prefix('/')
         Route::put('activename/update/{activename}', [App\Http\Controllers\Admin\ActivesendernameController::class, 'update'])->name('admin.update.activename');
         Route::get('activename/show/{activename}', [App\Http\Controllers\Admin\ActivesendernameController::class, 'show'])->name('admin.show.activename');
         Route::delete('activename/delete/{activename}', [App\Http\Controllers\Admin\ActivesendernameController::class, 'delete'])->name('admin.delete.activename');
+
+    
     });

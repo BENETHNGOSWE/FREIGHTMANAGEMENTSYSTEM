@@ -8,17 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Invoice extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'invoice_no',
-        'prefix',
-        'total_amount',
-        'total_balance',
-        'total_transportfee',
-        'status',
-        'customer_id',
-        'client_id',
-        'user_id',
-    ];
+    protected $fillable = ['invoice_no', 'prefix', 'total_amount', 'total_balance', 'total_transportfee', 'status', 'customer_id', 'client_id', 'user_id'];
 
     // Optional: Define relationships if needed
     public function customer()
@@ -34,6 +24,11 @@ class Invoice extends Model
     public function clientadmin()
     {
         return $this->belongsTo(ClientAdmin::class);
+    }
+
+    public function deliveryOrders()
+    {
+        return $this->hasMany(DeliveryOrder::class);
     }
 
     public function invoiceLoads()
