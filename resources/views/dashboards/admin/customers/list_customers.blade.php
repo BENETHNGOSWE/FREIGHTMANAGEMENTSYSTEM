@@ -153,30 +153,6 @@
             });
         });
     </script>
-
-    @if (session('success'))
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                Swal.fire({
-                    title: '{{ session('success') }}',
-                    text: 'Do you want to add a load package now?',
-                    icon: 'success',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, add load package!',
-                    cancelButtonText: 'No, go to customer list'
-                }).then((result) => {
-                    if (result.value) {
-                        window.location.href =
-                            "{{ route('admin.create.loadpackage', ['customer_id' => session('customer_id')]) }}";
-                    } else {
-                        window.location.href = "{{ route('admin.list.customer') }}";
-                    }
-                });
-            });
-        </script>
-    @endif
 @endpush
 @include('layouts.partials.datatable')
 @include('layouts.partials.sweetalert')

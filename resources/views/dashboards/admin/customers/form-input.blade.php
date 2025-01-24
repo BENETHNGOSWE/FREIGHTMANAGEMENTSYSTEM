@@ -27,5 +27,4 @@
         </x-inputs.text>
     </x-inputs.group>
 
-
 </div>

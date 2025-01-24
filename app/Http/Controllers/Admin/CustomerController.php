@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\View\View;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Validation\Rule;
+
 
 class CustomerController extends Controller
 {
@@ -66,11 +68,11 @@ class CustomerController extends Controller
             'customer_middlename' => ['nullable', 'max:255', 'string'],
             'customer_lastname' => ['required', 'max:255', 'string'],
             'customer_email' => 'required|email|unique:users,email' . $id,
-            'phone' => ['nullable', 'max:255', 'string'],
+            'phone' => ['required', 'max:255', 'string'],
         ];
         if ($id) {
             $rules['customer_email'] = 'required|email|unique:users,email,' . $id;
-            $rules['phone'] = 'nullable|max:255|string|unique:users,phone,' . $id;
+            $rules['phone'] = 'nullable|max:255|string';
         }
 
         return $rules;
