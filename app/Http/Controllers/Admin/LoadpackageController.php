@@ -66,6 +66,7 @@ class LoadpackageController extends Controller
     public function validate_loadpackage(Request $request)
     {
         return $request->validate([
+            'is_ocean.*' => 'nullable|boolean',
             'mode.*' => 'nullable|string|in:ocean,air',
             'load_name.*' => ['required', 'string', 'max:255'],
             'load_trucking_number.*' => ['required', 'string', 'max:255'],
@@ -76,7 +77,7 @@ class LoadpackageController extends Controller
             'load_delivery_date.*' => ['required', 'date'],
             'load_weight_value.*' => ['required', 'numeric'],
             'unittype_id.*' => ['required', 'max:255', 'exists:unit_types,id'],
-            'container_id.*' => ['required', 'max:255', 'exists:containers,id'],
+            'container_id.*' => ['nullable', 'required_if:is_ocean.*,true', 'exists:containers,id'],
         ]);
     }
 

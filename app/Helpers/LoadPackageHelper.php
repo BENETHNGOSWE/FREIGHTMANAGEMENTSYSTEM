@@ -48,12 +48,8 @@ class LoadPackageHelper
         $load->load_transport_date = $validatedData['load_transport_date'][$index];
         $load->load_delivery_date = $validatedData['load_delivery_date'][$index];
 
-        // Check if 'mode' exists and handle appropriately
-        if (isset($validatedData['mode'][$index]) && $validatedData['mode'][$index] === 'ocean') {
-            $load->container_id = $validatedData['container_id'][$index] ?? null;
-        } else {
-            $load->container_id = null;
-        }
+        // Check if Ocean mode is selected and container is provided
+        $load->container_id = $validatedData['is_ocean'][$index] ? $validatedData['container_id'][$index] ?? null : null;
 
         $load->load_weight_value = $validatedData['load_weight_value'][$index];
         $load->loadpackagetype_id = $validatedData['loadpackagetype_id'][$index];
@@ -84,11 +80,8 @@ class LoadPackageHelper
         $clientActiveName = Clientactivename::where('client_id', $customer->client_id)->first();
         $senderName = Sendername::find($clientActiveName->sendername_id)->name;
 
-       
         $message = "Hello {$customer->customer_firstname} {$customer->customer_lastname}, Tunapenda Kukujulisha kuwa mzigo wako kutoka CHINA- GUANGZHOU Tracking No - {$load_no} umepokelewa kwenye warehouse yetu CHINA- GUANGZHOU. Mzigo utaondoka haraka iwezekanavyo.Mzigo wako una {$load_weight_value}Kg, utalipia TSH {$load_price} baada ya Mzigo kufika Ofisini.Ahsante kwa Kusafirisha na {$clientName}";
 
         return sendMessage($customer->phone, $message, $senderName);
     }
-
-
 }

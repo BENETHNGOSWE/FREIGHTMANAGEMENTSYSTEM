@@ -37,7 +37,7 @@
                         </tr>
 
                         <tr>
-                            <th>Location:</th>
+                            <th>Trucking Number:</th>
                             <td>{{ $loadpackage->load_trucking_number }}</td>
                         </tr>
                         <tr>
@@ -46,11 +46,11 @@
                         </tr>
                         <tr>
                             <th>Load Price:</th>
-                            <td>$ {{ $loadpackage->load_price }}</td>
+                            <td>Tsh {{ $loadpackage->load_price }}</td>
                         </tr>
                         <tr>
                             <th>Status:</th>
-                            <td>{!! return_status_badge($loadpackage->container->container_status) !!}</td>
+                            <td>{!! $loadpackage->container ? return_status_badge($loadpackage->container->container_status) : 'DELIVERY' !!}</td>
                         </tr>
                         
                         

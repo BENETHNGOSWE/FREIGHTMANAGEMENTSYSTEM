@@ -3,7 +3,8 @@
 <div class="row load-package-row">
     <!-- Checkbox for Ocean/Air Selection -->
     <x-inputs.group class="col-sm-12">
-        <x-inputs.checkbox name="is_ocean[{{ $index }}]" label="Ocean Mode" :checked="old('is_ocean.' . $index, $editing && $load->is_ocean)" />
+        {{-- <x-inputs.checkbox name="is_ocean[{{ $index }}]" label="Ocean Mode" :checked="old('is_ocean.' . $index, $editing && $load->is_ocean)" /> --}}
+            <x-inputs.checkbox name="is_ocean[{{ $index }}]" label="Ocean Mode" :checked="old('is_ocean.' . $index, $editing && $load->is_ocean)" />
     </x-inputs.group>
 
     <!-- Load Name Field -->
