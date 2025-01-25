@@ -4,8 +4,8 @@
 <div class="container-fluid">
     <div class="form-head align-items-center d-flex mb-sm-4 mb-3">
         <div class="me-auto">
-            <h2 class="text-black font-w600">Load Types</h2>
-            <p class="mb-1">Dashboard / <span><a class="text-primary" href="">Load type
+            <h2 class="text-black font-w600">Leads Categories</h2>
+            <p class="mb-1">Dashboard / <span><a class="text-primary" href="">Leads Category
                         Show</a></span></p>
         </div>
 
@@ -13,7 +13,7 @@
     <div class="row">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title">{{ $loadpackagetype->load_type_name ?? '-' }}</h4>
+                <h4 class="card-title">{{ $customercategory->categoryname ?? '-' }}</h4>
             </div>
             <div class="card-body">
 
@@ -24,7 +24,7 @@
                         <ul class="nav nav-tabs" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <a class="nav-link active" data-bs-toggle="tab" href="#load_info" aria-selected="true"
-                                    role="tab"><i class="la la-home me-2"></i>load Type Details</a>
+                                    role="tab"><i class="la la-home me-2"></i>Category Details</a>
                             </li>
                             {{-- <li class="nav-item" role="presentation">
                                 <a class="nav-link" data-bs-toggle="tab" href="#admin_details" aria-selected="false"
@@ -40,8 +40,8 @@
                                                 <table class="table table-bordered table-responsive-sm">
                                                     <thead>
                                                         <tr>
-                                                            <th style="width: 20%">load Type Name</th>
-                                                            <th>{{ $loadpackagetype->load_type_name ?? '-' }}</th>
+                                                            <th style="width: 20%">Category Name</th>
+                                                            <th>{{ $customercategory->categoryname ?? '-' }}</th>
                                                         </tr>
 
 
@@ -49,7 +49,7 @@
                                                     <tbody>
                                                         <tr>
                                                             <td>Description</td>
-                                                            <td>{{ $loadpackagetype->load_type_description ?? '-' }}</td>
+                                                            <td>{{ $customercategory->categorydescription ?? '-' }}</td>
                                                         </tr>
                                                         
                                                     </tbody>
@@ -64,13 +64,13 @@
                 </div>
 
                 <div class="mt-4 d-flex ">
-                    <a href="{{ route('admin.edit.loadpackagetpye', $loadpackagetype) }}" class="btn btn-outline-success">
+                    {{-- <a href="{{ route('admin.edit.customerlead', $customerlead) }}" class="btn btn-outline-success">
                         <i class="icon fa fa-add"></i>
                         Edit
-                    </a>
+                    </a> --}}
 
-                    @can('delete', $loadpackagetype)
-                        <form class="delete_form mx-3" action="#"
+                   
+                        <form class="delete_form mx-3" action="{{ route('admin.delete.customercategory', $customercategory)}}"
                             method="POST">
                             @csrf
                             @method('DELETE')
@@ -78,7 +78,6 @@
                                 <i class="fas fa-trash"></i>delete
                             </button>
                         </form>
-                    @endcan
                 </div>
             </div>
         </div>

@@ -4,8 +4,9 @@
     <div class="container-fluid">
         <div class="form-head align-items-center d-flex mb-sm-4 mb-3">
             <div class="me-auto">
-                <h2 class="text-black font-w600">Category</h2>
-                <p class="mb-1">Dashboard / <span><a class="text-primary" href="appointment-add.html">Category List</a></span>
+                <h2 class="text-black font-w600">Customer List</h2>
+                <p class="mb-1">Dashboard / <span><a class="text-primary" href="appointment-add.html">Leads
+                            List</a></span>
                 </p>
             </div>
             <div>
@@ -17,7 +18,7 @@
                 <div class="card-body">
                     <div class="table-responsive">
                         <div style="display: flex; justify-content: space-between;">
-                            <h4 class="card-title">@lang('crud.customercategories.index_title')</h4>
+                            <h4 class="card-title">@lang('crud.customerleads.index_title')</h4>
                         </div>
                         <table id="customerTable"  class="table table-borderless table-hover">
                             <thead>
@@ -33,6 +34,9 @@
                                     </th>
                                     <th class="text-left">
                                         @lang('crud.customerleads.inputs.customer_no')
+                                    </th>
+                                    <th class="text-left">
+                                        Create By
                                     </th>
                                     <th class="text-center">
                                         @lang('crud.common.actions')
@@ -57,6 +61,7 @@
                                         <td>{{ strtoupper($customerlead->customer_firstname . ' ' . $customerlead->customer_middlename . ' ' . $customerlead->customer_lastname) ?? '-' }}
                                         </td>
                                         <td>{{ strtoupper($customerlead->phone) ?? '-' }}</td>
+                                        <td>{{ strtoupper($customerlead->user->name) ?? '-' }}</td>
                                         <td class="text-center" style="width: 134px;">
                                             <div role="group" aria-label="Row Actions" class="btn-group">
                                                 @can('update', $customerlead)

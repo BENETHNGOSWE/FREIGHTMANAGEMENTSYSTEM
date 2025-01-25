@@ -25,8 +25,8 @@
 @include('dashboards.godownmanager.sidebar')
 @endif
 
-@if(Auth::user()->getRoleNames()[0] == 'accountant')
-@include('dashboards.accountant.sidebar')
+@if(Auth::user()->getRoleNames()[0] == 'salesperson')
+@include('dashboards.sales.sidebar')
 @endif
 
 

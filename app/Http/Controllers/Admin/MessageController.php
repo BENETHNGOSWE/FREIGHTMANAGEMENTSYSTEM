@@ -73,15 +73,22 @@ class MessageController extends Controller
     // Customer Leads
     public function indexcustomerlead()
     {
-        $this->data['customerleads'] = Customerlead::where('client_id', $this->fms_id)->get();
+        // $this->data['customerleads'] = Customerlead::where('client_id', $this->fms_id)->get();
         return view('dashboards.kodasms.messages.indexlead', $this->data);
     }
 
     public function showSendMessageFormlead()
     {
-        $customerleads = Customerlead::with('customercategory')
-            ->where('client_id', $this->fms_id)
-            ->get();
+        if (auth()->user()->hasRole('admin')) {
+            $customerleads = Customerlead::with('customercategory')
+                ->where('client_id', $this->fms_id)
+                ->get();
+        } else {
+            $customerleads = Customerlead::with('customercategory')
+                ->where('client_id', $this->fms_id)
+                ->where('user_id', auth()->id())
+                ->get();
+        }
         $this->data['customerleads'] = $customerleads;
 
         $categories = Customercategory::all();

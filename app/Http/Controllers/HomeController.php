@@ -9,6 +9,7 @@ use App\Http\Controllers\Manager\ManagerDashboardController;
 use App\Http\Controllers\KodaSMS\SMSManagerDashboardController;
 use App\Http\Controllers\Chiefoperation\ChiefOperationController;
 use App\Http\Controllers\Godownmanager\GodownmanagerDashboardController;
+use App\Http\Controllers\Sales\SalesDashboardController;
 
 class HomeController extends Controller
 {
@@ -59,6 +60,9 @@ class HomeController extends Controller
             case 'kodasmspackage':
                 return $this->smsadminDashboard();
 
+            case 'salesperson':
+                return $this->salesadminDashboard();
+
             default:
                 return view('home');
         }
@@ -97,6 +101,12 @@ class HomeController extends Controller
     public function smsadminDashboard()
     {
         $dashboard = new SMSManagerDashboardController();
+        return $dashboard->index($this->fms_id);
+    }
+
+    public function salesadminDashboard()
+    {
+        $dashboard = new SalesDashboardController();
         return $dashboard->index($this->fms_id);
     }
 }

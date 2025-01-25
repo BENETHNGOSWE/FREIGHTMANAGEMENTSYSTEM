@@ -77,6 +77,14 @@ class PermissionsSeeder extends Seeder
             'view invoice_loads',
             'view derivery_orders', 'create derivery_orders', 'update derivery_orders', 'delete derivery_orders',
         ]);
+
+        $salesperson = Role::firstOrCreate(['name' => 'salesperson', 'guard_name' => 'web']);
+        $salesperson->syncPermissions([
+           
+            'view customercategories', 'create customercategories', 'update customercategories', 'delete customercategories',
+            'view customerleads', 'create customerleads', 'update customerleads', 'delete customerleads',
+            'view messages', 'create messages', 'update messages', 'delete messages',
+        ]);
         
         $kodasmspackage = Role::firstOrCreate(['name' => 'kodasmspackage', 'guard_name' => 'web']);
         $kodasmspackage->syncPermissions([
