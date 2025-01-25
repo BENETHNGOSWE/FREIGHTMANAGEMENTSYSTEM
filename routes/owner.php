@@ -12,6 +12,7 @@ Route::prefix('/')
         Route::get('client-edit-client/{client}', [App\Http\Controllers\Owner\ClientController::class, 'edit'])->name('edit.clients');
         Route::put('client-update-client/{client}', [App\Http\Controllers\Owner\ClientController::class, 'update'])->name('update.clients');
         Route::get('client-show-client/{client}', [App\Http\Controllers\Owner\ClientController::class, 'show'])->name('show.clients');
+        Route::delete('client-delete-client/{client}', [App\Http\Controllers\Owner\ClientController::class, 'destroy'])->name('delete.clients');
 
         Route::get('impersonate/{client}', [App\Http\Controllers\Owner\ClientController::class, 'impersonate'])->name('impersonate.clients');
 

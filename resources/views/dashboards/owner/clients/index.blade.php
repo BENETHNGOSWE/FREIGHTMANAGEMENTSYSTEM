@@ -92,7 +92,7 @@
                                             @endcan
 
                                             @can('delete', $client)
-                                                <form class="delete_form" action="#" method="POST">
+                                                <form class="delete_form" action="{{ route('delete.clients', $client)}}" method="POST">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-outline-danger delete_button">

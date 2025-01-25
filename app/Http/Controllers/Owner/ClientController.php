@@ -15,7 +15,6 @@ use Illuminate\Http\RedirectResponse;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Session;
 
-
 class ClientController extends Controller
 {
     public $data = [];
@@ -222,9 +221,44 @@ class ClientController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+    /**
+     * Remove the specified resource from storage.
+     */
     public function destroy(client $client)
     {
-        //
+        try {
+            // Begin a database transaction
+            DB::beginTransaction();
+
+            // Optionally: Delete associated admin/user records
+            $clientAdmin = \App\Models\ClientAdmin::where('client_id', $client->id)->first();
+            if ($clientAdmin) {
+                $user = User::find($clientAdmin->user_id);
+                if ($user) {
+                    $user->delete(); // Delete associated user
+                }
+                $clientAdmin->delete(); // Delete the admin record
+            }
+
+            // Handle client logo deletion if it exists
+            if ($client->client_logo && $client->client_logo !== 'client_default.png') {
+                delete_file($client->client_logo); // Assuming you have a helper for deleting files
+            }
+
+            // Delete the client record
+            $client->delete();
+
+            // Commit the transaction
+            DB::commit();
+
+            return redirect()->route('list.clients')->with('success', 'Client deleted successfully');
+        } catch (\Throwable $th) {
+            // Roll back the transaction if something goes wrong
+            DB::rollBack();
+            \Log::error($th->getMessage() . ' ' . $th->getTraceAsString());
+
+            return redirect()->back()->with('error', 'Something went wrong while deleting the client');
+        }
     }
 
     public function assignPackage(Client $client, $stafftype_id)
@@ -276,30 +310,25 @@ class ClientController extends Controller
     {
         // Store the current admin ID in the session
         Session::put('admin_id', Auth::id());
-    
+
         // Get the client admin
         $clientAdmin = $client->admin;
-    
+
         // Check if the client admin exists
         if ($clientAdmin) {
             $adminUser = User::find($clientAdmin->user_id);
             if ($adminUser) {
                 // Login as the client admin
                 Auth::login($adminUser);
-    
+
                 return redirect()
                     ->route('dashboard')
                     ->with('success', 'You are now logged in as ' . $client->client_name);
             } else {
-                return redirect()
-                    ->route('client.list')
-                    ->with('error', 'Client admin user not found.');
+                return redirect()->route('client.list')->with('error', 'Client admin user not found.');
             }
         } else {
-            return redirect()
-                ->route('client.list')
-                ->with('error', 'Client admin not found.');
+            return redirect()->route('client.list')->with('error', 'Client admin not found.');
         }
     }
-    
 }
