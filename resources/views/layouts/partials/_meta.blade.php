@@ -4,9 +4,9 @@
     content="Hospital management system" />
   <meta name="author" content="Jason Vision" />
   <meta name="robots" content="" />
-  <meta name="description" content="Hospital management software" />
-  <meta property="og:title" content="Hospital management software" />
-  <meta property="og:description" content="Hospital management software." />
+  <meta name="description" content="Freight Management Software" />
+  <meta property="og:title" content="Freight Management Software" />
+  <meta property="og:description" content="Freight Management Software." />
   <meta property="og:image" content="social-image.png" />
   <meta name="format-detection" content="telephone=no" />
   <!-- Mobile Specific -->
