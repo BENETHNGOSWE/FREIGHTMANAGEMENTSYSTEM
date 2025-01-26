@@ -7,10 +7,7 @@ Route::prefix('/')
 
         Route::get('/validate_token', [\App\Http\Controllers\Admin\AdminDashboardController::class, 'validate_subscription_token'])->name('admin.validate_subscription_token');
 
-        // Route::get('/messagemultiple', [App\Http\Controllers\Admin\MessageController::class, 'indexmultiple'])->name('admin.message.indexmultiple');
-        Route::post('/messagecreatemultipe', [App\Http\Controllers\Admin\MessageController::class, 'sendMessagemultipesenderid'])->name('admin.sendmessage.multiple');        
-        Route::get('/message-form-multiple', [App\Http\Controllers\Admin\MessageController::class, 'showSendMessageFormmultiple'])->name('admin.message.multiple');
-
+      
         // Branches Manage Here
         Route::get('branch', [App\Http\Controllers\Admin\BranchController::class, 'index'])->name('admin.list.branch');
         Route::get('branchcreate', [App\Http\Controllers\Admin\BranchController::class, 'create'])->name('admin.create.branch');

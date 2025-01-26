@@ -189,6 +189,20 @@ return [
         ],
     ],
 
+    'deriveryorders' => [
+        'name' => 'Derivery Order',
+        'index_title' => 'Derivery Order List',
+        'create_title' => 'Create Derivery Order',
+        'edit_title' => 'Edit Derivery Order',
+        'show_title' => 'Show Derivery Order',
+        'inputs' => [
+            'driver_name' => 'Driver Name',
+            'driver_number' => 'Driver Number',
+            'vehicle_reg_no' => 'Vehicle Plate No',
+            'invoice_no' => 'Invoice Number',
+        ],
+    ],
+
     'loadpackagetypes' => [
         'name' => 'Load Types',
         'index_title' => 'Load Types List',

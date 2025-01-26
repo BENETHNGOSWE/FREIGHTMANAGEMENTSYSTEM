@@ -4,13 +4,13 @@
     <div class="container-fluid">
         <div class="form-head align-items-center d-flex mb-sm-4 mb-3">
             <div class="me-auto">
-                <h2 class="text-black font-w600">Load Type</h2>
-                <p class="mb-1">Dashboard / <span><a class="text-primary" href="appointment-add.html">Load Type
+                <h2 class="text-black font-w600">Derivery Order</h2>
+                <p class="mb-1">Dashboard / <span><a class="text-primary" href="appointment-add.html">Derivery Order
                             List</a></span>
                 </p>
             </div>
             <div>
-                <a href="{{ route('admin.create.loadpackagetpye') }}" class="btn btn-primary me-3">+ Add Load Type</a>
+                <a href="{{ route('godownmanager.create.deriveryorder') }}" class="btn btn-primary me-3">+ Add Derivery Order</a>
             </div>
         </div>
         <div class="row">
@@ -18,7 +18,7 @@
                 <div class="card-body">
                     <div class="table-responsive">
                         <div style="display: flex; justify-content: space-between;">
-                            <h4 class="card-title">@lang('crud.loadpackagetypes.index_title')</h4>
+                            <h4 class="card-title">@lang('crud.deriveryorders.index_title')</h4>
                         </div>
                         <table id="loadtypeTable" class="table table-borderless table-hover">
                             <thead>
@@ -27,16 +27,16 @@
                                         s/n
                                     </th>
                                     <th class="text-left">
-                                        @lang('crud.loadpackagetypes.inputs.load_type_name')
+                                        @lang('crud.deriveryorders.inputs.driver_name')
                                     </th>
                                     <th class="text-left">
-                                        @lang('crud.loadpackagetypes.inputs.load_type_description')
+                                        @lang('crud.deriveryorders.inputs.driver_number')
                                     </th>
                                     <th class="text-left">
-                                        @lang('crud.loadpackagetypes.inputs.load_type_description')
+                                        @lang('crud.deriveryorders.inputs.vehicle_reg_no')
                                     </th>
                                     <th class="text-left">
-                                        @lang('crud.loadpackagetypes.inputs.load_type_description')
+                                        @lang('crud.deriveryorders.inputs.invoice_no')
                                     </th>
                                     <th class="text-left">
                                         Print

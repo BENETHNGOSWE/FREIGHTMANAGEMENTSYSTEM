@@ -66,7 +66,7 @@
                         </x-inputs.group>
 
                         <x-inputs.group class="col-sm-4">
-                            <x-inputs.select name="staff_type_id" label="Staff Type" >
+                            <x-inputs.select name="staff_type_id" label="Staff Type">
                                 @php $selected = old('staff_type_id', ($editing ? $staff->staff_type_id : '')) @endphp
                                 <option disabled {{ empty($selected) ? 'selected' : '' }}>Please select the Staff Type
                                 </option>
@@ -77,6 +77,14 @@
                                 @endforeach
                             </x-inputs.select>
                         </x-inputs.group>
+                        <x-inputs.group class="col-sm-4">
+                            <x-inputs.password name="password" label="Password" maxlength="255" placeholder="Enter a new password (leave blank to keep the current password)"></x-inputs.password>
+                        </x-inputs.group>
+                        
+                        <x-inputs.group class="col-sm-4">
+                            <x-inputs.password name="password_confirmation" label="Confirm Password" maxlength="255" placeholder="Confirm the new password"></x-inputs.password>
+                        </x-inputs.group>
+                        
 
 
 

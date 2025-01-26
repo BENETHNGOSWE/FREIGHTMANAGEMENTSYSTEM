@@ -8,6 +8,9 @@ use Illuminate\View\View;
 use App\Models\Customer;
 use App\Models\User;
 use App\Models\Loadpackage;
+use App\Models\Message;
+use App\Models\Customermessage;
+use App\Models\Invoice;
 
 class ManagerDashboardController extends Controller
 {
@@ -35,6 +38,10 @@ class ManagerDashboardController extends Controller
 
         $this->data['customerCount'] = Customer::where('client_id', $clientid)->count();
         $this->data['loadcreate'] = Loadpackage::where('client_id', $clientid)->count();
+        $this->data['messentsent'] = Message::where('client_id', $clientid)->count();
+        $this->data['invoiceCount'] = Invoice::where('client_id', $clientid)->count();
+        $this->data['messagefailed'] = Message::where('client_id', $clientid)->where('status', 'failed')->count();
+        $this->data['messageLimit'] = Customermessage::where('client_id', $clientid)->value('messageamount') ?? 0;
         return view('dashboards.manager.dashboard', $this->data);
     }
 }

@@ -66,7 +66,7 @@
                     </a>
 
                     @can('delete', $unittype)
-                        <form class="delete_form mx-3" action="#"
+                        <form class="delete_form mx-3" action="{{ route('admin.delete.unittype', $unittype)}}"
                             method="POST">
                             @csrf
                             @method('DELETE')

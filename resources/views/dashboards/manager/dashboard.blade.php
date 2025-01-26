@@ -25,7 +25,7 @@
                     <div class="card-body">
                         <div class="media align-items-center">
                             <div class="media-body mr-3">
-                                <h2 class="fs-34 text-black font-w600">2</h2>
+                                <h2 class="fs-34 text-black font-w600">{{$loadcreate}}</h2>
                                 <span>Total Load in Stock</span>
                             </div>
                             <i class="fa fa-hospital-user text-primary" style="font-size:40px;"></i>
@@ -45,8 +45,8 @@
                         <div class="card-body">
                             <div class="media align-items-center">
                                 <div class="media-body mr-3">
-                                    <h2 class="fs-34 text-black font-w600">3</h2>
-                                    <span>Total Staff</span>
+                                    <h2 class="fs-34 text-black font-w600">{{$invoiceCount}}</h2>
+                                    <span>Total Invoice</span>
                                 </div>
                                 <i class="fa fa-house-medical text-primary" style="font-size:40px;"></i>
                             </div>
@@ -83,24 +83,27 @@
                 </a>
             </div>
             
-            <div class="col-xl-3  col-sm-6">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="media align-items-center">
-                            <div class="media-body mr-3">
-                                <h2 class="fs-34 text-black font-w600">{{ $loadcreate }}</h2>
-                                <span>Total Loads</span>
+            <div class="col-xl-3 col-sm-6">
+                <a href="#">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="media align-items-center">
+                                <div class="media-body mr-3">
+                                    <h2 class="fs-34 text-black font-w600">{{$messentsent}} / {{$messageLimit}}</h2>
+                                    <span>Total Messages Sent / Assigned</span>
+                                </div>
+                                <i class="fa fa-user-doctor text-primary" style="font-size:40px;"></i>
                             </div>
-                            <i class="fa-solid fa-user-nurse text-primary" style="font-size:40px;"></i>
+                        </div>
+                        <div class="progress rounded-0" style="height:4px;">
+                            <div class="progress-bar rounded-0 bg-secondary progress-animated" 
+                                 style="width: {{ $messageLimit > 0 ? ($messentsent / $messageLimit) * 100 : 0 }}%; height:4px;" 
+                                 role="progressbar">
+                                <span class="sr-only">{{ $messageLimit > 0 ? round(($messentsent / $messageLimit) * 100) : 0 }}% Complete</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="progress  rounded-0" style="height:4px;">
-                        <div class="progress-bar rounded-0 bg-secondary progress-animated" style="width: 100%; height:4px;"
-                            role="progressbar">
-                            <span class="sr-only">1000% Complete</span>
-                        </div>
-                    </div>
-                </div>
+                </a>
             </div>
         </div>
 

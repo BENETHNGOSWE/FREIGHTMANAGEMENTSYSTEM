@@ -96,7 +96,7 @@
 
                 </ul>
             </li>
-
+{{-- 
             <li>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                     <i class="fa fa-flask"></i>
@@ -113,7 +113,7 @@
                         </a></li>
 
                 </ul>
-            </li>
+            </li> --}}
 
             <li>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">

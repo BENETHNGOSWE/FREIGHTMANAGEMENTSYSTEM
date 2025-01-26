@@ -78,6 +78,7 @@ class StaffController extends Controller
             'staff_type_id' => ['required', 'max:255', 'exists:staff_types,id'],
             'branch_id' => ['required', 'max:255', 'exists:branches,id'],
             'staff_address' => ['required', 'max:255', 'string'],
+            'password' => 'nullable|string|min:8|confirmed',
         ];
         if ($id) {
             $rules['staff_email'] = 'required|email|unique:users,email,' . $id;
@@ -165,17 +166,26 @@ class StaffController extends Controller
             if ($staff_type) {
                 $staff_type_name = $staff_type->staff_type_name;
                 $name = $validated['staff_firstname'] . ' ' . $validated['staff_middlename'] . ' ' . $validated['staff_lastname'];
+                
+                // Initialize updateData array
+                $updateData = [
+                    'name' => $name,
+                    'email' => $validated['staff_email'],
+                    'phone' => $validated['phone'],
+                    'user_type' => $staff_type_name,
+                    'client_id' => $this->fms_id,
+                ];
+    
+                // Add password to updateData if provided
+                if (!empty($validated['password'])) {
+                    $updateData['password'] = Hash::make($validated['password']);
+                }
+    
                 DB::beginTransaction();
                 try {
-                    $staff->user->update([
-                        'name' => $name,
-                        'email' => $validated['staff_email'],
-                        'phone' => $validated['phone'],
-                        'user_type' => $staff_type_name,
-                        'client_id' => $this->fms_id,
-                    ]);
+                    $staff->user->update($updateData);
                     $user = $staff->user->syncRoles(\Spatie\Permission\Models\Role::findByName($staff_type_name));
-
+    
                     if ($user) {
                         $validated['user_id'] = $user->id;
                         $employee = $staff->update($validated);
@@ -186,18 +196,16 @@ class StaffController extends Controller
                                 ->with('success', $user->name . ' Updated successfully');
                         } else {
                             DB::rollBack();
-
                             return redirect()->back()->with('error', 'Something went wrong');
                         }
                     }
                 } catch (\Throwable $th) {
                     DB::rollBack();
                     \Log::error($th);
-
                     return redirect()->back()->with('error', $th->getMessage());
                 }
             }
-
+    
             $this->authorize('update', $staff);
             $this->data['staffTypes'] = StaffType::pluck('staff_type_name', 'id');
             return view('dashboards.hr.employees.edit', $this->data);
@@ -205,7 +213,6 @@ class StaffController extends Controller
             return redirect()->back()->with('error', 'Something went wrong');
         }
     }
-
     public function delete($id)
     {
         try {

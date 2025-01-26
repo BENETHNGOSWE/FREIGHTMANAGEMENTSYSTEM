@@ -64,6 +64,11 @@ class MessageController extends Controller
             $query->where('clients.id', $this->fms_id);
         })->get();
 
+        $clientMessageLimit = Customermessage::where('client_id', $this->fms_id)->value('messageamount');
+        $messageCount = Message::where('client_id', $this->fms_id)->count();
+
+        $this->data['canSendMessages'] = $messageCount < $clientMessageLimit;
+
         $this->data['customers'] = $customers;
         $this->data['sendernames'] = $sendernames;
         return view('dashboards.admin.messages.createmultiple', $this->data);

@@ -5,7 +5,8 @@
         <div class="form-head align-items-center d-flex mb-sm-4 mb-3">
             <div class="me-auto">
                 <h2 class="text-black font-w600">container</h2>
-                <p class="mb-1">Dashboard / <span><a class="text-primary" href="appointment-add.html">container List</a></span>
+                <p class="mb-1">Dashboard / <span><a class="text-primary" href="appointment-add.html">container
+                            List</a></span>
                 </p>
             </div>
             <div>
@@ -19,12 +20,12 @@
                         <div style="display: flex; justify-content: space-between;">
                             <h4 class="card-title">@lang('crud.containers.index_title')</h4>
                         </div>
-                        <table id="loadtypeTable"  class="table table-borderless table-hover">
+                        <table id="loadtypeTable" class="table table-borderless table-hover">
                             <thead>
                                 <tr>
                                     <th>
                                         s/n
-                                    </th>    
+                                    </th>
                                     <th class="text-left">
                                         @lang('crud.containers.inputs.container_number')
                                     </th>
@@ -67,9 +68,10 @@
                                                         </button>
                                                     </a>
                                                     @endcan @can('delete', $container)
-                                                    <form class="delete_form" action="{{ route('admin.delete.container', $container)}}" method="POST"
-                                                    >
-                                                        @csrf 
+                                                    <form class="delete_form"
+                                                        action="{{ route('admin.delete.container', $container) }}"
+                                                        method="POST">
+                                                        @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-outline-danger delete_button">
                                                             <i class="fas fa-trash"></i>
@@ -81,12 +83,12 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td  class="text-center py-5" colspan="5">
+                                        <td class="text-center py-5" colspan="5">
                                             @lang('crud.common.no_items_found')
                                         </td>
                                     </tr>
                                 @endforelse
-                                </tbody>
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -109,8 +111,8 @@
         })(jQuery);
     </script>
 
-<script>
-   const deleteButtons = document.querySelectorAll(".delete_button");
+    <script>
+        const deleteButtons = document.querySelectorAll(".delete_button");
 
         deleteButtons.forEach(function(button) {
             button.addEventListener("click", function(e) {

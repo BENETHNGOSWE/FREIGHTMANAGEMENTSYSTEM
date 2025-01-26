@@ -70,7 +70,7 @@
                     </a>
 
                     @can('delete', $loadpackagetype)
-                        <form class="delete_form mx-3" action="#"
+                        <form class="delete_form mx-3" action="{{ route('admin.delete.loadpackagetpye', $loadpackagetype)}}"
                             method="POST">
                             @csrf
                             @method('DELETE')

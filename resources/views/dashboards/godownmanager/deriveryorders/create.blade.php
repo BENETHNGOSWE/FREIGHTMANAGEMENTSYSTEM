@@ -4,13 +4,13 @@
 <div class="container-fluid">
     <div class="form-head align-items-center d-flex mb-sm-4 mb-3">
         <div class="me-auto">
-            <h2 class="text-black font-w600">Add Load Package Type</h2>
+            <h2 class="text-black font-w600">Add Derivery Order</h2>
             
         </div>
 
         <div>
            <p class="mb-1">Dashboard / <span><a class="text-primary"
-                        href="{{ route('godownmanager.create.deriveryorder') }}">Add Load Package Type</a></span></p>
+                        href="{{ route('godownmanager.create.deriveryorder') }}">Add Derivery Order</a></span></p>
         </div>
     </div>
     <div class="card">

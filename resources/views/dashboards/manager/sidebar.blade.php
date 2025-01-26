@@ -58,10 +58,10 @@
             <li>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                     <i class="fa fa-flask"></i>
-                    <span class="nav-text">Message</span>
+                    <span class="nav-text">Message Multipe</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{{ route('admin.message') }}">
+                    <li><a href="{{ route('admin.message.multiple') }}">
                             <i class="fas fa-microscope"></i>
                             <span>Chat With Customer</span>
                         </a></li>

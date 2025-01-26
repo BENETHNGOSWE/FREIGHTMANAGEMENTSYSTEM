@@ -74,8 +74,14 @@
                         </div>
 
                         <!-- Submit Button -->
-                        <button type="submit" class="btn btn-primary">Send Message</button>
+                        <button type="submit" class="btn btn-primary" {{ $canSendMessages ? '' : 'disabled' }}>Send Message</button>
                     </form>
+                    @if (!$canSendMessages)
+                        <div class="alert alert-warning mt-3">
+                            You have reached your message limit. Please contact the administrator to reset your limit or
+                            assign more messages.
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -104,6 +110,13 @@
             const checkboxes = document.querySelectorAll('input[name="customers[]"]');
             checkboxes.forEach(function(checkbox) {
                 checkbox.disabled = this.checked;
+                if (this.checked) {
+                    checkbox.checked = true;
+                    checkbox.style.accentColor = 'blue';
+                } else {
+                    checkbox.checked = false;
+                    checkbox.style.accentColor = '';
+                }
             }.bind(this));
         });
     </script>
@@ -116,7 +129,7 @@
                 searching: true,
                 paging: true,
                 select: false,
-                lengthChange: false,
+                lengthChange: true,
             });
         })(jQuery);
     </script>

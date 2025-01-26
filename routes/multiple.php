@@ -81,8 +81,7 @@ Route::prefix('/')
         Route::get('customerlead/show/{customerlead}', [App\Http\Controllers\Admin\CustomerleadController::class, 'show'])->name('admin.show.customerlead');
         Route::delete('customerlead/delete/{customerlead}', [App\Http\Controllers\Admin\CustomerleadController::class, 'delete'])->name('admin.delete.customerlead');
 
-                // Manage Clients Here
-        // Route::get('index',[App\Http\Controllers\Admin\StaffController::class, 'list_staffs'])->name('admin.list.staff');
+        // Manage Clients Here
         Route::get('staff', [App\Http\Controllers\Admin\StaffController::class, 'list_staffs'])->name('admin.list.staff');
         Route::get('staffcreate', [App\Http\Controllers\Admin\StaffController::class, 'create'])->name('admin.create.staff');
         Route::post('staffstore', [App\Http\Controllers\Admin\StaffController::class, 'store'])->name('admin.store.staff');
@@ -100,4 +99,8 @@ Route::prefix('/')
         Route::post('/messagecreatelead', [App\Http\Controllers\Admin\MessageController::class, 'sendMessageleadsenderid'])->name('admin.sendmessage.lead');
         // Route::get('/message-form-multiple', [App\Http\Controllers\Admin\MessageController::class, 'showSendMessageFormmultiple'])->name('admin.message.multple');
         Route::get('/message-form-lead', [App\Http\Controllers\Admin\MessageController::class, 'showSendMessageFormlead'])->name('admin.message.lead');
+
+        // MessageMultiple Here
+        Route::post('/messagecreatemultipe', [App\Http\Controllers\Admin\MessageController::class, 'sendMessagemultipesenderid'])->name('admin.sendmessage.multiple');
+        Route::get('/message-form-multiple', [App\Http\Controllers\Admin\MessageController::class, 'showSendMessageFormmultiple'])->name('admin.message.multiple');
     });
