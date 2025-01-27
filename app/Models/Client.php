@@ -39,6 +39,11 @@ class Client extends Model
         return $this->belongsTo(ClientType::class)->value('name');
     }
 
+    public function containerLoadings()
+    {
+        return $this->hasMany(ContainerLoading::class, 'client_id');
+    }
+
     public function users()
     {
         return $this->hasMany(User::class);

@@ -73,11 +73,17 @@
                                                         method="POST">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-outline-danger delete_button">
+                                                        <button type="submit"
+                                                            class="btn btn-outline-danger delete_button mx-2">
                                                             <i class="fas fa-trash"></i>
                                                         </button>
                                                     </form>
                                                 @endcan
+                                                <button type="button" class="btn btn-primary load-container-btn"
+                                                    data-container-id="{{ $container->id }}"
+                                                    data-container-volume="{{ $container->container_volume }}">
+                                                    Load Container
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
@@ -95,6 +101,43 @@
             </div>
         </div>
 
+        <div class="modal fade" id="loadContainerModal" tabindex="-1" role="dialog"
+            aria-labelledby="loadContainerModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="loadContainerModalLabel">Load Container</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="selected-container-id">
+                        <table id="availableLoadsTable" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <input type="checkbox" id="select-all-loads">
+                                    </th>
+                                    <th>Load ID</th>
+                                    <th>Load Volume</th>
+                                    <th>Additional Details</th>
+                                </tr>
+                            </thead>
+                            <tbody id="availableLoadsBody">
+                                <!-- Loads will be dynamically populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="confirm-load-container">Load Selected
+                            Loads</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
     </div>
 @endsection
@@ -102,7 +145,7 @@
 @push('scripts')
     <script>
         (function($) {
-            var table = $("#loadtypeTable").DataTable({
+            var table = $("#customerTable").DataTable({
                 searching: true,
                 paging: true,
                 select: false,
@@ -112,29 +155,64 @@
     </script>
 
     <script>
-        const deleteButtons = document.querySelectorAll(".delete_button");
+        $(document).ready(function() {
+            // Delete button confirmation
+            const deleteButtons = document.querySelectorAll(".delete_button");
 
-        deleteButtons.forEach(function(button) {
-            button.addEventListener("click", function(e) {
-                e.preventDefault();
-                swal({
-                    title: "Are you sure to delete ?",
-                    text: "You will not be able to recover deleted data !!",
-                    type: "warning",
-                    showCancelButton: !0,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "Yes, delete it !!",
-                    cancelButtonText: "No, cancel it !!",
-                    closeOnConfirm: !1,
-                    closeOnCancel: !1
-                }).then((result) => {
-                    if (result.value) {
-                        const form = button.closest(".delete_form");
-                        form.submit();
-                    } else {
-                        swal("Cancelled", "Your data is safe", "success");
+            deleteButtons.forEach(function(button) {
+                button.addEventListener("click", function(e) {
+                    e.preventDefault();
+                    swal({
+                        title: "Are you sure to delete ?",
+                        text: "You will not be able to recover deleted data !!",
+                        type: "warning",
+                        showCancelButton: !0,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Yes, delete it !!",
+                        cancelButtonText: "No, cancel it !!",
+                        closeOnConfirm: !1,
+                        closeOnCancel: !1
+                    }).then((result) => {
+                        if (result.value) {
+                            const form = button.closest(".delete_form");
+                            form.submit();
+                        } else {
+                            swal("Cancelled", "Your data is safe", "success");
+                        }
+                    });
+                });
+            });
+
+            // Load Container button click event
+            $('.load-container-btn').on('click', function() {
+                var containerId = $(this).data('container-id');
+
+                $.ajax({
+                    url: `/containers/${containerId}/load`, // Ensure this URL matches your route definition
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}', // Add CSRF token
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            alert('Loads successfully added to container');
+                            location.reload(); // Refresh page to show updated status
+                        } else {
+                            alert('Could not find optimal load combination');
+                        }
+                    },
+                    error: function() {
+                        alert('An error occurred while loading the container');
                     }
                 });
+            });
+
+            // Initialize DataTable
+            $("#loadtypeTable").DataTable({
+                searching: true,
+                paging: true,
+                select: false,
+                lengthChange: false,
             });
         });
     </script>

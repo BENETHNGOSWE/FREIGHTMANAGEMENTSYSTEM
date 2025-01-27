@@ -24,6 +24,7 @@ Route::prefix('/')
         Route::get('container/edit/{container}', [App\Http\Controllers\Admin\ContainerController::class, 'edit'])->name('admin.edit.container');
         Route::put('container/update/{container}', [App\Http\Controllers\Admin\ContainerController::class, 'update'])->name('admin.update.container');
         Route::get('container/show/{container}', [App\Http\Controllers\Admin\ContainerController::class, 'show'])->name('admin.show.container');
+        Route::post('/containers/{container}/load', [App\Http\Controllers\Admin\ContainerController::class, 'loadContainer'])->name('admin.loadcontainer.container');
         Route::delete('container/delete/{container}', [App\Http\Controllers\Admin\ContainerController::class, 'delete'])->name('admin.delete.container');
 
         // Unity Type Manage Here

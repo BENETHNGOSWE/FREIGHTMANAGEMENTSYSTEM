@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Container;
 use App\Models\ClientAdmin;
+use App\Models\Loadpackage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\View\View;
@@ -106,5 +107,63 @@ class ContainerController extends Controller
         $this->authorize('delete', $container);
         $container->delete();
         return redirect()->route('admin.list.container')->with('success', 'Container Deleted Successfuly ');
+    }
+
+    public function loadContainer($containerId)
+    {
+        $container = Container::findOrFail($containerId);
+        $availableLoads = Loadpackage::whereNull('container_id')->orderBy('load_volume', 'desc')->get();
+
+    
+        $selectedLoads = $this->findOptimalLoadCombination($availableLoads, $container->container_volume);
+
+ 
+        if ($selectedLoads) {
+            foreach ($selectedLoads as $load) {
+                $load->container_id = $containerId;
+                $load->save();
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Loads successfully added to container',
+                'loads' => $selectedLoads,
+            ]);        
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'No optimal load combination found',
+        ]);
+    }
+
+    // Recursive function to find optimal load combination
+    private function findOptimalLoadCombination($loads, $containerVolume, $currentCombination = [], $currentVolume = 0)
+    {
+        if (abs($currentVolume - $containerVolume) < 0.1) {
+            return $currentCombination;
+        }
+
+        if ($currentVolume > $containerVolume) {
+            return null;
+        }
+
+        foreach ($loads as $index => $load) {
+            if (in_array($load, $currentCombination)) {
+                continue;
+            }
+
+            $newCombination = $currentCombination;
+            $newCombination[] = $load;
+            $newVolume = $currentVolume + $load->load_volume;
+
+            $result = $this->findOptimalLoadCombination($loads, $containerVolume, $newCombination, $newVolume);
+
+            if ($result !== null) {
+                return $result;
+            }
+        }
+
+        return null;
     }
 }

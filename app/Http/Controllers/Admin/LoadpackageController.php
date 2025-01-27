@@ -78,6 +78,10 @@ class LoadpackageController extends Controller
             'load_weight_value.*' => ['required', 'numeric'],
             'unittype_id.*' => ['required', 'max:255', 'exists:unit_types,id'],
             'container_id.*' => ['nullable', 'required_if:is_ocean.*,true', 'exists:containers,id'],
+            'load_length.*' => ['required', 'numeric', 'min:0'],
+            'load_width.*' => ['required', 'numeric', 'min:0'],
+            'load_height.*' => ['required', 'numeric', 'min:0'],
+            'load_volume.*' => ['nullable', 'numeric'],
         ]);
     }
 

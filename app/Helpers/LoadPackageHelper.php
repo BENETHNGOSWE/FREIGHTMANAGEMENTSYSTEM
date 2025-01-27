@@ -48,9 +48,14 @@ class LoadPackageHelper
         $load->load_transport_date = $validatedData['load_transport_date'][$index];
         $load->load_delivery_date = $validatedData['load_delivery_date'][$index];
 
-        // Check if Ocean mode is selected and container is provided
-        $load->container_id = $validatedData['is_ocean'][$index] ? $validatedData['container_id'][$index] ?? null : null;
+        // Add new volume-related fields
+        $load->load_length = $validatedData['load_length'][$index];
+        $load->load_width = $validatedData['load_width'][$index];
+        $load->load_height = $validatedData['load_height'][$index];
+        $load->load_volume = $load->load_length * $load->load_width * $load->load_height;
 
+        // Rest of the existing code remains the same
+        $load->container_id = $validatedData['is_ocean'][$index] ? $validatedData['container_id'][$index] ?? null : null;
         $load->load_weight_value = $validatedData['load_weight_value'][$index];
         $load->loadpackagetype_id = $validatedData['loadpackagetype_id'][$index];
         $load->unittype_id = $validatedData['unittype_id'][$index];

@@ -8,23 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Loadpackage extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'load_no',
-        'load_description',
-        'load_name',
-        'load_price',             
-        'load_transport_date',    
-        'load_delivery_date',         
-        'load_weight_value',         
-        'load_trucking_number',          
-        'client_id',             
-        'loadpackagetype_id',     
-        'customer_id',
-        'unittype_id',            
-        'user_id',
-        'container_id',            
-    ];
-    
+    protected $fillable = ['load_no', 'load_description', 'load_name', 'load_price', 'load_transport_date', 'load_delivery_date', 'load_weight_value', 'load_trucking_number', 'client_id', 'loadpackagetype_id', 'customer_id', 'unittype_id', 'user_id', 'container_id', 'load_length', 'load_width', 'load_height', 'load_volume'];
 
     public function client()
     {
@@ -35,7 +19,12 @@ class Loadpackage extends Model
     {
         return $this->belongsTo(Container::class, 'container_id');
     }
-    
+
+    public function containerLoadings()
+    {
+        return $this->hasMany(ContainerLoading::class, 'loadpackage_id');
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -72,7 +61,7 @@ class Loadpackage extends Model
 
         static::deleting(function ($loadPackage) {
             $invoiceIds = $loadPackage->getRelatedInvoiceIds();
-                     
+
             $loadPackage->invoiceLoads()->delete();
             foreach ($invoiceIds as $invoiceId) {
                 $remainingLoads = InvoiceLoad::where('invoice_id', $invoiceId)->count();

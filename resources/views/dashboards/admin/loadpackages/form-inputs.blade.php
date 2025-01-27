@@ -86,6 +86,22 @@
             placeholder="Load Price" required></x-inputs.number>
     </x-inputs.group>
 
+
+    <x-inputs.group class="col-sm-4">
+        <x-inputs.number name="load_length[{{ $index }}]" label="Load Length" :value="old('load_length.' . $index, $editing ? $load->load_length : '')"
+            step="any" placeholder="Length" required></x-inputs.number>
+    </x-inputs.group>
+
+    <x-inputs.group class="col-sm-4">
+        <x-inputs.number name="load_width[{{ $index }}]" label="Load Width" :value="old('load_width.' . $index, $editing ? $load->load_width : '')"
+            step="any" placeholder="Width" required></x-inputs.number>
+    </x-inputs.group>
+
+    <x-inputs.group class="col-sm-4">
+        <x-inputs.number name="load_height[{{ $index }}]" label="Load Height" :value="old('load_height.' . $index, $editing ? $load->load_height : '')"
+            step="any" placeholder="Height" required></x-inputs.number>
+    </x-inputs.group>
+
     <!-- Remove Load Button -->
     {{-- <div class="col-sm-4 mt-4">
         <button type="button" class="btn btn-danger remove-loadpackage-btn">
