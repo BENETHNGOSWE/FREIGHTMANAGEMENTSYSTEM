@@ -20,7 +20,7 @@
                         <div style="display: flex; justify-content: space-between;">
                             <h4 class="card-title">@lang('crud.customerleads.index_title')</h4>
                         </div>
-                        <table id="customerTable"  class="table table-borderless table-hover">
+                        <table id="labtypeTable" class="table table-borderless table-hover">
                             <thead>
                                 <tr>
                                     <th>
@@ -76,11 +76,12 @@
                                                             <i class="fas fa-eye"></i>
                                                         </button>
                                                     </a>
-                                                    @endcan 
-                                                    @can('delete', $customerlead)
-                                                    <form class="delete_form" action="{{ route('admin.delete.customerlead', $customerlead)}}" method="POST"
-                                                    >
-                                                        @csrf 
+                                                @endcan
+                                                @can('delete', $customerlead)
+                                                    <form class="delete_form"
+                                                        action="{{ route('admin.delete.customerlead', $customerlead) }}"
+                                                        method="POST">
+                                                        @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-outline-danger delete_button">
                                                             <i class="fas fa-trash"></i>
@@ -92,12 +93,12 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td  class="text-center py-5" colspan="5">
+                                        <td class="text-center py-5" colspan="5">
                                             @lang('crud.common.no_items_found')
                                         </td>
                                     </tr>
                                 @endforelse
-                                </tbody>
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -111,7 +112,7 @@
 @push('scripts')
     <script>
         (function($) {
-            var table = $("#customerTable").DataTable({
+            var table = $("#labtypeTable").DataTable({
                 searching: true,
                 paging: true,
                 select: false,
@@ -120,8 +121,8 @@
         })(jQuery);
     </script>
 
-<script>
-   const deleteButtons = document.querySelectorAll(".delete_button");
+    <script>
+        const deleteButtons = document.querySelectorAll(".delete_button");
 
         deleteButtons.forEach(function(button) {
             button.addEventListener("click", function(e) {

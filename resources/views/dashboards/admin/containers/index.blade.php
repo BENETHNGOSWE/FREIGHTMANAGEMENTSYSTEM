@@ -47,27 +47,32 @@
                                                             <i class="fas fa-edit"></i>
                                                         </button>
                                                     </a>
-                                                @endcan 
+                                                @endcan
                                                 @can('view', $container)
                                                     <a href="{{ route('admin.show.container', $container) }}">
                                                         <button type="button" class="btn btn-outline-primary mx-2">
                                                             <i class="fas fa-eye"></i>
                                                         </button>
                                                     </a>
-                                                @endcan 
+                                                @endcan
                                                 @can('delete', $container)
-                                                    <form class="delete_form" action="{{ route('admin.delete.container', $container) }}" method="POST">
+                                                    <form class="delete_form"
+                                                        action="{{ route('admin.delete.container', $container) }}"
+                                                        method="POST">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-outline-danger delete_button mx-2">
+                                                        <button type="submit"
+                                                            class="btn btn-outline-danger delete_button mx-2">
                                                             <i class="fas fa-trash"></i>
                                                         </button>
                                                     </form>
                                                 @endcan
-                                                <button type="button" class="btn btn-primary load-container-btn" data-container-id="{{ $container->id }}">
+                                                <button type="button" class="btn btn-primary load-container-btn"
+                                                    data-container-id="{{ $container->id }}">
                                                     Load Container
                                                 </button>
-                                                <a href="{{ route('admin.loadlistpdf.container', $container)}}" class="btn btn-secondary mx-2">
+                                                <a href="{{ route('admin.loadlistpdf.container', $container) }}"
+                                                    class="btn btn-secondary mx-2">
                                                     <i class="fas fa-print"></i> Print
                                                 </a>
                                             </div>
@@ -91,13 +96,41 @@
 
 @push('scripts')
     <script>
+        const deleteButtons = document.querySelectorAll(".delete_button");
+
+        deleteButtons.forEach(function(button) {
+            button.addEventListener("click", function(e) {
+                e.preventDefault();
+                swal({
+                    title: "Are you sure to delete ?",
+                    text: "You will not be able to recover deleted data !!",
+                    type: "warning",
+                    showCancelButton: !0,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Yes, delete it !!",
+                    cancelButtonText: "No, cancel it !!",
+                    closeOnConfirm: !1,
+                    closeOnCancel: !1
+                }).then((result) => {
+                    if (result.value) {
+                        const form = button.closest(".delete_form");
+                        form.submit();
+                    } else {
+                        swal("Cancelled", "Your data is safe", "success");
+                    }
+                });
+            });
+        });
+
         $(document).ready(function() {
             $('.load-container-btn').on('click', function() {
                 var containerId = $(this).data('container-id');
                 $.ajax({
-                    url: `/containers/${containerId}/load`, 
+                    url: `/containers/${containerId}/load`,
                     type: 'POST',
-                    data: { _token: '{{ csrf_token() }}' },
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
                     success: function(response) {
                         if (response.success) {
                             alert('Loads successfully added to container');
