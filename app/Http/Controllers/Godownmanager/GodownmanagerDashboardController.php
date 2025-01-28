@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Godownmanager;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use App\Models\DeriveryOrder;
 
 class GodownmanagerDashboardController extends Controller
 {
@@ -26,6 +27,9 @@ class GodownmanagerDashboardController extends Controller
 
     public function index($fms_id): View
     {
+        $clientid = auth()->user()->client_id;
+
+        $this->data['deriveryorderCount'] = DeriveryOrder::where('client_id', $clientid)->count();
         return view('dashboards.godownmanager.dashboard', $this->data);
     }
 }

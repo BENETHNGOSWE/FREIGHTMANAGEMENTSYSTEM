@@ -9,7 +9,7 @@
                 </p>
             </div>
             <div>
-                <a href="{{ route('admin.list.invoice') }}" class="btn btn-primary me-3">+ Add Load</a>
+                <a href="{{ route('dashboard') }}" class="btn btn-primary me-3">Home</a>
             </div>
         </div>
         <div class="row">

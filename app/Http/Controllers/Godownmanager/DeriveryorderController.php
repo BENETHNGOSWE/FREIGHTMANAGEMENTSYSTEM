@@ -71,40 +71,43 @@ class DeriveryorderController extends Controller
         return redirect()->route('godownmanager.list.deriveryorder')->with('success', 'Derivery Order Created Successfuly');
     }
 
-    public function show(Request $request, Loadpackagetype $loadpackagetype): View
+    public function show(Request $request, DeriveryOrder $deriveryorder): View
     {
-        $this->authorize('view', $loadpackagetype);
-        $this->data['loadpackagetype'] = $loadpackagetype;
-        return view('dashboards.admin.loadpackagetypes.show', $this->data);
+        $this->authorize('view', $deriveryorder);
+        $this->data['deriveryorder'] = $deriveryorder;
+        return view('dashboards.godownmanager.deriveryorders.show', $this->data);
     }
 
-    public function edit(Loadpackagetype $loadpackagetype)
+    public function edit(DeriveryOrder $deriveryorder)
     {
-        $this->authorize('update', $loadpackagetype);
-        $this->data['loadpackagetype'] = $loadpackagetype;
-        return view('dashboards.admin.loadpackagetypes.edit', $this->data);
+        $this->authorize('update', $deriveryorder);
+        $this->data['deriveryorder'] = $deriveryorder;
+        $this->data['invoices'] = Invoice::with('customer')->pluck('invoice_no', 'id');
+        return view('dashboards.godownmanager.deriveryorders.edit', $this->data);
     }
 
-    public function update(Request $request, Loadpackagetype $loadpackagetype)
+    public function update(Request $request, DeriveryOrder $deriveryorder)
     {
-        $this->authorize('update', $loadpackagetype);
+        $this->authorize('update', $deriveryorder);
         $validated = $request->validate([
-            'load_type_name' => ['required', 'string', 'max:255'],
-            'load_type_description' => ['nullable', 'string', 'max:255'],
+           'driver_name' => ['required', 'string', 'max:255'],
+            'driver_number' => ['required', 'string', 'max:255'],
+            'vehicle_reg_no' => ['required', 'string', 'max:255'],
+            'invoice_id' => ['required', 'string', 'exists:invoices,id'],
         ]);
         $validated['client_id'] = $this->fms_id;
-        $loadpackagetype->update($validated);
-        return redirect()->route('admin.list.loadpackagetpye')->with('success', 'Load Type Updated Successfuly');
+        $deriveryorder->update($validated);
+        return redirect()->route('godownmanager.list.deriveryorder')->with('success', 'Derivery Order Updated Successfuly');
     }
 
-    public function delete(Request $request, $Loadpackagetype)
+    public function delete(Request $request, $deriveryorder)
     {
-        $Loadpackagetype = Loadpackagetype::where('id', $Loadpackagetype)
+        $deriveryorder = DeriveryOrder::where('id', $deriveryorder)
             ->where('client_id', $this->fms_id)
             ->first();
-        $this->authorize('delete', $Loadpackagetype);
-        $Loadpackagetype->delete();
-        return redirect()->route('admin.list.loadpackagetpye')->with('success', 'Load Type Successfuly deleted');
+        $this->authorize('delete', $deriveryorder);
+        $deriveryorder->delete();
+        return redirect()->route('godownmanager.list.deriveryorder')->with('success', 'Derivery Order Successfuly deleted');
     }
 
     public function generateDeriveryOrder($id)

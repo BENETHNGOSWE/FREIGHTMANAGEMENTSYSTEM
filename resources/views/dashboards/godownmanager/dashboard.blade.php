@@ -25,8 +25,8 @@
                     <div class="card-body">
                         <div class="media align-items-center">
                             <div class="media-body mr-3">
-                                <h2 class="fs-34 text-black font-w600">4</h2>
-                                <span>Total Leads</span>
+                                <h2 class="fs-34 text-black font-w600">{{$deriveryorderCount}}</h2>
+                                <span>Total Derivery</span>
                             </div>
                             <i class="fa fa-hospital-user text-primary" style="font-size:40px;"></i>
                         </div>

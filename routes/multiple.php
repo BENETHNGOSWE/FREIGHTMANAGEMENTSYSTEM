@@ -90,6 +90,9 @@ Route::prefix('/')
         Route::get('staff-show-staff/{staff}', [App\Http\Controllers\Admin\StaffController::class, 'show'])->name('admin.show.staff');
         Route::delete('staff-delete-staff/{staff}', [App\Http\Controllers\Admin\StaffController::class, 'delete'])->name('admin.delete.staff');
 
+        Route::get('viewprofile', [App\Http\Controllers\Admin\StaffController::class, 'viewProfile'])->name('admin.viewprofile.staff');
+        Route::put('updateprofile', [App\Http\Controllers\Admin\StaffController::class, 'updateProfile'])->name('admin.updateprofile.staff');
+
         // Message Manage Here
         Route::get('/message', [App\Http\Controllers\Admin\MessageController::class, 'index'])->name('admin.message.index');
         Route::post('/messagecreate', [App\Http\Controllers\Admin\MessageController::class, 'sendMessage'])->name('admin.sendmessage');

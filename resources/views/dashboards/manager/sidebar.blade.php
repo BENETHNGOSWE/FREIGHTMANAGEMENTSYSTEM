@@ -100,7 +100,7 @@
                     <span class="nav-text">Manage Profile</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="#">
+                    <li><a href="{{ route('admin.viewprofile.staff') }}">
                             <i class="fas fa-building"></i>
                             <span>Your Profile</span>
                         </a></li>

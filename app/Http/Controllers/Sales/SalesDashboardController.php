@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Models\Customerlead;
 use App\Models\ClientAdmin;
+use App\Models\Staff;
 use App\Models\Customercategory;
 use App\Models\Customermessage;
 use App\Models\Message;
@@ -33,7 +34,7 @@ class SalesDashboardController extends Controller
     {
         $rolesAllowedToView = ['admin', 'chiefoperation'];
         $clientId = auth()->user()->client_id;
-    
+
         // Check if the user has one of the allowed roles
         if (auth()->user()->hasAnyRole($rolesAllowedToView)) {
             // Users with allowed roles can see all data for the client
@@ -54,9 +55,9 @@ class SalesDashboardController extends Controller
                 ->where('user_id', auth()->id()) // Only leads created by the current user
                 ->count();
         }
-    
+        $this->data['staff'] = Staff::with('user')->where('client_id', $this->fms_id)->get();
+
         // Render the view with the fetched data
         return view('dashboards.sales.dashboard', $this->data);
     }
-    
 }

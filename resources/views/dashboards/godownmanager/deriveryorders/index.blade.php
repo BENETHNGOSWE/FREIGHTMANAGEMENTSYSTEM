@@ -47,21 +47,21 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($deriveryorder as $loadpackagetype)
+                                @forelse($deriveryorder as $derivery)
                                     <tr>
                                         <td>
                                             {{ $loop->iteration }}
                                         </td>
-                                        <td>{{ strtoupper($loadpackagetype->driver_name) ?? '-' }}</td>
-                                        <td>{{ strtoupper($loadpackagetype->driver_number) ?? '-' }}</td>
-                                        <td>{{ strtoupper($loadpackagetype->vehicle_reg_no) ?? '-' }}</td>
-                                        <td>{{ strtoupper($loadpackagetype->invoice->invoice_no) ?? '-' }}</td>
+                                        <td>{{ strtoupper($derivery->driver_name) ?? '-' }}</td>
+                                        <td>{{ strtoupper($derivery->driver_number) ?? '-' }}</td>
+                                        <td>{{ strtoupper($derivery->vehicle_reg_no) ?? '-' }}</td>
+                                        <td>{{ strtoupper($derivery->invoice->invoice_no) ?? '-' }}</td>
                                         <td class="text-center" style="width: 134px;">
                                             <div role="group" aria-label="Row Actions" class="btn-group">
                                                 <!-- Other action buttons -->
 
                                                 <!-- Print Button -->
-                                                <a href="{{ route('godownmanager.generate.deriveryorder', $loadpackagetype->id) }}">
+                                                <a href="{{ route('godownmanager.generate.deriveryorder', $derivery->id) }}">
                                                     <button type="button" class="btn btn-outline-info">
                                                         <i class="fas fa-print"></i>
                                                     </button>
@@ -70,21 +70,21 @@
                                         </td>
                                         <td class="text-center" style="width: 134px;">
                                             <div role="group" aria-label="Row Actions" class="btn-group">
-                                                @can('update', $loadpackagetype)
-                                                    <a href="{{ route('admin.edit.loadpackagetpye', $loadpackagetype) }}">
+                                                @can('update', $derivery)
+                                                    <a href="{{ route('godownmanager.edit.deriveryorder', $derivery) }}">
                                                         <button type="button" class="btn btn-outline-success">
                                                             <i class="fas fa-edit"></i>
                                                         </button>
                                                     </a>
-                                                    @endcan @can('view', $loadpackagetype)
-                                                    <a href="{{ route('admin.show.loadpackagetpye', $loadpackagetype) }}">
+                                                    @endcan @can('view', $derivery)
+                                                    <a href="{{ route('godownmanager.show.deriveryorder', $derivery) }}">
                                                         <button type="button" class="btn btn-outline-primary mx-2">
                                                             <i class="fas fa-eye"></i>
                                                         </button>
                                                     </a>
-                                                    @endcan @can('delete', $loadpackagetype)
+                                                    @endcan @can('delete', $derivery)
                                                     <form class="delete_form"
-                                                        action="{{ route('admin.delete.loadpackagetpye', $loadpackagetype) }}"
+                                                        action="{{ route('godownmanager.delete.deriveryorder', $derivery) }}"
                                                         method="POST">
                                                         @csrf
                                                         @method('DELETE')

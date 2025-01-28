@@ -37,9 +37,7 @@ class StaffController extends Controller
     public function list_staffs()
     {
         $this->data['page_title'] = 'List Staff';
-        $employees = Staff::with('user')
-            ->where('client_id', $this->fms_id)
-            ->get();
+        $employees = Staff::with('user')->where('client_id', $this->fms_id)->get();
         $this->data['employees'] = $employees;
         return view('dashboards.admin.staffs.list_staffs', $this->data);
     }
@@ -141,13 +139,13 @@ class StaffController extends Controller
         return view('dashboards.admin.staffs.show', $this->data);
     }
 
-    public function edit($employee)
+    public function edit($id)
     {
+        $staff = Staff::findOrFail($id); // Fetch the staff member by ID
         $this->data['page_title'] = 'Edit Staff';
         $client_id = auth()->user()->client_id;
-        $staff = Staff::find($employee);
         $this->data['staff'] = $staff;
-        $this->data['editing'] = true; // Add this line
+        $this->data['editing'] = true;
 
         $this->data['clients'] = Client::pluck('client_name', 'id');
         $this->data['staffTypes'] = StaffType::pluck('staff_type_name', 'id');
@@ -214,6 +212,7 @@ class StaffController extends Controller
             return redirect()->back()->with('error', 'Something went wrong');
         }
     }
+
     public function delete($id)
     {
         try {
@@ -231,6 +230,64 @@ class StaffController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->route('admin.list.staff')->withError(__('crud.common.error'));
+        }
+    }
+
+    public function viewProfile()
+    {
+        $this->data['user'] = auth()->user();
+        $this->data['staff'] = Staff::where('user_id', $this->data['user']->id)->first();
+        return view('dashboards.admin.staffs.editprofile', $this->data);
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $user = auth()->user();
+        $staff = Staff::where('user_id', $user->id)->first();
+
+        $validated = $request->validate([
+            'staff_firstname' => 'required|string|max:255',
+            'staff_middlename' => 'nullable|string|max:255',
+            'staff_lastname' => 'required|string|max:255',
+            'staff_email' => 'required|email|unique:users,email,' . $user->id,
+            'staff_gender' => 'required|in:male,female,others',
+            'phone' => 'required|string|max:15',
+            'staff_address' => 'nullable|string|max:255',
+            'password' => 'nullable|min:6|confirmed',
+        ]);
+
+        DB::beginTransaction();
+        try {
+            $userData = [
+                'name' => $validated['staff_firstname'] . ' ' . $validated['staff_middlename'] . ' ' . $validated['staff_lastname'],
+                'email' => $validated['staff_email'],
+                'phone' => $validated['phone'],
+            ];
+
+            if (!empty($validated['password'])) {
+                $userData['password'] = Hash::make($validated['password']);
+            }
+
+            $user->update($userData);
+
+            $staff->update([
+                'staff_firstname' => $validated['staff_firstname'],
+                'staff_middlename' => $validated['staff_middlename'],
+                'staff_lastname' => $validated['staff_lastname'],
+                'staff_email' => $validated['staff_email'],
+                'staff_gender' => $validated['staff_gender'],
+                'staff_address' => $validated['staff_address'],
+                'phone' => $validated['phone'],
+            ]);
+
+            DB::commit();
+            return redirect()->route('dashboard')->with('success', 'Profile updated successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            \Log::error($e);
+            return redirect()
+                ->back()
+                ->with('error', 'Failed to update profile: ' . $e->getMessage());
         }
     }
 }

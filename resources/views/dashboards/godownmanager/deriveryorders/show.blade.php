@@ -13,7 +13,7 @@
     <div class="row">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title">{{ $loadpackagetype->load_type_name ?? '-' }}</h4>
+                <h4 class="card-title">{{ $deriveryorder->load_type_name ?? '-' }}</h4>
             </div>
             <div class="card-body">
 
@@ -24,7 +24,7 @@
                         <ul class="nav nav-tabs" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <a class="nav-link active" data-bs-toggle="tab" href="#load_info" aria-selected="true"
-                                    role="tab"><i class="la la-home me-2"></i>load Type Details</a>
+                                    role="tab"><i class="la la-home me-2"></i>Derivery Note Details</a>
                             </li>
                             {{-- <li class="nav-item" role="presentation">
                                 <a class="nav-link" data-bs-toggle="tab" href="#admin_details" aria-selected="false"
@@ -40,18 +40,28 @@
                                                 <table class="table table-bordered table-responsive-sm">
                                                     <thead>
                                                         <tr>
-                                                            <th style="width: 20%">load Type Name</th>
-                                                            <th>{{ $loadpackagetype->load_type_name ?? '-' }}</th>
+                                                            <th style="width: 20%">Derivery Note Details</th>
+                                                            
                                                         </tr>
-
-
+                                                        
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                            <td>Description</td>
-                                                            <td>{{ $loadpackagetype->load_type_description ?? '-' }}</td>
+                                                            <td>Driver Name</td>
+                                                            <td>{{ $deriveryorder->driver_name ?? '-' }}</td>
                                                         </tr>
                                                         
+                                                        <tr>
+                                                            <td>Driver Number</td>
+                                                            <td>{{ $deriveryorder->driver_number ?? '-' }}</td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>Vehicle No</td>
+                                                            <td>{{ $deriveryorder->vehicle_reg_no ?? '-' }}</td>
+                                                        </tr>
+
+                                                       
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -64,12 +74,12 @@
                 </div>
 
                 <div class="mt-4 d-flex ">
-                    <a href="{{ route('admin.edit.loadpackagetpye', $loadpackagetype) }}" class="btn btn-outline-success">
+                    <a href="{{ route('godownmanager.edit.deriveryorder', $deriveryorder) }}" class="btn btn-outline-success">
                         <i class="icon fa fa-add"></i>
                         Edit
                     </a>
 
-                    @can('delete', $loadpackagetype)
+                    @can('delete', $deriveryorder)
                         <form class="delete_form mx-3" action="#"
                             method="POST">
                             @csrf
