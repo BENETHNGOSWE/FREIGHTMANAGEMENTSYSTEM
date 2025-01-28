@@ -10,16 +10,16 @@
             </li>
             <li>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                    <i class="fa fa-flask"></i>
+                    <i class="fa fa-comments"></i>
                     <span class="nav-text">Message</span>
                 </a>
                 <ul aria-expanded="false">
                     <li><a href="{{ route('admin.message.lead') }}">
-                            <i class="fas fa-microscope"></i>
+                            <i class="fas fa-comments"></i>
                             <span>Chat With Customer</span>
                         </a></li>
                     <li><a href="{{ route('admin.message.index') }}">
-                            <i class="fas fa-mercury"></i>
+                            <i class="fas fa-list"></i>
                             <span>Message List</span>
                         </a></li>
 
@@ -28,7 +28,7 @@
 
             <li>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                    <i class="fas fa-pills"></i>
+                    <i class="fas fa-lightbulb"></i>
                     <span class="nav-text">Leads</span>
                 </a>
                 <ul aria-expanded="false">
@@ -47,12 +47,12 @@
 
             <li>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                    <i class="fas fa-building"></i>
+                    <i class="fas fa-user"></i>
                     <span class="nav-text">Manage Profile</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{{ route('admin.show.profile', $clientadmin) }}">
-                            <i class="fas fa-building"></i>
+                    <li><a href="{{ route('admin.viewprofile.staff') }}">
+                            <i class="fas fa-user"></i>
                             <span>Your Profile</span>
                         </a></li>
 

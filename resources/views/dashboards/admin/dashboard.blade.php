@@ -28,7 +28,7 @@
                                 <h2 class="fs-34 text-black font-w600">{{ $containerCount }}</h2>
                                 <span>Total Containers</span>
                             </div>
-                            <i class="fa fa-hospital-user text-primary" style="font-size:40px;"></i>
+                            <i class="fa fa-box text-primary" style="font-size:40px;"></i>
                         </div>
                     </div>
                     <div class="progress  rounded-0" style="height:4px;">
@@ -48,7 +48,7 @@
                                     <h2 class="fs-34 text-black font-w600">{{$staffCount}}</h2>
                                     <span>Total Staff</span>
                                 </div>
-                                <i class="fa fa-house-medical text-primary" style="font-size:40px;"></i>
+                                <i class="fa fa-user text-primary" style="font-size:40px;"></i>
                             </div>
                         </div>
                         <div class="progress  rounded-0" style="height:4px;">
@@ -91,7 +91,7 @@
                                 <h2 class="fs-34 text-black font-w600">{{ $loadcreate }}</h2>
                                 <span>Total Loads</span>
                             </div>
-                            <i class="fa-solid fa-user-nurse text-primary" style="font-size:40px;"></i>
+                            <i class="fa-solid fa-truck text-primary" style="font-size:40px;"></i>
                         </div>
                     </div>
                     <div class="progress  rounded-0" style="height:4px;">

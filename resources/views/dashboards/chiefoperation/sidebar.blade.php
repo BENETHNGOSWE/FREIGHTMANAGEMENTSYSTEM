@@ -11,23 +11,32 @@
            
             <li>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                    <i class="fa fa-building"></i>
+                    <i class="fa fa-user"></i>
                     <span class="nav-text">Customers</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{{ route('admin.create.customer') }}">+Add new</a></li>
-                    <li><a href="{{ route('admin.list.customer') }}">List Customers </a></li>
+                    <li><a href="{{ route('admin.create.customer') }}">
+                            <i class="fa fa-user"></i>
+                            <span>+Add new</span>
+                        </a></li>
+
+                        <li><a href="{{ route('admin.list.customer') }}">
+                            <i class="fa-solid fa-list-ol"></i>
+                            <span>List Customers</span>
+                        </a></li>
+                        
+
                 </ul>
             </li>
 
             <li>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                    <i class="fas fa-bed"></i>
+                    <i class="fas fa-truck"></i>
                     <span class="nav-text">Loads</span>
                 </a>
                 <ul aria-expanded="false">
                     <li><a href="{{ route('admin.list.loadpackage') }}">
-                            <i class="fa-solid fa-location-arrow"></i>
+                            <i class="fa-solid fa-list"></i>
                             <span>List Loads</span>
                         </a></li>
 
@@ -43,7 +52,7 @@
 
             <li>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                    <i class="fas fa-pills"></i>
+                    <i class="fas fa-file-invoice"></i>
                     <span class="nav-text">Invoices</span>
                 </a>
                 <ul aria-expanded="false">
@@ -56,7 +65,7 @@
             </li>
             <li>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                    <i class="fas fa-pills"></i>
+                    <i class="fas fa-lightbulb"></i>
                     <span class="nav-text">Leads</span>
                 </a>
                 <ul aria-expanded="false">
@@ -77,12 +86,12 @@
 
             <li>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                    <i class="fas fa-building"></i>
+                    <i class="fas fa-user"></i>
                     <span class="nav-text">Manage Profile</span>
                 </a>
                 <ul aria-expanded="false">
                     <li><a href="{{ route('admin.viewprofile.staff') }}">
-                            <i class="fas fa-building"></i>
+                            <i class="fas fa-user"></i>
                             <span>Your Profile</span>
                         </a></li>
 
@@ -95,21 +104,21 @@
                 </a>
                 <ul aria-expanded="false">
                     <li><a href="{{ route('admin.list.payment') }}">
-                            <i class="fas fa-building"></i>
+                            <i class="fas fa-credit-card"></i>
                             <span>Payment Infomation</span>
                         </a></li>
 
                 </ul>
                 <ul aria-expanded="false">
                     <li><a href="{{ route('admin.list.unittype') }}">
-                            <i class="fa-solid fa-location-arrow"></i>
+                            <i class="fa-solid fa-puzzle-piece"></i>
                             <span>Units</span>
                         </a></li>
 
                 </ul>
                 <ul aria-expanded="false">
                     <li><a href="{{ route('admin.list.loadpackagetpye') }}">
-                            <i class="fa-solid fa-location-arrow"></i>
+                            <i class="fa-solid fa-truck"></i>
                             <span>Loads Types</span>
                         </a></li>
 

@@ -28,7 +28,7 @@
                                 <h2 class="fs-34 text-black font-w600">{{$loadcreate}}</h2>
                                 <span>Total Load in Stock</span>
                             </div>
-                            <i class="fa fa-hospital-user text-primary" style="font-size:40px;"></i>
+                            <i class="fas fa-truck text-primary" style="font-size:40px;"></i>
                         </div>
                     </div>
                     <div class="progress  rounded-0" style="height:4px;">
@@ -48,7 +48,7 @@
                                     <h2 class="fs-34 text-black font-w600">{{$invoiceCount}}</h2>
                                     <span>Total Invoice</span>
                                 </div>
-                                <i class="fa fa-house-medical text-primary" style="font-size:40px;"></i>
+                                <i class="fas fa-file-invoice text-primary" style="font-size:40px;"></i>
                             </div>
                         </div>
                         <div class="progress  rounded-0" style="height:4px;">
@@ -70,7 +70,7 @@
                                     <h2 class="fs-34 text-black font-w600">{{ $customerCount }}</h2>
                                     <span>Total Customers</span>
                                 </div>
-                                <i class="fa fa-user-doctor text-primary" style="font-size:40px;"></i>
+                                <i class="fa fa-user text-primary" style="font-size:40px;"></i>
                             </div>
                         </div>
                         <div class="progress  rounded-0" style="height:4px;">
@@ -92,7 +92,7 @@
                                     <h2 class="fs-34 text-black font-w600">{{$messentsent}} / {{$messageLimit}}</h2>
                                     <span>Total Messages Sent / Assigned</span>
                                 </div>
-                                <i class="fa fa-user-doctor text-primary" style="font-size:40px;"></i>
+                                <i class="fa fa-comments text-primary" style="font-size:40px;"></i>
                             </div>
                         </div>
                         <div class="progress rounded-0" style="height:4px;">

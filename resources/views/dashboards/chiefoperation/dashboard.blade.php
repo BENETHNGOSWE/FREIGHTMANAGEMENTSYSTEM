@@ -28,7 +28,7 @@
                                 <h2 class="fs-34 text-black font-w600">4</h2>
                                 <span>Total Leads</span>
                             </div>
-                            <i class="fa fa-hospital-user text-primary" style="font-size:40px;"></i>
+                            <i class="fas fa-lightbulb text-primary" style="font-size:40px;"></i>
                         </div>
                     </div>
                     <div class="progress  rounded-0" style="height:4px;">
@@ -48,7 +48,7 @@
                                 <h2 class="fs-34 text-black font-w600">4</h2>
                                     <span>Total Categories</span>
                                 </div>
-                                <i class="fa fa-house-medical text-primary" style="font-size:40px;"></i>
+                                <i class="fas fa-th-list text-primary" style="font-size:40px;"></i>
                             </div>
                         </div>
                         <div class="progress  rounded-0" style="height:4px;">
@@ -70,7 +70,7 @@
                                     <h2 class="fs-34 text-black font-w600">4</h2>
                                     <span>Total Messages Sent / Assigned</span>
                                 </div>
-                                <i class="fa fa-user-doctor text-primary" style="font-size:40px;"></i>
+                                <i class="fa fa-comments text-primary" style="font-size:40px;"></i>
                             </div>
                         </div>
                         <div class="progress  rounded-0" style="height:4px;">
@@ -92,7 +92,7 @@
                                 <h2 class="fs-34 text-black font-w600">9</h2>
                                 <span>Total Message Fail</span>
                             </div>
-                            <i class="fa-solid fa-user-nurse text-primary" style="font-size:40px;"></i>
+                            <i class="fa-solid fa-exclamation-circle text-primary" style="font-size:40px;"></i>
                         </div>
                     </div>
                     <div class="progress  rounded-0" style="height:4px;">
