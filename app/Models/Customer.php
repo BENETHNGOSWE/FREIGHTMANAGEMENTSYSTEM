@@ -34,7 +34,7 @@ class Customer extends Model
         return $this->belongsTo( User::class, 'user_id');
     }
 
-    public function loadpackage()
+    public function loadpackages()
     {
         return $this->hasMany(Loadpackage::class);
     }

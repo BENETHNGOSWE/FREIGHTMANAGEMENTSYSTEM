@@ -2,7 +2,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="keywords"
     content="Hospital management system" />
-  <meta name="author" content="Jason Vision" />
+  <meta name="author" content="Koda Freight" />
   <meta name="robots" content="" />
   <meta name="description" content="Freight Management Software" />
   <meta property="og:title" content="Freight Management Software" />

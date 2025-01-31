@@ -6,7 +6,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="keywords" content="Hospital management | Error">
-    <meta name="author" content="Jason Vision">
+    <meta name="author" content="Koda Freight">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>HMS | Error @yield('title')</title>
     <link rel="icon" type="image/png" sizes="16x16" href="{{asset('assets/images/mini.png')}}">

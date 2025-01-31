@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Models\Customer;
+use App\Models\Customerlead;
 use App\Models\User;
 use App\Models\Staff;
+use App\Models\Invoice;
 use App\Models\Loadpackage;
 use App\Models\ClientAdmin;
 use App\Models\Container;
@@ -43,9 +45,13 @@ class AdminDashboardController extends Controller
         $this->data['loadcreate'] = Loadpackage::where('client_id', $clientid)->count();
         $this->data['staffCount'] = Staff::where('client_id', $clientid)->count();
         $this->data['containerCount'] = Container::where('client_id', $clientid)->count();
-
+        $this->data['pendingInvoices'] = Invoice::where('client_id', $clientid)->where('status', 0)->count();
+        $this->data['fullPaidInvoices'] = Invoice::where('client_id', $clientid)->where('status', 1)->count();
+        $this->data['partialPaidInvoices'] = Invoice::where('client_id', $clientid)->where('status', 2)->count();
+        $this->data['topCustomers'] = Customer::where('client_id', $clientid)->withCount('loadpackages')->orderByDesc('loadpackages_count')->take(5)->get();
+        $this->data['customersPerMonth'] = Loadpackage::where('client_id', $clientid)->selectRaw('EXTRACT(YEAR FROM created_at) as year, EXTRACT(MONTH FROM created_at) as month, COUNT(DISTINCT customer_id) as customer_count')->groupByRaw('EXTRACT(YEAR FROM created_at), EXTRACT(MONTH FROM created_at)')->orderByRaw('EXTRACT(YEAR FROM created_at), EXTRACT(MONTH FROM created_at)')->get();
         $this->data['clientadmin'] = $clientadmin;
-
+        $this->data['topUsersByLeads'] = DB::table('customerleads')->join('users', 'customerleads.user_id', '=', 'users.id')->select('users.id', 'users.name', DB::raw('COUNT(customerleads.id) as leads_count'))->where('customerleads.client_id', $clientid)->groupBy('users.id', 'users.name')->orderByDesc('leads_count')->take(5)->get();
         return view('dashboards.admin.dashboard', $this->data);
     }
 
@@ -77,10 +83,10 @@ class AdminDashboardController extends Controller
             'phone' => ['required', 'max:255', 'string'],
             'password' => ['nullable', 'max:255', 'string'],
         ]);
-    
+
         try {
             DB::beginTransaction();
-            
+
             $clientadmin->update([
                 'firstname' => $validated['firstname'],
                 'middlename' => $validated['middlename'],
@@ -99,12 +105,12 @@ class AdminDashboardController extends Controller
                     'password' => $request->filled('password') ? Hash::make($validated['password']) : $user->password,
                 ]);
             }
-    
+
             DB::commit();
             if (auth()->id() === $clientadmin->user_id) {
                 auth()->user()->refresh();
             }
-    
+
             return redirect()->route('admin.show.profile', $clientadmin)->with('success', 'Your Profile Updated Successfully');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -112,5 +118,4 @@ class AdminDashboardController extends Controller
             return redirect()->back()->with('error', 'Something went wrong while updating');
         }
     }
-    
 }

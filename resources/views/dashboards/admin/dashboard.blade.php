@@ -1,24 +1,17 @@
 @extends('layouts._master')
 @section('content')
-    <!-- row -->
     <div class="container-fluid">
         <div class="form-head d-flex align-items-center mb-sm-4 mb-3">
             <div class="me-auto">
-                <h2 class="text-black font-w600">Welcome {{ auth()->user()->name }}  <span class="badge light badge-info">{{ auth()->user()->getRoleNames()[0] }}</span></h2>
-                
+                <h2 class="text-black font-w600">Welcome {{ auth()->user()->name }} <span class="badge light badge-info">{{ auth()->user()->getRoleNames()[0] }}</span></h2>
                 <p class="mb-0" id="date_time"></p>
             </div>
             <div class="date">
                 <p class="mb-1">Show by date</p>
-                <input name="datepicker" class="datepicker-default form-control" placeholder="choose date" id="datepicker"
-                    style="background-color: #0061f2 !important; color: #fff !important;" />
+                <input name="datepicker" class="datepicker-default form-control" placeholder="choose date" id="datepicker" style="background-color: #0061f2 !important; color: #fff !important;" />
             </div>
-
         </div>
 
-
-
-        {{-- Dashboard card --}}
         <div class="row">
             <div class="col-xl-3 col-sm-6">
                 <div class="card">
@@ -31,37 +24,34 @@
                             <i class="fa fa-box text-primary" style="font-size:40px;"></i>
                         </div>
                     </div>
-                    <div class="progress  rounded-0" style="height:4px;">
-                        <div class="progress-bar rounded-0 bg-secondary progress-animated" style="width: 100%; height:4px;"
-                            role="progressbar">
+                    <div class="progress rounded-0" style="height:4px;">
+                        <div class="progress-bar rounded-0 bg-secondary progress-animated" style="width: 100%; height:4px;" role="progressbar">
                             <span class="sr-only">100% Complete</span>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-xl-3  col-sm-6">
+            <div class="col-xl-3 col-sm-6">
                 <a href="#">
                     <div class="card">
                         <div class="card-body">
                             <div class="media align-items-center">
                                 <div class="media-body mr-3">
-                                    <h2 class="fs-34 text-black font-w600">{{$staffCount}}</h2>
+                                    <h2 class="fs-34 text-black font-w600">{{ $staffCount }}</h2>
                                     <span>Total Staff</span>
                                 </div>
                                 <i class="fa fa-user text-primary" style="font-size:40px;"></i>
                             </div>
                         </div>
-                        <div class="progress  rounded-0" style="height:4px;">
-                            <div class="progress-bar rounded-0 bg-primary progress-animated" style="width:100%; height:4px;"
-                                role="progressbar">
+                        <div class="progress rounded-0" style="height:4px;">
+                            <div class="progress-bar rounded-0 bg-primary progress-animated" style="width:100%; height:4px;" role="progressbar">
                                 <span class="sr-only">100% Complete</span>
                             </div>
                         </div>
                     </div>
                 </a>
             </div>
-
-            <div class="col-xl-3  col-sm-6">
+            <div class="col-xl-3 col-sm-6">
                 <a href="#">
                     <div class="card">
                         <div class="card-body">
@@ -73,17 +63,15 @@
                                 <i class="fa fa-user-doctor text-primary" style="font-size:40px;"></i>
                             </div>
                         </div>
-                        <div class="progress  rounded-0" style="height:4px;">
-                            <div class="progress-bar rounded-0 bg-secondary progress-animated"
-                                style="width: 100%; height:4px;" role="progressbar">
+                        <div class="progress rounded-0" style="height:4px;">
+                            <div class="progress-bar rounded-0 bg-secondary progress-animated" style="width: 100%; height:4px;" role="progressbar">
                                 <span class="sr-only">30% Complete</span>
                             </div>
                         </div>
                     </div>
                 </a>
             </div>
-            
-            <div class="col-xl-3  col-sm-6">
+            <div class="col-xl-3 col-sm-6">
                 <div class="card">
                     <div class="card-body">
                         <div class="media align-items-center">
@@ -94,9 +82,8 @@
                             <i class="fa-solid fa-truck text-primary" style="font-size:40px;"></i>
                         </div>
                     </div>
-                    <div class="progress  rounded-0" style="height:4px;">
-                        <div class="progress-bar rounded-0 bg-secondary progress-animated" style="width: 100%; height:4px;"
-                            role="progressbar">
+                    <div class="progress rounded-0" style="height:4px;">
+                        <div class="progress-bar rounded-0 bg-secondary progress-animated" style="width: 100%; height:4px;" role="progressbar">
                             <span class="sr-only">1000% Complete</span>
                         </div>
                     </div>
@@ -104,180 +91,26 @@
             </div>
         </div>
 
-
-
-
-
-        <!-- <div class="row">
-            <div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
-                <div class="widget-stat card">
-                    <div class="card-body p-4">
-                        <div class="media ai-icon">
-                            <span class="me-3 bgl-primary text-primary">
-                                <i class="fa fa-dollar text-primary" style="font-size:40px;"></i>
-                            </span>
-                            <div class="media-body">
-                                <p class="mb-1">Montly Income</p>
-                                <h4 class="mb-0">2,000,000 Tsh</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
-                <div class="widget-stat card">
-                    <div class="card-body p-4">
-                        <div class="media ai-icon">
-                            <span class="me-3 bgl-warning text-warning">
-                                <i class="fa fa-hand-holding-dollar text-secondary" style="font-size:40px;"></i>
-                            </span>
-                            <div class="media-body">
-                                <p class="mb-1">Daily Income</p>
-                                <h4 class="mb-0">140,000 Tsh</h4>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
-                <div class="widget-stat card">
-                    <div class="card-body p-4">
-                        <div class="media ai-icon">
-                            <span class="me-3 bgl-danger text-danger">
-                                <i class="fa fa-filter-circle-dollar text-danger" style="font-size:40px;"></i>
-                            </span>
-                            <div class="media-body">
-                                <p class="mb-1">Monthly Expences</p>
-                                <h4 class="mb-0">40,000 Tsh</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
-                <a href="#">
-                    <div class="widget-stat card">
-                        <div class="card-body p-4">
-                            <div class="media ai-icon">
-                                <span class="me-3 bgl-success text-success">
-                                    <i class="fa fa-users text-success" style="font-size:40px;"></i>
-
-                                </span>
-                                <div class="media-body">
-                                    <p class="mb-1">Total Staffs</p>
-                                    <h4 class="mb-0">4</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div> -->
-
-        {{-- //assets,buildings,wards,etc  --}}
-        <!-- <div class="row">
-            <div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
-                <a href="#">
-                    <div class="widget-stat card bg-secondary">
-                        <div class="card-body p-4">
-                            <div class="media ai-icon">
-                                <span class="me-3 bgl-primary text-primary">
-                                    <i class="fa fa-folder-tree text-primary" style="font-size:40px;"></i>
-                                </span>
-                                <div class="media-body">
-                                    <p class="mb-1 text-light">Total Assets</p>
-                                    <h4 class="mb-0">4</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
-                <a href="#">
-                    <div class="widget-stat card bg-primary">
-                        <div class="card-body p-4">
-                            <div class="media ai-icon">
-                                <span class="me-3 bgl-warning text-warning">
-                                    <i class="fa fa-city text-light" style="font-size:40px;"></i>
-                                </span>
-                                <div class="media-body text-light">
-                                    <p class="mb-1 ">buildings/Facilities</p>
-                                    <h4 class="mb-0 text-light">3</h4>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-
-            <div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
-                <a href="#">
-                    <div class="widget-stat card bg-success">
-                        <div class="card-body p-4">
-                            <div class="media ai-icon">
-                                <span class="me-3 bgl-danger text-danger">
-                                    <i class="fa fa-house-chimney-medical text-light" style="font-size:40px;"></i>
-                                </span>
-                                <div class="media-body">
-                                    <p class="mb-1 text-light">Total Wards</p>
-                                    <h4 class="mb-0">3</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-
-
-            <div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
-                <a href=" # ">
-                    <div class="widget-stat card bg-info">
-                        <div class="card-body p-4 ">
-                            <div class="media ai-icon">
-                                <span class="me-3 bgl-success text-indigo">
-                                    <i class="fa fa-flask text-indigo" style="font-size:40px;"></i>
-
-                                </span>
-                                <div class="media-body">
-                                    <p class="mb-1 text-light">Total Laboratories</p>
-                                    <h4 class="mb-0 text-light">3</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-        </div> -->
-    </div>
-
-
-
-
-    {{-- Today Apppointment --}}
-    <!-- <div class="container-fluid">
         <div class="row">
-            <div class="col-xl-3 col-lg-6 col-sm-6">
-                <div class="widget-stat card">
-                    <div class="card-header border-0 pb-0">
-                        <h3 class="card-title text-primary">Revenue vs Expences</h3>
-                        <h5 class="text-primary mb-0">
-                            <i class="fa fa-caret-up"></i> 17.24%
-                        </h5>
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-xl-6 col-lg-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Invoice Status</h4>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="invoicePieChart" width="200" height="200"></canvas>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body text-center">
-                        <div class="ico-sparkline">
-                            <div id="sparkline12"><canvas width="100" height="100"
-                                    style="display: inline-block; width: 100px; height: 100px; vertical-align: top;"></canvas>
+                    <div class="col-xl-6 col-lg-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Top 5 Customers by Loads</h4>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="topCustomersBarChart" width="400" height="200"></canvas>
                             </div>
                         </div>
                     </div>
@@ -285,33 +118,226 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-xl-6 col-lg-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Customers Added Per Month</h4>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="customersPerMonthLineChart" width="400" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Top Staff Members by Leads Added</h4>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="topUsersByLeadsBarChart" width="400" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
- -->
-
-
-
 
     @push('scripts')
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
         <script>
-            var sparkLine12 = function() {
-                if (jQuery("#sparkline12").length > 0) {
-                    //Pie
-                    $("#sparkline12").sparkline([20, 80], {
-                        type: "pie",
-                        height: "100",
-                        resize: !0,
-                        sliceColors: [
-                            "rgba(238, 50, 50, 1)",
-                            "rgba(43, 193, 85, 1)",
-                        ],
-                    });
-                }
-            };
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log('Pending Invoices:', {{ $pendingInvoices }});
+                console.log('Full Paid Invoices:', {{ $fullPaidInvoices }});
+                console.log('Partial Paid Invoices:', {{ $partialPaidInvoices }});
+
+                var ctx = document.getElementById('invoicePieChart').getContext('2d');
+                var invoicePieChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Pending Invoices', 'Full Paid Invoices', 'Partial Paid Invoices'],
+                        datasets: [{
+                            data: [{{ $pendingInvoices }}, {{ $fullPaidInvoices }}, {{ $partialPaidInvoices }}],
+                            backgroundColor: ['rgba(255, 99, 132, 0.6)', 'rgba(75, 192, 192, 0.6)', 'rgba(255, 206, 86, 0.6)'],
+                            borderColor: ['rgba(255, 99, 132, 1)', 'rgba(75, 192, 192, 1)', 'rgba(255, 206, 86, 1)'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            tooltip: {
+                                enabled: true
+                            }
+                        }
+                    }
+                });
+            });
+
+            document.addEventListener('DOMContentLoaded', function() {
+                var ctx = document.getElementById('topCustomersBarChart').getContext('2d');
+                var customerNames = @json($topCustomers->pluck('customer_firstname'));
+                var loadCounts = @json($topCustomers->pluck('loadpackages_count'));
+
+                var topCustomersBarChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: customerNames,
+                        datasets: [{
+                            label: 'Number of Loads',
+                            data: loadCounts,
+                            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Number of Loads'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Customers'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                enabled: true
+                            }
+                        }
+                    }
+                });
+            });
+
+            document.addEventListener('DOMContentLoaded', function() {
+                var ctx = document.getElementById('customersPerMonthLineChart').getContext('2d');
+                var customersPerMonth = @json($customersPerMonth);
+                var labels = customersPerMonth.map(function(item) {
+                    return new Date(item.year, item.month - 1).toLocaleString('default', { month: 'long', year: 'numeric' });
+                });
+                var data = customersPerMonth.map(function(item) {
+                    return item.customer_count;
+                });
+
+                var customersPerMonthLineChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Number of Customers',
+                            data: data,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Number of Customers'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Month'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top'
+                            },
+                            tooltip: {
+                                enabled: true
+                            }
+                        }
+                    }
+                });
+            });
+
+            document.addEventListener('DOMContentLoaded', function() {
+                var ctx = document.getElementById('topUsersByLeadsBarChart').getContext('2d');
+                var topUsersByLeads = @json($topUsersByLeads);
+                var userNames = topUsersByLeads.map(function(item) {
+                    return item.name;
+                });
+                var leadCounts = topUsersByLeads.map(function(item) {
+                    return item.leads_count;
+                });
+
+                var topUsersByLeadsBarChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: userNames,
+                        datasets: [{
+                            label: 'Number of Leads',
+                            data: leadCounts,
+                            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Number of Leads'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Staff Members'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                enabled: true
+                            }
+                        }
+                    }
+                });
+            });
         </script>
     @endpush
 
     @push('page_js')
-        <!-- Apex Chart -->
         <script src="{{ asset('assets/vendor/chartist/js/chartist.min.js') }}"></script>
         <script src="{{ asset('assets/vendor/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js') }}"></script>
         <script src="{{ asset('assets/vendor/jquery-sparkline/jquery.sparkline.min.js') }}"></script>

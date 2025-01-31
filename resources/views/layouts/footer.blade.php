@@ -2,7 +2,7 @@
     <div class="copyright">
       <p>
         Copyright ©
-        <a href="https://www.instagram.com/benethemmanuel/" target="_blank">Koda.Koda Ltd</a> 2024
+        <a href="https://www.instagram.com/benethemmanuel/" target="_blank">Koda.Koda Ltd</a> 2025
       </p>
     </div>
   </div>
