@@ -60,14 +60,9 @@
                                                             <td>{{ $loadpackage->load_name ?? '-' }}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td>Location</td>
+                                                            <td>Load Truck No</td>
                                                             <td>{{ $loadpackage->load_trucking_number ?? '-' }}</td>
                                                         </tr>
-                                                        <tr>
-                                                            <td>Taransport Fee</td>
-                                                            <td>{{ $loadpackage->load_transportfee ?? '-' }}</td>
-                                                        </tr>
-
                                                         <tr>
                                                             <td>Transort Date</td>
                                                             <td>{{ $loadpackage->load_transport_date ?? '-' }}</td>
@@ -84,7 +79,7 @@
                                                         </tr>
                                                        
                                                         <tr>
-                                                            <td>Comment</td>
+                                                            <td>Weight</td>
                                                             <td>{{ $loadpackage->load_weight_value ?? '-' }}</td>
                                                         </tr>
 

@@ -148,9 +148,15 @@ class StaffController extends Controller
         $this->data['editing'] = true;
 
         $this->data['clients'] = Client::pluck('client_name', 'id');
-        $this->data['staffTypes'] = StaffType::pluck('staff_type_name', 'id');
+        // $this->data['staffTypes'] = StaffType::pluck('staff_type_name', 'id');
         $this->data['branches'] = Branch::pluck('branch_name', 'id');
         $this->data['users'] = User::pluck('id');
+
+        if (auth()->user()->hasRole('super_admin')) {
+            $this->data['staffTypes'] = StaffType::pluck('staff_type_name', 'id');
+        } else {
+            $this->data['staffTypes'] = StaffType::whereNotIn('staff_type_name', ['kodasmspackage', 'admin'])->pluck('staff_type_name', 'id');
+        }
 
         return view('dashboards.admin.staffs.edit', $this->data);
     }

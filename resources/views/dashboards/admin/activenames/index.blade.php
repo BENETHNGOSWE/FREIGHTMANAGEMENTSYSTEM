@@ -53,11 +53,6 @@
                                                             <i class="fas fa-edit"></i>
                                                         </button>
                                                     </a>
-                                                    <a href="{{ route('admin.show.activename', $activename) }}">
-                                                        <button type="button" class="btn btn-outline-primary mx-2">
-                                                            <i class="fas fa-eye"></i>
-                                                        </button>
-                                                    </a>
                                             </div>
                                         </td>
                                     </tr>

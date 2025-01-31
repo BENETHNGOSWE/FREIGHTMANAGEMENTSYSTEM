@@ -102,39 +102,44 @@
                                                                     <td>{{ $load->load_no ?? '-' }}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td>Load Type</td>
-                                                                    <td>{{ $load->loadpackagetype->load_type_name ?? '-' }}</td>
+                                                                    <td>load Type</td>
+                                                                    <td>{{ $load->Loadpackagetype->load_type_name ?? '-' }}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td>Location</td>
+                                                                    <td>Name</td>
+                                                                    <td>{{ $load->load_name ?? '-' }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Load Truck No</td>
                                                                     <td>{{ $load->load_trucking_number ?? '-' }}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td>Transport Fee</td>
-                                                                    <td>{{ $load->load_transportfee ?? '-' }}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Transport Date</td>
+                                                                    <td>Transort Date</td>
                                                                     <td>{{ $load->load_transport_date ?? '-' }}</td>
                                                                 </tr>
+        
                                                                 <tr>
-                                                                    <td>Delivery Date</td>
+                                                                    <td>Derivery Date</td>
                                                                     <td>{{ $load->load_delivery_date ?? '-' }}</td>
                                                                 </tr>
+        
                                                                 <tr>
                                                                     <td>Status</td>
                                                                     <td>{{ $load->load_status ?? '-' }}</td>
                                                                 </tr>
+                                                               
                                                                 <tr>
-                                                                    <td>Comments</td>
+                                                                    <td>Weight</td>
                                                                     <td>{{ $load->load_weight_value ?? '-' }}</td>
                                                                 </tr>
+        
                                                                 <tr>
-                                                                    <td>Weight (Kg)</td>
+                                                                    <td>Kg</td>
                                                                     <td>{{ $load->load_weight_unit ?? '-' }}</td>
                                                                 </tr>
+        
                                                                 <tr>
-                                                                    <td>Description</td>
+                                                                    <td>Descrption</td>
                                                                     <td>{{ $load->load_description ?? '-' }}</td>
                                                                 </tr>
                                                             @endforeach
