@@ -35,11 +35,15 @@ class CustomerleadController extends Controller
      */
     public function index()
     {
-        if (auth()->user()->hasRole('admin')) {
-            $this->data['customerleads'] = Customerlead::where('client_id', $this->fms_id)->get();
-        } else {
-            $this->data['customerleads'] = auth()->user()->customerleads;
-        }
+        // $roleAllowedToView=['admin', 'kodasmspackage'];
+
+        // if (auth()->user()->hasAnyRole($roleAllowedToView)) {
+        //     $this->data['customerleads'] = Customerlead::where('client_id', $this->fms_id)->get();
+        // } else {
+        //     $this->data['customerleads'] = auth()->user()->customerleads;
+        // }
+
+        $this->data['customerleads'] = Customerlead::where('client_id', $this->fms_id)->get();
         return view('dashboards.admin.customerleads.index', $this->data);
     }
 

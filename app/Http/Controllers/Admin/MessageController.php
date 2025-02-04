@@ -78,16 +78,16 @@ class MessageController extends Controller
     // Customer Leads
     public function indexcustomerlead()
     {
-        // $this->data['customerleads'] = Customerlead::where('client_id', $this->fms_id)->get();
+        $this->data['customerleads'] = Customerlead::where('client_id', $this->fms_id)->get();
         return view('dashboards.kodasms.messages.indexlead', $this->data);
     }
 
     public function showSendMessageFormlead()
     {
-        if (auth()->user()->hasRole('admin')) {
-            $customerleads = Customerlead::with('customercategory')
-                ->where('client_id', $this->fms_id)
-                ->get();
+        $roleAllowedToView = ['admin', 'kodasmspackage'];
+
+        if (auth()->user()->hasAnyRole($roleAllowedToView)) {
+            $customerleads = Customerlead::with('customercategory')->where('client_id', $this->fms_id)->get();
         } else {
             $customerleads = Customerlead::with('customercategory')
                 ->where('client_id', $this->fms_id)
@@ -119,11 +119,7 @@ class MessageController extends Controller
         $message = $request->input('message');
         $selectedPhones = $request->input('customers', []);
 
-        $customers = $sendToAll
-            ? Customer::where('client_id', $this->fms_id)->get()
-            : Customer::whereIn('phone', $selectedPhones)
-                ->where('client_id', $this->fms_id)
-                ->get();
+        $customers = $sendToAll ? Customer::where('client_id', $this->fms_id)->get() : Customer::whereIn('phone', $selectedPhones)->where('client_id', $this->fms_id)->get();
 
         if ($customers->isEmpty()) {
             return redirect()->back()->with('error', 'No customers selected.');
@@ -204,12 +200,12 @@ class MessageController extends Controller
         $sendToAll = $request->boolean('send_to_all');
         $message = $request->input('message');
         $selectedCustomers = $request->input('selected_customers', '');
-    
+
         $request->validate([
             'sender_id' => 'required|string|max:11',
             'message' => 'required|string',
         ]);
-    
+
         if ($sendToAll) {
             $customerleads = Customerlead::where('client_id', $this->fms_id)->get();
         } else {
@@ -219,27 +215,27 @@ class MessageController extends Controller
             }
             $customerleads = Customerlead::whereIn('phone', $selectedPhones)->get();
         }
-    
+
         if ($customerleads->isEmpty()) {
             return redirect()->back()->with('error', 'No customers found.');
         }
-    
+
         $allSuccess = true;
         $failedNumbers = [];
         $successCount = 0;
-    
+
         foreach ($customerleads as $customer) {
             $personalizedMessage = str_replace('{{ customer_firstname }}', $customer->customer_firstname, $message);
             $plainMessage = strip_tags($personalizedMessage);
             $response = sendMessagemultipesenderid([$customer->phone], $plainMessage, $senderId);
-    
+
             if (!$response['success']) {
                 $allSuccess = false;
                 $failedNumbers[] = $customer->phone;
             } else {
                 $successCount++;
             }
-    
+
             Message::create([
                 'customer_number' => $customer->phone,
                 'content' => $plainMessage,
@@ -247,16 +243,19 @@ class MessageController extends Controller
                 'client_id' => $this->fms_id,
             ]);
         }
-    
+
         if ($allSuccess) {
-            return redirect()->back()->with('success', "All messages sent successfully to {$successCount} customers!");
+            return redirect()
+                ->back()
+                ->with('success', "All messages sent successfully to {$successCount} customers!");
         } else {
-            $failedMessage = "Some messages failed to send to the following numbers: " . implode(', ', $failedNumbers);
-            return redirect()->back()->with([
-                'error' => $failedMessage,
-                'success' => "{$successCount} messages sent successfully.",
-            ]);
+            $failedMessage = 'Some messages failed to send to the following numbers: ' . implode(', ', $failedNumbers);
+            return redirect()
+                ->back()
+                ->with([
+                    'error' => $failedMessage,
+                    'success' => "{$successCount} messages sent successfully.",
+                ]);
         }
     }
-    
 }
