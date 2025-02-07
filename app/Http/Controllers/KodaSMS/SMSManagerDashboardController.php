@@ -37,7 +37,7 @@ class SMSManagerDashboardController extends Controller
         $this->data['clientadmin'] = ClientAdmin::where('client_id', $clientid)->first();
         $this->data['customerleads'] = Customerlead::where('client_id', $clientid)->count();
         $this->data['customercategories'] = Customercategory::where('client_id', $clientid)->count();
-        $this->data['messentsent'] = Message::where('client_id', $clientid)->count();
+        $this->data['messentsent'] = Message::where('client_id', $clientid)->where('status', 'delivered')->count();
         $this->data['messagefailed'] = Message::where('client_id', $clientid)->where('status', 'failed')->count();
         $this->data['messageLimit'] = Customermessage::where('client_id', $clientid)->value('messageamount') ?? 0;
 

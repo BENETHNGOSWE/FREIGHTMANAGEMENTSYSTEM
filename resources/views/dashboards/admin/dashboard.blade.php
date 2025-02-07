@@ -3,12 +3,14 @@
     <div class="container-fluid">
         <div class="form-head d-flex align-items-center mb-sm-4 mb-3">
             <div class="me-auto">
-                <h2 class="text-black font-w600">Welcome {{ auth()->user()->name }} <span class="badge light badge-info">{{ auth()->user()->getRoleNames()[0] }}</span></h2>
+                <h2 class="text-black font-w600">Welcome {{ auth()->user()->name }} <span
+                        class="badge light badge-info">{{ auth()->user()->getRoleNames()[0] }}</span></h2>
                 <p class="mb-0" id="date_time"></p>
             </div>
             <div class="date">
                 <p class="mb-1">Show by date</p>
-                <input name="datepicker" class="datepicker-default form-control" placeholder="choose date" id="datepicker" style="background-color: #0061f2 !important; color: #fff !important;" />
+                <input name="datepicker" class="datepicker-default form-control" placeholder="choose date" id="datepicker"
+                    style="background-color: #0061f2 !important; color: #fff !important;" />
             </div>
         </div>
 
@@ -25,7 +27,8 @@
                         </div>
                     </div>
                     <div class="progress rounded-0" style="height:4px;">
-                        <div class="progress-bar rounded-0 bg-secondary progress-animated" style="width: 100%; height:4px;" role="progressbar">
+                        <div class="progress-bar rounded-0 bg-secondary progress-animated" style="width: 100%; height:4px;"
+                            role="progressbar">
                             <span class="sr-only">100% Complete</span>
                         </div>
                     </div>
@@ -44,7 +47,8 @@
                             </div>
                         </div>
                         <div class="progress rounded-0" style="height:4px;">
-                            <div class="progress-bar rounded-0 bg-primary progress-animated" style="width:100%; height:4px;" role="progressbar">
+                            <div class="progress-bar rounded-0 bg-primary progress-animated" style="width:100%; height:4px;"
+                                role="progressbar">
                                 <span class="sr-only">100% Complete</span>
                             </div>
                         </div>
@@ -64,7 +68,8 @@
                             </div>
                         </div>
                         <div class="progress rounded-0" style="height:4px;">
-                            <div class="progress-bar rounded-0 bg-secondary progress-animated" style="width: 100%; height:4px;" role="progressbar">
+                            <div class="progress-bar rounded-0 bg-secondary progress-animated"
+                                style="width: 100%; height:4px;" role="progressbar">
                                 <span class="sr-only">30% Complete</span>
                             </div>
                         </div>
@@ -83,7 +88,8 @@
                         </div>
                     </div>
                     <div class="progress rounded-0" style="height:4px;">
-                        <div class="progress-bar rounded-0 bg-secondary progress-animated" style="width: 100%; height:4px;" role="progressbar">
+                        <div class="progress-bar rounded-0 bg-secondary progress-animated" style="width: 100%; height:4px;"
+                            role="progressbar">
                             <span class="sr-only">1000% Complete</span>
                         </div>
                     </div>
@@ -94,17 +100,17 @@
         <div class="row">
             <div class="col-12">
                 <div class="row">
-                    <div class="col-xl-6 col-lg-6">
+                    <div class="col-xl-4 col-lg-4">
                         <div class="card">
                             <div class="card-header">
                                 <h4 class="card-title">Invoice Status</h4>
                             </div>
                             <div class="card-body">
-                                <canvas id="invoicePieChart" width="200" height="200"></canvas>
+                                <canvas id="invoicePieChart" width="150" height="150"></canvas>
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-6 col-lg-6">
+                    <div class="col-xl-8 col-lg-8">
                         <div class="card">
                             <div class="card-header">
                                 <h4 class="card-title">Top 5 Customers by Loads</h4>
@@ -160,9 +166,15 @@
                     data: {
                         labels: ['Pending Invoices', 'Full Paid Invoices', 'Partial Paid Invoices'],
                         datasets: [{
-                            data: [{{ $pendingInvoices }}, {{ $fullPaidInvoices }}, {{ $partialPaidInvoices }}],
-                            backgroundColor: ['rgba(255, 99, 132, 0.6)', 'rgba(75, 192, 192, 0.6)', 'rgba(255, 206, 86, 0.6)'],
-                            borderColor: ['rgba(255, 99, 132, 1)', 'rgba(75, 192, 192, 1)', 'rgba(255, 206, 86, 1)'],
+                            data: [{{ $pendingInvoices }}, {{ $fullPaidInvoices }},
+                                {{ $partialPaidInvoices }}
+                            ],
+                            backgroundColor: ['rgba(255, 99, 132, 0.6)', 'rgba(75, 192, 192, 0.6)',
+                                'rgba(255, 206, 86, 0.6)'
+                            ],
+                            borderColor: ['rgba(255, 99, 132, 1)', 'rgba(75, 192, 192, 1)',
+                                'rgba(255, 206, 86, 1)'
+                            ],
                             borderWidth: 1
                         }]
                     },
@@ -231,7 +243,10 @@
                 var ctx = document.getElementById('customersPerMonthLineChart').getContext('2d');
                 var customersPerMonth = @json($customersPerMonth);
                 var labels = customersPerMonth.map(function(item) {
-                    return new Date(item.year, item.month - 1).toLocaleString('default', { month: 'long', year: 'numeric' });
+                    return new Date(item.year, item.month - 1).toLocaleString('default', {
+                        month: 'long',
+                        year: 'numeric'
+                    });
                 });
                 var data = customersPerMonth.map(function(item) {
                     return item.customer_count;
