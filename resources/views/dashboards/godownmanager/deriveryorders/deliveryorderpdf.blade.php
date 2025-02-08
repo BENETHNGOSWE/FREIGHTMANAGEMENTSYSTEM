@@ -380,7 +380,7 @@
             <div class="company-header">
                 <div class="company-logo">
                     @if ($client->client_logo)
-                        <img alt="logo" src="{{ public_path('storage/uploads/' . $client->client_logo) }}">
+                        <img alt="logo" src="{{ public_path('storage/uploads/' . $client->client_logo) }}" style="width: 150px; height: auto;">
                     @endif
                 </div>
                 <div class="company-info">

@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -247,9 +244,11 @@
             width: 12%;
         }
 
-        table.inventory td:nth-child(3),{
-            width: 19%;
+        table.inventory td:nth-child(3),
+        {
+        width: 19%;
         }
+
         table.inventory td:nth-child(4),
         table.inventory td:nth-child(5) {
             text-align: right;
@@ -258,45 +257,46 @@
 
 
         .company-header {
-    text-align: left;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: flex-start;
-    gap: 20px;
-}
+            text-align: left;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
 
-.company-logo {
-    flex: 0 0 150px; /* Fixed width for logo container */
-    margin-top: 10px;
-}
+        .company-logo {
+            flex: 0 0 150px;
+            /* Fixed width for logo container */
+            margin-top: 10px;
+        }
 
-.company-logo img {
-    max-width: 100%;
-    height: auto;
-}
+        .company-logo img {
+            max-width: 100%;
+            height: auto;
+        }
 
-.company-info {
-    flex: 1;
-    text-align: left;
-}
+        .company-info {
+            flex: 1;
+            text-align: left;
+        }
 
-.company-name {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
+        .company-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
 
-.company-details {
-    font-size: 14px;
-    line-height: 1.4;
-    margin-bottom: 15px;
-}
+        .company-details {
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom: 15px;
+        }
 
 
-.order-number {
-    text-align: right;
-    margin-top: 5px;
-}
+        .order-number {
+            text-align: right;
+            margin-top: 5px;
+        }
 
         /* Footer absolute positioning */
         footer {
@@ -380,7 +380,7 @@
             <div class="company-header">
                 <div class="company-logo">
                     @if ($client->client_logo)
-                        <img alt="logo" src="{{ public_path('storage/uploads/' . $client->client_logo) }}">
+                        <img alt="logo" src="{{ public_path('storage/uploads/' . $client->client_logo) }}" style="width: 150px; height: auto;">
                     @endif
                 </div>
                 <div class="company-info">
@@ -389,11 +389,12 @@
                         Office Address: {{ strtoupper($client->client_address_one) }}<br>
                         Office Phone: {{ strtoupper($client->client_phonenumber) }}<br>
                         TIN Number: {{ strtoupper($client->client_tinnumber) }}<br>
-                        {{ strtoupper($client->client_city. ' ' .$client->client_country) }}
+                        {{ strtoupper($client->client_city . ' ' . $client->client_country) }}
                     </div>
                 </div>
             </div>
-        </header><hr><br>
+        </header>
+        <hr><br>
         <article>
             <table class="meta">
                 <tr>
@@ -405,12 +406,12 @@
                     <td><span>{{ strtoupper($invoice->customer->customer_firstname . ' ' . $invoice->customer->customer_middlename . ' ' . $invoice->customer->customer_lastname) ?? '-' }}</span>
                     </td>
                 </tr>
-        
+
                 <tr>
                     <th><span>Customer Number</span></th>
                     <td><span>{{ strtoupper($invoice->customer->phone) }}</span></td>
                 </tr>
-        
+
                 <tr>
                     <th><span>Status</span></th>
                     <td><span class="{{ $invoice->status == 1 ? 'status-paid' : 'status-unpaid' }}">

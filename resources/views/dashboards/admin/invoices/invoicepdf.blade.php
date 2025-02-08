@@ -69,8 +69,24 @@
             padding: 0.5in;
             width: 7.5in;
             background: #FFF;
+            position: relative;
             border-radius: 1px;
             box-shadow: 0 0 1in -0.25in rgba(0, 0, 0, 0.5);
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('{{ public_path('storage/uploads/' . $client->client_logo) }}');
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: 40em;
+            opacity: 0.05;
+            z-index: -1;
         }
 
         /* header */
@@ -98,6 +114,16 @@
             font-style: normal;
             line-height: 1.25;
             margin: 0 1em 1em 0;
+        }
+
+        .page-border {
+            position: absolute;
+            top: 0.5in;
+            right: 0.5in;
+            bottom: 0.5in;
+            left: 0.5in;
+            border: 2px solid #b6b4b4;
+            padding: 20px;
         }
 
         article address.norm h4 {
@@ -211,9 +237,11 @@
             width: 12%;
         }
 
-        table.inventory td:nth-child(3),{
-            width: 19%;
+        table.inventory td:nth-child(3),
+        {
+        width: 19%;
         }
+
         table.inventory td:nth-child(4),
         table.inventory td:nth-child(5) {
             text-align: right;
@@ -225,6 +253,42 @@
         table.balance td {
             width: 50%;
             text-align: right;
+        }
+
+        .company-header {
+            text-align: left;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .company-logo {
+            flex: 0 0 150px;
+            /* Fixed width for logo container */
+            margin-top: 10px;
+        }
+
+        .company-logo img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .company-info {
+            flex: 1;
+            text-align: left;
+        }
+
+        .company-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .company-details {
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom: 15px;
         }
 
         /* aside */
@@ -291,6 +355,10 @@
             .cut {
                 display: none;
             }
+
+            .page-border {
+                border: 2px solid #000 !important;
+            }
         }
 
         @page {
@@ -300,123 +368,133 @@
 </head>
 
 <body>
-    <header>
-        <h1>Invoice</h1>
-        <p>From: </p>
-        <span style="margin-top: -1em">
-            @if ($client->client_logo)
-                <img alt="logo" src="{{ public_path('storage/uploads/' . $client->client_logo) }}"
-                    style="width: 150px;">
-            @endif
-        </span>
-        <address style="margin-top: -1em">
-            <p style="color:#0118e4;"><strong>{{ strtoupper($client->client_name) }}</strong></p>
-            <p>{{ $client->client_city }}, {{ $client->client_country }}</p>
-            <p>{{ $client->client_phonenumber }}</p>
-            <p>{{ $client->client_email }}</p>
-        </address>
-    </header>
-    <article>
-        <p>To: </p>
-        <address class="norm" style="margin-top: -1em">
-            <h4 style="margin: 0; padding: 0; color:#0118e4;">{{ $invoice->customer->customer_firstname }}
-                {{ $invoice->customer->customer_lastname }}</h4>
-            <p style="margin: 0; padding: 0;">{{ $invoice->customer->customer_email }}</p>
-            <p style="margin: 0; padding: 0;">{{ $invoice->customer->customer_address }}</p>
-            <p style="margin: 0; padding: 0;">{{ $invoice->customer->phone }}</p>
-            <p style="margin: 0; padding: 0;">Phone: {{ $invoice->customer->phone }}</p>
-        </address>
+    <div class="page-border">
+        <header>
+            <h1>Invoice</h1>
+            <div class="company-header">
+                <div class="company-logo">
+                    @if ($client->client_logo)
+                        <img alt="logo" src="{{ public_path('storage/uploads/' . $client->client_logo) }}" style="width: 150px; height: auto;">
+                    @endif
+                </div>
+                <div class="company-info">
+                    <div class="company-name">{{ strtoupper($client->client_name) }}</div>
+                    <div class="company-details">
+                        Office Address: {{ strtoupper($client->client_address_one) }}<br>
+                        Office Phone: {{ strtoupper($client->client_phonenumber) }}<br>
+                        TIN Number: {{ strtoupper($client->client_tinnumber) }}<br>
+                        {{ strtoupper($client->client_city . ' ' . $client->client_country) }}
+                    </div>
+                </div>
+            </div>
+        </header>
+        <hr>
+        <article>
+            <p>To: </p>
+            <address class="norm" style="margin-top: -1em">
+                <h4 style="margin: 0; padding: 0; color:#0118e4;">{{ $invoice->customer->customer_firstname }}
+                    {{ $invoice->customer->customer_lastname }}</h4>
+                <p style="margin: 0; padding: 0;">{{ $invoice->customer->customer_email }}</p>
+                <p style="margin: 0; padding: 0;">{{ $invoice->customer->customer_address }}</p>
+                <p style="margin: 0; padding: 0;">{{ $invoice->customer->phone }}</p>
+                <p style="margin: 0; padding: 0;">Phone: {{ $invoice->customer->phone }}</p>
+            </address>
 
 
-        <table class="meta">
-            <tr>
-                <th><span>Invoice #</span></th>
-                <td><span>{{ $invoice->invoice_no }}</span></td>
-            </tr>
-            <tr>
-                <th><span>Date</span></th>
-                <td><span>{{ $invoice->created_at->format('F j, Y') }}</span></td>
-            </tr>
-            <tr>
-                <th><span>Amount Due</span></th>
-                <td><span>Tsh </span><span>{{ number_format($invoice->total_amount + $invoice->total_transportfee, 2) }}</span></td>
-            </tr>
-        </table>
-
-        <table class="inventory">
-            <thead>
+            <table class="meta">
                 <tr>
-                    <th><span>S. No</span></th>
-                    <th><span>Load Name</span></th>
-                    <th><span>Description</span></th>
-                    <th><span>Load Price</span></th>
-                    <th><span>Transport Fee</span></th>
+                    <th><span>Invoice #</span></th>
+                    <td><span>{{ $invoice->invoice_no }}</span></td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach ($invoice->invoiceLoads as $invoiceLoad)
+                <tr>
+                    <th><span>Date</span></th>
+                    <td><span>{{ $invoice->created_at->format('F j, Y') }}</span></td>
+                </tr>
+                <tr>
+                    <th><span>Amount Due</span></th>
+                    <td><span>Tsh
+                        </span><span>{{ number_format($invoice->total_amount + $invoice->total_transportfee, 2) }}</span>
+                    </td>
+                </tr>
+            </table>
+
+            <table class="inventory">
+                <thead>
                     <tr>
-                        <td><span>{{ $loop->iteration}}</span></td>
-                        <td><span>{{ $invoiceLoad->loadpackage->load_name }}</span></td>
-                        <td><span>{{ $invoiceLoad->loadpackage->load_description }}</span></td>
-                        <td><span>{{ number_format($invoiceLoad->load_price, 2) }}</span></td>
-                        <td><span>{{ number_format($invoiceLoad->loadpackage->load_transportfee, 2) }}</span></td>
+                        <th><span>S. No</span></th>
+                        <th><span>Load Name</span></th>
+                        <th><span>Description</span></th>
+                        <th><span>Load Price</span></th>
+                        <th><span>Transport Fee</span></th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach ($invoice->invoiceLoads as $invoiceLoad)
+                        <tr>
+                            <td><span>{{ $loop->iteration }}</span></td>
+                            <td><span>{{ $invoiceLoad->loadpackage->load_name }}</span></td>
+                            <td><span>{{ $invoiceLoad->loadpackage->load_description }}</span></td>
+                            <td><span>{{ number_format($invoiceLoad->load_price, 2) }}</span></td>
+                            <td><span>{{ number_format($invoiceLoad->loadpackage->load_transportfee, 2) }}</span></td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
 
-        <div class="payment-info" style="font-size: 12px; margin-top: -1em;">
-            <h2 style="margin: 0; padding: 0;">Payment Info</h2>
-            @forelse ($paymentInfo as $payment)
-                <p><strong>Bank Name:</strong> {{ $payment->Bank_name }}</p>
-                <p><strong>Acc Name:</strong> {{ $payment->account_name }}</p>
-                <p><strong>Acc No:</strong> {{ $payment->account_number }}</p><br>
-            @empty
-                <p>No payment information available.</p>
-            @endforelse
-        </div>        
-        <table class="balance" style="margin-top: -1em">
-            <tr>
-                <th><span>Total</span></th>
-                <td><span>{{ number_format($invoice->total_amount + $invoice->total_transportfee, 2) }}</span></td>
-            </tr>
-        </table>
-    </article><br>
-    <header>
-        <br>
-        <span style="margin-top: -1em; font-size: 10px">
-            <p style="margin: 0; font-weight: bold;">Approved By:</p>
-            <p style="margin: 5px 0;">Signature: __________________________</p>
-            <p style="margin: 5px 0;">Name: __________________________</p>
-            <p style="margin: 5px 0;">Date: __________________________</p>
-        </span>
-        <address style="margin-top: -1em; font-size: 10px">
-            <p style="margin: 0; font-weight: bold;">Printed By:</p>
-        <p style="margin: 5px 0;">Name: <strong>{{ auth()->user()->name }}</strong></p>
-        <p style="margin: 5px 0;">Date: <strong>{{ \Carbon\Carbon::now('Africa/Nairobi')->format('F j, Y, g:i A') }}</strong></p>
-        </address>
-    </header>
-    <hr>
-    <aside style="font-size: 12px; margin-top:-3em">
-        <h4>Terms & Conditions</h4>
-        <div>
-            <p style="margin: 0; padding: 0;"><strong>Delivery Timeline:</strong> Products will be delivered within 7
-                days of receiving the Local Purchase Order.</p>
-            <p style="margin: 0; padding: 0;"><strong>Payment Terms:</strong> Payment is due 30 days after the receipt
-                of the products.</p>
-            <p style="margin: 0; padding: 0;"><strong>Delivery Location:</strong> Products will be delivered to the
-                address specified in the LPO.</p>
-        </div>
-    </aside><br>
-    <hr>
-    <aside style="font-size: 12px">
-        <div>
-            <p style="margin: 0; padding: 0;">Golden Tulip Masaki, Coco beach Road, Masaki P.O. Box 1800
-                Ubungo Dar es salaam, Tanzania | Tel: +255 710 459 064 Email: info@koda_koda.com</p>
+            <div class="payment-info" style="font-size: 12px; margin-top: -1em;">
+                <h2 style="margin: 0; padding: 0;">Payment Info</h2>
+                @forelse ($paymentInfo as $payment)
+                    <p><strong>Bank Name:</strong> {{ $payment->Bank_name }}</p>
+                    <p><strong>Acc Name:</strong> {{ $payment->account_name }}</p>
+                    <p><strong>Acc No:</strong> {{ $payment->account_number }}</p><br>
+                @empty
+                    <p>No payment information available.</p>
+                @endforelse
+            </div>
+            <table class="balance" style="margin-top: -1em">
+                <tr>
+                    <th><span>Total</span></th>
+                    <td><span>{{ number_format($invoice->total_amount + $invoice->total_transportfee, 2) }}</span></td>
+                </tr>
+            </table>
+        </article>
+        <header>
+            <span style="margin-top: -1em; font-size: 10px">
+                <p style="margin: 0; font-weight: bold;">Approved By:</p>
+                <p style="margin: 5px 0;">Signature: __________________________</p>
+                <p style="margin: 5px 0;">Name: __________________________</p>
+                <p style="margin: 5px 0;">Date: __________________________</p>
+            </span>
+            <address style="margin-top: -1em; font-size: 10px">
+                <p style="margin: 0; font-weight: bold;">Printed By:</p>
+                <p style="margin: 5px 0;">Name: <strong>{{ auth()->user()->name }}</strong></p>
+                <p style="margin: 5px 0;">Date:
+                    <strong>{{ \Carbon\Carbon::now('Africa/Nairobi')->format('F j, Y, g:i A') }}</strong></p>
+            </address>
+        </header>
+        <hr>
+        <aside style="font-size: 12px; margin-top:-3em">
+            <h4>Terms & Conditions</h4>
+            <div>
+                <p style="margin: 0; padding: 0;"><strong>Delivery Timeline:</strong> Products will be delivered within
+                    7
+                    days of receiving the Local Purchase Order.</p>
+                <p style="margin: 0; padding: 0;"><strong>Payment Terms:</strong> Payment is due 30 days after the
+                    receipt
+                    of the products.</p>
+                <p style="margin: 0; padding: 0;"><strong>Delivery Location:</strong> Products will be delivered to the
+                    address specified in the LPO.</p>
+            </div>
+        </aside>
+        <hr>
+        <aside style="font-size: 10px">
+            <div>
+                <p style="margin: 0; padding: 0;">Golden Tulip Masaki, Coco beach Road, Masaki P.O. Box 1800
+                    Ubungo Dar es salaam, Tanzania | Tel: +255 710 459 064 Email: info@koda_koda.com</p>
 
-        </div>
-    </aside>
+            </div>
+        </aside>
+    </div>
 </body>
 
 </html>
