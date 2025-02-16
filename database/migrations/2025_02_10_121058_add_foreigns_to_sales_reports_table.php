@@ -1,0 +1,47 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::table('sales_reports', function (Blueprint $table) {
+            $table
+            ->foreign('client_id')
+            ->references('id')
+            ->on('clients')
+            ->onUpdate('CASCADE')
+            ->onDelete('CASCADE');
+            
+            $table
+            ->foreign('customer_id')
+            ->references('id')
+            ->on('customers')
+            ->onUpdate('CASCADE')
+            ->onDelete('CASCADE');
+
+            $table
+            ->foreign('staff_id')
+            ->references('id')
+            ->on('staffs')
+            ->onUpdate('CASCADE')
+            ->onDelete('CASCADE');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::table('sales_reports', function (Blueprint $table) {
+            $table->dropForeign(['client_id']);
+        });
+    }
+};

@@ -63,6 +63,9 @@ class HomeController extends Controller
             case 'salesperson':
                 return $this->salesadminDashboard();
 
+                case 'SalesManager':
+                    return $this->salesadminDashboard();    
+
             default:
                 return view('home');
         }

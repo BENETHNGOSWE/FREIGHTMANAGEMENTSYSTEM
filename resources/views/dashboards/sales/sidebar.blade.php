@@ -28,6 +28,24 @@
 
             <li>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    <i class="fa fa-flask"></i>
+                    <span class="nav-text">Sales Report</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('sales.list.salesreport') }}">
+                            <i class="fas fa-microscope"></i>
+                            <span>CBM Record</span>
+                        </a></li>
+                    <li><a href="{{ route('sales.create.salesreport') }}">
+                            <i class="fas fa-mercury"></i>
+                            <span>Create</span>
+                        </a></li>
+
+                </ul>
+            </li>
+
+            <li>
+                <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                     <i class="fas fa-pills"></i>
                     <span class="nav-text">Leads</span>
                 </a>

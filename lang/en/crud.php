@@ -112,7 +112,6 @@ return [
         ],
     ],
 
-
     'containers' => [
         'name' => 'Containers',
         'index_title' => 'Containers List',
@@ -127,7 +126,6 @@ return [
             'container_status' => 'Container Status',
         ],
     ],
-
 
     'customers' => [
         'name' => 'Customers',
@@ -152,7 +150,7 @@ return [
             'customer_gender' => 'Gender',
         ],
     ],
-    
+
     'customercategories' => [
         'name' => 'Category',
         'index_title' => 'Category List',
@@ -347,6 +345,26 @@ return [
         'show_title' => 'Show Role',
         'inputs' => [
             'name' => 'Name',
+        ],
+    ],
+
+    'sales_reports' => [
+        'name' => 'Sales CBM Report',
+        'index_title' => 'Sales CBM Report List',
+        'new_title' => 'New Sales CBM',
+        'create_title' => 'Create CBM Report',
+        'edit_title' => 'Edit CBM Report',
+        'show_title' => 'Show CBM Report',
+        'inputs' => [
+            'receipt' => 'Receipt',
+            'date' => 'Date',
+            'cbm' => 'CBM',
+            'nature' => 'Nature',
+            'hub' => 'Hub',
+            'amount1' => 'Amount 1',
+            'amount2' => 'Amount 2',
+            'customer_id' => 'Customer',
+            'staff_id' => 'Staff',
         ],
     ],
 

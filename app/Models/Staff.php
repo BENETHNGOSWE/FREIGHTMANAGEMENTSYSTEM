@@ -40,9 +40,9 @@ class Staff extends Model
         return $this->belongsTo(Client::class);
     }
 
-    public function staffType()
+    public function stafftype()
     {
-        return $this->belongsTo(StaffType::class);
+        return $this->belongsTo(StaffType::class, 'staff_type_id');
     }
 
     public function branch()
@@ -53,5 +53,10 @@ class Staff extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function salesreports()
+    {
+        return $this->belongsTo(SalesReport::class);
     }
 }

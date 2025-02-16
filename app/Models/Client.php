@@ -119,6 +119,11 @@ class Client extends Model
         return $this->belongsToMany(Sendername::class, 'client_sendername');
     }
 
+    public function salesreports()
+    {
+        return $this->hasMany(SalesReport::class);
+    }
+
     public function activeSenderName()
     {
         return $this->hasOne(Clientactivename::class);

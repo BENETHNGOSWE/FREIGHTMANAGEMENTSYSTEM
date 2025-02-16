@@ -30,8 +30,8 @@
 @endif
 
 
-@if(Auth::user()->getRoleNames()[0] == 'hr')
-@include('dashboards.hr.sidebar')
+@if(Auth::user()->getRoleNames()[0] == 'SalesManager')
+@include('dashboards.sales.sidebar')
 @endif
 
 @endauth
