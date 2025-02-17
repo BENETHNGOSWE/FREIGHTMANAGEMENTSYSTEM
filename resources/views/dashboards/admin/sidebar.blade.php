@@ -118,24 +118,6 @@
 
                 </ul>
             </li>
-{{-- 
-            <li>
-                <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                    <i class="fa fa-flask"></i>
-                    <span class="nav-text">Message</span>
-                </a>
-                <ul aria-expanded="false">
-                    <li><a href="{{ route('admin.message') }}">
-                            <i class="fas fa-microscope"></i>
-                            <span>Chat With Customer</span>
-                        </a></li>
-                    <li><a href="{{ route('admin.message.index') }}">
-                            <i class="fas fa-mercury"></i>
-                            <span>Message List</span>
-                        </a></li>
-
-                </ul>
-            </li> --}}
 
             <li>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">

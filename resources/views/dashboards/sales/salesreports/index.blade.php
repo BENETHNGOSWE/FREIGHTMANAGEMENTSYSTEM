@@ -17,33 +17,36 @@
             <div class="card">
                 <div class="card-body">
                     <form method="GET" action="{{ route('sales.list.salesreport') }}" class="mb-4">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="start_date">Start Date</label>
-                                    <input type="date" name="start_date" id="start_date" class="form-control"
-                                        value="{{ request('start_date') }}">
-                                </div>
+                        <div class="d-flex flex-column flex-md-row gap-2 align-items-end">
+                            <!-- Start Date -->
+                            <div class="flex-grow-1 w-100">
+                                <label for="start_date">Start Date</label>
+                                <input type="date" name="start_date" id="start_date" class="form-control"
+                                       value="{{ request('start_date') }}">
                             </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="end_date">End Date</label>
-                                    <input type="date" name="end_date" id="end_date" class="form-control"
-                                        value="{{ request('end_date') }}">
-                                </div>
+                    
+                            <!-- End Date -->
+                            <div class="flex-grow-1 w-100">
+                                <label for="end_date">End Date</label>
+                                <input type="date" name="end_date" id="end_date" class="form-control"
+                                       value="{{ request('end_date') }}">
                             </div>
-                            <div class="col-md-4">
-                                <div class="form-group pt-4">
-                                    <button type="submit" class="btn btn-primary">Filter</button>
-                                    <a href="{{ route('sales.list.salesreport') }}" class="btn btn-secondary">Reset</a>
-                                    <a href="{{ route('sales.excel.salesreport', [
+                    
+                            <!-- Buttons -->
+                            <div class="d-flex gap-2 flex-grow-1 w-100">
+                                <button type="submit" class="btn btn-primary btn-sm flex-grow-1">
+                                    <i class="fas fa-filter"></i> Filter
+                                </button>
+                                <a href="{{ route('sales.list.salesreport') }}" class="btn btn-secondary btn-sm flex-grow-1">
+                                    <i class="fas fa-undo"></i> Reset
+                                </a>
+                                <a href="{{ route('sales.excel.salesreport', [
                                         'start_date' => request('start_date'),
                                         'end_date' => request('end_date'),
                                     ]) }}"
-                                        class="btn btn-success">
-                                        <i class="fas fa-download"></i> Download Excel
-                                    </a>
-                                </div>
+                                   class="btn btn-success btn-sm flex-grow-1">
+                                    <i class="fas fa-download"></i> Excel
+                                </a>
                             </div>
                         </div>
                     </form>

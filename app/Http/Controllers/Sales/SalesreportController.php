@@ -23,7 +23,7 @@ class SalesreportController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('SalesManager');
         $this->middleware(function ($request, $next) {
             if (Auth::check()) {
                 $this->fms_id = Auth::user()->client_id;

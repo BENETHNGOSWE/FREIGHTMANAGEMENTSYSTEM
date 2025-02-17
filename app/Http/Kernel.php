@@ -76,5 +76,6 @@ class Kernel extends HttpKernel
         'chiefoperation' => \App\Http\Middleware\ChiefOperation::class,
         'godownmanager' => \App\Http\Middleware\Godownmanager::class,
         'salesperson' => \App\Http\Middleware\Salesperson::class,
+        'SalesManager' => \App\Http\Middleware\SalesManager::class,
     ];
 }

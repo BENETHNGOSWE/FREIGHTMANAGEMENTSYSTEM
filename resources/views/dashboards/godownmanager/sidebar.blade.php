@@ -11,7 +11,7 @@
            
             <li>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                    <i class="fa fa-building"></i>
+                    <i class="fa fa-truck"></i>
                     <span class="nav-text">Derivery Order</span>
                 </a>
                 <ul aria-expanded="false">
@@ -24,12 +24,12 @@
 
             <li>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                    <i class="fas fa-pills"></i>
+                    <i class="fas fa-file-invoice-dollar"></i>
                     <span class="nav-text">Invoices</span>
                 </a>
                 <ul aria-expanded="false">
                     <li><a href="{{ route('admin.list.invoice') }}">
-                            <i class="fa-solid fa-list-ol"></i>
+                            <i class="fas fa-file-invoice-dollar"></i>
                             <span>Load Invoices</span>
                         </a></li>
 
@@ -39,23 +39,16 @@
 
             <li>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                    <i class="fas fa-building"></i>
+                    <i class="fas fa-user"></i>
                     <span class="nav-text">Manage Profile</span>
                 </a>
                 <ul aria-expanded="false">
                     <li><a href="{{ route('admin.viewprofile.staff') }}">
-                            <i class="fas fa-building"></i>
+                            <i class="fas fa-user"></i>
                             <span>Your Profile</span>
                         </a></li>
 
                 </ul>
-            </li>
-            <li>
-                <a class="has-arrow ai-icon" href="#" aria-expanded="false">
-                    <i class="fa fa-cog"></i>
-                    <span class="nav-text">Settings</span>
-                </a>
-               
             </li>
 
         </ul>

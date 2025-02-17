@@ -20,7 +20,7 @@ class CustomerleadController extends Controller
     protected $data = [];
     public function __construct()
     {
-        $this->middleware('multiple');
+        $this->middleware('SalesManager');
         $this->middleware(function ($request, $next) {
             if (Auth::check()) {
                 $this->fms_id = Auth::user()->client_id;
@@ -72,13 +72,14 @@ class CustomerleadController extends Controller
             'customer_lastname' => ['nullable', 'max:255', 'string'],
             'category_id' => ['required', 'exists:customercategories,id'],
             'customer_email' => 'nullable|email|unique:users,email' . $id,
-            'phone' => ['required', 'max:255', 'string'],
+            'phone' => ['required', 'max:255', 'string', 'unique:users,phone' . ($id ? ',' . $id : '')],
         ];
+        
         if ($id) {
             $rules['customer_email'] = 'required|email|unique:users,email,' . $id;
-            $rules['phone'] = 'nullable|max:255|string';
+            $rules['phone'] = ['required', 'max:255', 'string', 'unique:users,phone,' . $id];
         }
-
+    
         return $rules;
     }
 

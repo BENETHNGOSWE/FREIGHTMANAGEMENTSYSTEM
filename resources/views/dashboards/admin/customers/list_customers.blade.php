@@ -60,7 +60,7 @@
                                         </td>
                                         <td>{{ strtoupper($customer->customer_firstname . ' ' . $customer->customer_middlename . ' ' . $customer->customer_lastname) ?? '-' }}
                                         </td>
-                                        <td>{{ strtoupper($customer->customer_no) ?? '-' }}</td>
+                                        <td>{{ strtoupper($customer->phone) ?? '-' }}</td>
                                         <td>
                                             <a
                                                 href="{{ route('admin.create.loadpackage', ['customer_id' => $customer->id]) }}">

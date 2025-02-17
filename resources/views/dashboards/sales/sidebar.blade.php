@@ -26,6 +26,7 @@
                 </ul>
             </li>
 
+            @if(auth()->user()->hasRole('SalesManager'))
             <li>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                     <i class="fa fa-flask"></i>
@@ -40,9 +41,9 @@
                             <i class="fas fa-mercury"></i>
                             <span>Create</span>
                         </a></li>
-
                 </ul>
             </li>
+        @endif
 
             <li>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">

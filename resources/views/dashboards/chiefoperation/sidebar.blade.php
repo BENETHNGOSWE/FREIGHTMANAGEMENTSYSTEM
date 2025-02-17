@@ -82,7 +82,19 @@
                 </ul>
             </li>
 
-           
+            <li>
+                <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    <span class="nav-text">Financial Reports</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('chiefoperation.list.financialreport') }}">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                            <span>View Report</span>
+                        </a></li>
+
+                </ul>
+            </li>
 
             <li>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
