@@ -19,7 +19,7 @@
     <x-inputs.group class="col-sm-4">
         <x-inputs.select name="client_admin_id" label="Client Admin" required>
             @php $selected = old('client_admin_id', ($editing ? $kodapackage->client_admin_id : '')) @endphp
-            <option disabled {{ empty($selected) ? 'selected' : '' }}>Please select the Branch</option>
+            <option disabled {{ empty($selected) ? 'selected' : '' }}>Please select the Client Admin</option>
             @foreach ($clientadmins as $value => $label)
                 <option value="{{ $value }}" {{ $selected == $value ? 'selected' : '' }}>{{ $label }}
                 </option>

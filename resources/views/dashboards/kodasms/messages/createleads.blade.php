@@ -26,10 +26,31 @@
                             </select>
                         </div>
                     
-                        <div class="form-group">
-                            <label for="send_to_all">
-                                <input type="checkbox" id="send_to_all" name="send_to_all" value="1"> Send to All Customers
-                            </label>
+                        <div class="form-group d-flex align-items-center">
+                            <div class="me-4">
+                                <label for="send_to_all" class="mb-0">
+                                    <input type="checkbox" id="send_to_all" name="send_to_all" value="1"> Send to All Customers
+                                </label>
+                            </div>
+                            <div>
+                                <label for="send_by_category" class="mb-0">
+                                    <input type="checkbox" id="send_by_category" name="send_by_category" value="1"> Send by Category
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Category Selection (displayed when "Send by Category" is checked) -->
+                        <div id="category_selection" class="form-group" style="display: none;">
+                            <label for="selected_category">Select Category:</label>
+                            <select id="selected_category" name="selected_category" class="form-control">
+                                <option value="" disabled selected>Select Category</option>
+                                @php
+                                    $categories = App\Models\CustomerCategory::all();
+                                @endphp
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->categoryname }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     
                         <!-- Hidden field to store selected phone numbers -->
@@ -47,7 +68,7 @@
                                 </thead>
                                 <tbody>
                                     @forelse($customerleads as $customer)
-                                        <tr>
+                                        <tr class="customer-row" data-category="{{ $customer->customercategory->id }}">
                                             <td>
                                                 <input type="checkbox" name="customerleads[]" class="customer-checkbox" value="{{ $customer->phone }}">
                                             </td>
@@ -187,6 +208,12 @@
             const checkboxes = document.querySelectorAll('input[name="customerleads[]"]');
             const isChecked = this.checked;
 
+            // Uncheck "Send by Category" if "Send to All" is checked
+            if (isChecked) {
+                document.getElementById('send_by_category').checked = false;
+                document.getElementById('category_selection').style.display = 'none';
+            }
+
             checkboxes.forEach(checkbox => {
                 checkbox.disabled = isChecked;
                 if (isChecked) {
@@ -194,12 +221,82 @@
                 }
             });
 
-            if (!isChecked && !Array.from(checkboxes).some(cb => cb.checked)) {
-                const firstCheckbox = checkboxes[0];
-                if (firstCheckbox) {
-                    firstCheckbox.checked = true;
-                }
+            // Show all rows when "Send to All" is selected
+            document.querySelectorAll('.customer-row').forEach(row => {
+                row.style.display = '';
+            });
+        });
+
+        // Handle the 'Send by Category' checkbox
+        document.getElementById('send_by_category').addEventListener('change', function() {
+            const isChecked = this.checked;
+            const categorySelection = document.getElementById('category_selection');
+            
+            // Show/hide category dropdown
+            categorySelection.style.display = isChecked ? 'block' : 'none';
+            
+            // Uncheck "Send to All" if "Send by Category" is checked
+            if (isChecked) {
+                document.getElementById('send_to_all').checked = false;
             }
+            
+            // Enable/disable checkboxes based on selection
+            const checkboxes = document.querySelectorAll('input[name="customerleads[]"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.disabled = isChecked;
+                if (isChecked) {
+                    checkbox.checked = false;
+                }
+            });
+            
+            // Reset the selected category if unchecked
+            if (!isChecked) {
+                document.getElementById('selected_category').value = '';
+                // Show all rows when category filter is removed
+                document.querySelectorAll('.customer-row').forEach(row => {
+                    row.style.display = '';
+                });
+            } else {
+                // Hide all rows initially when category filter is applied
+                document.querySelectorAll('.customer-row').forEach(row => {
+                    row.style.display = 'none';
+                });
+            }
+            
+            // Clear selected customers when switching
+            selectedCustomers.clear();
+            updateHiddenField();
+        });
+
+        // Handle category selection change
+        document.getElementById('selected_category').addEventListener('change', function() {
+            const selectedCategory = this.value;
+            const checkboxes = document.querySelectorAll('input[name="customerleads[]"]');
+            
+            // Clear previous selections
+            selectedCustomers.clear();
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            
+            // Show only rows of the selected category and check their checkboxes
+            document.querySelectorAll('.customer-row').forEach(row => {
+                const categoryId = row.getAttribute('data-category');
+                const checkbox = row.querySelector('.customer-checkbox');
+                
+                if (categoryId === selectedCategory) {
+                    row.style.display = '';
+                    if (checkbox) {
+                        checkbox.checked = true;
+                        checkbox.disabled = false;
+                        selectedCustomers.add(checkbox.value);
+                    }
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            
+            updateHiddenField();
         });
     </script>
 @endsection
