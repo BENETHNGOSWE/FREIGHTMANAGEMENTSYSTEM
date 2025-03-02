@@ -96,7 +96,7 @@ class MessageController extends Controller
         }
         $this->data['customerleads'] = $customerleads;
 
-        $categories = Customercategory::all();
+        $categories = Customercategory::where('client_id', $this->fms_id)->get();
         $this->data['categories'] = $categories;
 
         $sendernames = Sendername::whereHas('clients', function ($query) {

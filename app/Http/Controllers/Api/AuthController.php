@@ -22,12 +22,18 @@ class AuthController extends Controller
             ]);
         }
 
-        $user = User::whereEmail($request->email)->firstOrFail();
+        $user = User::where('email', $request->email)->first();
 
-        $token = $user->createToken('auth-token');
+        // Ensure Sanctum is working
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        $token = $user->createToken('auth-token')->plainTextToken;
 
         return response()->json([
-            'token' => $token->plainTextToken,
+            'token' => $token,
+            'user' => $user, // Optional: Include user details
         ]);
     }
 }

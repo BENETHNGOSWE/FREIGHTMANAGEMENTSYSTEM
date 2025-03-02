@@ -39,21 +39,16 @@
                             </div>
                         </div>
 
-                        <!-- Category Selection (displayed when "Send by Category" is checked) -->
                         <div id="category_selection" class="form-group" style="display: none;">
                             <label for="selected_category">Select Category:</label>
                             <select id="selected_category" name="selected_category" class="form-control">
                                 <option value="" disabled selected>Select Category</option>
-                                @php
-                                    $categories = App\Models\CustomerCategory::all();
-                                @endphp
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}">{{ $category->categoryname }}</option>
                                 @endforeach
                             </select>
                         </div>
-                    
-                        <!-- Hidden field to store selected phone numbers -->
+                        
                         <input type="hidden" id="selected_customers" name="selected_customers" value="">
                     
                         <div class="table-responsive">

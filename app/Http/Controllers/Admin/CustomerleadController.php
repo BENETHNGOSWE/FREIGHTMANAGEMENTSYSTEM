@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\View\View;
+use Illuminate\Validation\Rule;
 
 class CustomerleadController extends Controller
 {
@@ -35,7 +36,7 @@ class CustomerleadController extends Controller
      */
     public function index()
     {
-        $roleAllowedToView=['admin', 'kodasmspackage'];
+        $roleAllowedToView = ['admin', 'kodasmspackage'];
 
         if (auth()->user()->hasAnyRole($roleAllowedToView)) {
             $this->data['customerleads'] = Customerlead::where('client_id', $this->fms_id)->get();
@@ -63,58 +64,57 @@ class CustomerleadController extends Controller
         return view('dashboards.admin.customerleads.create', $this->data);
     }
 
-    private function rules($id = null)
+    public function validate_customerlead(Request $request, $id = null)
     {
-        $rules = [
+        return $request->validate([
             'customer_firstname' => ['required', 'max:255', 'string'],
             'customer_middlename' => ['nullable', 'max:255', 'string'],
             'customer_lastname' => ['nullable', 'max:255', 'string'],
             'category_id' => ['required', 'exists:customercategories,id'],
-            'customer_email' => 'nullable|email|unique:users,email' . $id,
-            'phone' => ['required', 'max:255', 'string', 'unique:users,phone' . ($id ? ',' . $id : '')],
-        ];
-        
-        if ($id) {
-            $rules['customer_email'] = 'required|email|unique:users,email,' . $id;
-            $rules['phone'] = ['required', 'max:255', 'string', 'unique:users,phone,' . $id];
-        }
-    
-        return $rules;
+            'customer_email' => [
+                'nullable',
+                'email',
+                Rule::unique('customerleads', 'customer_email')
+                    ->where(function ($query) {
+                        return $query->where('client_id', $this->fms_id);
+                    })
+                    ->ignore($id, 'id'), 
+            ],
+            'phone' => [
+                'required',
+                'max:255',
+                'string',
+                Rule::unique('customerleads', 'phone')
+                    ->where(function ($query) {
+                        return $query->where('client_id', $this->fms_id);
+                    })
+                    ->ignore($id, 'id'),
+            ],
+        ]);
     }
-
+    
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
         $this->authorize('create', Customerlead::class);
-        $validated = $this->validate($request, $this->rules());
+        $validated = $this->validate_customerlead($request);
 
-        if ($validated) {
-            $name = $validated['customer_firstname'] . ' ' . $validated['customer_middlename'] . ' ' . $validated['customer_lastname'];
-            $password = Hash::make('123456');
-
-            // Create a new user
-            $user = User::create([
-                'name' => $name,
-                'email' => $validated['customer_email'],
-                'phone' => $validated['phone'],
-                'password' => $password,
-                'client_id' => $this->fms_id,
-            ]);
-
-            if ($user) {
-                $id_number = createcustomeridNumber($this->fms_id);
-                $validated['user_id'] = auth()->id();
-                $validated['customer_no'] = $id_number;
-                $validated['client_id'] = $user->client_id;
-                $customerlead = Customerlead::create($validated);
-
-                return redirect()->route('admin.list.customerlead')->with('success', 'Customer Leads created Successfully');
-            }
+        try {
+            DB::beginTransaction();
+            $customerlead = new Customerlead();
+            $validated['client_id'] = $this->fms_id;
+            $customerlead->fill($validated);
+            $customerlead->save();
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            \Log::error($th->getMessage() . '' . $th->getTraceAsString());
+            return redirect()->back()->with('error', 'Something went wrong');
         }
 
-        return redirect()->back()->with('error', 'Something went wrong');
+        return redirect()->route('admin.list.customerlead')->with('success', 'Customer Lead created Successfully');
     }
 
     /**
@@ -130,14 +130,18 @@ class CustomerleadController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Customerlead $customerlead)
+    public function edit($id)
     {
-        $this->authorize('update', $customerlead);
-        $this->data['page_title'] = 'Edit Staff';
+        $customerlead = Customerlead::findOrFail($id); // Fetch the customer lead by ID
+        $this->data['page_title'] = 'Edit Customer Lead';
         $client_id = auth()->user()->client_id;
         $this->data['customerlead'] = $customerlead;
+        $this->data['editing'] = true;
+
         $this->data['clients'] = Client::pluck('client_name', 'id');
         $this->data['users'] = User::pluck('id');
+
+        // Fetch customer categories for the current client
         $this->data['customercategories'] = Customercategory::where('client_id', $this->fms_id)->pluck('categoryname', 'id');
 
         return view('dashboards.admin.customerleads.edit', $this->data);
@@ -146,28 +150,26 @@ class CustomerleadController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Customerlead $customerlead)
+    public function update(Request $request, $id)
     {
+        $customerlead = Customerlead::findOrFail($id);
         $this->authorize('update', $customerlead);
-        $validated = $this->validate($request, $this->rules($customerlead->user->id));
+
+        $validated = $this->validate_customerlead($request, $id);
 
         try {
             DB::beginTransaction();
-            $user = $customerlead->user;
-            $user->name = $validated['customer_firstname'] . ' ' . $validated['customer_middlename'] . ' ' . $validated['customer_lastname'];
-            $user->email = $validated['customer_email'];
-            $user->phone = $validated['phone'];
-            $user->save();
+
+            $validated['client_id'] = $this->fms_id;
             $customerlead->update($validated);
 
             DB::commit();
+            return redirect()->route('admin.list.customerlead')->with('success', 'Customer lead updated successfully');
         } catch (\Throwable $th) {
-            DB::rollback();
+            DB::rollBack();
             \Log::error($th->getMessage() . ' ' . $th->getTraceAsString());
-            return back()->with('error', $th->getMessage());
+            return redirect()->back()->with('error', 'Something went wrong');
         }
-
-        return redirect()->route('admin.list.customerlead')->with('success', 'Customer Lead updated successfully');
     }
 
     /**
@@ -175,9 +177,7 @@ class CustomerleadController extends Controller
      */
     public function delete(Request $request, $customerlead)
     {
-        $customerlead = Customerlead::where('id', $customerlead)
-            ->where('client_id', $this->fms_id)
-            ->first();
+        $customerlead = Customerlead::where('id', $customerlead)->where('client_id', $this->fms_id)->first();
         $this->authorize('delete', $customerlead);
         $customerlead->delete();
         return redirect()->route('admin.list.customerlead', $customerlead)->with('success', 'Customer Lead Deleted Successful');
