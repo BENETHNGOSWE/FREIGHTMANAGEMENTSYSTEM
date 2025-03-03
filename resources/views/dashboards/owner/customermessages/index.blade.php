@@ -4,13 +4,13 @@
     <div class="container-fluid">
         <div class="form-head align-items-center d-flex mb-sm-4 mb-3">
             <div class="me-auto">
-                <h2 class="text-black font-w600">Sendername</h2>
-                <p class="mb-1">Dashboard / <span><a class="text-primary" href="appointment-add.html">Sendername
+                <h2 class="text-black font-w600">Customer Messages</h2>
+                <p class="mb-1">Dashboard / <span><a class="text-primary" href="appointment-add.html">Customer Messages
                             List</a></span>
                 </p>
             </div>
             <div>
-                <a href="{{ route('owner.create.assignname') }}" class="btn btn-primary me-3">+ Add Sendername</a>
+                <a href="{{ route('owner.create.customermessage') }}" class="btn btn-primary me-3">+ Add Customer Messages</a>
             </div>
         </div>
         <div class="row">
@@ -38,40 +38,31 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($clients as $client)
+                                @forelse($customermessages as $customer)
                                     <tr>
                                         <td>
                                             {{ $loop->iteration }}
                                         </td>
-                                        <td>{{ strtoupper($client->client_name) ?? '-' }}</td>
-                                        <td>
-                                            @if ($client->sendernames->isNotEmpty())
-                                                <ul>
-                                                    @foreach ($client->sendernames as $sendername)
-                                                        <li>{{ $sendername->name }}</li>
-                                                    @endforeach
-                                                </ul>
-                                            @else
-                                                <em>No sender names assigned</em>
-                                            @endif
-                                        </td>
-                                        {{-- <td class="text-center" style="width: 134px;">
+                                        <td>{{ strtoupper($customer->client->client_name) ?? '-' }}</td>
+                                        <td>{{ strtoupper($customer->messageamount) ?? '-' }}</td>
+                                       
+                                        <td class="text-center" style="width: 134px;">
                                             <div role="group" aria-label="Row Actions" class="btn-group">
-                                                @can('update', $sendername)
-                                                    <a href="{{ route('owner.edit.sendername', $sendername) }}">
+                                               
+                                                    <a href="{{ route('owner.edit.customermessage', $customer) }}">
                                                         <button type="button" class="btn btn-outline-success">
                                                             <i class="fas fa-edit"></i>
                                                         </button>
                                                     </a>
-                                                    @endcan @can('view', $sendername)
-                                                    <a href="{{ route('owner.show.sendername', $sendername) }}">
+                                                 
+                                                    <a href="{{ route('owner.show.customermessage', $customer) }}">
                                                         <button type="button" class="btn btn-outline-primary mx-2">
                                                             <i class="fas fa-eye"></i>
                                                         </button>
                                                     </a>
-                                                    @endcan @can('delete', $sendername)
+                                                
                                                     <form class="delete_form"
-                                                        action="{{ route('owner.delete.sendername', $sendername) }}"
+                                                        action="{{ route('owner.delete.customermessage', $customer) }}"
                                                         method="POST">
                                                         @csrf
                                                         @method('DELETE')
@@ -79,9 +70,9 @@
                                                             <i class="fas fa-trash"></i>
                                                         </button>
                                                     </form>
-                                                @endcan
+                                            
                                             </div>
-                                        </td> --}}
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr>

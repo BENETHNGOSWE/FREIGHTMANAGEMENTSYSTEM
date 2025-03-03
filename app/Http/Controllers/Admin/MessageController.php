@@ -155,7 +155,9 @@ class MessageController extends Controller
             if (empty($selectedPhones)) {
                 return redirect()->back()->with('error', 'No customers selected.');
             }
-            $customers = Customer::whereIn('phone', $selectedPhones)->get();
+            $customerleads = Customerlead::where('client_id', $this->fms_id)
+            ->whereIn('phone', $selectedPhones)
+            ->get();
         }
 
         if ($customers->isEmpty()) {
@@ -213,7 +215,9 @@ class MessageController extends Controller
             if (empty($selectedPhones)) {
                 return redirect()->back()->with('error', 'No customers selected.');
             }
-            $customerleads = Customerlead::whereIn('phone', $selectedPhones)->get();
+            $customerleads = Customerlead::where('client_id', $this->fms_id)
+            ->whereIn('phone', $selectedPhones)
+            ->get();
         }
 
         if ($customerleads->isEmpty()) {

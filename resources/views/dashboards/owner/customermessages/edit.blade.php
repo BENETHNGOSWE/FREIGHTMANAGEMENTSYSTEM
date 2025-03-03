@@ -4,13 +4,13 @@
 <div class="container-fluid">
     <div class="form-head align-items-center d-flex mb-sm-4 mb-3">
         <div class="me-auto">
-            <h2 class="text-black font-w600">Edit Load Type</h2>
+            <h2 class="text-black font-w600">Edit Customer Message</h2>
             
         </div>
 
         <div>
            <p class="mb-1">Dashboard / <span><a class="text-primary"
-                        href="{{ route('admin.list.loadpackagetpye') }}">Edit Load Type</a></span></p>
+                        href="{{ route('admin.list.loadpackagetpye') }}">Edit Customer Message</a></span></p>
         </div>
     </div>
     <div class="card">
@@ -18,14 +18,14 @@
 
             <x-form
                 method="PUT"
-                action="{{ route('admin.update.loadpackagetpye', $loadpackagetype ) }}"
+                action="{{ route('owner.update.customermessage', $customermessage ) }}"
                 class="mt-4"
             >
-            @include('dashboards.admin.loadpackagetypes.form-inputs')
+            @include('dashboards.owner.customermessages.form-inputs')
 
                 <div class="mt-4">
                     <a
-                        href="{{ route('admin.list.loadpackagetpye') }}"
+                        href="{{ route('owner.list.customermessage') }}"
                         class="btn btn-light"
                     >
                         <i class="fa-solid fa-backward"></i>
@@ -33,7 +33,7 @@
                     </a>
 
                     <a
-                        href="{{ route('admin.create.loadpackagetpye') }}"
+                        href="{{ route('owner.create.customermessage') }}"
                         class="btn btn-light"
                     >
                         <i class="icon ion-md-add text-primary"></i>

@@ -66,7 +66,7 @@
         </li>
 
         <li>
-          <a class="ai-icon" href="{{ route('owner.create.customermessage') }}" aria-expanded="false">
+          <a class="ai-icon" href="{{ route('owner.list.customermessage') }}" aria-expanded="false">
             <i class="fa fa-box-open"></i>
             <span class="nav-text">Message Count</span>
           </a>
