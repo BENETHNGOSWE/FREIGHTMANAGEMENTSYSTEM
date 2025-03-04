@@ -15,6 +15,13 @@
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
+                        <!-- Progress Bar Container -->
+                        <div id="progress-bar-container" style="display: none; width: 100%; background-color: #ddd; margin-bottom: 15px;">
+                            <div id="progress-bar" style="width: 0%; height: 25px; background-color: #4caf50; text-align: center; color: white;">
+                                0%
+                            </div>
+                        </div>
+
                         <div style="display: flex; justify-content: space-between;">
                             <h4 class="card-title">@lang('crud.containers.index_title')</h4>
                         </div>
@@ -65,7 +72,7 @@
                                                 <button type="button" class="btn btn-primary load-container-btn" data-container-id="{{ $container->id }}">
                                                     Load Container
                                                 </button>
-                                                <a href="{{ route('admin.loadlistpdf.container', $container) }}" class="btn btn-secondary mx-2">
+                                                <a href="{{ route('admin.loadlistpdf.container', $container) }}" class="btn btn-secondary mx-2 print-button">
                                                     <i class="fas fa-print"></i> Print
                                                 </a>
                                             </div>
@@ -88,6 +95,19 @@
 @endsection
 
 @push('scripts')
+    <style>
+        #progress-bar-container {
+            width: 100%;
+            background-color: #ddd;
+            margin-bottom: 15px;
+        }
+        #progress-bar {
+            width: 1%;
+            height: 30px;
+            background-color: #4caf50;
+        }
+    </style>
+
     <script>
         const deleteButtons = document.querySelectorAll(".delete_button");
 
@@ -130,25 +150,7 @@
                     closeOnCancel: false
                 }).then((result) => {
                     if (result.value) {
-                        $.ajax({
-                            url: `/containers/${containerId}/load`,
-                            type: 'POST',
-                            data: {
-                                _token: '{{ csrf_token() }}'
-                            },
-                            success: function(response) {
-                                if (response.success) {
-                                    swal("Loaded!", "Loads successfully added to container.", "success").then(() => {
-                                        location.reload();
-                                    });
-                                } else {
-                                    swal("Error", "Could not find optimal load combination.", "error");
-                                }
-                            },
-                            error: function() {
-                                swal("Error", "An error occurred while loading the container.", "error");
-                            }
-                        });
+                        showProgressBar(containerId);
                     } else {
                         swal("Cancelled", "The container was not loaded.", "info");
                     }
@@ -162,6 +164,50 @@
                 lengthChange: false,
             });
         });
+
+        function showProgressBar(containerId) {
+            var progressBarContainer = document.getElementById('progress-bar-container');
+            var progressBar = document.getElementById('progress-bar');
+            var width = 1;
+            progressBarContainer.style.display = 'block';
+
+            var interval = setInterval(function() {
+                if (width >= 100) {
+                    clearInterval(interval);
+                    // Make the AJAX request once the progress bar reaches 100%
+                    $.ajax({
+                        url: `/containers/${containerId}/load`,
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            hideProgressBar();
+                            if (response.success) {
+                                swal("Loaded!", "Loads successfully added to container.", "success").then(() => {
+                                    location.reload();
+                                });
+                            } else {
+                                swal("Error", "Could not find optimal load combination.", "error");
+                            }
+                        },
+                        error: function() {
+                            hideProgressBar();
+                            swal("Error", "An error occurred while loading the container.", "error");
+                        }
+                    });
+                } else {
+                    width++;
+                    progressBar.style.width = width + '%';
+                    progressBar.innerHTML = width + '%';
+                }
+            }, 50); // This will take 5 seconds to reach 100%
+        }
+
+        function hideProgressBar() {
+            var progressBarContainer = document.getElementById('progress-bar-container');
+            progressBarContainer.style.display = 'none';
+        }
     </script>
 @endpush
 

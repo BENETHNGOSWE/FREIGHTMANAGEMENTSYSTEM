@@ -37,15 +37,16 @@ class CustomerleadController extends Controller
     public function index()
     {
         $roleAllowedToView = ['admin', 'kodasmspackage'];
-
+    
         if (auth()->user()->hasAnyRole($roleAllowedToView)) {
-            $this->data['customerleads'] = Customerlead::where('client_id', $this->fms_id)->get();
+            $this->data['customerleads'] = Customerlead::with('user')->where('client_id', $this->fms_id)->get();
         } else {
-            $this->data['customerleads'] = auth()->user()->customerleads;
+            $this->data['customerleads'] = auth()->user()->customerleads()->with('user')->get();
         }
-
+    
         return view('dashboards.admin.customerleads.index', $this->data);
     }
+    
 
     /**
      * Show the form for creating a new resource.
@@ -105,6 +106,7 @@ class CustomerleadController extends Controller
             DB::beginTransaction();
             $customerlead = new Customerlead();
             $validated['client_id'] = $this->fms_id;
+            $validated['user_id'] = auth()->id();
             $customerlead->fill($validated);
             $customerlead->save();
             DB::commit();

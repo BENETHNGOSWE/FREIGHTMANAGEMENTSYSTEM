@@ -61,7 +61,7 @@
                                         <td>{{ strtoupper($customerlead->customer_firstname . ' ' . $customerlead->customer_middlename . ' ' . $customerlead->customer_lastname) ?? '-' }}
                                         </td>
                                         <td>{{ strtoupper($customerlead->phone) ?? '-' }}</td>
-                                        <td>{{ strtoupper($customerlead->customer_firstname) ?? '-' }}</td>
+                                        <td>{{ strtoupper(optional($customerlead->user)->name ?? 'Unknown') }}</td>
                                         <td class="text-center" style="width: 134px;">
                                             <div role="group" aria-label="Row Actions" class="btn-group">
                                                 @can('update', $customerlead)

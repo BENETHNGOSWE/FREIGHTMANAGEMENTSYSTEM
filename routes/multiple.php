@@ -4,6 +4,19 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('/')
     ->middleware('auth')
     ->group(function () {
+
+          // Container Manage Here
+          Route::get('container', [App\Http\Controllers\Admin\ContainerController::class, 'index'])->name('admin.list.container');
+          Route::get('containercreate', [App\Http\Controllers\Admin\ContainerController::class, 'create'])->name('admin.create.container');
+          Route::post('container/store', [App\Http\Controllers\Admin\ContainerController::class, 'store'])->name('admin.store.container');
+          Route::get('container/edit/{container}', [App\Http\Controllers\Admin\ContainerController::class, 'edit'])->name('admin.edit.container');
+          Route::put('container/update/{container}', [App\Http\Controllers\Admin\ContainerController::class, 'update'])->name('admin.update.container');
+          Route::get('container/show/{container}', [App\Http\Controllers\Admin\ContainerController::class, 'show'])->name('admin.show.container');
+          Route::post('/containers/{container}/load', [App\Http\Controllers\Admin\ContainerController::class, 'loadContainer'])->name('admin.loadcontainer.container');
+          Route::get('/containers/{containerId}/pdflist', [App\Http\Controllers\Admin\ContainerController::class, 'generateContainerloads'])->name('admin.loadlistpdf.container');
+          Route::delete('container/delete/{container}', [App\Http\Controllers\Admin\ContainerController::class, 'delete'])->name('admin.delete.container');
+
+          
         // Manage loadpackagetype Here
         Route::get('loadtype', [App\Http\Controllers\Admin\LoadpackagetypeController::class, 'index'])->name('admin.list.loadpackagetpye');
         Route::get('loadtypecreate', [App\Http\Controllers\Admin\LoadpackagetypeController::class, 'create'])->name('admin.create.loadpackagetpye');
