@@ -44,6 +44,9 @@
                                         Load Weight
                                     </th>
                                     <th class="text-left" style="white-space: normal; word-wrap: break-word;">
+                                        load Volume
+                                    </th>
+                                    <th class="text-left" style="white-space: normal; word-wrap: break-word;">
                                         Total Price($)
                                     </th>
                                    
@@ -79,6 +82,7 @@
                                             {{ strtoupper($loadpackage->load_no) ?? '-' }}</td>
                                         <td>{{ strtoupper($loadpackage->load_name) ?? '-' }}</td>
                                         <td>{{ strtoupper($loadpackage->load_weight_value . ' ' . $loadpackage->unittype->unittype_name) ?? '-' }}</td>
+                                        <td style="color: rgb(255, 117, 19); font-weight:700;">{{ strtoupper($loadpackage->load_volume) ?? '-' }}</td>
                                         <td>{{ strtoupper($loadpackage->load_price) ?? '-' }}</td>
                                        
                                         <td>{{ strtoupper($loadpackage->load_description) ?? '-' }}</td>

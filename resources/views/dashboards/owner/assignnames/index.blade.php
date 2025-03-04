@@ -9,9 +9,11 @@
                             List</a></span>
                 </p>
             </div>
-            <div>
-                <a href="{{ route('owner.create.assignname') }}" class="btn btn-primary me-3">+ Add Sendername</a>
-            </div>
+            @if (auth()->user()->hasRole('owner'))
+                <div>
+                    <a href="{{ route('owner.create.assignname') }}" class="btn btn-primary me-3">+ Add Sendername</a>
+                </div>
+            @endif
         </div>
         <div class="row">
             <div class="card">

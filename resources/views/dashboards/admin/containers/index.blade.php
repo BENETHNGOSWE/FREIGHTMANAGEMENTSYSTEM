@@ -5,9 +5,7 @@
         <div class="form-head align-items-center d-flex mb-sm-4 mb-3">
             <div class="me-auto">
                 <h2 class="text-black font-w600">Container</h2>
-                <p class="mb-1">Dashboard / <span><a class="text-primary" href="appointment-add.html">Container
-                            List</a></span>
-                </p>
+                <p class="mb-1">Dashboard / <span><a class="text-primary" href="appointment-add.html">Container List</a></span></p>
             </div>
             <div>
                 <a href="{{ route('admin.create.container') }}" class="btn btn-primary me-3">+ Add Container</a>
@@ -56,23 +54,18 @@
                                                     </a>
                                                 @endcan
                                                 @can('delete', $container)
-                                                    <form class="delete_form"
-                                                        action="{{ route('admin.delete.container', $container) }}"
-                                                        method="POST">
+                                                    <form class="delete_form" action="{{ route('admin.delete.container', $container) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit"
-                                                            class="btn btn-outline-danger delete_button mx-2">
+                                                        <button type="submit" class="btn btn-outline-danger delete_button mx-2">
                                                             <i class="fas fa-trash"></i>
                                                         </button>
                                                     </form>
                                                 @endcan
-                                                <button type="button" class="btn btn-primary load-container-btn"
-                                                    data-container-id="{{ $container->id }}">
+                                                <button type="button" class="btn btn-primary load-container-btn" data-container-id="{{ $container->id }}">
                                                     Load Container
                                                 </button>
-                                                <a href="{{ route('admin.loadlistpdf.container', $container) }}"
-                                                    class="btn btn-secondary mx-2">
+                                                <a href="{{ route('admin.loadlistpdf.container', $container) }}" class="btn btn-secondary mx-2">
                                                     <i class="fas fa-print"></i> Print
                                                 </a>
                                             </div>
@@ -102,15 +95,15 @@
             button.addEventListener("click", function(e) {
                 e.preventDefault();
                 swal({
-                    title: "Are you sure to delete ?",
+                    title: "Are you sure to delete?",
                     text: "You will not be able to recover deleted data !!",
                     type: "warning",
-                    showCancelButton: !0,
+                    showCancelButton: true,
                     confirmButtonColor: "#DD6B55",
                     confirmButtonText: "Yes, delete it !!",
                     cancelButtonText: "No, cancel it !!",
-                    closeOnConfirm: !1,
-                    closeOnCancel: !1
+                    closeOnConfirm: false,
+                    closeOnCancel: false
                 }).then((result) => {
                     if (result.value) {
                         const form = button.closest(".delete_form");
@@ -125,22 +118,39 @@
         $(document).ready(function() {
             $('.load-container-btn').on('click', function() {
                 var containerId = $(this).data('container-id');
-                $.ajax({
-                    url: `/containers/${containerId}/load`,
-                    type: 'POST',
-                    data: {
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            alert('Loads successfully added to container');
-                            location.reload();
-                        } else {
-                            alert('Could not find optimal load combination');
-                        }
-                    },
-                    error: function() {
-                        alert('An error occurred while loading the container');
+                swal({
+                    title: "Are you sure to load the container?",
+                    text: "This will add loads to the container.",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    confirmButtonText: "Yes, load it!",
+                    cancelButtonText: "No, cancel!",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            url: `/containers/${containerId}/load`,
+                            type: 'POST',
+                            data: {
+                                _token: '{{ csrf_token() }}'
+                            },
+                            success: function(response) {
+                                if (response.success) {
+                                    swal("Loaded!", "Loads successfully added to container.", "success").then(() => {
+                                        location.reload();
+                                    });
+                                } else {
+                                    swal("Error", "Could not find optimal load combination.", "error");
+                                }
+                            },
+                            error: function() {
+                                swal("Error", "An error occurred while loading the container.", "error");
+                            }
+                        });
+                    } else {
+                        swal("Cancelled", "The container was not loaded.", "info");
                     }
                 });
             });
