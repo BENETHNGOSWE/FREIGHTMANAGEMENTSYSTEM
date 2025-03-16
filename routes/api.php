@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\CustomercategoryController;
+use App\Http\Controllers\Api\DemorequestController;
 
 
 /*
@@ -17,6 +18,13 @@ use App\Http\Controllers\Api\CustomercategoryController;
 */
 
 Route::post('/login', [AuthController::class, 'login'])->name('api.login');
+
+
+// Demo request API Manage Here
+Route::prefix('demorequest')->middleware('throttle:60,1')->group(function (){
+    Route::post('/', [DemorequestController::class, 'index']);
+    Route::post('/storedemorequests', [DemorequestController::class, 'store']);
+});
 
 Route::middleware('auth:sanctum')
     ->get('/user', function (Request $request) {
@@ -38,4 +46,6 @@ Route::name('api.')
             Route::put('/{id}', [CustomercategoryController::class, 'update']);
             Route::delete('/{id}', [CustomercategoryController::class, 'destroy']);
         });
+
+       
     });

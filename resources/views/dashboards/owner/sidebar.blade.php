@@ -71,6 +71,14 @@
             <span class="nav-text">Message Count</span>
           </a>
         </li>
+
+        <li>
+          <a class="ai-icon" href="{{ route('owner.list.demorequest')}}" aria-expanded="false">
+            {{-- <i class="fa fa-filter-circle-dollar"></i> --}}
+            <i class="fa-solid fa-money-check-dollar"></i>
+            <span class="nav-text">Demo request</span>
+          </a>
+        </li>
        
         <li>
           <a class="has-arrow ai-icon" href="$#" aria-expanded="false">

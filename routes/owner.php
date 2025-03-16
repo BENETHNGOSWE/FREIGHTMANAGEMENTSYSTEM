@@ -72,4 +72,8 @@ Route::prefix('/')
          Route::post('/_generate_subscription_token_/{id}', [\App\Http\Controllers\Owner\SubscriptionController::class, 'generate_subscriptions_tokens'])->name('generate.subscriptions_tokens_');
 
 
+           //Owner Manage Subscription
+           Route::get('/demorequest', [\App\Http\Controllers\Owner\DemorequestController::class, 'index'])->name('owner.list.demorequest');
+
+
     });
