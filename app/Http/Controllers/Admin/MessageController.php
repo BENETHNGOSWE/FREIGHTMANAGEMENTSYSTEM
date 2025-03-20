@@ -87,9 +87,9 @@ class MessageController extends Controller
         $roleAllowedToView = ['admin', 'kodasmspackage'];
 
         if (auth()->user()->hasAnyRole($roleAllowedToView)) {
-            $customerleads = Customerlead::with('customercategory')->where('client_id', $this->fms_id)->get();
+            $customerleads = Customerlead::with('customercategories')->where('client_id', $this->fms_id)->get();
         } else {
-            $customerleads = Customerlead::with('customercategory')
+            $customerleads = Customerlead::with('customercategories')
                 ->where('client_id', $this->fms_id)
                 ->where('user_id', auth()->id())
                 ->get();

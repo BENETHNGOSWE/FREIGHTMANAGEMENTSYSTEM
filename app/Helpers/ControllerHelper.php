@@ -419,59 +419,59 @@ function getStatusLabel($status)
 // }
 
 // dynamic senderid changing function
-function sendMessagemultipesenderid($phoneNumbers, $message, $senderId)
-{
-    if (!is_array($phoneNumbers)) {
-        $phoneNumbers = explode(',', $phoneNumbers);
-    }
+// function sendMessagemultipesenderid($phoneNumbers, $message, $senderId)
+// {
+//     if (!is_array($phoneNumbers)) {
+//         $phoneNumbers = explode(',', $phoneNumbers);
+//     }
 
-    foreach ($phoneNumbers as $phoneNumber) {
-        $phoneNumber = trim($phoneNumber);
-        $postData = [
-            'from' => $senderId,
-            'to' => $phoneNumber,
-            'text' => $message,
-            'reference' => $senderId,
-        ];
+//     foreach ($phoneNumbers as $phoneNumber) {
+//         $phoneNumber = trim($phoneNumber);
+//         $postData = [
+//             'from' => $senderId,
+//             'to' => $phoneNumber,
+//             'text' => $message,
+//             'reference' => $senderId,
+//         ];
 
-        $curl = curl_init();
-        curl_setopt_array($curl, [
-            CURLOPT_URL => 'https://messaging-service.co.tz/api/sms/v1/text/single',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => json_encode($postData),
-            CURLOPT_HTTPHEADER => ['Authorization:Basic ' . base64_encode(env('SMS_API_KEY') . ':' . env('SMS_SECRET_KEY')), 'Content-Type: application/json', 'Accept: application/json'],
-            CURLOPT_SSL_VERIFYPEER => false,
-        ]);
+//         $curl = curl_init();
+//         curl_setopt_array($curl, [
+//             CURLOPT_URL => 'https://messaging-service.co.tz/api/sms/v1/text/single',
+//             CURLOPT_RETURNTRANSFER => true,
+//             CURLOPT_ENCODING => '',
+//             CURLOPT_MAXREDIRS => 10,
+//             CURLOPT_TIMEOUT => 0,
+//             CURLOPT_FOLLOWLOCATION => true,
+//             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+//             CURLOPT_CUSTOMREQUEST => 'POST',
+//             CURLOPT_POSTFIELDS => json_encode($postData),
+//             CURLOPT_HTTPHEADER => ['Authorization:Basic ' . base64_encode(env('SMS_API_KEY') . ':' . env('SMS_SECRET_KEY')), 'Content-Type: application/json', 'Accept: application/json'],
+//             CURLOPT_SSL_VERIFYPEER => false,
+//         ]);
 
-        $response = curl_exec($curl);
-        curl_close($curl);
+//         $response = curl_exec($curl);
+//         curl_close($curl);
 
-        $response = json_decode($response, true);
+//         $response = json_decode($response, true);
 
-        if (isset($response['success']) && !$response['success']) {
-            return [
-                'success' => false,
-                'message' => 'Failed to send message to ' . $phoneNumber,
-            ];
-        } elseif ($response['messages'][0]['status']['groupName'] != 'PENDING') {
-            return [
-                'success' => false,
-                'message' => 'Failed to send message to ' . $phoneNumber,
-            ];
-        }
-    }
-    // Return success if all messages are sent
-    return [
-        'success' => true,
-        'message' => 'Messages sent successfully!',
-    ];
-}
+//         if (isset($response['success']) && !$response['success']) {
+//             return [
+//                 'success' => false,
+//                 'message' => 'Failed to send message to ' . $phoneNumber,
+//             ];
+//         } elseif ($response['messages'][0]['status']['groupName'] != 'PENDING') {
+//             return [
+//                 'success' => false,
+//                 'message' => 'Failed to send message to ' . $phoneNumber,
+//             ];
+//         }
+//     }
+//     // Return success if all messages are sent
+//     return [
+//         'success' => true,
+//         'message' => 'Messages sent successfully!',
+//     ];
+// }
 
 function sendMessage($phoneNumbers, $message, $senderName)
 {
@@ -526,4 +526,64 @@ function sendMessage($phoneNumbers, $message, $senderName)
         'success' => true,
         'message' => 'Messages sent successfully!',
     ];
+}
+
+
+function sendMessagemultipesenderid($phoneNumbers, $message, $senderId)
+{
+    // API credentials
+    $apiKey = "developerbeneth";
+    $apiSecret = "VBGBW1HNk3tBYT0nSqu0";
+    $url = "https://messaging.kilakona.co.tz/api/v1/vendor/message/send";
+
+    // Prepare headers
+    $headers = [
+        "api_key: $apiKey",
+        "api_secret: $apiSecret",
+        "Content-Type: application/json"
+    ];
+
+    // Convert phone numbers to comma-separated string if array
+    if (!is_array($phoneNumbers)) {
+        $contacts = $phoneNumbers; // Already a string
+    } else {
+        $contacts = implode(',', array_map('trim', $phoneNumbers)); // Convert array to comma-separated string
+    }
+
+    // Prepare data
+    $data = [
+        "senderId" => $senderId,
+        "messageType" => "text",
+        "message" => $message,
+        "contacts" => $contacts
+    ];
+
+    // Initialize cURL
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+    // Execute and get response
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    // Decode response (assuming it returns JSON)
+    $responseData = json_decode($response, true);
+
+    // Check response (customize this based on your API's actual response structure)
+    if (isset($responseData['success']) && $responseData['success']) {
+        return [
+            'success' => true,
+            'message' => 'Messages sent successfully!'
+        ];
+    } else {
+        return [
+            'success' => false,
+            'message' => 'Failed to send message: ' . ($responseData['error'] ?? 'Unknown error')
+        ];
+    }
 }

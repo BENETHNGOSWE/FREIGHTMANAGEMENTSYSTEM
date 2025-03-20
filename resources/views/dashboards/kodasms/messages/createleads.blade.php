@@ -14,7 +14,8 @@
         <div class="row">
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('admin.sendmessage.lead') }}" method="POST" {{ $canSendMessages ? '' : 'disabled' }}>
+                    <form action="{{ route('admin.sendmessage.lead') }}" method="POST"
+                        {{ $canSendMessages ? '' : 'disabled' }}>
                         @csrf
                         <div class="form-group">
                             <label for="sender_id">Sender ID:</label>
@@ -25,16 +26,18 @@
                                 @endforeach
                             </select>
                         </div>
-                    
+
                         <div class="form-group d-flex align-items-center">
                             <div class="me-4">
                                 <label for="send_to_all" class="mb-0">
-                                    <input type="checkbox" id="send_to_all" name="send_to_all" value="1"> Send to All Customers
+                                    <input type="checkbox" id="send_to_all" name="send_to_all" value="1"> Send to All
+                                    Customers
                                 </label>
                             </div>
                             <div>
                                 <label for="send_by_category" class="mb-0">
-                                    <input type="checkbox" id="send_by_category" name="send_by_category" value="1"> Send by Category
+                                    <input type="checkbox" id="send_by_category" name="send_by_category" value="1">
+                                    Send by Category
                                 </label>
                             </div>
                         </div>
@@ -48,9 +51,9 @@
                                 @endforeach
                             </select>
                         </div>
-                        
+
                         <input type="hidden" id="selected_customers" name="selected_customers" value="">
-                    
+
                         <div class="table-responsive">
                             <table id="labtypeTable" class="table table-borderless table-hover">
                                 <thead>
@@ -58,18 +61,27 @@
                                         <th>Select</th>
                                         <th>Customer Name</th>
                                         <th>Customer Mobile No.</th>
-                                        <th>Customer Category</th>
+                                        <th>Customer Categories</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @forelse($customerleads as $customer)
-                                        <tr class="customer-row" data-category="{{ $customer->customercategory->id }}">
+                                        <tr class="customer-row"
+                                            data-categories="{{ $customer->customercategories->pluck('id')->toJson() }}">
                                             <td>
-                                                <input type="checkbox" name="customerleads[]" class="customer-checkbox" value="{{ $customer->phone }}">
+                                                <input type="checkbox" name="customerleads[]" class="customer-checkbox"
+                                                    value="{{ $customer->phone }}">
                                             </td>
-                                            <td>{{ strtoupper($customer->customer_firstname) }} {{ strtoupper($customer->customer_lastname) }}</td>
+                                            <td>{{ strtoupper($customer->customer_firstname) }}
+                                                {{ strtoupper($customer->customer_lastname) }}</td>
                                             <td>{{ strtoupper($customer->phone) }}</td>
-                                            <td>{{ strtoupper($customer->customercategory->categoryname) }}</td>
+                                            <td>
+                                                @if ($customer->customercategories->isNotEmpty())
+                                                    {{ strtoupper($customer->customercategories->pluck('categoryname')->implode(', ')) }}
+                                                @else
+                                                    No categories assigned
+                                                @endif
+                                            </td>
                                         </tr>
                                     @empty
                                         <tr>
@@ -79,13 +91,14 @@
                                 </tbody>
                             </table>
                         </div>
-                    
+
                         <div class="form-group mt-3">
                             <label for="message">Message:</label>
                             <textarea id="message" name="message" class="form-control" required></textarea>
                         </div>
-                    
-                        <button type="submit" class="btn btn-primary" {{ $canSendMessages ? '' : 'disabled' }}>Send Message</button>
+
+                        <button type="submit" class="btn btn-primary" {{ $canSendMessages ? '' : 'disabled' }}>Send
+                            Message</button>
                     </form>
                     @if (!$canSendMessages)
                         <div class="alert alert-warning mt-3">
@@ -96,7 +109,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
     <script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
@@ -123,21 +135,17 @@
 
         CKEDITOR.instances.message.on('instanceReady', function(ev) {
             const editor = ev.editor;
-
             editor.dataProcessor.htmlFilter.addRules({
                 text: function(text) {
-                    return text
-                        .replace(/&nbsp;/g, ' ')
-                        .replace(/\s+/g, ' ');
+                    return text.replace(/ /g, ' ').replace(/\s+/g, ' ');
                 }
             });
-
             editor.on('paste', function(ev) {
                 const text = ev.data.dataValue
                     .replace(/<p>/g, '\n')
                     .replace(/<\/p>/g, '')
                     .replace(/<br>/g, '\n')
-                    .replace(/&nbsp;/g, ' ')
+                    .replace(/ /g, ' ')
                     .replace(/<[^>]*>/g, '')
                     .trim();
                 ev.data.dataValue = text;
@@ -147,14 +155,13 @@
         document.querySelector('form').addEventListener('submit', function(e) {
             const editor = CKEDITOR.instances.message;
             let content = editor.getData();
-
             content = processMessageContent(content);
             editor.setData(content);
         });
 
         function processMessageContent(content) {
             return content
-                .replace(/&nbsp;/g, ' ')
+                .replace(/ /g, ' ')
                 .replace(/\s+/g, ' ')
                 .replace(/<p>\s*<\/p>/g, '\n')
                 .replace(/<p>/g, '')
@@ -203,7 +210,6 @@
             const checkboxes = document.querySelectorAll('input[name="customerleads[]"]');
             const isChecked = this.checked;
 
-            // Uncheck "Send by Category" if "Send to All" is checked
             if (isChecked) {
                 document.getElementById('send_by_category').checked = false;
                 document.getElementById('category_selection').style.display = 'none';
@@ -216,7 +222,6 @@
                 }
             });
 
-            // Show all rows when "Send to All" is selected
             document.querySelectorAll('.customer-row').forEach(row => {
                 row.style.display = '';
             });
@@ -226,16 +231,13 @@
         document.getElementById('send_by_category').addEventListener('change', function() {
             const isChecked = this.checked;
             const categorySelection = document.getElementById('category_selection');
-            
-            // Show/hide category dropdown
+
             categorySelection.style.display = isChecked ? 'block' : 'none';
-            
-            // Uncheck "Send to All" if "Send by Category" is checked
+
             if (isChecked) {
                 document.getElementById('send_to_all').checked = false;
             }
-            
-            // Enable/disable checkboxes based on selection
+
             const checkboxes = document.querySelectorAll('input[name="customerleads[]"]');
             checkboxes.forEach(checkbox => {
                 checkbox.disabled = isChecked;
@@ -243,22 +245,18 @@
                     checkbox.checked = false;
                 }
             });
-            
-            // Reset the selected category if unchecked
+
             if (!isChecked) {
                 document.getElementById('selected_category').value = '';
-                // Show all rows when category filter is removed
                 document.querySelectorAll('.customer-row').forEach(row => {
                     row.style.display = '';
                 });
             } else {
-                // Hide all rows initially when category filter is applied
                 document.querySelectorAll('.customer-row').forEach(row => {
                     row.style.display = 'none';
                 });
             }
-            
-            // Clear selected customers when switching
+
             selectedCustomers.clear();
             updateHiddenField();
         });
@@ -266,31 +264,36 @@
         // Handle category selection change
         document.getElementById('selected_category').addEventListener('change', function() {
             const selectedCategory = this.value;
-            const checkboxes = document.querySelectorAll('input[name="customerleads[]"]');
-            
-            // Clear previous selections
+            const selectedCategoryId = parseInt(selectedCategory);
+
+            // Reset all checkboxes and selections
             selectedCustomers.clear();
-            checkboxes.forEach(checkbox => {
-                checkbox.checked = false;
-            });
-            
-            // Show only rows of the selected category and check their checkboxes
+
+            // Show all customers who have the selected category
             document.querySelectorAll('.customer-row').forEach(row => {
-                const categoryId = row.getAttribute('data-category');
+                const categoryIds = JSON.parse(row.getAttribute('data-categories') || '[]');
                 const checkbox = row.querySelector('.customer-checkbox');
-                
-                if (categoryId === selectedCategory) {
+
+                // Check if the selected category is one of the customer's categories
+                if (categoryIds.includes(selectedCategoryId)) {
+                    // Show this customer
                     row.style.display = '';
+
+                    // Select this customer
                     if (checkbox) {
                         checkbox.checked = true;
                         checkbox.disabled = false;
                         selectedCustomers.add(checkbox.value);
                     }
                 } else {
+                    // Hide this customer
                     row.style.display = 'none';
+                    if (checkbox) {
+                        checkbox.checked = false;
+                    }
                 }
             });
-            
+
             updateHiddenField();
         });
     </script>
@@ -303,13 +306,15 @@
                 searching: true,
                 paging: true,
                 select: false,
-                lengthChange: true,  // Enables the length menu
-                lengthMenu: [[10, 20, 50, -1], [10, 20, 50, "All"]], // Records per page options
+                lengthChange: true,
+                lengthMenu: [
+                    [10, 20, 50, -1],
+                    [10, 20, 50, "All"]
+                ],
             });
         })(jQuery);
     </script>
 @endpush
-
 
 @include('layouts.partials.datatable')
 @include('layouts.partials.sweetalert')

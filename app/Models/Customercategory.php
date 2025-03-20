@@ -22,8 +22,10 @@ class Customercategory extends Model
         return $this->belongsTo(Client::class);
     }
 
-    public function customerlead(){
-        return $this->hasMany(Customerlead::class);
+    public function customerleads()
+    {
+        return $this->belongsToMany(Customerlead::class, 'customerlead_category', 'category_id', 'customerlead_id')
+                    ->withTimestamps();
     }
 
     

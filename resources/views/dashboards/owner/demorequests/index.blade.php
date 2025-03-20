@@ -5,7 +5,8 @@
         <div class="form-head align-items-center d-flex mb-sm-4 mb-3">
             <div class="me-auto">
                 <h2 class="text-black font-w600">Demo Request</h2>
-                <p class="mb-1">Dashboard / <span><a class="text-primary" href="appointment-add.html">Demo request List</a></span></p>
+                <p class="mb-1">Dashboard / <span><a class="text-primary" href="appointment-add.html">Demo request
+                            List</a></span></p>
             </div>
         </div>
         <div class="row">
@@ -43,7 +44,7 @@
                                         </td>
                                         <td>{{ strtoupper($demoRequest->company_name) ?? '-' }}</td>
                                         <td>{{ strtoupper($demoRequest->city) ?? '-' }}</td>
-                                      
+
                                     </tr>
                                 @empty
                                     <tr>
@@ -70,9 +71,10 @@
                 select: false,
                 lengthChange: false,
                 autoWidth: false,
-                columnDefs: [
-                    { targets: 6, width: '250px' }
-                ]
+                columnDefs: [{
+                    targets: 6,
+                    width: '250px'
+                }]
             });
         })(jQuery);
     </script>
@@ -115,6 +117,6 @@
         overflow-wrap: break-word;
         white-space: normal;
         max-width: 250px;
-        word-break: break-all; 
+        word-break: break-all;
     }
 </style>

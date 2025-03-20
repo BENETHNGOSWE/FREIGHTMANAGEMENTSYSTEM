@@ -37,16 +37,15 @@ class CustomerleadController extends Controller
     public function index()
     {
         $roleAllowedToView = ['admin', 'kodasmspackage'];
-    
+
         if (auth()->user()->hasAnyRole($roleAllowedToView)) {
             $this->data['customerleads'] = Customerlead::with('user')->where('client_id', $this->fms_id)->get();
         } else {
             $this->data['customerleads'] = auth()->user()->customerleads()->with('user')->get();
         }
-    
+
         return view('dashboards.admin.customerleads.index', $this->data);
     }
-    
 
     /**
      * Show the form for creating a new resource.
@@ -71,7 +70,7 @@ class CustomerleadController extends Controller
             'customer_firstname' => ['required', 'max:255', 'string'],
             'customer_middlename' => ['nullable', 'max:255', 'string'],
             'customer_lastname' => ['nullable', 'max:255', 'string'],
-            'category_id' => ['required', 'exists:customercategories,id'],
+            'category_id.*' => ['exists:customercategories,id'],
             'customer_email' => [
                 'nullable',
                 'email',
@@ -79,7 +78,7 @@ class CustomerleadController extends Controller
                     ->where(function ($query) {
                         return $query->where('client_id', $this->fms_id);
                     })
-                    ->ignore($id, 'id'), 
+                    ->ignore($id, 'id'),
             ],
             'phone' => [
                 'required',
@@ -93,7 +92,7 @@ class CustomerleadController extends Controller
             ],
         ]);
     }
-    
+
     /**
      * Store a newly created resource in storage.
      */
@@ -104,11 +103,17 @@ class CustomerleadController extends Controller
 
         try {
             DB::beginTransaction();
+
+            $categoryIds = $validated['category_id'];
+            unset($validated['category_id']);
+
             $customerlead = new Customerlead();
             $validated['client_id'] = $this->fms_id;
             $validated['user_id'] = auth()->id();
             $customerlead->fill($validated);
             $customerlead->save();
+
+            $customerlead->customercategories()->attach($categoryIds);
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();
