@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\CustomercategoryController;
 use App\Http\Controllers\Api\DemorequestController;
 
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,6 +19,7 @@ use App\Http\Controllers\Api\DemorequestController;
 */
 
 Route::post('/login', [AuthController::class, 'login'])->name('api.login');
+
 
 
 // Demo request API Manage Here

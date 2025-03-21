@@ -113,12 +113,12 @@ Route::prefix('/')
 
         // CustomerLead Manage Here
         Route::post('/messagecreatelead', [App\Http\Controllers\Admin\MessageController::class, 'sendMessageleadsenderid'])->name('admin.sendmessage.lead');
-        // Route::get('/message-form-multiple', [App\Http\Controllers\Admin\MessageController::class, 'showSendMessageFormmultiple'])->name('admin.message.multple');
+        // Route::get('/message-form-multiple', [App\Http\Controllers\Admin\MessageController::class, 'showsendMessageToExistingCustomerform'])->name('admin.message.multple');
         Route::get('/message-form-lead', [App\Http\Controllers\Admin\MessageController::class, 'showSendMessageFormlead'])->name('admin.message.lead');
 
         // MessageMultiple Here
-        Route::post('/messagecreatemultipe', [App\Http\Controllers\Admin\MessageController::class, 'sendMessagemultipesenderid'])->name('admin.sendmessage.multiple');
-        Route::get('/message-form-multiple', [App\Http\Controllers\Admin\MessageController::class, 'showSendMessageFormmultiple'])->name('admin.message.multiple');
+        Route::post('/messagecreatemultipe', [App\Http\Controllers\Admin\MessageController::class, 'sendMessageToExistingCustomer'])->name('admin.sendmessage.multiple');
+        Route::get('/message-form-multiple', [App\Http\Controllers\Admin\MessageController::class, 'showsendMessageToExistingCustomerform'])->name('admin.message.multiple');
 
         
     });

@@ -137,7 +137,7 @@ function return_message_status_badge($status)
 {
     switch ($status) {
         case 'pending':
-            $badge = '<span class="badge badge-warning">Port Station</span>';
+            $badge = '<span class="badge badge-warning">Pending</span>';
             break;
             
         case 'delivered':
@@ -163,27 +163,6 @@ function user_status($status)
     return $badge;
 }
 
-function leave_status($status)
-{
-    match ($status) {
-        '0' => ($badge = '<span class="badge badge-rounded badge-warning" >new request</span>'),
-        '1' => ($badge = '<span class="badge badge-rounded badge-success" >accepted</span>'),
-        '2' => ($badge = '<span class="badge badge-rounded badge-danger" >Rejected</span>'),
-        '3' => ($badge = '<span class="badge badge-rounded badge-warning" >Sick</span>'),
-        default => ($badge = '<span class="badge badge-rounded badge-warning" >pending</span>'),
-    };
-    return $badge;
-}
-
-function sick_status($status)
-{
-    match ($status) {
-        true => ($badge = '<span class="badge badge-rounded badge-warning" >SICK</span>'),
-        false => ($badge = '<span class="badge badge-rounded badge-success" >RECOVERED</span>'),
-        default => ($badge = '<span class="badge badge-rounded badge-warning" >SICK</span>'),
-    };
-    return $badge;
-}
 
 function jason_date($date)
 {
@@ -272,30 +251,6 @@ function createLoadidNumber($client_id)
     return $load_id;
 }
 
-function createPatientNumber($hospital_id)
-{
-    $patient = \App\Models\Patient::where('hospital_id', $hospital_id)->latest()->first();
-    if ($patient) {
-        $patient_id = $patient->patient_no;
-        $patient_id = explode('-', $patient_id);
-        $patient_id = $patient_id[1];
-        $patient_id = $patient_id + 1;
-        $patient_id = 'PAT-' . $patient_id;
-    } else {
-        $patient_id = 'PAT-1';
-    }
-
-    return $patient_id;
-}
-
-function createRandomEmail($hospital_id, $name)
-{
-    $db_emails = \App\Models\User::where('hospital_id', $hospital_id)->pluck('email')->toArray();
-    do {
-        $new_email = strtolower($name) . $hospital_id . rand(10, 99) . '@hms.com';
-    } while (in_array($new_email, $db_emails));
-    return $new_email;
-}
 
 function check_if_client_has_subscription($hospital_id)
 {
@@ -308,24 +263,6 @@ function check_if_client_has_subscription($hospital_id)
     }
 }
 
-function check_if_client_validate_token($hospital_id)
-{
-    $token = \App\Models\SubscriptionToken::where('hospital_id', $hospital_id)->latest()->first();
-    if (!empty($token)) {
-        $validated = \App\Models\SubscriptionToken::where('hospital_id', $hospital_id)
-            ->where('token_', $token->token_)
-            ->where('active', 0)
-            ->latest()
-            ->first();
-        if ($validated) {
-            return true;
-        } else {
-            return false;
-        }
-    } else {
-        return false;
-    }
-}
 
 function sendSMS($user_id, $sms, $h_id = null)
 {
@@ -337,10 +274,6 @@ function sendSMS($user_id, $sms, $h_id = null)
     ]);
 }
 
-function patient_status($status)
-{
-    //return badge to to show patient status
-}
 use Carbon\Carbon;
 function date_time($data)
 {
@@ -363,63 +296,9 @@ function getStatusLabel($status)
     }
 }
 
-// function sendMessage($phoneNumbers, $message)
-// {
-//     if (!is_array($phoneNumbers)) {
-//         $phoneNumbers = explode(',', $phoneNumbers);
-//     }
-
-//     foreach ($phoneNumbers as $phoneNumber) {
-//         $phoneNumber = trim($phoneNumber);
-//         $postData = [
-//             'from' => 'KODA TECH',
-//             'to' => $phoneNumber,
-//             'text' => $message,
-//             'reference' => 'KODA TECH',
-//         ];
-
-//         $curl = curl_init();
-//         curl_setopt_array($curl, [
-//             CURLOPT_URL => 'https://messaging-service.co.tz/api/sms/v1/text/single',
-//             CURLOPT_RETURNTRANSFER => true,
-//             CURLOPT_ENCODING => '',
-//             CURLOPT_MAXREDIRS => 10,
-//             CURLOPT_TIMEOUT => 0,
-//             CURLOPT_FOLLOWLOCATION => true,
-//             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-//             CURLOPT_CUSTOMREQUEST => 'POST',
-//             CURLOPT_POSTFIELDS => json_encode($postData),
-//             CURLOPT_HTTPHEADER => ['Authorization:Basic ' . base64_encode(env('SMS_API_KEY') . ':' . env('SMS_SECRET_KEY')), 'Content-Type: application/json', 'Accept: application/json'],
-//             CURLOPT_SSL_VERIFYPEER => false,
-//         ]);
-
-//         $response = curl_exec($curl);
-//         curl_close($curl);
-
-//         $response = json_decode($response, true);
-
-//         if (isset($response['success']) && !$response['success']) {
-//             return [
-//                 'success' => false,
-//                 'message' => 'Failed to send message to ' . $phoneNumber,
-//             ];
-//         } elseif ($response['messages'][0]['status']['groupName'] != 'PENDING') {
-//             return [
-//                 'success' => false,
-//                 'message' => 'Failed to send message to ' . $phoneNumber,
-//             ];
-//         }
-//     }
-
-//     // Return success if all messages are sent
-//     return [
-//         'success' => true,
-//         'message' => 'Messages sent successfully!',
-//     ];
-// }
 
 // dynamic senderid changing function
-// function sendMessagemultipesenderid($phoneNumbers, $message, $senderId)
+// function sendMessageToExistingCustomer($phoneNumbers, $message, $senderId)
 // {
 //     if (!is_array($phoneNumbers)) {
 //         $phoneNumbers = explode(',', $phoneNumbers);
@@ -527,13 +406,11 @@ function sendMessage($phoneNumbers, $message, $senderName)
         'message' => 'Messages sent successfully!',
     ];
 }
-
-
-function sendMessagemultipesenderid($phoneNumbers, $message, $senderId)
+function sendMessageToExistingCustomer($phoneNumbers, $message, $senderId)
 {
     // API credentials
-    $apiKey = "developerbeneth";
-    $apiSecret = "VBGBW1HNk3tBYT0nSqu0";
+    $apiKey = "devel";
+    $apiSecret = "VBGBW";
     $url = "https://messaging.kilakona.co.tz/api/v1/vendor/message/send";
 
     // Prepare headers
@@ -543,19 +420,62 @@ function sendMessagemultipesenderid($phoneNumbers, $message, $senderId)
         "Content-Type: application/json"
     ];
 
-    // Convert phone numbers to comma-separated string if array
     if (!is_array($phoneNumbers)) {
-        $contacts = $phoneNumbers; // Already a string
+        $contacts = $phoneNumbers; 
     } else {
-        $contacts = implode(',', array_map('trim', $phoneNumbers)); // Convert array to comma-separated string
+        $contacts = implode(',', array_map('trim', $phoneNumbers)); 
     }
 
-    // Prepare data
     $data = [
         "senderId" => $senderId,
         "messageType" => "text",
         "message" => $message,
         "contacts" => $contacts
+    ];
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    $responseData = json_decode($response, true);
+
+    if (isset($responseData['success']) && $responseData['success']) {
+        return [
+            'success' => true,
+            'message' => 'Messages sent successfully!'
+        ];
+    } else {
+        return [
+            'success' => false,
+            'message' => 'Failed to send message: ' . ($responseData['error'] ?? 'Unknown error')
+        ];
+    }
+}
+
+function sendMessageLeadPending($phoneNumber, $message, $senderId)
+{
+    // API credentials
+    $apiKey = "develope";
+    $apiSecret = "VBGBW1HNk";
+    $url = "https://messaging.kilakona.co.tz/api/v1/vendor/message/send";
+
+    $headers = [
+        "api_key: $apiKey",
+        "api_secret: $apiSecret",
+        "Content-Type: application/json"
+    ];
+
+    $data = [
+        "senderId" => $senderId,
+        "messageType" => "text",
+        "message" => $message,
+        "contacts" => $phoneNumber
     ];
 
     // Initialize cURL
@@ -567,18 +487,15 @@ function sendMessagemultipesenderid($phoneNumbers, $message, $senderId)
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
-    // Execute and get response
     $response = curl_exec($ch);
     curl_close($ch);
 
-    // Decode response (assuming it returns JSON)
     $responseData = json_decode($response, true);
 
-    // Check response (customize this based on your API's actual response structure)
     if (isset($responseData['success']) && $responseData['success']) {
         return [
             'success' => true,
-            'message' => 'Messages sent successfully!'
+            'message' => 'Message sent successfully!'
         ];
     } else {
         return [
