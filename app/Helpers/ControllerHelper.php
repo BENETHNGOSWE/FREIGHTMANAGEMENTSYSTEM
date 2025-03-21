@@ -461,8 +461,8 @@ function sendMessageToExistingCustomer($phoneNumbers, $message, $senderId)
 function sendMessageLeadPending($phoneNumber, $message, $senderId)
 {
     // API credentials
-    $apiKey = "develope";
-    $apiSecret = "VBGBW1HNk";
+    $apiKey = "developerbeneth";
+    $apiSecret = "VBGBW1HNk3tBYT0nSqu0";
     $url = "https://messaging.kilakona.co.tz/api/v1/vendor/message/send";
 
     $headers = [
