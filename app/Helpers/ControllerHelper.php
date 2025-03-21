@@ -264,15 +264,15 @@ function check_if_client_has_subscription($hospital_id)
 }
 
 
-function sendSMS($user_id, $sms, $h_id = null)
-{
-    return Message::create([
-        'user_id' => $user_id,
-        'message' => $sms,
-        'hospital_id' => $h_id,
-        'status' => 0,
-    ]);
-}
+// function sendSMS($user_id, $sms, $h_id = null)
+// {
+//     return Message::create([
+//         'user_id' => $user_id,
+//         'message' => $sms,
+//         'hospital_id' => $h_id,
+//         'status' => 0,
+//     ]);
+// }
 
 use Carbon\Carbon;
 function date_time($data)
