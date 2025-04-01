@@ -101,7 +101,7 @@ class LoadpackageController extends Controller
 
             $userId = auth()->user()->id;
             $staff = Staff::where('user_id', $userId)->first();
-            $branchCode = $staff ? $staff->branch->branch_code : 'TANZANIA';
+            $branchCode = $staff ? $staff->branch->branch_code : 'TZ';
 
             foreach ($validated['load_name'] as $index => $load_name) {
                 $load = LoadPackageHelper::createLoad($validated, $index, $clientId, $customerId, $userId, $branchCode, $invoice->id);

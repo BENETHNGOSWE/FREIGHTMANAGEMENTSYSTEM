@@ -1,9 +1,20 @@
 <div class="nav-header">
-    <a href="{{url('/')}}" class="brand-logo">
-      <img class="logo-abbr header-logo" style="max-height: 100px;" src="{{asset('assets/images/profile/user.png')}}" alt="" />
-      <img class="logo-compact" style="max-height: 100px;" src="{{asset('assets/images/profile/user.png')}}" alt="" />
-      <img class="brand-title" style="max-height: 100px;" src="{{asset('assets/images/profile/user.png')}}" alt="" />
-    </a>
+          @auth
+          @php
+              $clientLogo = auth()->user()->client->client_logo ?? 'client_default.png';
+          @endphp
+          <div class="d-flex justify-content-center">
+              <a class="nav-link" href="javascript:void(0)" role="button" data-bs-toggle="dropdown">
+                  <img src="{{ asset('storage/uploads/' . $clientLogo) }}" width="180" alt="Client Logo" style="max-width: 100%; height: auto;" />
+              </a>
+          </div>
+        @else
+          <div class="d-flex justify-content-center">
+              <a class="nav-link" href="javascript:void(0)" role="button" data-bs-toggle="dropdown">
+                  <img src="{{ asset('assets/images/profile/user.png') }}" width="20" alt="Default User" style="max-width: 100%; height: auto;" />
+              </a>
+          </div>
+        @endauth
 
     <div class="nav-control">
       <div class="hamburger">

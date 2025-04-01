@@ -58,18 +58,36 @@ class InvoiceController extends Controller
     public function edit(Request $request, Invoice $invoice)
     {
         $this->data['invoice'] = $invoice;
+        $this->data['invoice'] = $invoice->load('invoiceLoads.loadPackage');
         return view('dashboards.admin.invoices.edit', $this->data);
     }
 
     public function update(Request $request, Invoice $invoice)
     {
-        $validate = $request->validate([
-            'invoice_no' => ['required', 'string', 'max:255'],
-            'status' => ['required', 'integer'],
+        $request->validate([
+            'invoice_no' => 'required|string|unique:invoices,invoice_no,' . $invoice->id,
+            'status' => 'required|in:0,1,2',
+            'cbm_price' => 'nullable|numeric|min:0',
+            'exchange_rate' => 'nullable|numeric|min:0',
         ]);
 
-        $invoice->update($validate);
-        return redirect()->route('admin.list.invoice')->with('success', 'Invoice Status Updated Successfully');
+        // Load related invoice_loads to calculate total CBM
+        $invoice->load('invoiceLoads.loadPackage');
+        $loadWeightValue = $invoice->invoiceLoads->first()->loadPackage->load_weight_value ?? 0;
+        $cbmPrice = $request->input('cbm_price', $invoice->cbm_price ?? 0);
+        $exchangeRate = $request->input('exchange_rate', $invoice->exchange_rate ?? 1);
+        $totalAmount = $loadWeightValue * $cbmPrice * $exchangeRate;
+
+        // Update the invoice
+        $invoice->update([
+            'invoice_no' => $request->invoice_no,
+            'status' => $request->status,
+            'cbm_price' => $cbmPrice,
+            'exchange_rate' => $exchangeRate,
+            'total_amount' => $totalAmount,
+        ]);
+
+        return redirect()->route('admin.list.invoice')->with('success', 'Invoice updated successfully.');
     }
 
     public function generateInvoicePDF($id)
@@ -85,7 +103,24 @@ class InvoiceController extends Controller
         ];
 
         $pdf = Pdf::loadView('dashboards.admin.invoices.invoicepdf', $data);
-        return $pdf->download('invoice_' . $invoice->invoice_no . '.pdf');
+        return $pdf->download('cargo_receipt.pdf');
+    }
+
+
+    public function UpdatedInvoicePDF($id)
+    {
+        $invoice = Invoice::with('invoiceLoads.loadpackage', 'customer')->findOrFail($id);
+        $client = Client::findOrFail($invoice->client_id);
+        $paymentInfo = Payment::where('client_id', $invoice->client_id)->get();
+
+        $data = [
+            'invoice' => $invoice,
+            'client' => $client,
+            'paymentInfo' => $paymentInfo,
+        ];
+
+        $pdf = Pdf::loadView('dashboards.admin.invoices.finalinvoicePDF', $data);
+        return $pdf->download('finalInvoice_' . $invoice->invoice_no . '.pdf');
     }
 
     public function generatereleasePDF($id)
@@ -101,4 +136,5 @@ class InvoiceController extends Controller
         $pdf = Pdf::loadview('dashboards.admin.invoices.releasepdf', ['invoice' => $invoice, 'client' => $client]);
         return $pdf->download('release_order.pdf');
     }
+    
 }

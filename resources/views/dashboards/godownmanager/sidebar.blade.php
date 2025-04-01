@@ -20,22 +20,6 @@
                 </ul>
             </li>
 
-          
-
-            <li>
-                <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                    <i class="fas fa-file-invoice-dollar"></i>
-                    <span class="nav-text">Invoices</span>
-                </a>
-                <ul aria-expanded="false">
-                    <li><a href="{{ route('admin.list.invoice') }}">
-                            <i class="fas fa-file-invoice-dollar"></i>
-                            <span>Load Invoices</span>
-                        </a></li>
-
-                </ul>
-            </li>
-
 
             <li>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">

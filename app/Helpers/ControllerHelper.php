@@ -409,8 +409,8 @@ function sendMessage($phoneNumbers, $message, $senderName)
 function sendMessageToExistingCustomer($phoneNumbers, $message, $senderId)
 {
     // API credentials
-    $apiKey = "devel";
-    $apiSecret = "VBGBW";
+    $apiKey = env('SMS_API_KEY2');
+    $apiSecret = env('SMS_API_SECRET2');
     $url = "https://messaging.kilakona.co.tz/api/v1/vendor/message/send";
 
     // Prepare headers

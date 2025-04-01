@@ -40,7 +40,7 @@
                                         </td>
                                         <td>{{ strtoupper($invoice->customer->customer_firstname) ?? '-' }}</td>
                                         <td>{{ strtoupper($invoice->total_amount) ?? '-' }}</td>
-                                        <td>{{ strtoupper($invoice->total_balance) ?? '-' }}</td>
+                                        <td>{{ strtoupper($invoice->total_amount) ?? '-' }}</td>
                                         <td class="invoice-status">{!! invoice_status($invoice->status) !!}</td>
                                         <td class="text-center" style="width: 200px;">
                                             <div role="group" aria-label="Row Actions" class="btn-group">
@@ -58,10 +58,15 @@
                                                 </a>
                                                 @if ($canPrintReleaseOrder)
                                                     <button type="button"
-                                                        class="btn btn-outline-secondary print-release-order"
+                                                        class="btn btn-outline-secondary print-release-order mx-2" 
                                                         data-invoice-id="{{ $invoice->id }}">
                                                         Print Release Order
                                                     </button>
+                                                    <button type="button"
+                                                    class="btn btn-outline-secondary print-final-invoice"
+                                                    data-invoice-id="{{ $invoice->id }}">
+                                                    Print Final Invoice
+                                                </button>
                                                 @endif
                                             </div>
                                         </td>
@@ -91,6 +96,17 @@
                 button.addEventListener('click', function() {
                     const invoiceId = button.dataset.invoiceId;
                     window.location.href = `/release/pdf/${invoiceId}`;
+                });
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const printButtons = document.querySelectorAll('.print-final-invoice');
+
+            printButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const invoiceId = button.dataset.invoiceId;
+                    window.location.href = `/finalInvoice/pdf/${invoiceId}`;
                 });
             });
         });

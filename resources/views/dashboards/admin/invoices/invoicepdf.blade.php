@@ -28,7 +28,7 @@
         /* heading */
         h1 {
             font: bold 100% 'Poppins', sans-serif;
-            letter-spacing: 0.5em;
+            /* letter-spacing: 0.5em; */
             text-align: center;
             text-transform: uppercase;
         }
@@ -370,7 +370,14 @@
 <body>
     <div class="page-border">
         <header>
-            <h1>Invoice</h1>
+            @if($invoice->invoiceLoads->isNotEmpty())
+            @foreach($invoice->invoiceLoads as $invoiceLoad)
+                <h1>CARGO RECEIPT NO - {{ $invoiceLoad->loadpackage->load_no ?? 'N/A' }}</h1>
+                <!-- Add more details about the loadpackage if needed -->
+            @endforeach
+        @else
+            <p>No loads associated with this invoice.</p>
+        @endif
             <div class="company-header">
                 <div class="company-logo">
                     @if ($client->client_logo)
@@ -394,27 +401,23 @@
             <address class="norm" style="margin-top: -1em">
                 <h4 style="margin: 0; padding: 0; color:#0118e4;">{{ $invoice->customer->customer_firstname }}
                     {{ $invoice->customer->customer_lastname }}</h4>
-                <p style="margin: 0; padding: 0;">{{ $invoice->customer->customer_email }}</p>
-                <p style="margin: 0; padding: 0;">{{ $invoice->customer->customer_address }}</p>
-                <p style="margin: 0; padding: 0;">{{ $invoice->customer->phone }}</p>
+                <p style="margin: 0; padding: 0;">Email: {{ $invoice->customer->customer_email }}</p>
                 <p style="margin: 0; padding: 0;">Phone: {{ $invoice->customer->phone }}</p>
             </address>
 
 
             <table class="meta">
                 <tr>
-                    <th><span>Invoice #</span></th>
-                    <td><span>{{ $invoice->invoice_no }}</span></td>
+                    @if($invoice->invoiceLoads->isNotEmpty())
+                     @foreach($invoice->invoiceLoads as $invoiceLoad)
+                        <th><span>Receipt No</span></th>
+                        <td><span>{{ $invoiceLoad->loadpackage->load_no }}</span></td>
+                     @endforeach   
+                     @endif 
                 </tr>
                 <tr>
                     <th><span>Date</span></th>
                     <td><span>{{ $invoice->created_at->format('F j, Y') }}</span></td>
-                </tr>
-                <tr>
-                    <th><span>Amount Due</span></th>
-                    <td><span>Tsh
-                        </span><span>{{ number_format($invoice->total_amount + $invoice->total_transportfee, 2) }}</span>
-                    </td>
                 </tr>
             </table>
 
@@ -424,8 +427,7 @@
                         <th><span>S. No</span></th>
                         <th><span>Load Name</span></th>
                         <th><span>Description</span></th>
-                        <th><span>Load Price</span></th>
-                        <th><span>Transport Fee</span></th>
+                        <th><span>Total Inner Qty</span></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -434,37 +436,13 @@
                             <td><span>{{ $loop->iteration }}</span></td>
                             <td><span>{{ $invoiceLoad->loadpackage->load_name }}</span></td>
                             <td><span>{{ $invoiceLoad->loadpackage->load_description }}</span></td>
-                            <td><span>{{ number_format($invoiceLoad->load_price, 2) }}</span></td>
-                            <td><span>{{ number_format($invoiceLoad->loadpackage->load_transportfee, 2) }}</span></td>
+                            <td><span>{{ $invoiceLoad->loadpackage->load_weight_value}}</span></td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
-
-            <div class="payment-info" style="font-size: 12px; margin-top: -1em;">
-                <h2 style="margin: 0; padding: 0;">Payment Info</h2>
-                @forelse ($paymentInfo as $payment)
-                    <p><strong>Bank Name:</strong> {{ $payment->Bank_name }}</p>
-                    <p><strong>Acc Name:</strong> {{ $payment->account_name }}</p>
-                    <p><strong>Acc No:</strong> {{ $payment->account_number }}</p><br>
-                @empty
-                    <p>No payment information available.</p>
-                @endforelse
-            </div>
-            <table class="balance" style="margin-top: -1em">
-                <tr>
-                    <th><span>Total</span></th>
-                    <td><span>{{ number_format($invoice->total_amount + $invoice->total_transportfee, 2) }}</span></td>
-                </tr>
-            </table>
         </article>
         <header>
-            <span style="margin-top: -1em; font-size: 10px">
-                <p style="margin: 0; font-weight: bold;">Approved By:</p>
-                <p style="margin: 5px 0;">Signature: __________________________</p>
-                <p style="margin: 5px 0;">Name: __________________________</p>
-                <p style="margin: 5px 0;">Date: __________________________</p>
-            </span>
             <address style="margin-top: -1em; font-size: 10px">
                 <p style="margin: 0; font-weight: bold;">Printed By:</p>
                 <p style="margin: 5px 0;">Name: <strong>{{ auth()->user()->name }}</strong></p>
@@ -472,6 +450,12 @@
                     <strong>{{ \Carbon\Carbon::now('Africa/Nairobi')->format('F j, Y, g:i A') }}</strong></p>
             </address>
         </header>
+        <table class="balance" style="margin-top: -3em">
+            <tr>
+                <th><span>Total Value</span></th>
+                <td><span>0.00</span></td>
+            </tr>
+        </table>
         <hr>
         <aside style="font-size: 12px; margin-top:-3em">
             <h4>Terms & Conditions</h4>

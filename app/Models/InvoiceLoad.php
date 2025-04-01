@@ -16,7 +16,7 @@ class InvoiceLoad extends Model
     ];
 
     // Optional: Define relationships if needed
-    public function loadpackage()
+    public function loadPackage()
     {
         return $this->belongsTo(Loadpackage::class, 'loadpackage_id');
     }

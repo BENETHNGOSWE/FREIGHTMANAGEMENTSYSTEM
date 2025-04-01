@@ -34,7 +34,8 @@ class LoadPackageHelper
 
     public static function createLoad($validatedData, $index, $clientId, $customerId, $userId, $branchCode, $invoiceId)
     {
-        $load_no = 'LOAD-' . $branchCode . '-' . date('Ymd') . '-' . strtoupper(Str::random(5));
+        $randomString = strtoupper(substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, 7));
+        $load_no = $branchCode . $randomString;
 
         $load = new Loadpackage();
         $load->client_id = $clientId;

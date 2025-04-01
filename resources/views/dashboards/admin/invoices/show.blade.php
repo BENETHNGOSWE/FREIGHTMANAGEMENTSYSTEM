@@ -99,7 +99,6 @@
                                             <th class="text-start" scope="row">Invoice No</th>
                                             <th class="text-start" scope="row">Description</th>
                                             <th class="text-start" scope="row">Load Price</th>
-                                            <th class="text-start" scope="row">Transport Fee</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -107,8 +106,7 @@
                                             <tr>
                                                 <td>{{ $invoiceLoad->invoice->invoice_no }}</td>
                                                 <td>{{ $invoiceLoad->loadpackage->load_description }}</td>
-                                                <td>{{ $invoiceLoad->loadpackage->load_price }}</td>
-                                                <td>{{ $invoiceLoad->loadpackage->load_transportfee }}</td>
+                                                <td>{{ $invoice->total_amount }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -124,12 +122,6 @@
                         <div class="col-lg-4 col-sm-5 ms-auto">
                             <table class="table table-clear">
                                 <tbody>
-                                    <tr>
-                                        <td class="left"><strong>Transport Fee </strong></td>
-                                        <td class="right">
-                                            <strong>{{ $invoice->total_transportfee }}</strong><br />
-                                        </td>
-                                    </tr>
 
                                     <tr>
                                         <td class="left"><strong>Balance </strong></td>
