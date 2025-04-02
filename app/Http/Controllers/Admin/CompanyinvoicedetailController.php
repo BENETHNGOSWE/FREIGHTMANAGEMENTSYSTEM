@@ -97,7 +97,6 @@ class CompanyinvoicedetailController extends Controller
         $validated = $this->validated_company_invoice_detail($request);
         
         if ($request->hasFile('logo')) {
-            // Delete old logo if it exists (optional, if you want to clean up storage)
             if ($companyinvoicedetail->logo) {
                 Storage::disk('public')->delete($companyinvoicedetail->logo);
             }
