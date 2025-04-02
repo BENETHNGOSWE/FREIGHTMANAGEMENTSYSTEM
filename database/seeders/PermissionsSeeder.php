@@ -15,7 +15,7 @@ class PermissionsSeeder extends Seeder
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         $actions = ['list', 'view', 'create', 'update', 'delete'];
-        $models = ['banks', 'branches', 'containers', 'clients', 'client_admins', 'clientpayments', 'client_types',
+        $models = ['banks', 'branches', 'containers', 'clients', 'client_admins', 'clientpayments', 'client_types', 'companyinvoicedetails',
                     'countries', 'customers', 'customercategories', 'customerleads', 'client_sendername', 'derivery_orders', 'messages', 'modules', 'packages', 
                     'loadpackagetypes', 'loadpackages', 'staffs', 'staff_types', 'payments', 'role', 'sendernames', 'subscriptions', 'subscription_invoices',
                     'subscription_tokens', 'sales_reports',  'userroles', 'roles', 'permissions', 'users', 'unit_types', 'invoices', 'invoice_loads'];
@@ -45,6 +45,7 @@ class PermissionsSeeder extends Seeder
             'view unit_types', 'create unit_types', 'update unit_types', 'delete unit_types',
             'view invoices', 'create invoices', 'update invoices', 'delete invoices',
             'view invoice_loads', 'create invoice_loads', 'update invoice_loads', 'delete invoice_loads',
+            'view companyinvoicedetails', 'create companyinvoicedetails', 'update companyinvoicedetails', 'delete companyinvoicedetails',
         ]);
 
         $chiefoperation = Role::firstOrCreate(['name' => 'chiefoperation', 'guard_name' => 'web']);
@@ -63,6 +64,7 @@ class PermissionsSeeder extends Seeder
             'view unit_types', 'create unit_types', 'update unit_types', 'delete unit_types',
             'view invoices', 'create invoices', 'update invoices', 'delete invoices',
             'view invoice_loads', 'create invoice_loads', 'update invoice_loads', 'delete invoice_loads',
+            'view companyinvoicedetails', 'create companyinvoicedetails', 'update companyinvoicedetails', 'delete companyinvoicedetails',
         ]);
 
 

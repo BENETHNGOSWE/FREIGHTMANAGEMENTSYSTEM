@@ -10,6 +10,7 @@ use App\Models\Customer;
 use App\Models\Loadpackage;
 use App\Models\Client;
 use App\Models\ClientAdmin;
+use App\Models\Companyinvoicedetail;
 use App\Models\Payment;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -112,11 +113,13 @@ class InvoiceController extends Controller
         $invoice = Invoice::with('invoiceLoads.loadpackage', 'customer')->findOrFail($id);
         $client = Client::findOrFail($invoice->client_id);
         $paymentInfo = Payment::where('client_id', $invoice->client_id)->get();
+        $company = Companyinvoicedetail::where('client_id', $this->fms_id)->first();
 
         $data = [
             'invoice' => $invoice,
             'client' => $client,
             'paymentInfo' => $paymentInfo,
+            'company' => $company,
         ];
 
         $pdf = Pdf::loadView('dashboards.admin.invoices.finalinvoicePDF', $data);

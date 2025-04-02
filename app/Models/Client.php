@@ -44,6 +44,10 @@ class Client extends Model
         return $this->hasMany(ContainerLoading::class, 'client_id');
     }
 
+    public function companyinvocedetails(){
+        return $this->hasMany(Companyinvoicedetail::class,);
+    }
+
     public function users()
     {
         return $this->hasMany(User::class);

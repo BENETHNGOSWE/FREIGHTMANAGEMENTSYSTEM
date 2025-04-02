@@ -104,6 +104,16 @@ Route::prefix('/')
         Route::get('staff-show-staff/{staff}', [App\Http\Controllers\Admin\StaffController::class, 'show'])->name('admin.show.staff');
         Route::delete('staff-delete-staff/{staff}', [App\Http\Controllers\Admin\StaffController::class, 'delete'])->name('admin.delete.staff');
 
+
+        // Company Invoice Details Manage Here
+        Route::get('companyinvoicedetail', [App\Http\Controllers\Admin\CompanyinvoicedetailController::class, 'index'])->name('admin.list.companyinvoicedetail');
+        Route::get('companyinvoicedetailcreate', [App\Http\Controllers\Admin\CompanyinvoicedetailController::class, 'create'])->name('admin.create.companyinvoicedetail');
+        Route::post('companyinvoicedetail/store', [App\Http\Controllers\Admin\CompanyinvoicedetailController::class, 'store'])->name('admin.store.companyinvoicedetail');
+        Route::get('companyinvoicedetail/edit/{companyinvoicedetail}', [App\Http\Controllers\Admin\CompanyinvoicedetailController::class, 'edit'])->name('admin.edit.companyinvoicedetail');
+        Route::put('companyinvoicedetail/update/{companyinvoicedetail}', [App\Http\Controllers\Admin\CompanyinvoicedetailController::class, 'update'])->name('admin.update.companyinvoicedetail');
+        Route::get('companyinvoicedetail/show/{companyinvoicedetail}', [App\Http\Controllers\Admin\CompanyinvoicedetailController::class, 'show'])->name('admin.show.companyinvoicedetail');
+        Route::delete('companyinvoicedetail/delete/{companyinvoicedetail}', [App\Http\Controllers\Admin\CompanyinvoicedetailController::class, 'delete'])->name('admin.delete.companyinvoicedetail');
+
         Route::get('viewprofile', [App\Http\Controllers\Admin\StaffController::class, 'viewProfile'])->name('admin.viewprofile.staff');
         Route::put('updateprofile', [App\Http\Controllers\Admin\StaffController::class, 'updateProfile'])->name('admin.updateprofile.staff');
 

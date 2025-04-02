@@ -81,7 +81,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-image: url('{{ public_path('storage/uploads/' . $client->client_logo) }}');
+            background-image: url('{{ storage_path('app/public/' . $company->logo) }}');
             background-position: center center;
             background-repeat: no-repeat;
             background-size: 40em;
@@ -377,17 +377,17 @@
             <h1>Invoice</h1>
             <div class="company-header">
                 <div class="company-logo">
-                    @if ($client->client_logo)
-                        <img alt="logo" src="{{ public_path('storage/uploads/' . $client->client_logo) }}" style="width: 150px; height: auto;">
+                    @if ($company->logo)
+                        <img alt="logo" src="{{ public_path('storage/' . $company->logo) }}" style="width: 150px; height: auto;">
                     @endif
-                </div>
+                </div>               
                 <div class="company-info">
-                    <div class="company-name">{{ strtoupper($client->client_name) }}</div>
+                    <div class="company-name">{{ strtoupper($company->company_name) }}</div>
                     <div class="company-details">
-                        Office Address: {{ strtoupper($client->client_address_one) }}<br>
-                        Office Phone: {{ strtoupper($client->client_phonenumber) }}<br>
-                        TIN Number: {{ strtoupper($client->client_tinnumber) }}<br>
-                        {{ strtoupper($client->client_city . ' ' . $client->client_country) }}
+                        {{-- Office Address: {{ strtoupper($company->company_address_one) }}<br> --}}
+                        Office Phone: {{ strtoupper($company->office_phone) }}<br>
+                        TIN Number: {{ strtoupper($company->tin_number) }}<br>
+                        Office Add: {{ strtoupper($company->tagline) }}
                     </div>
                 </div>
             </div>
@@ -429,8 +429,8 @@
                         <th><span>Load Name</span></th>
                         <th><span>Description</span></th>
                         <th><span>Load Unity</span></th>
-                        <th><span>Exchange Rate</span></th>
-                        <th><span>Unity Price</span></th>
+                        <th><span>Price ($)</span></th>
+                        <th><span>Total USD ($)</span></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -440,8 +440,8 @@
                             <td><span>{{ $invoiceLoad->loadpackage->load_name }}</span></td>
                             <td><span>{{ $invoiceLoad->loadpackage->load_description }}</span></td>
                             <td><span>{{ $invoiceLoad->loadpackage->load_weight_value }}</span></td>
-                            <td><span>{{ number_format($invoiceLoad->invoice->exchange_rate, 2) }}</span></td>
-                            <td><span>{{ number_format($invoiceLoad->invoice->cbm_price, 2) }}</span></td>
+                            <td><span>{{ $invoiceLoad->invoice->cbm_price }}</span></td>
+                            <td><span>{{ number_format($invoiceLoad->loadpackage->load_weight_value * $invoiceLoad->invoice->cbm_price, 2) }}</span></td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -458,6 +458,10 @@
                 @endforelse
             </div>
             <table class="balance" style="margin-top: -1em">
+                <tr>
+                    <th><span>Exchange Rate ($)</span></th>
+                    <td><span>{{ number_format($invoiceLoad->invoice->exchange_rate, 2) }}</span></td>
+                </tr>
                 <tr>
                     <th><span>Total</span></th>
                     <td><span>{{ number_format($invoice->total_amount, 2) }}</span></td>

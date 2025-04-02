@@ -184,12 +184,12 @@
                         </a></li>
 
                 </ul>
-                {{-- <ul aria-expanded="false">
-                    <li><a href="{{ route('owner.list.assignname') }}">
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('admin.list.companyinvoicedetail') }}">
                             <i class="fa-solid fa-location-arrow"></i>
-                            <span>Sender Name</span>
+                            <span>Invoice Details</span>
                         </a></li>
-                </ul> --}}
+                </ul>
                 <ul aria-expanded="false">
                     <li><a href="{{ route('admin.list.activename') }}">
                             <i class="fa-solid fa-circle"></i>

@@ -127,6 +127,23 @@ return [
         ],
     ],
 
+
+    'companyinvoicedetails' => [
+        'name' => 'Company Invoice Details',
+        'index_title' => 'Company Invoice Details List',
+        'new_title' => 'New Company Invoice Detail',
+        'create_title' => 'Create Company Invoice Detail',
+        'edit_title' => 'Edit Company Invoice Detail',
+        'show_title' => 'Show Company Invoice Detail',
+        'inputs' => [
+            'company_name' => 'Company Name',
+            'office_phone' => 'Office Phone',
+            'tin_number' => 'TIN Number',
+            'tagline' => 'Company Tagline',
+            'logo' => 'Company Logo',
+        ],
+    ],
+
     'customers' => [
         'name' => 'Customers',
         'index_title' => 'Customers List',

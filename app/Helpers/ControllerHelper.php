@@ -458,11 +458,10 @@ function sendMessageToExistingCustomer($phoneNumbers, $message, $senderId)
     }
 }
 
-function sendMessageLeadPending($phoneNumber, $message, $senderId)
+function sendMessageLeadPending($phoneNumbers, $message, $senderId)
 {
-    // API credentials
-    $apiKey = "developerbeneth";
-    $apiSecret = "VBGBW1HNk3tBYT0nSqu0";
+    $apiKey = env('SMS_API_KEY2');
+    $apiSecret = env('SMS_API_SECRET2');
     $url = "https://messaging.kilakona.co.tz/api/v1/vendor/message/send";
 
     $headers = [
@@ -471,11 +470,17 @@ function sendMessageLeadPending($phoneNumber, $message, $senderId)
         "Content-Type: application/json"
     ];
 
+    if (!is_array($phoneNumbers)) {
+        $contacts = $phoneNumbers; 
+    } else {
+        $contacts = implode(',', array_map('trim', $phoneNumbers)); 
+    }
+
     $data = [
         "senderId" => $senderId,
         "messageType" => "text",
         "message" => $message,
-        "contacts" => $phoneNumber
+        "contacts" => $contacts
     ];
 
     // Initialize cURL
