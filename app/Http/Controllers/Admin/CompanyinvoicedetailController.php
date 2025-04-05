@@ -37,7 +37,7 @@ class CompanyinvoicedetailController extends Controller
 
     public function create()
     {
-        // $this->authorize('create', Companyinvoicedetail::class);
+        $this->authorize('create', Companyinvoicedetail::class);
         return view('dashboards.admin.companyinvoicedetails.create', $this->data);
     }
 
@@ -54,46 +54,61 @@ class CompanyinvoicedetailController extends Controller
 
     public function store(Request $request)
     {
-        // $this->authorize('create', Companyinvoicedetail::class);
+        $this->authorize('create', Companyinvoicedetail::class);
         $validated = $this->validated_company_invoice_detail($request);
         try {
             DB::beginTransaction();
-            $Companyinvoicedetail = new Companyinvoicedetail();
+    
+            $company = new Companyinvoicedetail();
             $validated['client_id'] = $this->fms_id;
-            
-            if ($request->hasFile('logo')) {
-                $logoPath = $request->file('logo')->store('company_logos', 'public');
-                $validated['logo'] = $logoPath;
+            $fillable = $company->getFillable();
+    
+            foreach ($fillable as $field) {
+                if ($field !== 'logo') {
+                    $company->$field = $validated[$field] ?? null;
+                }
             }
-            
-            $Companyinvoicedetail->fill($validated);
-            $Companyinvoicedetail->save();
+    
+            if ($request->hasFile('logo')) {
+                $image = $request->file('logo');
+                $filename = \Str::slug($validated['company_name'] ?? 'company') . '.' . $image->extension();
+                upload_image($image, $filename, 200);
+                $company->logo = $filename;
+            } else {
+                $company->logo = 'client_default.png';
+            }
+    
+            $company->fill($validated);
+            $company->save();
+    
             DB::commit();
+            return to_route('admin.list.companyinvoicedetail')->with('success', 'Company Invoice Details Added Successfully');
+            
         } catch (\Throwable $th) {
-            DB::rollback();
+            DB::rollBack();
             \Log::error($th->getMessage() . '' . $th->getTraceAsString());
+    
             return redirect()->back()->with('error', 'Something went wrong');
         }
-        return redirect()->route('admin.list.companyinvoicedetail')->with('success', 'Company Invoice Details Added Successfully');
     }
 
-    public function show(Request $request, Companyinvoicedetail $companyinvoicedetail): View
+    public function show(Request $request, Companyinvoicedetail $Companyinvoicedetail): View
     {
-        // $this->authorize('view', $companyinvoicedetail);
-        $this->data['Companyinvoicedetail'] = $companyinvoicedetail;
+        $this->authorize('view', $Companyinvoicedetail);
+        $this->data['Companyinvoicedetail'] = $Companyinvoicedetail;
         return view('dashboards.admin.companyinvoicedetails.show', $this->data);
     }
 
     public function edit(Companyinvoicedetail $companyinvoicedetail)
     {
-        // $this->authorize('update', $companyinvoicedetail);
+        $this->authorize('update', $companyinvoicedetail);
         $this->data['companyinvoicedetail'] = $companyinvoicedetail;
         return view('dashboards.admin.companyinvoicedetails.edit', $this->data);
     }
 
     public function update(Request $request, Companyinvoicedetail $companyinvoicedetail)
     {
-        // $this->authorize('update', $companyinvoicedetail);
+        $this->authorize('update', $companyinvoicedetail);
         $validated = $this->validated_company_invoice_detail($request);
         
         if ($request->hasFile('logo')) {
@@ -115,7 +130,7 @@ class CompanyinvoicedetailController extends Controller
     public function delete(Request $request, $companyinvoicedetail)
     {
         $companyinvoicedetail = Companyinvoicedetail::where('id', $companyinvoicedetail)->where('client_id', $this->fms_id)->first();
-        // $this->authorize('delete', $companyinvoicedetail);
+        $this->authorize('delete', $companyinvoicedetail);
         $companyinvoicedetail->delete();
         return redirect()->route('admin.list.companyinvoicedetail')->with('success', 'Company Invoice Details Deleted Successfully');
     }

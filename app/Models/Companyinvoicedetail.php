@@ -10,13 +10,14 @@ class Companyinvoicedetail extends Model
     use HasFactory;
     protected $fillable = [
         'company_name',
-        'office_address',
         'office_phone',
         'tin_number',
         'tagline',
         'logo',
         'client_id',
     ];
+
+    protected $table = 'companyinvoicedetails';
 
     public function client(){
         return $this->belongsTo(Client::class);
