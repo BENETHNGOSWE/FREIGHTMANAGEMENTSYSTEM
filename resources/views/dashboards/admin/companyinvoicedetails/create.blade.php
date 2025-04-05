@@ -15,12 +15,9 @@
     <div class="card">
         <div class="card-body">
 
-            <x-form
-                method="POST"
-                action="{{ route('admin.store.companyinvoicedetail') }}"
-                class="mt-4"
-                enctype="multipart/form-data"
-            >
+            <x-form method="POST" action="{{ route('admin.store.companyinvoicedetail') }}" has-files class="mt-4">
+                @csrf
+                
                 @include('dashboards.admin.companyinvoicedetails.form-inputs')
                 <div class="mt-4">
                     <a href="{{ route('admin.list.companyinvoicedetail') }}" class="btn btn-light">
