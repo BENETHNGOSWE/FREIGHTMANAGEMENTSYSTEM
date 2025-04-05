@@ -37,7 +37,7 @@ class CompanyinvoicedetailController extends Controller
 
     public function create()
     {
-        $this->authorize('create', Companyinvoicedetail::class);
+        // $this->authorize('create', Companyinvoicedetail::class);
         return view('dashboards.admin.companyinvoicedetails.create', $this->data);
     }
 
@@ -54,7 +54,7 @@ class CompanyinvoicedetailController extends Controller
 
     public function store(Request $request)
     {
-        $this->authorize('create', Companyinvoicedetail::class);
+        // $this->authorize('create', Companyinvoicedetail::class);
         $validated = $this->validated_company_invoice_detail($request);
         try {
             DB::beginTransaction();
@@ -79,21 +79,21 @@ class CompanyinvoicedetailController extends Controller
 
     public function show(Request $request, Companyinvoicedetail $companyinvoicedetail): View
     {
-        $this->authorize('view', $companyinvoicedetail);
+        // $this->authorize('view', $companyinvoicedetail);
         $this->data['Companyinvoicedetail'] = $companyinvoicedetail;
         return view('dashboards.admin.companyinvoicedetails.show', $this->data);
     }
 
     public function edit(Companyinvoicedetail $companyinvoicedetail)
     {
-        $this->authorize('update', $companyinvoicedetail);
+        // $this->authorize('update', $companyinvoicedetail);
         $this->data['companyinvoicedetail'] = $companyinvoicedetail;
         return view('dashboards.admin.companyinvoicedetails.edit', $this->data);
     }
 
     public function update(Request $request, Companyinvoicedetail $companyinvoicedetail)
     {
-        $this->authorize('update', $companyinvoicedetail);
+        // $this->authorize('update', $companyinvoicedetail);
         $validated = $this->validated_company_invoice_detail($request);
         
         if ($request->hasFile('logo')) {
@@ -115,7 +115,7 @@ class CompanyinvoicedetailController extends Controller
     public function delete(Request $request, $companyinvoicedetail)
     {
         $companyinvoicedetail = Companyinvoicedetail::where('id', $companyinvoicedetail)->where('client_id', $this->fms_id)->first();
-        $this->authorize('delete', $companyinvoicedetail);
+        // $this->authorize('delete', $companyinvoicedetail);
         $companyinvoicedetail->delete();
         return redirect()->route('admin.list.companyinvoicedetail')->with('success', 'Company Invoice Details Deleted Successfully');
     }
