@@ -5,7 +5,7 @@
           @endphp
           <div class="d-flex justify-content-center">
               <a class="nav-link" href="javascript:void(0)" role="button" data-bs-toggle="dropdown">
-                  <img src="{{ asset('storage/uploads/' . $clientLogo) }}" width="180" alt="Client Logo" style="max-width: 100%; height: auto;" />
+                  <img src="{{ asset('storage/uploads/' . $clientLogo) }}" width="130" alt="Client Logo" style="max-width: 100%; height: auto;" />
               </a>
           </div>
         @else

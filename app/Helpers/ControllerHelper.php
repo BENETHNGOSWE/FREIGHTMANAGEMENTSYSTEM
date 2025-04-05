@@ -352,68 +352,119 @@ function getStatusLabel($status)
 //     ];
 // }
 
-function sendMessage($phoneNumbers, $message, $senderName)
+// function sendMessage($phoneNumbers, $message, $senderName)
+// {
+//     if (!is_array($phoneNumbers)) {
+//         $phoneNumbers = explode(',', $phoneNumbers);
+//     }
+
+//     foreach ($phoneNumbers as $phoneNumber) {
+//         $phoneNumber = trim($phoneNumber);
+//         $postData = [
+//             'from' => $senderName,
+//             'to' => $phoneNumber,
+//             'text' => $message,
+//             'reference' => 'KODA TECH',
+//         ];
+
+//         $curl = curl_init();
+//         curl_setopt_array($curl, [
+//             CURLOPT_URL => 'https://messaging-service.co.tz/api/sms/v1/text/single',
+//             CURLOPT_RETURNTRANSFER => true,
+//             CURLOPT_ENCODING => '',
+//             CURLOPT_MAXREDIRS => 10,
+//             CURLOPT_TIMEOUT => 0,
+//             CURLOPT_FOLLOWLOCATION => true,
+//             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+//             CURLOPT_CUSTOMREQUEST => 'POST',
+//             CURLOPT_POSTFIELDS => json_encode($postData),
+//             CURLOPT_HTTPHEADER => ['Authorization:Basic ' . base64_encode(env('SMS_API_KEY') . ':' . env('SMS_SECRET_KEY')), 'Content-Type: application/json', 'Accept: application/json'],
+//             CURLOPT_SSL_VERIFYPEER => false,
+//         ]);
+
+//         $response = curl_exec($curl);
+//         curl_close($curl);
+
+//         $response = json_decode($response, true);
+
+//         if (isset($response['success']) && !$response['success']) {
+//             return [
+//                 'success' => false,
+//                 'message' => 'Failed to send message to ' . $phoneNumber,
+//             ];
+//         } elseif ($response['messages'][0]['status']['groupName'] != 'PENDING') {
+//             return [
+//                 'success' => false,
+//                 'message' => 'Failed to send message to ' . $phoneNumber,
+//             ];
+//         }
+//     }
+
+//     return [
+//         'success' => true,
+//         'message' => 'Messages sent successfully!',
+//     ];
+// }
+
+
+//************************************************/ Loadpackage Message Logic ***************************************************** 
+function sendMessage($phoneNumbers, $message, $senderId)
 {
-    if (!is_array($phoneNumbers)) {
-        $phoneNumbers = explode(',', $phoneNumbers);
-    }
-
-    foreach ($phoneNumbers as $phoneNumber) {
-        $phoneNumber = trim($phoneNumber);
-        $postData = [
-            'from' => $senderName,
-            'to' => $phoneNumber,
-            'text' => $message,
-            'reference' => 'KODA TECH',
-        ];
-
-        $curl = curl_init();
-        curl_setopt_array($curl, [
-            CURLOPT_URL => 'https://messaging-service.co.tz/api/sms/v1/text/single',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => json_encode($postData),
-            CURLOPT_HTTPHEADER => ['Authorization:Basic ' . base64_encode(env('SMS_API_KEY') . ':' . env('SMS_SECRET_KEY')), 'Content-Type: application/json', 'Accept: application/json'],
-            CURLOPT_SSL_VERIFYPEER => false,
-        ]);
-
-        $response = curl_exec($curl);
-        curl_close($curl);
-
-        $response = json_decode($response, true);
-
-        if (isset($response['success']) && !$response['success']) {
-            return [
-                'success' => false,
-                'message' => 'Failed to send message to ' . $phoneNumber,
-            ];
-        } elseif ($response['messages'][0]['status']['groupName'] != 'PENDING') {
-            return [
-                'success' => false,
-                'message' => 'Failed to send message to ' . $phoneNumber,
-            ];
-        }
-    }
-
-    // Return success if all messages are sent
-    return [
-        'success' => true,
-        'message' => 'Messages sent successfully!',
-    ];
-}
-function sendMessageToExistingCustomer($phoneNumbers, $message, $senderId)
-{
-    // API credentials
     $apiKey = env('SMS_API_KEY2');
     $apiSecret = env('SMS_API_SECRET2');
     $url = "https://messaging.kilakona.co.tz/api/v1/vendor/message/send";
 
-    // Prepare headers
+    $headers = [
+        "api_key: $apiKey",
+        "api_secret: $apiSecret",
+        "Content-Type: application/json"
+    ];
+
+    if (!is_array($phoneNumbers)) {
+        $contacts = $phoneNumbers; 
+    } else {
+        $contacts = implode(',', array_map('trim', $phoneNumbers)); 
+    }
+
+    $data = [
+        "senderId" => $senderId,
+        "messageType" => "text",
+        "message" => $message,
+        "contacts" => $contacts
+    ];
+
+    // Initialize cURL
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    $responseData = json_decode($response, true);
+
+    if (isset($responseData['success']) && $responseData['success']) {
+        return [
+            'success' => true,
+            'message' => 'Message sent successfully!'
+        ];
+    } else {
+        return [
+            'success' => false,
+            'message' => 'Failed to send message: ' . ($responseData['error'] ?? 'Unknown error')
+        ];
+    }
+}
+function sendMessageToExistingCustomer($phoneNumbers, $message, $senderId)
+{
+    $apiKey = env('SMS_API_KEY2');
+    $apiSecret = env('SMS_API_SECRET2');
+    $url = "https://messaging.kilakona.co.tz/api/v1/vendor/message/send";
+
     $headers = [
         "api_key: $apiKey",
         "api_secret: $apiSecret",
@@ -509,3 +560,6 @@ function sendMessageLeadPending($phoneNumbers, $message, $senderId)
         ];
     }
 }
+
+
+

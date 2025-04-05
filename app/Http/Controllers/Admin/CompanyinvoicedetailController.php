@@ -77,10 +77,10 @@ class CompanyinvoicedetailController extends Controller
         return redirect()->route('admin.list.companyinvoicedetail')->with('success', 'Company Invoice Details Added Successfully');
     }
 
-    public function show(Request $request, Companyinvoicedetail $Companyinvoicedetail): View
+    public function show(Request $request, Companyinvoicedetail $companyinvoicedetail): View
     {
-        $this->authorize('view', $Companyinvoicedetail);
-        $this->data['Companyinvoicedetail'] = $Companyinvoicedetail;
+        $this->authorize('view', $companyinvoicedetail);
+        $this->data['Companyinvoicedetail'] = $companyinvoicedetail;
         return view('dashboards.admin.companyinvoicedetails.show', $this->data);
     }
 

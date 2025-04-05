@@ -129,6 +129,12 @@
 
                 </ul>
                 <ul aria-expanded="false">
+                    <li><a href="{{ route('admin.list.companyinvoicedetail') }}">
+                            <i class="fa-solid fa-location-arrow"></i>
+                            <span>Invoice Details</span>
+                        </a></li>
+                </ul>
+                <ul aria-expanded="false">
                     <li><a href="{{ route('admin.list.loadpackagetpye') }}">
                             <i class="fa-solid fa-truck"></i>
                             <span>Loads Types</span>
