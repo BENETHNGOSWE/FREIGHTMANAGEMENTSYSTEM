@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ClientAdmin;
-use App\Models\CompanyInvoiceDetail;
+use App\Models\Companyinvoicedetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -83,7 +83,7 @@ class CompanyinvoicedetailController extends Controller
     
             DB::commit();
             return to_route('admin.list.companyinvoicedetail')->with('success', 'Company Invoice Details Added Successfully');
-            
+
         } catch (\Throwable $th) {
             DB::rollBack();
             \Log::error($th->getMessage() . '' . $th->getTraceAsString());
@@ -106,26 +106,45 @@ class CompanyinvoicedetailController extends Controller
         return view('dashboards.admin.companyinvoicedetails.edit', $this->data);
     }
 
-    public function update(Request $request, Companyinvoicedetail $companyinvoicedetail)
+    public function update(Request $request, CompanyInvoiceDetail $companyinvoicedetail)
     {
         $this->authorize('update', $companyinvoicedetail);
-        $validated = $this->validated_company_invoice_detail($request);
+    
+        $validated = $this->validated_company_invoice_detail($request, $companyinvoicedetail);
+    
+        try {
+            DB::beginTransaction();
+    
+            foreach ($companyinvoicedetail->getFillable() as $key => $value) {
+                if ($value != 'logo') {
+                    $companyinvoicedetail->$value = $validated[$value] ?? $companyinvoicedetail->$value;
+                }
+            }
+    
+            $companyinvoicedetail->save();
+    
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            \Log::error($th->getMessage() . ' ' . $th->getTraceAsString());
+            return redirect()->back()->with('error', $th->getMessage());
+        }
+    
         
         if ($request->hasFile('logo')) {
-            if ($companyinvoicedetail->logo) {
-                Storage::disk('public')->delete($companyinvoicedetail->logo);
-            }
-            $logoPath = $request->file('logo')->store('company_logos', 'public');
-            $validated['logo'] = $logoPath;
-        } else {
-            // Keep the existing logo by removing it from the validated array
-            unset($validated['logo']);
+            $old_image = $companyinvoicedetail->logo;
+            delete_file($old_image);
+            $image = $request->file('logo');
+            $filename = \Str::slug($validated['company_name'] ?? 'company') . '.' . $image->getClientOriginalExtension();
+            upload_image($image, $filename, 200); 
+            $validated['logo'] = $filename;
+            $companyinvoicedetail->update(['logo' => $validated['logo']]);
+            $companyinvoicedetail->save();
         }
-        
-        $validated['client_id'] = $this->fms_id;
-        $companyinvoicedetail->update($validated);
+    
         return redirect()->route('admin.list.companyinvoicedetail')->with('success', 'Company Invoice Details Updated Successfully');
     }
+    
 
     public function delete(Request $request, $companyinvoicedetail)
     {
