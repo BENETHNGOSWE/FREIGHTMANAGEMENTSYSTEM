@@ -62,6 +62,7 @@
                                         <th>Customer Name</th>
                                         <th>Customer Mobile No.</th>
                                         <th>Customer Categories</th>
+                                        <th>Date</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -82,6 +83,7 @@
                                                     No categories assigned
                                                 @endif
                                             </td>
+                                            <td>{{ strtoupper($customer->created_at->format('Y-m-d')) }}</td>
                                         </tr>
                                     @empty
                                         <tr>
