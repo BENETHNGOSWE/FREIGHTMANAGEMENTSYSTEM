@@ -178,10 +178,10 @@ class ContainerController extends Controller
 
         // Define tolerance levels as absolute volume differences
         $toleranceLevels = [
-            0.1, // Very precise: 0.1 cubic units
-            0.5, // Slightly more lenient
-            1.0, // Standard tolerance
-            2.0, // More lenient
+            0.1, 
+            0.5, 
+            1.0, 
+            2.0, 
         ];
 
         $selectedLoads = null;
@@ -195,7 +195,7 @@ class ContainerController extends Controller
                 $totalVolume = collect($result)->sum('load_volume');
                 $difference = abs($container->container_volume - $totalVolume);
 
-                // Update if this is the best match so far
+                
                 if ($difference < $bestDifference) {
                     $selectedLoads = $result;
                     $bestDifference = $difference;

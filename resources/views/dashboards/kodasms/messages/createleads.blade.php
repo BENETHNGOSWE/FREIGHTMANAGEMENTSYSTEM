@@ -52,6 +52,23 @@
                             </select>
                         </div>
 
+                        <div id="date_filter" class="form-group mt-3">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="start_date">From Date:</label>
+                                    <input type="date" id="start_date" name="start_date" class="form-control">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="end_date">To Date:</label>
+                                    <input type="date" id="end_date" name="end_date" class="form-control">
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <button type="button" id="apply_date_filter" class="btn btn-sm btn-info">Apply Date Filter</button>
+                                <button type="button" id="clear_date_filter" class="btn btn-sm btn-outline-secondary">Clear Date Filter</button>
+                            </div>
+                        </div>
+
                         <input type="hidden" id="selected_customers" name="selected_customers" value="">
 
                         <div class="table-responsive">
@@ -68,7 +85,8 @@
                                 <tbody>
                                     @forelse($customerleads as $customer)
                                         <tr class="customer-row"
-                                            data-categories="{{ $customer->customercategories->pluck('id')->toJson() }}">
+                                            data-categories="{{ $customer->customercategories->pluck('id')->toJson() }}"
+                                            data-date="{{ $customer->created_at->format('Y-m-d') }}">
                                             <td>
                                                 <input type="checkbox" name="customerleads[]" class="customer-checkbox"
                                                     value="{{ $customer->phone }}">
@@ -87,7 +105,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td class="text-center py-5" colspan="4">No items found</td>
+                                            <td class="text-center py-5" colspan="5">No items found</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
@@ -139,7 +157,7 @@
             const editor = ev.editor;
             editor.dataProcessor.htmlFilter.addRules({
                 text: function(text) {
-                    return text.replace(/ /g, ' ').replace(/\s+/g, ' ');
+                    return text.replace(/ /g, ' ').replace(/\s+/g, ' ');
                 }
             });
             editor.on('paste', function(ev) {
@@ -147,7 +165,7 @@
                     .replace(/<p>/g, '\n')
                     .replace(/<\/p>/g, '')
                     .replace(/<br>/g, '\n')
-                    .replace(/ /g, ' ')
+                    .replace(/ /g, ' ')
                     .replace(/<[^>]*>/g, '')
                     .trim();
                 ev.data.dataValue = text;
@@ -163,7 +181,7 @@
 
         function processMessageContent(content) {
             return content
-                .replace(/ /g, ' ')
+                .replace(/ /g, ' ')
                 .replace(/\s+/g, ' ')
                 .replace(/<p>\s*<\/p>/g, '\n')
                 .replace(/<p>/g, '')
@@ -215,6 +233,9 @@
             if (isChecked) {
                 document.getElementById('send_by_category').checked = false;
                 document.getElementById('category_selection').style.display = 'none';
+                document.getElementById('date_filter').style.display = 'none';
+            } else {
+                document.getElementById('date_filter').style.display = 'block';
             }
 
             checkboxes.forEach(checkbox => {
@@ -227,6 +248,19 @@
             document.querySelectorAll('.customer-row').forEach(row => {
                 row.style.display = '';
             });
+            
+            // Clear date filters when selecting 'Send to All'
+            document.getElementById('start_date').value = '';
+            document.getElementById('end_date').value = '';
+            
+            selectedCustomers.clear();
+            if (isChecked) {
+                // Add all customer phones to selectedCustomers
+                document.querySelectorAll('.customer-checkbox').forEach(checkbox => {
+                    selectedCustomers.add(checkbox.value);
+                });
+            }
+            updateHiddenField();
         });
 
         // Handle the 'Send by Category' checkbox
@@ -235,6 +269,7 @@
             const categorySelection = document.getElementById('category_selection');
 
             categorySelection.style.display = isChecked ? 'block' : 'none';
+            document.getElementById('date_filter').style.display = 'block';
 
             if (isChecked) {
                 document.getElementById('send_to_all').checked = false;
@@ -267,6 +302,8 @@
         document.getElementById('selected_category').addEventListener('change', function() {
             const selectedCategory = this.value;
             const selectedCategoryId = parseInt(selectedCategory);
+            const startDate = document.getElementById('start_date').value;
+            const endDate = document.getElementById('end_date').value;
 
             // Reset all checkboxes and selections
             selectedCustomers.clear();
@@ -275,13 +312,30 @@
             document.querySelectorAll('.customer-row').forEach(row => {
                 const categoryIds = JSON.parse(row.getAttribute('data-categories') || '[]');
                 const checkbox = row.querySelector('.customer-checkbox');
+                const dateCell = row.getAttribute('data-date');
+                const rowDate = new Date(dateCell);
+                
+                // Check date filter if active
+                let showByDate = true;
+                if (startDate || endDate) {
+                    if (startDate && endDate) {
+                        const start = new Date(startDate);
+                        const end = new Date(endDate);
+                        end.setHours(23, 59, 59);
+                        showByDate = rowDate >= start && rowDate <= end;
+                    } else if (startDate) {
+                        showByDate = rowDate >= new Date(startDate);
+                    } else if (endDate) {
+                        const end = new Date(endDate);
+                        end.setHours(23, 59, 59);
+                        showByDate = rowDate <= end;
+                    }
+                }
 
-                // Check if the selected category is one of the customer's categories
-                if (categoryIds.includes(selectedCategoryId)) {
-                    // Show this customer
+                // Check if the selected category is one of the customer's categories AND date filter passes
+                if (categoryIds.includes(selectedCategoryId) && showByDate) {
+                    // Show and select this customer
                     row.style.display = '';
-
-                    // Select this customer
                     if (checkbox) {
                         checkbox.checked = true;
                         checkbox.disabled = false;
@@ -297,6 +351,96 @@
             });
 
             updateHiddenField();
+        });
+
+        // Apply date filter button
+        document.getElementById('apply_date_filter').addEventListener('click', function() {
+            const startDate = document.getElementById('start_date').value;
+            const endDate = document.getElementById('end_date').value;
+            const selectedCategory = document.getElementById('selected_category').value;
+            const selectedCategoryId = selectedCategory ? parseInt(selectedCategory) : null;
+            const isSendByCategory = document.getElementById('send_by_category').checked;
+            
+            // Reset selections when applying a new filter
+            selectedCustomers.clear();
+            
+            // Filter rows by date (and respect category filter if active)
+            document.querySelectorAll('.customer-row').forEach(row => {
+                const checkbox = row.querySelector('.customer-checkbox');
+                const dateCell = row.getAttribute('data-date');
+                const rowDate = new Date(dateCell);
+                const categoryIds = JSON.parse(row.getAttribute('data-categories') || '[]');
+                
+                // Check if date is within range
+                let showByDate = true;
+                if (startDate || endDate) {
+                    if (startDate && endDate) {
+                        const start = new Date(startDate);
+                        const end = new Date(endDate);
+                        end.setHours(23, 59, 59); // Include the entire end day
+                        
+                        showByDate = rowDate >= start && rowDate <= end;
+                    } else if (startDate) {
+                        // Only check start date
+                        showByDate = rowDate >= new Date(startDate);
+                    } else if (endDate) {
+                        // Only check end date
+                        const end = new Date(endDate);
+                        end.setHours(23, 59, 59);
+                        showByDate = rowDate <= end;
+                    }
+                }
+                
+                // Check category filter if active
+                let showByCategory = true;
+                if (isSendByCategory && selectedCategoryId) {
+                    showByCategory = categoryIds.includes(selectedCategoryId);
+                }
+                
+                // Determine if row should be shown based on all filters
+                if (showByDate && showByCategory) {
+                    // Show and select this customer
+                    row.style.display = '';
+                    if (checkbox) {
+                        checkbox.checked = true;
+                        selectedCustomers.add(checkbox.value);
+                    }
+                } else {
+                    // Hide this customer
+                    row.style.display = 'none';
+                    if (checkbox) {
+                        checkbox.checked = false;
+                    }
+                }
+            });
+            
+            updateHiddenField();
+        });
+
+        // Clear date filter button
+        document.getElementById('clear_date_filter').addEventListener('click', function() {
+            document.getElementById('start_date').value = '';
+            document.getElementById('end_date').value = '';
+            
+            // Reset date filtering, but maintain category filtering if active
+            const isSendByCategory = document.getElementById('send_by_category').checked;
+            const selectedCategory = document.getElementById('selected_category').value;
+            
+            if (isSendByCategory && selectedCategory) {
+                // If category is selected, reapply only category filter
+                document.getElementById('selected_category').dispatchEvent(new Event('change'));
+            } else {
+                // If no category filter active, show all rows
+                document.querySelectorAll('.customer-row').forEach(row => {
+                    row.style.display = '';
+                    const checkbox = row.querySelector('.customer-checkbox');
+                    if (checkbox) {
+                        checkbox.checked = true;
+                        selectedCustomers.add(checkbox.value);
+                    }
+                });
+                updateHiddenField();
+            }
         });
     </script>
 @endsection
