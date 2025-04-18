@@ -34,4 +34,9 @@
 @include('dashboards.sales.sidebar')
 @endif
 
+
+@if (Auth::user()->getRoleNames()[0] == 'receptionist')
+@include('dashboards.reception.sidebar')
+@endif
+
 @endauth

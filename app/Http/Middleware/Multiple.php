@@ -15,7 +15,7 @@ class Multiple
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $allowedRoles = ['manager', 'admin', 'kodasmspackage', 'chiefoperation', 'godownmanager', 'salesperson', 'SalesManager'];
+        $allowedRoles = ['manager', 'admin', 'kodasmspackage', 'chiefoperation', 'godownmanager', 'salesperson', 'SalesManager', 'receptionist'];
 
         if (auth()->check() && auth()->user()->hasAnyRole($allowedRoles)) {
             return $next($request);

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Invoice;
-use App\Models\InvoiceLoad;
 use App\Models\Customer;
 use App\Models\Loadpackage;
 use App\Models\Client;
@@ -36,6 +35,7 @@ class InvoiceController extends Controller
     {
         $rolesAllowedToView = ['admin','chiefoperation', 'godownmanager'];
         $rolesAllowedToPrint = ['admin', 'chiefoperation'];
+        $rolesAllowedToPrintFinalInvoice = ['admin', 'chiefoperation', 'receptionist'];
 
         if (auth()->user()->hasAnyRole($rolesAllowedToView)) {
             $this->data['customer'] = Customer::all();
@@ -46,6 +46,7 @@ class InvoiceController extends Controller
         }
 
         $this->data['canPrintReleaseOrder'] = auth()->user()->hasAnyRole($rolesAllowedToPrint);
+        $this->data['canPrintFinalInvoice'] = auth()->user()->hasAnyRole($rolesAllowedToPrintFinalInvoice);
         return view('dashboards.admin.invoices.index', $this->data);
     }
 

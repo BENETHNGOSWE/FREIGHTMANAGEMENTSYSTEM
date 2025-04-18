@@ -99,6 +99,19 @@ class PermissionsSeeder extends Seeder
             'view staffs',
         ]);
         
+        $receptionist = Role::firstOrCreate(['name' => 'receptionist', 'guard_name' => 'web']);
+        $receptionist->syncPermissions([
+            'view client_sendername',
+            'view invoices',
+            'view invoice_loads',
+            'view loadpackagetypes',
+            'view loadpackages',
+            'view customers',
+            'view customercategories', 'create customercategories', 'update customercategories', 'delete customercategories',
+            'view customerleads', 'create customerleads', 'update customerleads', 'delete customerleads',
+            'view messages', 'create messages', 'update messages', 'delete messages',
+        ]);
+
         $kodasmspackage = Role::firstOrCreate(['name' => 'kodasmspackage', 'guard_name' => 'web']);
         $kodasmspackage->syncPermissions([
             'view client_sendername',

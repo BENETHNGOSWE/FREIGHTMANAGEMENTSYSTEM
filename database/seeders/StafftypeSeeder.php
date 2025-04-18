@@ -14,7 +14,7 @@ class StafftypeSeeder extends Seeder
     public function run(): void
     {
         $stafftypes = [
-            // ['staff_type_name' => 'receptionist', 'staff_type_description' => 'Receptionist', 'is_system' => true, 'is_admin' => false],
+            ['staff_type_name' => 'receptionist', 'staff_type_description' => 'Receptionist', 'is_system' => true, 'is_admin' => false],
             ['staff_type_name' => 'kodasmspackage', 'staff_type_description' => 'kodasms', 'is_system' => true, 'is_admin' => false],
             ['staff_type_name'=>'manager','staff_type_description'=>'Manager','is_system'=>true,'is_admin'=>false],
             ['staff_type_name'=>'admin','staff_type_description'=>'Admin','is_system'=>true,'is_admin'=>true],

@@ -22,12 +22,8 @@ class DatabaseSeeder extends Seeder
                 'client_id' => null,
                 'user_type' => 'owner',
             ]);
-        // $this->call(PermissionsSeeder::class);
-        // $this->call(CountrySeeder::class);
-        // $this->call(ModuleSeeder::class);
-        // $this->call(PackageSeeder::class);
-        // $this->call(PaymentTypeSeeder::class);
-        // $this->call(UserSeeder::class);
-        // $this->call(StafftypeSeeder::class);
+        $this->call(PermissionsSeeder::class);
+        $this->call(StafftypeSeeder::class);
+        $this->call(ClientTypeSeeder::class);
     }
 }

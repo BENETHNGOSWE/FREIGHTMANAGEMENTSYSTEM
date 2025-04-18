@@ -8,7 +8,6 @@ use App\Helpers\LoadPackageHelper;
 use App\Models\Loadpackage;
 use App\Models\Loadpackagetype;
 use App\Models\Invoice;
-use App\Models\Customer;
 use App\Models\Client;
 use App\Models\ClientAdmin;
 use App\Models\Container;
@@ -18,7 +17,6 @@ use App\Models\Staff;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
-use Illuminate\Support\Str;
 
 class LoadpackageController extends Controller
 {

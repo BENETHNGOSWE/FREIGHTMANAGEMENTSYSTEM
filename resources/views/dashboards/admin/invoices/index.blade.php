@@ -62,12 +62,14 @@
                                                         data-invoice-id="{{ $invoice->id }}">
                                                         Print Release Order
                                                     </button>
-                                                    <button type="button"
-                                                    class="btn btn-outline-secondary print-final-invoice"
-                                                    data-invoice-id="{{ $invoice->id }}">
-                                                    Print Final Invoice
-                                                </button>
                                                 @endif
+                                                @if ($canPrintFinalInvoice)
+                                                    <button type="button"
+                                                        class="btn btn-outline-secondary print-final-invoice"
+                                                        data-invoice-id="{{ $invoice->id }}">
+                                                        Print Final Invoice
+                                                    </button>
+                                            @endif
                                             </div>
                                         </td>
                                     </tr>

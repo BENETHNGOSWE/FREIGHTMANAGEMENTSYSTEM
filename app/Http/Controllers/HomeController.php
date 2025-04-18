@@ -10,6 +10,7 @@ use App\Http\Controllers\KodaSMS\SMSManagerDashboardController;
 use App\Http\Controllers\Chiefoperation\ChiefOperationController;
 use App\Http\Controllers\Godownmanager\GodownmanagerDashboardController;
 use App\Http\Controllers\Sales\SalesDashboardController;
+use App\Http\Controllers\Reception\ReceptionDashboardController;
 
 class HomeController extends Controller
 {
@@ -63,8 +64,11 @@ class HomeController extends Controller
             case 'salesperson':
                 return $this->salesadminDashboard();
 
-                case 'SalesManager':
-                    return $this->salesadminDashboard();    
+            case 'SalesManager':
+                return $this->salesadminDashboard();  
+                
+            case 'receptionist':
+                return $this->receptionDashboard();    
 
             default:
                 return view('home');
@@ -110,6 +114,12 @@ class HomeController extends Controller
     public function salesadminDashboard()
     {
         $dashboard = new SalesDashboardController();
+        return $dashboard->index($this->fms_id);
+    }
+
+    public function receptionDashboard()
+    {
+        $dashboard = new ReceptionDashboardController();
         return $dashboard->index($this->fms_id);
     }
 }

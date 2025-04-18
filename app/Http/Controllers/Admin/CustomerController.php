@@ -39,11 +39,12 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $this->data['customers'] = Customer::where('client_id', $this->fms_id)
-            ->latest()
-            ->get();
+        $this->data['customers'] = Customer::where('client_id', $this->fms_id)->latest()->get();
+        $rolesAllowedToSeeButtons = ['admin', 'chiefoperation','manager'];
+        $this->data['canSeeActionButtons'] = auth()->user()->hasAnyRole($rolesAllowedToSeeButtons);   
         return view('dashboards.admin.customers.list_customers', $this->data);
     }
+
 
     /**
      * Show the form for creating a new resource.

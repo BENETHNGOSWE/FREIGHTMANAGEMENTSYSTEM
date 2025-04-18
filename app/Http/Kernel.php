@@ -77,5 +77,6 @@ class Kernel extends HttpKernel
         'godownmanager' => \App\Http\Middleware\Godownmanager::class,
         'salesperson' => \App\Http\Middleware\Salesperson::class,
         'SalesManager' => \App\Http\Middleware\SalesManager::class,
+        'receptionist' => \App\Http\Middleware\Receptionist::class,
     ];
 }

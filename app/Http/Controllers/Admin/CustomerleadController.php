@@ -9,10 +9,8 @@ use App\Models\Customercategory;
 use App\Models\Client;
 use App\Models\ClientAdmin;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Contracts\View\View;
 use Illuminate\Validation\Rule;
 
 class CustomerleadController extends Controller

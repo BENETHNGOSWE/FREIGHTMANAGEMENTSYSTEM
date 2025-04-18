@@ -181,7 +181,7 @@ class MessageController extends Controller
 
     public function showSendMessageFormlead()
     {
-        $roleAllowedToView = ['admin', 'kodasmspackage'];
+        $roleAllowedToView = ['admin', 'kodasmspackage','receptionist'];
 
         if (auth()->user()->hasAnyRole($roleAllowedToView)) {
             $customerleads = Customerlead::with('customercategories')->where('client_id', $this->fms_id)->get();

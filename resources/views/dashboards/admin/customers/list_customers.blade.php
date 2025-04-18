@@ -71,28 +71,28 @@
                                         </td>
                                         <td class="text-center" style="width: 134px;">
                                             <div role="group" aria-label="Row Actions" class="btn-group">
+                                                @if ($canSeeActionButtons)
+                                                    <a href="{{ route('admin.edit.customer', $customer) }}">
+                                                        <button type="button" class="btn btn-outline-success">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                    </a>
 
-                                                <a href="{{ route('admin.edit.customer', $customer) }}">
-                                                    <button type="button" class="btn btn-outline-success">
-                                                        <i class="fas fa-edit"></i>
-                                                    </button>
-                                                </a>
+                                                    <a href="{{ route('admin.show.customer', $customer) }}">
+                                                        <button type="button" class="btn btn-outline-primary mx-2">
+                                                            <i class="fas fa-eye"></i>
+                                                        </button>
+                                                    </a>
 
-                                                <a href="{{ route('admin.show.customer', $customer) }}">
-                                                    <button type="button" class="btn btn-outline-primary mx-2">
-                                                        <i class="fas fa-eye"></i>
-                                                    </button>
-                                                </a>
-
-                                                <form class="delete_form"
-                                                    action="{{ route('admin.delete.customer', $customer) }}" method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-outline-danger delete_button">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </form>
-
+                                                    <form class="delete_form"
+                                                        action="{{ route('admin.delete.customer', $customer) }}" method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-outline-danger delete_button">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </form>
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>

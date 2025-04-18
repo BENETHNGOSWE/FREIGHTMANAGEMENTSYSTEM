@@ -50,28 +50,31 @@
                                         <td>{{ strtoupper($loadpackagetype->customer_lastname) ?? '-' }}</td>
                                         <td class="text-center" style="width: 134px;">
                                             <div role="group" aria-label="Row Actions" class="btn-group">
-                                                @can('update', $loadpackagetype)
-                                                    <a href="{{ route('admin.edit.loadpackagetpye', $loadpackagetype) }}">
-                                                        <button type="button" class="btn btn-outline-success">
-                                                            <i class="fas fa-edit"></i>
-                                                        </button>
-                                                    </a>
-                                                    @endcan @can('view', $loadpackagetype)
-                                                    <a href="{{ route('admin.show.loadpackagetpye', $loadpackagetype) }}">
-                                                        <button type="button" class="btn btn-outline-primary mx-2">
-                                                            <i class="fas fa-eye"></i>
-                                                        </button>
-                                                    </a>
-                                                    @endcan @can('delete', $loadpackagetype)
-                                                    <form class="delete_form" action="{{ route('admin.delete.loadpackagetpye', $loadpackagetype)}}" method="POST"
-                                                    >
-                                                        @csrf 
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-outline-danger delete_button">
-                                                            <i class="fas fa-trash"></i>
-                                                        </button>
-                                                    </form>
-                                                @endcan
+                                                    @can('update', $loadpackagetype)
+                                                        <a href="{{ route('admin.edit.loadpackagetpye', $loadpackagetype) }}">
+                                                            <button type="button" class="btn btn-outline-success">
+                                                                <i class="fas fa-edit"></i>
+                                                            </button>
+                                                        </a>
+                                                    @endcan 
+                                                    
+                                                    @can('view', $loadpackagetype)
+                                                        <a href="{{ route('admin.show.loadpackagetpye', $loadpackagetype) }}">
+                                                            <button type="button" class="btn btn-outline-primary mx-2">
+                                                                <i class="fas fa-eye"></i>
+                                                            </button>
+                                                        </a>
+                                                    @endcan 
+                                                    
+                                                    @can('delete', $loadpackagetype)
+                                                        <form class="delete_form" action="{{ route('admin.delete.loadpackagetpye', $loadpackagetype)}}" method="POST">
+                                                            @csrf 
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-outline-danger delete_button">
+                                                                <i class="fas fa-trash"></i>
+                                                            </button>
+                                                        </form>
+                                                    @endcan
                                             </div>
                                         </td>
                                     </tr>
