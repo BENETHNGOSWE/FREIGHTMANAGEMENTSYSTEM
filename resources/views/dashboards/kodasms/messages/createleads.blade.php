@@ -113,7 +113,7 @@
                         </div>
 
                         <div class="form-group mt-3">
-                            <label for="message">Message:</label>
+                            <label for="message">Message: <span id="messageCount" class="badge bg-info ms-2">0 Messages</span></label>
                             <textarea id="message" name="message" class="form-control" required></textarea>
                         </div>
 
@@ -442,6 +442,39 @@
                 updateHiddenField();
             }
         });
+
+
+        // Function to update message count
+            function updateMessageCount(content) {
+                // Remove HTML tags and extra whitespace for accurate character count
+                const cleanContent = content
+                    .replace(/<[^>]*>/g, '') // Remove HTML tags
+                    .replace(/\s+/g, ' ')    // Replace multiple spaces with single space
+                    .trim();
+                
+                const charCount = cleanContent.length;
+                const messageCount = Math.ceil(charCount / 15); 
+                document.getElementById('messageCount').textContent = `${messageCount} Message${messageCount !== 1 ? 's' : ''}`;
+            }
+
+            // Update message count when CKEditor content changes
+            CKEDITOR.instances.message.on('change', function() {
+                const content = CKEDITOR.instances.message.getData();
+                updateMessageCount(content);
+            });
+
+            // Update message count when pasting content
+            CKEDITOR.instances.message.on('paste', function(ev) {
+                setTimeout(() => {
+                    const content = CKEDITOR.instances.message.getData();
+                    updateMessageCount(content);
+                }, 0);
+            });
+
+            // Initial message count update
+            document.addEventListener('DOMContentLoaded', function() {
+                updateMessageCount(CKEDITOR.instances.message.getData());
+            });
     </script>
 @endsection
 

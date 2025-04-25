@@ -276,7 +276,6 @@ class MessageController extends Controller
     // }
 
 
-
     public function sendMessageleadsenderid(Request $request)
     {
         $senderId = $request->input('sender_id');
@@ -289,16 +288,32 @@ class MessageController extends Controller
             'message' => 'required|string',
         ]);
     
+        $isAdmin = auth()->user()->hasAnyRole(['admin', 'kodasmspackage']);
+    
         if ($sendToAll) {
-            $customerleads = Customerlead::where('client_id', $this->fms_id)->get();
+            if ($isAdmin) {
+                $customerleads = Customerlead::where('client_id', $this->fms_id)->get();
+            } else {
+                $customerleads = Customerlead::where('client_id', $this->fms_id)
+                    ->where('user_id', auth()->id())
+                    ->get();
+            }
         } else {
             $selectedPhones = array_filter(explode(',', $selectedCustomers));
             if (empty($selectedPhones)) {
                 return redirect()->back()->with('error', 'No customers selected.');
             }
-            $customerleads = Customerlead::where('client_id', $this->fms_id)
-                ->whereIn('phone', $selectedPhones)
-                ->get();
+            
+            if ($isAdmin) {
+                $customerleads = Customerlead::where('client_id', $this->fms_id)
+                    ->whereIn('phone', $selectedPhones)
+                    ->get();
+            } else {
+                $customerleads = Customerlead::where('client_id', $this->fms_id)
+                    ->where('user_id', auth()->id())
+                    ->whereIn('phone', $selectedPhones)
+                    ->get();
+            }
         }
     
         if ($customerleads->isEmpty()) {
@@ -306,7 +321,7 @@ class MessageController extends Controller
         }
     
         $messageCount = 0;
-
+    
         foreach ($customerleads as $customer) {
             $personalizedMessage = str_replace('{{ customer_firstname }}', $customer->customer_firstname, $message);
             $plainMessage = strip_tags($personalizedMessage);

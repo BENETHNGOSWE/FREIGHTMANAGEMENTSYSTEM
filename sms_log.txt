@@ -1,0 +1,10 @@
+Request: {"auth":{"clientId":"276db4a4-b02d-4a74-b8d3-10f0ff9bd2b1","clientSecret":"95eb4262-2a11-4a4c-888d-e1fc483605b5"},"messages":[{"text":"This is the test for blackball message new senderID","msisdn":"255745788788","source":"KODASMS","reference":"MSG_1745402550_0_6808bab663d05","coding":"GSM7"}]}
+Response: Array
+(
+    [status] => 1
+    [message] => Successfully submitted 1 message(s) to broker.
+    [data] => 
+    [balance] => 10214
+)
+
+
