@@ -83,9 +83,8 @@ function sendMessageLeadPending($phoneNumbers, $message, $senderId)
     }
 }
 
-// Test the function
 $result = sendMessageLeadPending(
-    ['+255710459064'], // Updated to the required format without '+'
+    ['+255710459064'], 
     'Hello, this is a test message!',
     'KODASMS'
 );
