@@ -81,7 +81,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-image: url('{{ storage_path('app/public/' . $company->logo) }}');
+            background-image: url('{{ public_path('storage/uploads/' . $company->logo) }}');
             background-position: center center;
             background-repeat: no-repeat;
             background-size: 40em;
@@ -378,7 +378,7 @@
             <div class="company-header">
                 <div class="company-logo">
                     @if ($company->logo)
-                        <img alt="logo" src="{{ public_path('storage/' . $company->logo) }}" style="width: 150px; height: auto;">
+                        <img alt="logko" src="{{ public_path('storage/uploads/' . $company->logo) }}" style="width: 150px; height: auto;">
                     @endif
                 </div>               
                 <div class="company-info">

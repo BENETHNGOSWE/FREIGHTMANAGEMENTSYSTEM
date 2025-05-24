@@ -52,45 +52,55 @@ class CompanyinvoicedetailController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+   public function store(Request $request)
     {
         $this->authorize('create', Companyinvoicedetail::class);
+
         $validated = $this->validated_company_invoice_detail($request);
+
         try {
             DB::beginTransaction();
-    
+
             $company = new Companyinvoicedetail();
             $validated['client_id'] = $this->fms_id;
             $fillable = $company->getFillable();
-    
+
+            // Assign non-logo fields manually from validated data
             foreach ($fillable as $field) {
                 if ($field !== 'logo') {
                     $company->$field = $validated[$field] ?? null;
                 }
             }
-    
+
+            // Handle logo upload
             if ($request->hasFile('logo')) {
                 $image = $request->file('logo');
-                $filename = \Str::slug($validated['company_name'] ?? 'company') . '.' . $image->extension();
+                $filename = \Str::slug($validated['company_name'] ?? 'company') . '.jpg';
                 upload_image($image, $filename, 200);
                 $company->logo = $filename;
             } else {
                 $company->logo = 'client_default.png';
             }
-    
+
+            // Prevent overwriting logo with temp path
+            unset($validated['logo']);
+
+            // Fill remaining fields (if any)
             $company->fill($validated);
             $company->save();
-    
+
             DB::commit();
+
             return to_route('admin.list.companyinvoicedetail')->with('success', 'Company Invoice Details Added Successfully');
 
         } catch (\Throwable $th) {
             DB::rollBack();
             \Log::error($th->getMessage() . '' . $th->getTraceAsString());
-    
+
             return redirect()->back()->with('error', 'Something went wrong');
         }
     }
+
 
     public function show(Request $request, Companyinvoicedetail $Companyinvoicedetail): View
     {
