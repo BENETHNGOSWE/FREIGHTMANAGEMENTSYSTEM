@@ -26,6 +26,9 @@
                                         s/n
                                     </th>    
                                     <th class="text-left">
+                                        ID Number
+                                    </th>
+                                    <th class="text-left">
                                         @lang('crud.customercategories.inputs.categoryname')
                                     </th>
                                     <th class="text-left">
@@ -42,6 +45,7 @@
                                         <td>
                                             {{ $loop->iteration }}
                                         </td>
+                                        <td>{{ strtoupper($customercategory->id) ?? '-' }}</td>
                                         <td>{{ strtoupper($customercategory->categoryname) ?? '-' }}</td>
                                         <td>{{ strtoupper($customercategory->categorydescription) ?? '-' }}</td>
                                         <td class="text-center" style="width: 134px;">

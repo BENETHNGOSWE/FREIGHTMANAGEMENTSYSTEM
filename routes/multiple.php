@@ -1,5 +1,6 @@
 <?php
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 Route::prefix('/')
     ->middleware('auth')
@@ -86,6 +87,7 @@ Route::prefix('/')
         Route::get('category/show/{customercategory}', [App\Http\Controllers\Admin\CustomercategoryController::class, 'show'])->name('admin.show.customercategory');
         Route::delete('category/delete/{customercategory}', [App\Http\Controllers\Admin\CustomercategoryController::class, 'delete'])->name('admin.delete.customercategory');
 
+
         // Customerleads Manage Here
         Route::get('customerlead', [App\Http\Controllers\Admin\CustomerleadController::class, 'index'])->name('admin.list.customerlead');
         Route::get('customerleadcreate', [App\Http\Controllers\Admin\CustomerleadController::class, 'create'])->name('admin.create.customerlead');
@@ -94,6 +96,15 @@ Route::prefix('/')
         Route::put('customerlead/update/{customerlead}', [App\Http\Controllers\Admin\CustomerleadController::class, 'update'])->name('admin.update.customerlead');
         Route::get('customerlead/show/{customerlead}', [App\Http\Controllers\Admin\CustomerleadController::class, 'show'])->name('admin.show.customerlead');
         Route::delete('customerlead/delete/{customerlead}', [App\Http\Controllers\Admin\CustomerleadController::class, 'delete'])->name('admin.delete.customerlead');
+
+
+
+        Route::get('customerlead/template', [App\Http\Controllers\Admin\CustomerleadController::class, 'downloadTemplate'])->name('admin.downloadTemplate.customerlead');
+        Route::post('customerlead/import', [App\Http\Controllers\Admin\CustomerleadController::class, 'import'])->name('admin.import.customerlead');
+      //   Route::post('customerlead/import-test', function(Request $request) {
+      //     \Log::info('Test route called');
+      //     return response()->json(['status' => 'success', 'data' => $request->all()]);
+      // })->name('admin.import.customerlead');
 
         // Manage Clients Here
         Route::get('staff', [App\Http\Controllers\Admin\StaffController::class, 'list_staffs'])->name('admin.list.staff');

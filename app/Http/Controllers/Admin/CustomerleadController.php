@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
+use App\Imports\CustomerleadImport;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Excel as ExcelFormat;
+use Illuminate\Support\Facades\Response;
+
 class CustomerleadController extends Controller
 {
     protected $fms_id = null;
@@ -186,5 +191,54 @@ class CustomerleadController extends Controller
         $this->authorize('delete', $customerlead);
         $customerlead->delete();
         return redirect()->route('admin.list.customerlead', $customerlead)->with('success', 'Customer Lead Deleted Successful');
+    }
+
+
+
+
+    public function downloadTemplate()
+    {
+        $headers = [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        ];
+
+        $callback = function () {
+            $file = fopen('php://output', 'w');
+            // Excel headers/columns
+            fputcsv($file, [
+                'customer_firstname',
+                'customer_middlename',
+                'customer_lastname',
+                'customer_email',
+                'phone',
+                'category_ids', // e.g., 1,2,3
+            ]);
+            fclose($file);
+        };
+
+        return Response::stream($callback, 200, array_merge($headers, [
+            "Content-Disposition" => "attachment; filename=customerlead_template.csv"
+        ]));
+    }
+
+
+
+    public function import(Request $request)
+    {
+
+        $request->validate([
+            'import_file' => [
+                'required',
+                'file'
+            ],
+        ]);
+
+        Excel::import(
+                    new CustomerleadImport($this->fms_id, auth()->id()),
+                    $request->file('import_file')
+                );
+
+        return redirect()->back()->with('status', 'Imported Successfully');
+       
     }
 }

@@ -9,9 +9,20 @@
                             List</a></span>
                 </p>
             </div>
-            <div>
-                <a href="{{ route('admin.create.customerlead') }}" class="btn btn-primary me-3">+ Add Lead</a>
+            <div class="d-flex flex-wrap align-items-center gap-3">
+                <a href="{{ route('admin.create.customerlead') }}" class="btn btn-primary">+ Add Lead</a>
+                <a href="{{ route('admin.downloadTemplate.customerlead') }}" class="btn btn-outline-secondary">
+                    Download Template
+                </a>
+            
+                <form action="{{ route('admin.import.customerlead') }}" method="POST" enctype="multipart/form-data" class="d-flex align-items-center gap-2">
+                    @csrf
+                    <input type="file" name="import_file" accept=".xlsx,.xls,.csv" class="form-control" style="width: 200px;" required>
+                    <button type="submit" class="btn btn-success">Import Excel</button>
+                </form>
             </div>
+            
+            
         </div>
         <div class="row">
             <div class="card">
