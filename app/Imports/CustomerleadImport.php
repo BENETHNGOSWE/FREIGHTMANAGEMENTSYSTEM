@@ -26,7 +26,7 @@ class CustomerleadImport extends DefaultValueBinder implements ToCollection, Wit
     public function collection(Collection $rows)
     {
         foreach ($rows as $row) {
-            $phone = (string) $row['phone']; // Cast to string to avoid scientific notation
+            $phone = (string) $row['phone']; 
             $customer = Customerlead::where('phone', $phone)->first();
 
             if ($customer) {
@@ -53,7 +53,6 @@ class CustomerleadImport extends DefaultValueBinder implements ToCollection, Wit
         }
     }
 
-    // Override the bindValue method to force string type for phone numbers
     public function bindValue(Cell $cell, $value)
     {
         if (is_numeric($value) && $cell->getColumn() === 'phone') { // Adjust 'phone' to match your Excel column header

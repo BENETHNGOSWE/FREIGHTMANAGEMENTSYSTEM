@@ -157,9 +157,6 @@ class CustomerleadController extends Controller
         return view('dashboards.admin.customerleads.edit', $this->data);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
         $customerlead = Customerlead::findOrFail($id);
@@ -182,9 +179,6 @@ class CustomerleadController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function delete(Request $request, $customerlead)
     {
         $customerlead = Customerlead::where('id', $customerlead)->where('client_id', $this->fms_id)->first();
