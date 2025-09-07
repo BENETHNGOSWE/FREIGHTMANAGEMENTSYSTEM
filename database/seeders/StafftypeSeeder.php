@@ -22,7 +22,7 @@ class StafftypeSeeder extends Seeder
             ['staff_type_name' => 'godownmanager', 'staff_type_description' => 'GodownManager', 'is_system' => true, 'is_admin' => false],
             ['staff_type_name' => 'salesperson', 'staff_type_description' => 'salesperson', 'is_system' => true, 'is_admin' => false],
             ['staff_type_name' => 'SalesManager', 'staff_type_description' => 'SalesManager', 'is_system' => true, 'is_admin' => false],
-            // ['staff_type_name' => 'accountant', 'staff_type_description' => 'Accountant', 'is_system' => true, 'is_admin' => false],
+            ['staff_type_name' => 'Cashier', 'staff_type_description' => 'Cashier', 'is_system' => true, 'is_admin' => false],
             // ['staff_type_name' => 'hr', 'staff_type_description' => 'Human Resources', 'is_system' => true, 'is_admin' => false],
             // ['staff_type_name' => 'procurement', 'staff_type_description' => 'Procurement Officer',  'is_system'=>true, 	'is_admin'=>false],
             // ['staff_type_name'=>'storekeeper','staff_type_description'=>'Store Keeper','is_system'=>true,'is_admin'=>false],

@@ -112,6 +112,20 @@ class PermissionsSeeder extends Seeder
             'view messages', 'create messages', 'update messages', 'delete messages',
         ]);
 
+        $Cashier = Role::firstOrCreate(['name' => 'Cashier', 'guard_name' => 'web']);
+        $Cashier->syncPermissions([
+            'view client_sendername',
+            'view invoices','create invoices','update invoices',
+            'view invoice_loads','create invoice_loads','update invoice_loads',
+            'view loadpackagetypes', 'create loadpackagetypes', 'update loadpackagetypes', 'delete loadpackagetypes',
+            'view loadpackages', 'create loadpackages', 'update loadpackages', 'delete loadpackages',
+            'view containers', 'create containers', 'update containers', 'delete containers',
+            'view customers', 'create customers', 'update customers', 'delete customers',
+            'view customercategories', 'create customercategories', 'update customercategories', 'delete customercategories',
+            'view customerleads', 'create customerleads', 'update customerleads', 'delete customerleads',
+            'view messages', 'create messages', 'update messages', 'delete messages',
+        ]);
+
         $kodasmspackage = Role::firstOrCreate(['name' => 'kodasmspackage', 'guard_name' => 'web']);
         $kodasmspackage->syncPermissions([
             'view client_sendername',

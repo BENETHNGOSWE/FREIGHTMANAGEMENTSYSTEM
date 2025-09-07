@@ -33,9 +33,9 @@ class InvoiceController extends Controller
 
     public function index()
     {
-        $rolesAllowedToView = ['admin','chiefoperation', 'godownmanager'];
-        $rolesAllowedToPrint = ['admin', 'chiefoperation'];
-        $rolesAllowedToPrintFinalInvoice = ['admin', 'chiefoperation', 'receptionist'];
+        $rolesAllowedToView = ['admin','chiefoperation', 'godownmanager', 'Cashier'];
+        $rolesAllowedToPrint = ['admin', 'chiefoperation','Cashier'];
+        $rolesAllowedToPrintFinalInvoice = ['admin', 'chiefoperation', 'receptionist', 'Cashier'];
 
         if (auth()->user()->hasAnyRole($rolesAllowedToView)) {
             $this->data['customer'] = Customer::all();
@@ -59,8 +59,10 @@ class InvoiceController extends Controller
 
     public function edit(Request $request, Invoice $invoice)
     {
+        $rolesAllowedToUpdateInvoiceStatus = ['admin', 'chiefoperation'];
         $this->data['invoice'] = $invoice;
         $this->data['invoice'] = $invoice->load('invoiceLoads.loadPackage');
+        $this->data['canUpdateInvoiceStatus'] = auth()->user()->hasAnyRole($rolesAllowedToUpdateInvoiceStatus);
         return view('dashboards.admin.invoices.edit', $this->data);
     }
 

@@ -11,6 +11,7 @@ use App\Http\Controllers\Chiefoperation\ChiefOperationController;
 use App\Http\Controllers\Godownmanager\GodownmanagerDashboardController;
 use App\Http\Controllers\Sales\SalesDashboardController;
 use App\Http\Controllers\Reception\ReceptionDashboardController;
+use App\Http\Controllers\Cashier\CashierDashboardController;
 
 class HomeController extends Controller
 {
@@ -68,7 +69,10 @@ class HomeController extends Controller
                 return $this->salesadminDashboard();  
                 
             case 'receptionist':
-                return $this->receptionDashboard();    
+                return $this->receptionDashboard();   
+                
+            case 'Cashier':
+                return $this->cashierDashboard();    
 
             default:
                 return view('home');
@@ -120,6 +124,12 @@ class HomeController extends Controller
     public function receptionDashboard()
     {
         $dashboard = new ReceptionDashboardController();
+        return $dashboard->index($this->fms_id);
+    }
+
+    public function cashierDashboard()
+    {
+        $dashboard = new CashierDashboardController();
         return $dashboard->index($this->fms_id);
     }
 }

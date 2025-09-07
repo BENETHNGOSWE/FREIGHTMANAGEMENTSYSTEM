@@ -114,18 +114,23 @@ function generateInvoicePrefix()
 function return_status_badge($status)
 {
     switch ($status) {
-        case 'portstation':
-            $badge = '<span class="badge badge-warning">Port Station</span>';
+        case 'Warehouse':
+            $badge = '<span class="badge badge-warning">Warehouse</span>';
             break;
-        case 'onmovement':
-            $badge = '<span class="badge badge-info">On Movement</span>';
+        case 'OnVessel':
+            $badge = '<span class="badge badge-info">On Vercel</span>';
             break;
-        case 'delivery':
-            $badge = '<span class="badge badge-success">Delivery</span>';
+        case 'Arrived_TZ-Port':
+            $badge = '<span class="badge badge-success">Arrived at Port</span>';
             break;
-        case 'closed':
-            $badge = '<span class="badge badge-dark">Closed</span>';
+        case 'ICD':
+            $badge = '<span class="badge badge-dark">IDC</span>';
             break;
+
+        case 'Warehouse-HQ':
+            $badge = '<span class="badge badge-dark">Warehouse HQ</span>';
+            break;
+
         default:
             $badge = '<span class="badge badge-warning">Pending</span>';
     }

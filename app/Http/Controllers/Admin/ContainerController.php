@@ -50,7 +50,7 @@ class ContainerController extends Controller
             'container_volume' => ['required', 'string', 'max:255'],
             'container_size' => ['required', 'string', 'max:255'],
             'container_number' => ['required', 'string', 'max:255'],
-            'container_status' => 'required|in:portstation,onmovement,delivery,closed',
+            'container_status' => 'required|in:Warehouse,OnVessel,Arrived_TZ-Port,ICD,Warehouse-HQ',
         ]);
     }
 
@@ -94,7 +94,7 @@ class ContainerController extends Controller
             'container_volume' => ['required', 'string', 'max:255'],
             'container_size' => ['required', 'string', 'max:255'],
             'container_number' => ['required', 'string', 'max:255'],
-            'container_status' => 'required|in:portstation,onmovement,delivery,closed',
+            'container_status' => 'required|in:Warehouse,OnVessel,Arrived_TZ-Port,ICD,Warehouse-HQ',
         ]);
         $validated['client_id'] = $this->fms_id;
         $container->update($validated);

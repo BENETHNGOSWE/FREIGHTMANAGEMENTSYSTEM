@@ -19,11 +19,18 @@
             maxlength="255" placeholder="Trucking Number" required></x-inputs.text>
     </x-inputs.group>
 
+    <!-- Load Price Field - hii inachukua caton ila in DB we defin as price to reduce changing errors -->
+    <x-inputs.group class="col-sm-4">
+        <x-inputs.number name="load_price[{{ $index }}]" label="Number of Ctn(s)" :value="old('load_price.' . $index, $editing ? $load->load_price : '')" maxlength="255"
+            placeholder="Number of Ctn(s)" required></x-inputs.number>
+    </x-inputs.group>
+
     <!-- Description Field -->
     <x-inputs.group class="col-sm-4">
         <x-inputs.textarea name="load_description[{{ $index }}]" label="Description" :value="old('load_description.' . $index, $editing ? $load->load_description : '')"
             maxlength="255" placeholder="Description" required></x-inputs.textarea>
     </x-inputs.group>
+
 
     <!-- Transport Date Field -->
     <x-inputs.group class="col-sm-4">
@@ -75,31 +82,27 @@
     <!-- Weight Value Field (hidden by default, shown when unit type is selected) -->
     <x-inputs.group class="col-sm-4 weight-value-group" style="display: none !important">
         <x-inputs.number name="load_weight_value[{{ $index }}]" label="Unit Value" :value="old('load_weight_value.' . $index, $editing ? $load->load_weight_value : '')"
-            step="0.0000001" min="0" max="1000" placeholder="Enter Unit Value (e.g., 0.0000067)" required
+             min="0" max="10000" placeholder="Enter Unit Value (e.g., 0.0000067)" required
             disabled>
         </x-inputs.number>
     </x-inputs.group>
 
-    <!-- Load Price Field -->
-    <x-inputs.group class="col-sm-4">
-        <x-inputs.number name="load_price[{{ $index }}]" label="Load Price" :value="old('load_price.' . $index, $editing ? $load->load_price : '')" maxlength="255"
-            placeholder="Load Price" required></x-inputs.number>
-    </x-inputs.group>
+    
 
 
     <x-inputs.group class="col-sm-4">
         <x-inputs.number name="load_length[{{ $index }}]" label="Load Length" :value="old('load_length.' . $index, $editing ? $load->load_length : '')"
-            step="any" placeholder="Length" required></x-inputs.number>
+            step="any" placeholder="Length" ></x-inputs.number>
     </x-inputs.group>
 
     <x-inputs.group class="col-sm-4">
         <x-inputs.number name="load_width[{{ $index }}]" label="Load Width" :value="old('load_width.' . $index, $editing ? $load->load_width : '')"
-            step="any" placeholder="Width" required></x-inputs.number>
+            step="any" placeholder="Width" ></x-inputs.number>
     </x-inputs.group>
 
     <x-inputs.group class="col-sm-4">
         <x-inputs.number name="load_height[{{ $index }}]" label="Load Height" :value="old('load_height.' . $index, $editing ? $load->load_height : '')"
-            step="any" placeholder="Height" required></x-inputs.number>
+            step="any" placeholder="Height" ></x-inputs.number>
     </x-inputs.group>
 
     <!-- Remove Load Button -->

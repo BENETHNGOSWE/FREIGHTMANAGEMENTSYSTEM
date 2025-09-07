@@ -15,7 +15,7 @@
     <x-inputs.group class="col-sm-6">
         <x-inputs.text
             name="container_size"
-            label="Container Size"
+            label="Container Size (Ft)"
             :value="old('container_size', ($editing ? $container->container_size : ''))"
             maxlength="255"
             placeholder="Container Size"
@@ -35,7 +35,7 @@
     <x-inputs.group class="col-sm-6">
         <x-inputs.select name="container_status" label="Status" required>
             @php
-                $statuses = ['portstation', 'onmovement', 'delivery', 'closed'];
+                $statuses = ['Warehouse', 'OnVessel', 'Arrived_TZ-Port', 'ICD', 'Warehouse-HQ'];
             @endphp
             @foreach ($statuses as $status)
                 <option value="{{ $status }}"

@@ -21,18 +21,19 @@
                             @error('invoice_no') <div class="text-danger">{{ $message }}</div> @enderror
                         </div>
                     </div>
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="status">Invoice Status</label>
-                            <select name="status" class="form-control">
-                                <option value="0" {{ $invoice->status == 0 ? 'selected' : '' }}>Pending</option>
-                                <option value="2" {{ $invoice->status == 2 ? 'selected' : '' }}>Partial Paid</option>
-                                <option value="1" {{ $invoice->status == 1 ? 'selected' : '' }}>Full Paid</option>
-                            </select>
-                            @error('status') <div class="text-danger">{{ $message }}</div> @enderror
+                    @if($canUpdateInvoiceStatus)
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="status">Invoice Status</label>
+                                <select name="status" class="form-control">
+                                    <option value="0" {{ $invoice->status == 0 ? 'selected' : '' }}>Pending</option>
+                                    <option value="2" {{ $invoice->status == 2 ? 'selected' : '' }}>Partial Paid</option>
+                                    <option value="1" {{ $invoice->status == 1 ? 'selected' : '' }}>Full Paid</option>
+                                </select>
+                                @error('status') <div class="text-danger">{{ $message }}</div> @enderror
+                            </div>
                         </div>
-                    </div>
+                    @endif    
 
                     <!-- Display load_weight_value for each related load -->
                     <div class="col-md-12">
@@ -43,7 +44,7 @@
                                     @foreach($invoice->invoiceLoads as $invoiceLoad)
                                         <li class="list-group-item">
                                             
-                                            {{ number_format($invoiceLoad->loadPackage->load_weight_value ?? 0, 10) }}
+                                            {{ number_format($invoiceLoad->loadPackage->load_weight_value ?? 0, 3) }}
                                         </li>
                                     @endforeach
                                 </ul>

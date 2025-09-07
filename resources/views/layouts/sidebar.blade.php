@@ -39,4 +39,8 @@
 @include('dashboards.reception.sidebar')
 @endif
 
+@if (Auth::user()->getRoleNames()[0] == 'Cashier')
+@include('dashboards.cashier.sidebar')
+@endif
+
 @endauth

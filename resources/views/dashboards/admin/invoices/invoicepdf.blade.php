@@ -427,7 +427,7 @@
                         <th><span>S. No</span></th>
                         <th><span>Load Name</span></th>
                         <th><span>Description</span></th>
-                        <th><span>Total Inner Qty</span></th>
+                        <th><span>Total Weight</span></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -436,7 +436,7 @@
                             <td><span>{{ $loop->iteration }}</span></td>
                             <td><span>{{ $invoiceLoad->loadpackage->load_name }}</span></td>
                             <td><span>{{ $invoiceLoad->loadpackage->load_description }}</span></td>
-                            <td><span>{{ $invoiceLoad->loadpackage->load_weight_value}}</span></td>
+                            <td><span>{{ $invoiceLoad->loadpackage->load_weight_value }}</span></td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -450,12 +450,6 @@
                     <strong>{{ \Carbon\Carbon::now('Africa/Nairobi')->format('F j, Y, g:i A') }}</strong></p>
             </address>
         </header>
-        <table class="balance" style="margin-top: -3em">
-            <tr>
-                <th><span>Total Value</span></th>
-                <td><span>0.00</span></td>
-            </tr>
-        </table>
         <hr>
         <aside style="font-size: 12px; margin-top:-3em">
             <h4>Terms & Conditions</h4>
@@ -474,7 +468,7 @@
         <aside style="font-size: 10px">
             <div>
                 <p style="margin: 0; padding: 0;">Golden Tulip Masaki, Coco beach Road, Masaki P.O. Box 1800
-                    Ubungo Dar es salaam, Tanzania | Tel: +255 710 459 064 Email: info@koda_koda.com</p>
+                    Dar es salaam, Tanzania | Tel: +255 710 459 064 Email: info@koda_koda.com</p>
 
             </div>
         </aside>

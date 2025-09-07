@@ -47,7 +47,7 @@
                                         load Volume
                                     </th>
                                     <th class="text-left" style="white-space: normal; word-wrap: break-word;">
-                                        Total Price($)
+                                        No of Ctn(s)
                                     </th>
                                    
                                     <th class="text-left" style="white-space: normal; word-wrap: break-word;">
