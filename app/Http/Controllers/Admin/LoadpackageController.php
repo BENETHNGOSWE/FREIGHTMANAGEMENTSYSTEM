@@ -106,7 +106,7 @@ class LoadpackageController extends Controller
                 LoadPackageHelper::updateInvoiceTotals($invoice, $load);
 
                 // Pass the required values to the sendCustomerNotification method.
-                $response = LoadPackageHelper::sendCustomerNotification($customerId, $load->load_no, $client->client_name, $load->load_weight_value, $load->load_price);
+                $response = LoadPackageHelper::sendCustomerNotification($customerId, $load->load_no, $client->client_name, $load->load_weight_value, $load->unittype->unittype_name, $load->id);
 
                 if (!$response['success']) {
                     return redirect()

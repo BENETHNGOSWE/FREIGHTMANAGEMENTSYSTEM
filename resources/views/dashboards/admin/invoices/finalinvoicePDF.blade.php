@@ -335,6 +335,20 @@
             /* Adds space between each paragraph */
         }
 
+         /* Footer absolute positioning */
+        footer {
+            position: absolute;
+            bottom: 100px;
+            left: 20px;
+            right: 20px;
+            padding: 10px 0;
+            border-top: -7em solid #DDD;
+            justify-content: space-between;
+        }
+
+         footer .footer-left {
+            text-align: left;
+        }
 
         @media print {
             * {
@@ -482,28 +496,32 @@
                     <strong>{{ \Carbon\Carbon::now('Africa/Nairobi')->format('F j, Y, g:i A') }}</strong></p>
             </address>
         </header>
-        <hr>
-        <aside style="font-size: 12px; margin-top:-3em">
-            <h4>Terms & Conditions</h4>
-            <div>
-                <p style="margin: 0; padding: 0;"><strong>Delivery Timeline:</strong> Products will be delivered within
-                    7
-                    days of receiving the Local Purchase Order.</p>
-                <p style="margin: 0; padding: 0;"><strong>Payment Terms:</strong> Payment is due 30 days after the
-                    receipt
-                    of the products.</p>
-                <p style="margin: 0; padding: 0;"><strong>Delivery Location:</strong> Products will be delivered to the
-                    address specified in the LPO.</p>
-            </div>
-        </aside>
-        <hr>
-        <aside style="font-size: 10px">
-            <div>
-                <p style="margin: 0; padding: 0;">Golden Tulip Masaki, Coco beach Road, Masaki P.O. Box 1800
-                    Ubungo Dar es salaam, Tanzania | Tel: +255 710 459 064 Email: info@koda_koda.com</p>
 
-            </div>
-        </aside>
+
+
+        <footer>
+            <aside class="footer-left" style="display: inline-block; text-align: left; font-size: 12px; margin-top:-3em">
+                <h4 style="margin-top: 3em" >Terms & Conditions</h4>
+                <div>
+                    <p style="margin: 0; padding: 0;"><strong>Delivery Timeline:</strong> Products will be delivered within
+                        7
+                        days of receiving the Local Purchase Order.</p>
+                    <p style="margin: 0; padding: 0;"><strong>Payment Terms:</strong> Payment is due 30 days after the
+                        receipt
+                        of the products.</p>
+                    <p style="margin: 0; padding: 0;"><strong>Delivery Location:</strong> Products will be delivered to the
+                        address specified in the LPO.</p>
+                </div>
+            </aside>
+            <hr>
+            <aside class="footer-left" style="font-size: 10px">
+                <div>
+                    <p style="margin: 0; padding: 0;">{{ $client->client_address_one}} P.O. Box {{$client->client_fax}}
+                        {{$client->client_city}}, {{$client->client_country}} | Tel: {{$client->client_phonenumber}} Email: {{ $client->client_email}}</p>
+
+                </div>
+            </aside>
+        </footer>
     </div>
 </body>
 
