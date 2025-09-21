@@ -119,6 +119,33 @@
                 </ul>
             </li>
 
+              <li>
+                <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    <span class="nav-text">Financial Reports</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('chiefoperation.list.financialreport') }}">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                            <span>Invoice Report</span>
+                        </a></li>
+
+                </ul>
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('admin.expense.report') }}">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                            <span>Expenses Report</span>
+                        </a></li>
+
+                </ul>
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('sales.list.salesreport') }}">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                            <span>CBM Record</span>
+                        </a></li>
+                </ul>
+            </li>
+
            
 
             <li>

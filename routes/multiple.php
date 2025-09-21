@@ -142,5 +142,42 @@ Route::prefix('/')
         Route::post('/messagecreatemultipe', [App\Http\Controllers\Admin\MessageController::class, 'sendMessageToExistingCustomer'])->name('admin.sendmessage.multiple');
         Route::get('/message-form-multiple', [App\Http\Controllers\Admin\MessageController::class, 'showsendMessageToExistingCustomerform'])->name('admin.message.multiple');
 
+
+
+        // ExpensesCategoryInvoice Manage Here
+        Route::get('categoryexpense', [App\Http\Controllers\Admin\OfficeExpenseCategoryController::class, 'index'])->name('admin.list.categoryexpense');
+        Route::get('categoryexpensecreate', [App\Http\Controllers\Admin\OfficeExpenseCategoryController::class, 'create'])->name('admin.create.categoryexpense');
+        Route::post('categoryexpense/store', [App\Http\Controllers\Admin\OfficeExpenseCategoryController::class, 'store'])->name('admin.store.categoryexpense');
+        Route::get('categoryexpense/edit/{officeexpense}', [App\Http\Controllers\Admin\OfficeExpenseCategoryController::class, 'edit'])->name('admin.edit.categoryexpense');
+        Route::put('categoryexpense/update/{officeexpense}', [App\Http\Controllers\Admin\OfficeExpenseCategoryController::class, 'update'])->name('admin.update.categoryexpense');
+        Route::get('categoryexpense/show/{officeexpense}', [App\Http\Controllers\Admin\OfficeExpenseCategoryController::class, 'show'])->name('admin.show.categoryexpense');
+        Route::delete('categoryexpense/delete/{officeexpense}', [App\Http\Controllers\Admin\OfficeExpenseCategoryController::class, 'delete'])->name('admin.delete.categoryexpense');
+
+
+        // ExpensesInvoice Manage Here
+        Route::get('officeexpense', [App\Http\Controllers\Admin\OfficeExpenseController::class, 'index'])->name('admin.list.officeexpense');
+        Route::get('officeexpensecreate', [App\Http\Controllers\Admin\OfficeExpenseController::class, 'create'])->name('admin.create.officeexpense');
+        Route::post('officeexpense/store', [App\Http\Controllers\Admin\OfficeExpenseController::class, 'store'])->name('admin.store.officeexpense');
+        Route::get('officeexpense/edit/{officeexpense}', [App\Http\Controllers\Admin\OfficeExpenseController::class, 'edit'])->name('admin.edit.officeexpense');
+        Route::put('officeexpense/update/{officeexpense}', [App\Http\Controllers\Admin\OfficeExpenseController::class, 'update'])->name('admin.update.officeexpense');
+        Route::get('officeexpense/show/{officeexpense}', [App\Http\Controllers\Admin\OfficeExpenseController::class, 'show'])->name('admin.show.officeexpense');
+        Route::delete('officeexpense/delete/{officeexpense}', [App\Http\Controllers\Admin\OfficeExpenseController::class, 'delete'])->name('admin.delete.officeexpense');
+        Route::get('invoice/{id}/pdf', [App\Http\Controllers\Admin\OfficeExpenseController::class, 'pdfgenerate'])->name('admin.pdf.generate');
+        Route::get('expense-report', [App\Http\Controllers\Admin\OfficeExpenseController::class, 'expenseReport'])->name('admin.expense.report');
+        Route::get('expense-report/export', [App\Http\Controllers\Admin\OfficeExpenseController::class, 'exportReport'])->name('admin.export.report');
+
+        // Reports Manage Here
+        Route::get('/sales-reports/export', [App\Http\Controllers\Sales\SalesreportController::class, 'exportExcel'])->name('sales.excel.salesreport');
+         Route::get('salesreport', [App\Http\Controllers\Sales\SalesreportController::class, 'index'])->name('sales.list.salesreport');
+        Route::get('salesreportcreate', [App\Http\Controllers\Sales\SalesreportController::class, 'create'])->name('sales.create.salesreport');
+        Route::post('salesreport/store', [App\Http\Controllers\Sales\SalesreportController::class, 'store'])->name('sales.store.salesreport');
+        Route::get('salesreport/edit/{salesreport}', [App\Http\Controllers\Sales\SalesreportController::class, 'edit'])->name('sales.edit.salesreport');
+        Route::put('salesreport/update/{salesreport}', [App\Http\Controllers\Sales\SalesreportController::class, 'update'])->name('sales.update.salesreport');
+        Route::get('salesreport/show/{salesreport}', [App\Http\Controllers\Sales\SalesreportController::class, 'show'])->name('sales.show.salesreport');
+        Route::delete('salesreport/delete/{salesreport}', [App\Http\Controllers\Sales\SalesreportController::class, 'delete'])->name('sales.delete.salesreport');
+
+
+
+
         
     });

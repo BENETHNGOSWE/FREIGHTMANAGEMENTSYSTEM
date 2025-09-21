@@ -63,6 +63,30 @@
 
                 </ul>
             </li>
+
+                  <li>
+                <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    <i class="fas fa-file-invoice"></i>
+                    <span class="nav-text">Expenses</span>
+                </a>
+              
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('admin.list.categoryexpense') }}">
+                            <i class="fa-solid fa-list-ol"></i>
+                            <span>Expenses Category</span>
+                        </a></li>
+
+                </ul>
+
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('admin.list.officeexpense') }}">
+                            <i class="fa-solid fa-list-ol"></i>
+                            <span>Expenses List</span>
+                        </a></li>
+
+                </ul>
+            </li>
+            
             <li>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                     <i class="fas fa-lightbulb"></i>
@@ -90,9 +114,22 @@
                 <ul aria-expanded="false">
                     <li><a href="{{ route('chiefoperation.list.financialreport') }}">
                             <i class="fas fa-file-invoice-dollar"></i>
-                            <span>View Report</span>
+                            <span>Invoice Report</span>
                         </a></li>
 
+                </ul>
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('admin.expense.report') }}">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                            <span>Expenses Report</span>
+                        </a></li>
+
+                </ul>
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('sales.list.salesreport') }}">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                            <span>CBM Record</span>
+                        </a></li>
                 </ul>
             </li>
 

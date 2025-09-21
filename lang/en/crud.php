@@ -218,6 +218,9 @@ return [
         ],
     ],
 
+    
+    
+
     'loadpackagetypes' => [
         'name' => 'Load Types',
         'index_title' => 'Load Types List',
@@ -506,6 +509,33 @@ return [
         'show_title' => 'Show Role',
         'inputs' => [
             'name' => 'Name',
+        ],
+    ],
+
+    'categoryexpense' => [
+        'name' => 'Expense Category',
+        'index_title' => 'Expense Category List',
+        'create_title' => 'Create Expense Category',
+        'edit_title' => 'Edit Expense Category',
+        'show_title' => 'Show Expense Category',
+        'inputs' => [
+            'name' => 'Expense Category Name',
+        ],
+    ],
+
+
+    'officeexpense' => [
+        'name' => 'Office Expenses',
+        'index_title' => 'Office Expenses List',
+        'new_title' => 'New Office Expenses',
+        'create_title' => 'Create Office Expenses',
+        'edit_title' => 'Edit Office Expenses',
+        'show_title' => 'Show Office Expenses',
+        'inputs' => [
+            'expenses_description' => 'Expense Description',
+            'expenses_cost' => 'Expense Cost',
+            'status' => 'Expenses Status',
+            'office_expense_categories_id'=> 'Expenses Category',
         ],
     ],
 

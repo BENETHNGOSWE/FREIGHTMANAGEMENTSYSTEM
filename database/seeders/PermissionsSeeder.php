@@ -17,7 +17,7 @@ class PermissionsSeeder extends Seeder
         $actions = ['list', 'view', 'create', 'update', 'delete'];
         $models = ['banks', 'branches', 'containers', 'clients', 'client_admins', 'clientpayments', 'client_types', 'companyinvoicedetails',
                     'countries', 'customers', 'customercategories', 'customerleads', 'client_sendername', 'derivery_orders', 'messages', 'modules', 'packages', 
-                    'loadpackagetypes', 'loadpackages', 'staffs', 'staff_types', 'payments', 'role', 'sendernames', 'subscriptions', 'subscription_invoices',
+                    'loadpackagetypes', 'loadpackages', 'office_expense_categories', 'office_expenses', 'staffs', 'staff_types', 'payments', 'role', 'sendernames', 'subscriptions', 'subscription_invoices',
                     'subscription_tokens', 'sales_reports',  'userroles', 'roles', 'permissions', 'users', 'unit_types', 'invoices', 'invoice_loads'];
 
         foreach ($models as $model) {
@@ -46,6 +46,9 @@ class PermissionsSeeder extends Seeder
             'view invoices', 'create invoices', 'update invoices', 'delete invoices',
             'view invoice_loads', 'create invoice_loads', 'update invoice_loads', 'delete invoice_loads',
             'view companyinvoicedetails', 'create companyinvoicedetails', 'update companyinvoicedetails', 'delete companyinvoicedetails',
+            'view office_expense_categories', 'create office_expense_categories', 'update office_expense_categories', 'delete office_expense_categories',
+            'view office_expenses', 'create office_expenses', 'update office_expenses', 'delete office_expenses',
+            'view sales_reports', 'create sales_reports', 'update sales_reports', 'delete sales_reports',
         ]);
 
         $chiefoperation = Role::firstOrCreate(['name' => 'chiefoperation', 'guard_name' => 'web']);
@@ -65,6 +68,9 @@ class PermissionsSeeder extends Seeder
             'view invoices', 'create invoices', 'update invoices', 'delete invoices',
             'view invoice_loads', 'create invoice_loads', 'update invoice_loads', 'delete invoice_loads',
             'view companyinvoicedetails', 'create companyinvoicedetails', 'update companyinvoicedetails', 'delete companyinvoicedetails',
+            'view office_expense_categories', 'create office_expense_categories', 'update office_expense_categories', 'delete office_expense_categories',
+            'view office_expenses', 'create office_expenses', 'update office_expenses', 'delete office_expenses',
+            'view sales_reports', 'create sales_reports', 'update sales_reports', 'delete sales_reports',
         ]);
 
 
@@ -110,6 +116,8 @@ class PermissionsSeeder extends Seeder
             'view customercategories', 'create customercategories', 'update customercategories', 'delete customercategories',
             'view customerleads', 'create customerleads', 'update customerleads', 'delete customerleads',
             'view messages', 'create messages', 'update messages', 'delete messages',
+            'view office_expense_categories', 'create office_expense_categories', 'update office_expense_categories',
+            'view office_expenses', 'create office_expenses', 'update office_expenses',
         ]);
 
         $Cashier = Role::firstOrCreate(['name' => 'Cashier', 'guard_name' => 'web']);
@@ -124,6 +132,8 @@ class PermissionsSeeder extends Seeder
             'view customercategories', 'create customercategories', 'update customercategories', 'delete customercategories',
             'view customerleads', 'create customerleads', 'update customerleads', 'delete customerleads',
             'view messages', 'create messages', 'update messages', 'delete messages',
+            'view office_expense_categories', 'create office_expense_categories', 'update office_expense_categories',
+            'view office_expenses', 'create office_expenses', 'update office_expenses',
         ]);
 
         $kodasmspackage = Role::firstOrCreate(['name' => 'kodasmspackage', 'guard_name' => 'web']);

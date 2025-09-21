@@ -155,6 +155,23 @@ function return_message_status_badge($status)
     return $badge;
 }
 
+function return_expenses_status_badge($status)
+{
+    switch ($status) {
+        case '2':
+            $badge = '<span class="badge badge-warning">Not Approved</span>';
+            break;
+            
+        case '1':
+            $badge = '<span class="badge badge-success">Approved</span>';
+            break;
+        default:
+            $badge = '<span class="badge badge-warning">Pending</span>';
+    }
+
+    return $badge;
+}
+
 
 function user_status($status)
 {
