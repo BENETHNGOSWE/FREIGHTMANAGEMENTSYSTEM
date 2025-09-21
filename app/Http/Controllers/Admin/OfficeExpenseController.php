@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Client;
 use App\Models\ClientAdmin;
-use App\Models\officeExpense;
+use App\Models\OfficeExpense;
 use App\Models\officeExpenseCategory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
