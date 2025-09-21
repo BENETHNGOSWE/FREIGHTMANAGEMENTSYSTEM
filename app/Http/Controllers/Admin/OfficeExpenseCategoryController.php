@@ -37,7 +37,7 @@ class OfficeExpenseCategoryController extends Controller
 
     public function create()
     {
-        $this->authorize('create', officeExpenseCategory::class);
+        // $this->authorize('create', officeExpenseCategory::class);
         return view('dashboards.admin.expensescategory.create', $this->data);
     }
 
@@ -102,3 +102,4 @@ class OfficeExpenseCategoryController extends Controller
         return redirect()->route('admin.list.categoryexpense')->with('success', 'Expense Category Successfuly deleted');
     }
 }
+
