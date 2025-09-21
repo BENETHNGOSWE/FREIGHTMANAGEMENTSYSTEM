@@ -50,7 +50,7 @@ class OfficeExpenseCategoryController extends Controller
 
     public function store(Request $request)
     {
-        $this->authorize('create', officeExpenseCategory::class);
+        // $this->authorize('create', officeExpenseCategory::class);
         $validated = $this->validated_expenses($request);
         try {
             DB::beginTransaction();
@@ -69,21 +69,21 @@ class OfficeExpenseCategoryController extends Controller
 
     public function show(Request $request, officeExpenseCategory $officeexpense): View
     {
-        $this->authorize('view', $officeexpense);
+        // $this->authorize('view', $officeexpense);
         $this->data['officeexpense'] = $officeexpense;
         return view('dashboards.admin.expensescategory.show', $this->data);
     }
 
     public function edit(officeExpenseCategory $officeexpense)
     {
-        $this->authorize('update', $officeexpense);
+        // $this->authorize('update', $officeexpense);
         $this->data['officeexpense'] = $officeexpense;
         return view('dashboards.admin.expensescategory.edit', $this->data);
     }
 
     public function update(Request $request, officeExpenseCategory $officeexpense)
     {
-        $this->authorize('update', $officeexpense);
+        // $this->authorize('update', $officeexpense);
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
         ]);
@@ -97,7 +97,7 @@ class OfficeExpenseCategoryController extends Controller
         $officeexpense = officeExpenseCategory::where('id', $officeexpense)
             ->where('client_id', $this->fms_id)
             ->first();
-        $this->authorize('delete', $officeexpense);
+        // $this->authorize('delete', $officeexpense);
         $officeexpense->delete();
         return redirect()->route('admin.list.categoryexpense')->with('success', 'Expense Category Successfuly deleted');
     }
