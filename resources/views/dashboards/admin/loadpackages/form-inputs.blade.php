@@ -82,7 +82,7 @@
     <!-- Weight Value Field (hidden by default, shown when unit type is selected) -->
     <x-inputs.group class="col-sm-4 weight-value-group" style="display: none !important">
         <x-inputs.number name="load_weight_value[{{ $index }}]" label="Unit Value" :value="old('load_weight_value.' . $index, $editing ? $load->load_weight_value : '')"
-             min="0" max="10000" placeholder="Enter Unit Value (e.g., 0.0000067)" required step="0.1"
+             min="0" max="10000" placeholder="Enter Unit Value (e.g., 0.0000067)" required step="any"
             disabled>
         </x-inputs.number>
     </x-inputs.group>
