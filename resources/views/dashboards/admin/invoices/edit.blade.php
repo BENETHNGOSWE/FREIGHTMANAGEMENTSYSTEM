@@ -21,19 +21,19 @@
                             @error('invoice_no') <div class="text-danger">{{ $message }}</div> @enderror
                         </div>
                     </div>
-                    @if($canUpdateInvoiceStatus)
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="status">Invoice Status</label>
-                                <select name="status" class="form-control">
-                                    <option value="0" {{ $invoice->status == 0 ? 'selected' : '' }}>Pending</option>
-                                    <option value="2" {{ $invoice->status == 2 ? 'selected' : '' }}>Partial Paid</option>
-                                    <option value="1" {{ $invoice->status == 1 ? 'selected' : '' }}>Full Paid</option>
-                                </select>
-                                @error('status') <div class="text-danger">{{ $message }}</div> @enderror
-                            </div>
-                        </div>
-                    @endif    
+                   <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="status">Invoice Status</label>
+                        <select name="status" class="form-control" 
+                            @if(!$canUpdateInvoiceStatus) disabled @endif>
+                            <option value="0" {{ $invoice->status == 0 ? 'selected' : '' }}>Pending</option>
+                            <option value="2" {{ $invoice->status == 2 ? 'selected' : '' }}>Partial Paid</option>
+                            <option value="1" {{ $invoice->status == 1 ? 'selected' : '' }}>Full Paid</option>
+                        </select>
+                        @error('status') <div class="text-danger">{{ $message }}</div> @enderror
+                    </div>
+                </div>
+
 
                     <!-- Display load_weight_value for each related load -->
                     <div class="col-md-12">

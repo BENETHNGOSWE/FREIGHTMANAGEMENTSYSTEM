@@ -66,14 +66,26 @@ class InvoiceController extends Controller
         return view('dashboards.admin.invoices.edit', $this->data);
     }
 
-    public function update(Request $request, Invoice $invoice)
+   public function update(Request $request, Invoice $invoice)
     {
-        $request->validate([
+        $rolesAllowedToUpdateInvoiceStatus = ['admin', 'chiefoperation'];
+        $canUpdateInvoiceStatus = auth()->user()->hasAnyRole($rolesAllowedToUpdateInvoiceStatus);
+
+        // build validation rules
+        $rules = [
             'invoice_no' => 'required|string|unique:invoices,invoice_no,' . $invoice->id,
-            'status' => 'required|in:0,1,2',
             'cbm_price' => 'nullable|numeric|min:0',
             'exchange_rate' => 'nullable|numeric|min:0',
-        ]);
+        ];
+
+        if ($canUpdateInvoiceStatus) {
+            $rules['status'] = 'required|in:0,1,2';
+        }
+
+        $request->validate($rules);
+
+        // If not allowed, lock status to old value
+        $status = $canUpdateInvoiceStatus ? $request->status : $invoice->status;
 
         // Load related invoice_loads to calculate total CBM
         $invoice->load('invoiceLoads.loadPackage');
@@ -82,10 +94,10 @@ class InvoiceController extends Controller
         $exchangeRate = $request->input('exchange_rate', $invoice->exchange_rate ?? 1);
         $totalAmount = $loadWeightValue * $cbmPrice * $exchangeRate;
 
-        // Update the invoice
+        // Update invoice
         $invoice->update([
             'invoice_no' => $request->invoice_no,
-            'status' => $request->status,
+            'status' => $status,
             'cbm_price' => $cbmPrice,
             'exchange_rate' => $exchangeRate,
             'total_amount' => $totalAmount,

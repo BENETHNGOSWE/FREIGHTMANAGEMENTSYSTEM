@@ -13,14 +13,16 @@
     </x-inputs.group>
 
     <x-inputs.group class="col-sm-6">
-        <x-inputs.text
-            name="expenses_cost"
-            label="Expenses Amount Cost"
-            :value="old('expenses_cost', ($editing ? $officeexpense->expenses_cost : ''))"
-            maxlength="255"
-            placeholder="Expenses Amount Cost"
-        ></x-inputs.text>
-    </x-inputs.group>
+    <x-inputs.number
+        name="expenses_cost"
+        label="Expense Amount"
+        :value="old('expenses_cost', ($editing ? $officeexpense->expenses_cost : ''))"
+        maxlength="255"
+        placeholder="e.g 50.50"
+        min="0"
+        step="0.01"
+    ></x-inputs.number>
+</x-inputs.group>
 
   <x-inputs.group class="col-sm-4 container-group">
     <x-inputs.select name="office_expense_categories_id" label="Expenses Category">
