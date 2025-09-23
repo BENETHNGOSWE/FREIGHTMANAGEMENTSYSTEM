@@ -144,7 +144,9 @@ class OfficeExpenseController extends Controller
         }
 
         $officeExpenses = $query->get();
-        $totalExpenses = $officeExpenses->sum('expenses_cost');
+        $totalExpenses = $officeExpenses->sum(function ($item) {
+            return (float) str_replace(',', '', $item->expenses_cost);
+        });
 
         $categories = officeExpenseCategory::pluck('name', 'id');
 
