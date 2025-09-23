@@ -80,7 +80,7 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $expense->expenses_description }}</td>
-                                        <td>{{ number_format( $expense->expenses_cost, 2) }}</td>
+                                        <td>{{ number_format((float) $expense->expenses_cost, 2) }}</td>
                                         <td>{{ $expense->category->name ?? '-' }}</td>
                                         <td>
                                             @if($expense->status == 0)
@@ -104,7 +104,7 @@
                             <tfoot>
                                 <tr>
                                     <th colspan="2">Total Expenses</th>
-                                    <th colspan="4">{{ number_format( $totalExpenses, 2 ) }}</th>
+                                    <th colspan="4">{{ number_format((float) $totalExpenses, 2 ) }}</th>
                                 </tr>
                             </tfoot>
                         </table>
