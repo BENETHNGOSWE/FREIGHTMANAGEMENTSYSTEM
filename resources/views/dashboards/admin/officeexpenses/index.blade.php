@@ -40,7 +40,7 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ strtoupper($container->expenses_description) ?? '-' }}</td>
-                                        <td>{{ number_format($container->expenses_cost, 2) ?? '-' }}</td>
+                                        <td>{{ number_format($container->expenses_cost) ?? '-' }}</td>
                                         <td>{!! return_expenses_status_badge($container->status) !!}</td>
                                         <td class="text-center" style="width: 180px;">
                                             <div role="group" aria-label="Row Actions" class="btn-group">
