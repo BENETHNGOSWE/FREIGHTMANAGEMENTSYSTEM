@@ -20,7 +20,6 @@
         maxlength="255"
         placeholder="e.g 50.50"
         min="0"
-        step="0.01"
     ></x-inputs.number>
 </x-inputs.group>
 
