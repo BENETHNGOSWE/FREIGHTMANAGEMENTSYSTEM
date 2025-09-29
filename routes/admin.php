@@ -6,7 +6,7 @@ Route::prefix('/')
     ->group(function () {
 
         Route::get('/validate_token', [\App\Http\Controllers\Admin\AdminDashboardController::class, 'validate_subscription_token'])->name('admin.validate_subscription_token');
-
+        Route::resource('roles', App\Http\Controllers\RoleController::class);
       
         // Branches Manage Here
         Route::get('branch', [App\Http\Controllers\Admin\BranchController::class, 'index'])->name('admin.list.branch');

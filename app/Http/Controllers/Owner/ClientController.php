@@ -112,7 +112,7 @@ class ClientController extends Controller
                     $user->$value = $userData[$value];
                 }
                 $user->save();
-                // $user->assignRole(Role::findByName('admin'));
+                $user->assignRole(Role::findByName('admin'));
 
                 if ($user) {
                     $adminData = [

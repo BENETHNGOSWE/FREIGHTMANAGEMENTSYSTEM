@@ -17,16 +17,16 @@ Route::prefix('/')
         Route::get('impersonate/{client}', [App\Http\Controllers\Owner\ClientController::class, 'impersonate'])->name('impersonate.clients');
 
         
-        Route::resource('permissions', App\Http\Controllers\Permission\PermissionController::class);
-        Route::get('permissions/{permissionId}/delete', [App\Http\Controllers\Permission\PermissionController::class, 'destroy']);
+        Route::resource('permissions', App\Http\Controllers\PermissionController::class);
+        Route::get('permissions/{permissionId}/delete', [App\Http\Controllers\PermissionController::class, 'destroy']);
 
-        Route::resource('roles', App\Http\Controllers\Roles\RoleController::class);
-        Route::get('roles/{roleId}/delete', [App\Http\Controllers\Roles\RoleController::class, 'destroy']);
-        Route::get('roles/{roleId}/give-permissions', [App\Http\Controllers\Roles\RoleController::class, 'addPermissionToRole']);
-        Route::put('roles/{roleId}/give-permissions', [App\Http\Controllers\Roles\RoleController::class, 'givePermissionToRole']);
+        // Route::resource('roles', App\Http\Controllers\RoleController::class);
+        Route::get('roles/{roleId}/delete', [App\Http\Controllers\RoleController::class, 'destroy']);
+        Route::get('roles/{roleId}/give-permissions', [App\Http\Controllers\RoleController::class, 'addPermissionToRole']);
+        Route::put('roles/{roleId}/give-permissions', [App\Http\Controllers\RoleController::class, 'givePermissionToRole']);
 
-        Route::resource('users', App\Http\Controllers\User\UserController::class);
-        Route::get('users/{userId}/delete', [App\Http\Controllers\User\UserController::class, 'destroy']);
+        Route::resource('users', App\Http\Controllers\UserController::class);
+        Route::get('users/{userId}/delete', [App\Http\Controllers\UserController::class, 'destroy']);
 
         // Package Manage Here
         Route::get('package', [App\Http\Controllers\Owner\PackageController::class, 'index'])->name('owner.list.package');

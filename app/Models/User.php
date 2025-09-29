@@ -30,6 +30,7 @@ class User extends Authenticatable
     
 
     protected $searchableFields = ['*'];
+    protected $guard_name = 'web';
 
     protected $hidden = ['password', 'remember_token'];
 
@@ -37,6 +38,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function getRoleNameAttribute()
+    {
+        return $this->roles->pluck('name')->first();
+    }
+
+  
  
     public function country()
     {

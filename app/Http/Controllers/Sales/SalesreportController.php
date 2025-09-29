@@ -57,8 +57,8 @@ class SalesreportController extends Controller
 
         $this->data['customers'] = Customer::where('client_id', $this->fms_id)->pluck('customer_firstname', 'id');
         $this->data['staffs'] = Staff::where('client_id', $this->fms_id)
-            ->whereHas('stafftype', function ($query) {
-                $query->where('staff_type_name', 'salesperson');
+            ->whereHas('user.roles', function ($query) {
+                $query->where('name', 'salesperson');
             })
             ->pluck('staff_firstname', 'id');
 

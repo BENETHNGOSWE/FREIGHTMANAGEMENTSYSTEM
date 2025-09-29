@@ -25,6 +25,7 @@ return [
          */
 
         'role' => Spatie\Permission\Models\Role::class,
+        // 'role' => \App\Models\ClientRole::class,
 
     ],
 
@@ -112,6 +113,8 @@ return [
      */
 
     'teams' => false,
+    // 'team_foreign_key' => 'client_id',
+
 
     /*
      * When set to true, the required permission names are added to the exception

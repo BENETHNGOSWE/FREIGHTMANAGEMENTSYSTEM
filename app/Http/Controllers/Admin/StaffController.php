@@ -13,6 +13,7 @@ use App\Models\Staff;
 use App\Models\User;
 use App\Models\Branch;
 use App\Models\ClientAdmin;
+use Spatie\Permission\Models\Role;
 
 class StaffController extends Controller
 {
@@ -47,21 +48,21 @@ class StaffController extends Controller
         $this->data['page_title'] = 'Create Staff';
         $clients = Client::pluck('client_name', 'id');
 
-        if (auth()->user()->hasRole('super_admin')) {
-            $staffTypes = StaffType::pluck('staff_type_name', 'id');
-        } else {
-            $staffTypes = StaffType::whereNotIn('staff_type_name', ['kodasmspackage', 'admin'])->pluck('staff_type_name', 'id');
-        }
+        $clientID = auth()->user()->client_id;
+
+        $roles = Role::where('client_id', $clientID)
+            ->orWhereNull('client_id')
+            ->pluck('name', 'id');
 
         $branches = Branch::where('client_id', $this->fms_id)->pluck('branch_name', 'id');
         $users = User::pluck('id');
 
         $this->data['clients'] = $clients;
-        $this->data['staffTypes'] = $staffTypes;
+        $this->data['roles'] = $roles;
         $this->data['branches'] = $branches;
         $this->data['users'] = $users;
 
-        return view('dashboards.admin.staffs.create', $this->data);
+        return view('dashboards.admin.staffs.create', $this->data);  
     }
 
     private function rules($id = null)
@@ -73,7 +74,7 @@ class StaffController extends Controller
             'staff_gender' => ['required', 'max:255', 'string'],
             'staff_email' => 'required|email|unique:users,email',
             'phone' => ['required', 'max:255', 'string', 'unique:users,phone' . ($id ? ',' . $id : '')],
-            'staff_type_id' => ['required', 'max:255', 'exists:staff_types,id'],
+            'role_id' => ['required', 'max:255', 'exists:roles,id'],
             'branch_id' => ['required', 'max:255', 'exists:branches,id'],
             'staff_address' => ['required', 'max:255', 'string'],
             'password' => 'nullable|string|min:8|confirmed',
@@ -86,39 +87,49 @@ class StaffController extends Controller
         return $rules;
     }
 
+
     public function store(Request $request)
     {
         DB::beginTransaction();
 
         try {
-            $validated = $this->validate($request, $this->rules());
-            $staff_type = StaffType::find($validated['staff_type_id']);
 
-            if (!$staff_type) {
-                return redirect()->back()->with('error', 'Invalid staff type selected');
+            $validated = $this->validate($request, $this->rules());
+
+            // Validate role against client_id scope
+            $role = Role::where('id', $request->role_id)
+                ->where(function ($query) {
+                    $query->where('client_id', $this->fms_id)
+                        ->orWhereNull('client_id');
+                })
+                ->first();
+
+            if (!$role) {
+                return redirect()->back()->with('error', 'Invalid role selected');
             }
 
-            $staff_type_name = $staff_type->staff_type_name;
-            $name = $validated['staff_firstname'] . ' ' . $validated['staff_middlename'] . ' ' . $validated['staff_lastname'];
+            $name = trim($validated['staff_firstname'].' '.$validated['staff_middlename'].' '.$validated['staff_lastname']);
             $password = Hash::make('123456');
 
             $user = User::create([
-                'name' => $name,
-                'email' => $validated['staff_email'],
-                'phone' => $validated['phone'],
-                'password' => $password,
-                'user_type' => $staff_type_name,
+                'name'      => $name,
+                'email'     => $validated['staff_email'],
+                'phone'     => $validated['phone'],
+                'password'  => $password,
                 'client_id' => $this->fms_id,
             ]);
 
-            $user->assignRole(\Spatie\Permission\Models\Role::findByName($staff_type_name));
+            // Assign role directly
+            $user->syncRoles($role->name);
 
+            // Generate staff number & save staff record
             $id_number = createStaffidNumber($this->fms_id);
-            $validated['user_id'] = $user->id;
-            $validated['staff_no'] = $id_number;
+            $validated['user_id']   = $user->id;
+            $validated['staff_no']  = $id_number;
             $validated['client_id'] = $user->client_id;
+            unset($validated['role_id']);
 
-            $employee = Staff::create($validated);
+            Staff::create($validated);
 
             DB::commit();
 
@@ -127,11 +138,12 @@ class StaffController extends Controller
             DB::rollBack();
             \Log::error('Error creating employee: ' . $e->getMessage());
 
-            return redirect()
-                ->back()
-                ->with('error', 'Something went wrong: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Something went wrong: ' . $e->getMessage());
         }
     }
+
+  
+    
 
     public function show(Request $request, Staff $staff)
     {
@@ -297,3 +309,57 @@ class StaffController extends Controller
         }
     }
 }
+
+
+
+
+
+
+
+  // public function store(Request $request)
+    // {
+    //     DB::beginTransaction();
+
+    //     try {
+    //         $validated = $this->validate($request, $this->rules());
+    //         $staff_type = StaffType::find($validated['staff_type_id']);
+
+    //         if (!$staff_type) {
+    //             return redirect()->back()->with('error', 'Invalid staff type selected');
+    //         }
+
+    //         $staff_type_name = $staff_type->staff_type_name;
+    //         $name = $validated['staff_firstname'] . ' ' . $validated['staff_middlename'] . ' ' . $validated['staff_lastname'];
+    //         $password = Hash::make('123456');
+
+    //         $user = User::create([
+    //             'name' => $name,
+    //             'email' => $validated['staff_email'],
+    //             'phone' => $validated['phone'],
+    //             'password' => $password,
+    //             'user_type' => $staff_type_name,
+    //             'client_id' => $this->fms_id,
+    //         ]);
+
+    //         $user->assignRole(\Spatie\Permission\Models\Role::findByName($staff_type_name));
+
+    //         $id_number = createStaffidNumber($this->fms_id);
+    //         $validated['user_id'] = $user->id;
+    //         $validated['staff_no'] = $id_number;
+    //         $validated['client_id'] = $user->client_id;
+
+    //         $employee = Staff::create($validated);
+    //         // dd($employee);
+
+    //         DB::commit();
+
+    //         return redirect()->route('admin.list.staff')->with('success', 'Employee added successfully');
+    //     } catch (\Exception $e) {
+    //         DB::rollBack();
+    //         \Log::error('Error creating employee: ' . $e->getMessage());
+
+    //         return redirect()
+    //             ->back()
+    //             ->with('error', 'Something went wrong: ' . $e->getMessage());
+    //     }
+    // }

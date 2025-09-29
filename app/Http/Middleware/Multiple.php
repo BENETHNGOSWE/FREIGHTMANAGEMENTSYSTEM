@@ -13,14 +13,17 @@ class Multiple
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, $permission = null): Response
     {
-        $allowedRoles = ['manager', 'admin', 'kodasmspackage', 'chiefoperation', 'godownmanager', 'salesperson', 'SalesManager', 'receptionist', 'Cashier'];
-
-        if (auth()->check() && auth()->user()->hasAnyRole($allowedRoles)) {
-            return $next($request);
+        if (!auth()->check()) {
+            abort(403, 'Unauthorized access');
         }
 
-        abort(403, 'Unauthorized access.');
+        if ($permission && !auth()->user()->can($permission)) {
+            abort(403, 'You do not have permission to view this resource.');
+        }
+
+        return $next($request);
     }
+
 }

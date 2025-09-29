@@ -3,7 +3,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
 Route::prefix('/')
-    ->middleware('auth')
+    ->middleware('multiple')
     ->group(function () {
 
           // Container Manage Here
@@ -175,6 +175,9 @@ Route::prefix('/')
         Route::put('salesreport/update/{salesreport}', [App\Http\Controllers\Sales\SalesreportController::class, 'update'])->name('sales.update.salesreport');
         Route::get('salesreport/show/{salesreport}', [App\Http\Controllers\Sales\SalesreportController::class, 'show'])->name('sales.show.salesreport');
         Route::delete('salesreport/delete/{salesreport}', [App\Http\Controllers\Sales\SalesreportController::class, 'delete'])->name('sales.delete.salesreport');
+
+
+        Route::get('rolewithpermission/{roleId}/', [App\Http\Controllers\RoleController::class, 'roleByPermission'])->name('all.permission.role');
 
 
 

@@ -18,7 +18,7 @@ class PermissionsSeeder extends Seeder
         $models = ['banks', 'branches', 'containers', 'clients', 'client_admins', 'clientpayments', 'client_types', 'companyinvoicedetails',
                     'countries', 'customers', 'customercategories', 'customerleads', 'client_sendername', 'derivery_orders', 'messages', 'modules', 'packages', 
                     'loadpackagetypes', 'loadpackages', 'office_expense_categories', 'office_expenses', 'staffs', 'staff_types', 'payments', 'role', 'sendernames', 'subscriptions', 'subscription_invoices',
-                    'subscription_tokens', 'sales_reports',  'userroles', 'roles', 'permissions', 'users', 'unit_types', 'invoices', 'invoice_loads'];
+                    'subscription_tokens', 'sales_reports',  'userroles', 'roles', 'permissions', 'users', 'unit_types', 'invoices', 'invoice_loads', 'kodapackages', 'customermessages','demorequests', 'settings','clientactivenames'];
 
         foreach ($models as $model) {
             foreach ($actions as $action) {
@@ -37,9 +37,6 @@ class PermissionsSeeder extends Seeder
             'view containers', 'create containers', 'update containers', 'delete containers',
             'view customers', 'create customers', 'update customers', 'delete customers',
             'view staffs', 'update staffs',
-            'view customercategories', 'create customercategories', 'update customercategories', 'delete customercategories',
-            'view customerleads', 'create customerleads', 'update customerleads', 'delete customerleads',
-            'view messages', 'create messages', 'update messages', 'delete messages',
             'view loadpackagetypes', 'create loadpackagetypes', 'update loadpackagetypes', 'delete loadpackagetypes',
             'view loadpackages', 'create loadpackages', 'update loadpackages', 'delete loadpackages',
             'view unit_types', 'create unit_types', 'update unit_types', 'delete unit_types',
@@ -61,7 +58,6 @@ class PermissionsSeeder extends Seeder
             'view customers', 'create customers', 'update customers', 'delete customers',
             'view customercategories', 'create customercategories', 'update customercategories', 'delete customercategories',
             'view customerleads', 'create customerleads', 'update customerleads', 'delete customerleads',
-            'view messages', 'create messages', 'update messages', 'delete messages',
             'view loadpackagetypes', 'create loadpackagetypes', 'update loadpackagetypes', 'delete loadpackagetypes',
             'view loadpackages', 'create loadpackages', 'update loadpackages', 'delete loadpackages',
             'view unit_types', 'create unit_types', 'update unit_types', 'delete unit_types',
@@ -70,20 +66,21 @@ class PermissionsSeeder extends Seeder
             'view companyinvoicedetails', 'create companyinvoicedetails', 'update companyinvoicedetails', 'delete companyinvoicedetails',
             'view office_expense_categories', 'create office_expense_categories', 'update office_expense_categories', 'delete office_expense_categories',
             'view office_expenses', 'create office_expenses', 'update office_expenses', 'delete office_expenses',
-            'view sales_reports', 'create sales_reports', 'update sales_reports', 'delete sales_reports',
         ]);
 
 
         $godownmanager = Role::firstOrCreate(['name' => 'godownmanager', 'guard_name' => 'web']);
         $godownmanager->syncPermissions([
-           
-            'view customers',
-            'view customercategories',
-            'view loadpackagetypes',
-            'view loadpackages',
-            'view invoices', 
-            'view invoice_loads',
             'view derivery_orders', 'create derivery_orders', 'update derivery_orders', 'delete derivery_orders',
+        ]);
+
+        $hr = Role::firstOrCreate(['name' => 'hr', 'guard_name' => 'web']);
+        $hr->syncPermissions([
+            'view derivery_orders', 'create derivery_orders', 'update derivery_orders', 'delete derivery_orders',
+            'view branches', 'create branches', 'update branches', 'delete branches',
+            'view containers', 'create containers', 'update containers', 'delete containers',
+            'view customers', 'create customers', 'update customers', 'delete customers',
+            'view staffs', 'create staffs', 'update staffs', 'delete staffs',
         ]);
 
         $salesperson = Role::firstOrCreate(['name' => 'salesperson', 'guard_name' => 'web']);
@@ -117,7 +114,6 @@ class PermissionsSeeder extends Seeder
             'view customerleads', 'create customerleads', 'update customerleads', 'delete customerleads',
             'view messages', 'create messages', 'update messages', 'delete messages',
             'view office_expense_categories', 'create office_expense_categories', 'update office_expense_categories',
-            'view office_expenses', 'create office_expenses', 'update office_expenses',
         ]);
 
         $Cashier = Role::firstOrCreate(['name' => 'Cashier', 'guard_name' => 'web']);
@@ -145,7 +141,17 @@ class PermissionsSeeder extends Seeder
         ]);
 
         $admin = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
-        $admin->syncPermissions(Permission::all()->except(['create clients', 'update clients', 'delete clients', 'create clientadmins', 'update clientadmins', 'delete clientadmins']));
+        $admin->syncPermissions(
+            Permission::all()->reject(function ($permission) {
+                return str_contains($permission->name, 'clients') 
+                    || str_contains($permission->name, 'client_admins')
+                    || str_contains($permission->name, 'sendernames')
+                    || str_contains($permission->name, 'kodapackages')
+                    || str_contains($permission->name, 'customermessages')
+                    || str_contains($permission->name, 'demorequests')
+                    ;
+            })
+        );
 
         $super_admin = Role::firstOrCreate(['name' => 'owner', 'guard_name' => 'web'], ['is_super_admin' => true]);
         $super_admin->syncPermissions(Permission::all());

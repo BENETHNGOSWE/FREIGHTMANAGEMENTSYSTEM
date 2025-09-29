@@ -52,14 +52,16 @@
         </x-inputs.select>
     </x-inputs.group>
 
-    <x-inputs.group class="col-sm-4">
-        <x-inputs.select name="staff_type_id" label="Staff Type" required>
-            @php $selected = old('staff_type_id', ($editing ? $staff->staff_type_id : '')) @endphp
+     <x-inputs.group class="col-sm-4">
+        <x-inputs.select name="role_id" label="Staff Type" required>
+            @php $selected = old('role_id', ($editing ? $staff->role_id : '')) @endphp
             <option disabled {{ empty($selected) ? 'selected' : '' }}>Please select the Staff Type</option>
-            @foreach ($staffTypes as $value => $label)
+            @foreach ($roles as $value => $label)
                 <option value="{{ $value }}" {{ $selected == $value ? 'selected' : '' }}>{{ $label }}
                 </option>
             @endforeach
         </x-inputs.select>
     </x-inputs.group>
+
+  
 </div>

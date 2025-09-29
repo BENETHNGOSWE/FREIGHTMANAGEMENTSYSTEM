@@ -7,18 +7,18 @@ use Spatie\Permission\Models\Permission;
 
 class PermissionController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('permission:view permission', ['only' => ['index']]);
-        $this->middleware('permission:create permission', ['only' => ['create','store']]);
-        $this->middleware('permission:update permission', ['only' => ['update','edit']]);
-        $this->middleware('permission:delete permission', ['only' => ['destroy']]);
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('permission:view permission', ['only' => ['index']]);
+    //     $this->middleware('permission:create permission', ['only' => ['create','store']]);
+    //     $this->middleware('permission:update permission', ['only' => ['update','edit']]);
+    //     $this->middleware('permission:delete permission', ['only' => ['destroy']]);
+    // }
 
     public function index()
     {
         $permissions = Permission::get();
-        return view('role-permission.permission.index', ['permissions' => $permissions]);
+        return view('dashboards.owner.roles_permission.index_permission', ['permissions' => $permissions]);
     }
 
     public function create()

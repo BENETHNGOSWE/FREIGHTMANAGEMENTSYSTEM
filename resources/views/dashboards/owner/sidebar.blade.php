@@ -81,10 +81,25 @@
         </li>
        
         <li>
-          <a class="has-arrow ai-icon" href="$#" aria-expanded="false">
+          <a class="has-arrow ai-icon" href="#" aria-expanded="false">
             <i class="fa fa-cog"></i>
             <span class="nav-text">Settings</span>
           </a>
+          <ul aria-expanded="false">
+                    <li><a href="{{ route('roles.index') }}">
+                            <i class="fas fa-credit-card"></i>
+                            <span>Roles</span>
+                        </a></li>
+
+                </ul>
+
+          <ul aria-expanded="false">
+                    <li><a href="{{ route('permissions.index') }}">
+                            <i class="fas fa-credit-card"></i>
+                            <span>Permissions</span>
+                        </a></li>
+
+                </ul>      
         </li>
 
         {{-- <li>

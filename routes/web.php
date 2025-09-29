@@ -66,8 +66,8 @@ Route::prefix('/')
           Route::get('profile-show/{clientadmin}', [App\Http\Controllers\Admin\AdminDashboardController::class, 'show'])->name('admin.show.profile');
   
 
-        Route::resource('roles', RoleController::class);
-        Route::resource('permissions', PermissionController::class);
+        // Route::resource('roles', RoleController::class);
+        // Route::resource('permissions', PermissionController::class);
 
         Route::resource('banks', BankController::class);
         Route::resource('branches', BranchController::class);

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\View\ViewServiceProvider;
 
 return [
 
@@ -171,6 +172,8 @@ return [
 
         Spatie\Permission\PermissionServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
+        
+        App\Providers\ViewServiceProvider::class,
     ])->toArray(),
 
     /*
