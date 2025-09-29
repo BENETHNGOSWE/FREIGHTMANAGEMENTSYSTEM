@@ -5,11 +5,11 @@
     <div class="container-fluid">
         <div class="form-head align-items-center d-flex mb-sm-4 mb-3">
             <div class="me-auto">
-                <h2 class="text-black font-w600">Company Invoice Details</h2>
-                <p class="mb-1">Dashboard / <span><a class="text-primary" href="#">Company Invoice Details List</a></span></p>
+                <h2 class="text-black font-w600">Roles</h2>
+                <p class="mb-1">Dashboard / <span><a class="text-primary" href="#">Roles List</a></span></p>
             </div>
             <div>
-                <a href="{{ route('admin.create.companyinvoicedetail') }}" class="btn btn-primary me-3">+ Add Company Invoice Details</a>
+                <a href="{{ route('roles.create') }}" class="btn btn-primary me-3">+ Add Roles</a>
             </div>
         </div>
         <div class="row">
@@ -17,7 +17,7 @@
                 <div class="card-body">
                     <div class="table-responsive">
                         <div style="display: flex; justify-content: space-between;">
-                            <h4 class="card-title">@lang('crud.companyinvoicedetails.index_title')</h4>
+                            <h4 class="card-title">Roles List</h4>
                         </div>
                         <table id="companyInvoiceTable" class="table table-borderless table-hover">
                             <thead>
