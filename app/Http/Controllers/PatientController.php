@@ -113,3 +113,52 @@ class PatientController extends Controller
             ->withSuccess(__('crud.common.removed'));
     }
 }
+
+
+// public function store(Request $request)
+    // {
+    //     DB::beginTransaction();
+
+    //     try {
+    //         $validated = $this->validate($request, $this->rules());
+    //         $staff_type = StaffType::find($validated['staff_type_id']);
+
+    //         if (!$staff_type) {
+    //             return redirect()->back()->with('error', 'Invalid staff type selected');
+    //         }
+
+    //         $staff_type_name = $staff_type->staff_type_name;
+    //         $name = $validated['staff_firstname'] . ' ' . $validated['staff_middlename'] . ' ' . $validated['staff_lastname'];
+    //         $password = Hash::make('123456');
+
+    //         $user = User::create([
+    //             'name' => $name,
+    //             'email' => $validated['staff_email'],
+    //             'phone' => $validated['phone'],
+    //             'password' => $password,
+    //             'user_type' => $staff_type_name,
+    //             'client_id' => $this->fms_id,
+    //         ]);
+
+    //         $user->assignRole(\Spatie\Permission\Models\Role::findByName($staff_type_name));
+
+    //         $id_number = createStaffidNumber($this->fms_id);
+    //         $validated['user_id'] = $user->id;
+    //         $validated['staff_no'] = $id_number;
+    //         $validated['client_id'] = $user->client_id;
+
+    //         $employee = Staff::create($validated);
+    //         // dd($employee);
+
+    //         DB::commit();
+
+    //         return redirect()->route('admin.list.staff')->with('success', 'Employee added successfully');
+    //     } catch (\Exception $e) {
+    //         DB::rollBack();
+    //         \Log::error('Error creating employee: ' . $e->getMessage());
+
+    //         return redirect()
+    //             ->back()
+    //             ->with('error', 'Something went wrong: ' . $e->getMessage());
+    //     }
+    // }
