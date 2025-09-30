@@ -38,7 +38,8 @@ class Invoice extends Model
 
     public function loadpackages()
     {
-        return $this->hasMany(Loadpackage::class);
+        return $this->belongsToMany(Loadpackage::class, 'invoice_loads', 'invoice_id', 'loadpackage_id')
+                ->withPivot('load_price', 'client_id');
     }
 
     public function user()

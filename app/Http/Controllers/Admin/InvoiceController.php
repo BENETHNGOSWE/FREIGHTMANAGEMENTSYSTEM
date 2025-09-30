@@ -145,6 +145,7 @@ class InvoiceController extends Controller
     {
         $invoice = Invoice::findOrFail($id);
 
+
         if ($invoice->status != 1) {
             return redirect()->back()->with('error', 'Invoice must be fully paid to generate a release order.');
         }

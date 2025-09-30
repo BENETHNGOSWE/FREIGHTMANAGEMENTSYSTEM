@@ -412,6 +412,24 @@
                     <td><span>{{ strtoupper($invoice->customer->phone) }}</span></td>
                 </tr>
 
+              @foreach ($invoice->loadpackages as $load)
+                    <tr>
+                        <th><span>Load Info</span></th>
+                        <td>
+                            <span>Ctn(s): {{ strtoupper($load->pivot->load_price ?? 'N/A') }}</span> |
+                            <span>{{ strtoupper($load->load_weight_value . ' ' . ($load->unittype->unittype_name ?? '')) }}</span>
+                        </td>
+                    </tr>
+                @endforeach
+
+
+
+              <tr>
+                    <th><span>Total Amount</span></th>
+                    <td><span>{{ number_format($invoice->total_amount, 0, '.', ',') }} /=</span></td>
+              </tr>
+
+
                 <tr>
                     <th><span>Status</span></th>
                     <td><span class="{{ $invoice->status == 1 ? 'status-paid' : 'status-unpaid' }}">
