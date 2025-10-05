@@ -53,7 +53,6 @@ class SalesreportController extends Controller
 
     public function create()
     {
-        $this->authorize('create', SalesReport::class);
 
         $this->data['customers'] = Customer::where('client_id', $this->fms_id)->pluck('customer_firstname', 'id');
         $this->data['staffs'] = Staff::where('client_id', $this->fms_id)
@@ -82,7 +81,6 @@ class SalesreportController extends Controller
 
     public function store(Request $request)
     {
-        $this->authorize('create', SalesReport::class);
 
         $validated = $this->validate_salesreport($request);
 
@@ -97,9 +95,7 @@ class SalesreportController extends Controller
             return redirect()->route('sales.list.salesreport')->with('success', 'Salesreport Added Successfully');
         } catch (\Throwable $th) {
             DB::rollBack();
-
-            // Debugging: Show the exact error
-            dd($th->getMessage(), $th->getTraceAsString());
+            \Log::error($th->getMessage() . '' . $th->getTraceAsString());;
 
             return redirect()->back()->with('error', 'Something went wrong');
         }

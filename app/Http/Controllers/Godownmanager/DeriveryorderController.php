@@ -64,7 +64,7 @@ class DeriveryorderController extends Controller
             $deriveryorder->save();
             DB::commit();
         } catch (\Throwable $th) {
-            \DB::rollback();
+            DB::rollback();
             \Log::error($th->getMessage() . '' . $th->getTraceAsString());
             return redirect()->back()->with('error', 'Something went wrong');
         }
