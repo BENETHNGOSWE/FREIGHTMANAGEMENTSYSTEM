@@ -153,83 +153,81 @@ class StaffController extends Controller
 
     public function edit($id)
     {
-        $staff = Staff::findOrFail($id); // Fetch the staff member by ID
+        $staff = Staff::findOrFail($id);
         $this->data['page_title'] = 'Edit Staff';
         $client_id = auth()->user()->client_id;
+
         $this->data['staff'] = $staff;
         $this->data['editing'] = true;
-
         $this->data['clients'] = Client::pluck('client_name', 'id');
-        // $this->data['staffTypes'] = StaffType::pluck('staff_type_name', 'id');
-        $this->data['branches'] = Branch::pluck('branch_name', 'id');
+        $this->data['branches'] = Branch::where('client_id', $this->fms_id)->pluck('branch_name', 'id');
         $this->data['users'] = User::pluck('id');
 
-        if (auth()->user()->hasRole('super_admin')) {
-            $this->data['staffTypes'] = StaffType::pluck('staff_type_name', 'id');
-        } else {
-            $this->data['staffTypes'] = StaffType::whereNotIn('staff_type_name', ['kodasmspackage', 'admin'])->pluck('staff_type_name', 'id');
-        }
+        // ✅ Load roles (client-specific or global)
+        $this->data['roles'] = Role::where('client_id', $client_id)
+            ->orWhereNull('client_id')
+            ->pluck('name', 'id');
 
         return view('dashboards.admin.staffs.edit', $this->data);
     }
 
-    public function update(Request $request, $id)
-    {
-        $this->data['staff'] = $staff = Staff::find($id);
-        $this->data['page_title'] = 'Edit Staff';
-        if ($staff) {
-            $validated = $this->validate($request, $this->rules($staff->user_id));
-            $staff_type = StaffType::find($validated['staff_type_id']);
-            if ($staff_type) {
-                $staff_type_name = $staff_type->staff_type_name;
-                $name = $validated['staff_firstname'] . ' ' . $validated['staff_middlename'] . ' ' . $validated['staff_lastname'];
 
-                // Initialize updateData array
-                $updateData = [
-                    'name' => $name,
-                    'email' => $validated['staff_email'],
-                    'phone' => $validated['phone'],
-                    'user_type' => $staff_type_name,
-                    'client_id' => $this->fms_id,
-                ];
+   public function update(Request $request, $id)
+{
+    $staff = Staff::findOrFail($id);
 
-                // Add password to updateData if provided
-                if (!empty($validated['password'])) {
-                    $updateData['password'] = Hash::make($validated['password']);
-                }
+    $validated = $this->validate($request, $this->rules($staff->user_id));
 
-                DB::beginTransaction();
-                try {
-                    $staff->user->update($updateData);
-                    $user = $staff->user->syncRoles(\Spatie\Permission\Models\Role::findByName($staff_type_name));
+    // ✅ Ensure selected role belongs to the same client or is global
+    $role = Role::where('id', $request->role_id)
+        ->where(function ($query) {
+            $query->where('client_id', $this->fms_id)
+                  ->orWhereNull('client_id');
+        })
+        ->first();
 
-                    if ($user) {
-                        $validated['user_id'] = $user->id;
-                        $employee = $staff->update($validated);
-                        if ($employee) {
-                            DB::commit();
-                            return redirect()
-                                ->route('admin.list.staff')
-                                ->with('success', $user->name . ' Updated successfully');
-                        } else {
-                            DB::rollBack();
-                            return redirect()->back()->with('error', 'Something went wrong');
-                        }
-                    }
-                } catch (\Throwable $th) {
-                    DB::rollBack();
-                    \Log::error($th);
-                    return redirect()->back()->with('error', $th->getMessage());
-                }
-            }
-
-            $this->authorize('update', $staff);
-            $this->data['staffTypes'] = StaffType::pluck('staff_type_name', 'id');
-            return view('dashboards.hr.employees.edit', $this->data);
-        } else {
-            return redirect()->back()->with('error', 'Something went wrong');
-        }
+    if (!$role) {
+        return redirect()->back()->with('error', 'Invalid role selected');
     }
+
+    $name = trim($validated['staff_firstname'] . ' ' . $validated['staff_middlename'] . ' ' . $validated['staff_lastname']);
+
+    // Prepare update data for User model
+    $updateData = [
+        'name' => $name,
+        'email' => $validated['staff_email'],
+        'phone' => $validated['phone'],
+        'client_id' => $this->fms_id,
+    ];
+
+    if (!empty($validated['password'])) {
+        $updateData['password'] = Hash::make($validated['password']);
+    }
+
+    DB::beginTransaction();
+    try {
+        // ✅ Update the user record
+        $staff->user->update($updateData);
+
+        // ✅ Sync the new role
+        $staff->user->syncRoles([$role->name]);
+
+        // ✅ Update the staff table (excluding role_id)
+        unset($validated['role_id']);
+        $staff->update($validated);
+
+        DB::commit();
+
+        return redirect()
+            ->route('admin.list.staff')
+            ->with('success', $staff->user->name . ' updated successfully');
+    } catch (\Throwable $th) {
+        DB::rollBack();
+        \Log::error('Error updating staff: ' . $th->getMessage());
+        return redirect()->back()->with('error', 'Something went wrong: ' . $th->getMessage());
+    }
+}
+
 
     public function delete($id)
     {
