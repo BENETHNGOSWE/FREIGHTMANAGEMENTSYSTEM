@@ -218,6 +218,22 @@ return [
         ],
     ],
 
+
+    'godownaddress' => [
+        'name' => 'Godownaddress',
+        'index_title' => 'Godownaddress List',
+        'new_title' => 'New Godown Address',
+        'create_title' => 'Create Godown Address',
+        'edit_title' => 'Edit Godown Address',
+        'show_title' => 'Show Godown Address',
+        'inputs' => [
+            'godown_location' => 'Godown Location',
+            'godown_address_one' => 'Godown Address',
+            'godown_address_two' => 'Godown Address 2',
+            'godown_phonenumber' => 'Godown Phone Number',
+        ],
+    ],
+
     
     
 

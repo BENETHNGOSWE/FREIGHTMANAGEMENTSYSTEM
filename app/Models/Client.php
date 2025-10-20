@@ -152,4 +152,8 @@ class Client extends Model
     {
         return $this->hasMany(InvoiceLoad::class);
     }
+
+    public function godowns(){
+        return $this->hasMany(GodownAddress::class);
+    }
 }

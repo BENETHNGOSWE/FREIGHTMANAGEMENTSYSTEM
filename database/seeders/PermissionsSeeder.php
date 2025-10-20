@@ -15,7 +15,7 @@ class PermissionsSeeder extends Seeder
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         $actions = ['list', 'view', 'create', 'update', 'delete'];
-        $models = ['banks', 'branches', 'containers', 'clients', 'client_admins', 'clientpayments', 'client_types', 'companyinvoicedetails',
+        $models = ['banks', 'branches', 'containers', 'clients', 'client_admins', 'clientpayments', 'client_types', 'companyinvoicedetails','godown_addresses',
                     'countries', 'customers', 'customercategories', 'customerleads', 'client_sendername', 'derivery_orders', 'messages', 'modules', 'packages', 
                     'loadpackagetypes', 'loadpackages', 'office_expense_categories', 'office_expenses', 'staffs', 'staff_types', 'payments', 'role', 'sendernames', 'subscriptions', 'subscription_invoices',
                     'subscription_tokens', 'sales_reports',  'userroles', 'roles', 'permissions', 'users', 'unit_types', 'invoices', 'invoice_loads', 'kodapackages', 'customermessages','demorequests', 'settings','clientactivenames'];
@@ -148,8 +148,7 @@ class PermissionsSeeder extends Seeder
                     || str_contains($permission->name, 'sendernames')
                     || str_contains($permission->name, 'kodapackages')
                     || str_contains($permission->name, 'customermessages')
-                    || str_contains($permission->name, 'demorequests')
-                    ;
+                    || str_contains($permission->name, 'demorequests');
             })
         );
 

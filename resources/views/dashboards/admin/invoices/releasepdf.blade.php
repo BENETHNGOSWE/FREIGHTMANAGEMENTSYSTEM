@@ -244,7 +244,7 @@
             width: 12%;
         }
 
-        table.inventory td:nth-child(3),
+        table.inventory td:nth-child(3)
         {
         width: 19%;
         }
@@ -386,10 +386,11 @@
                 <div class="company-info">
                     <div class="company-name">{{ strtoupper($client->client_name) }}</div>
                     <div class="company-details">
-                        Office Address: {{ strtoupper($client->client_address_one) }}<br>
-                        Office Phone: {{ strtoupper($client->client_phonenumber) }}<br>
-                        TIN Number: {{ strtoupper($client->client_tinnumber) }}<br>
-                        {{ strtoupper($client->client_city . ' ' . $client->client_country) }}
+                        Godown Address: <br>
+                        {{ $godowndetails->godown_address_one }},<br>
+                        {{ $godowndetails->godown_address_two }}.<br>
+                        {{ $godowndetails->godown_phonenumber }}.<br>
+                        {{ strtoupper($godowndetails->godown_location) }}.
                     </div>
                 </div>
             </div>

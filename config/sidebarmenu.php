@@ -347,6 +347,11 @@ return [
                 'permission' => 'view payments',
             ],
             [
+                'title' => 'Godown Details',
+                'route' => 'admin.list.godownaddress',
+                'permission' => 'view godown_addresses',
+            ],
+            [
                 'title' => 'Branches',
                 'route' => 'admin.list.branch',
                 'permission' => 'view branches',
@@ -371,7 +376,7 @@ return [
                 'route' => 'admin.list.companyinvoicedetail',
                 'permission' => 'view companyinvoicedetails',
             ],
-             [
+            [
                 'title' => 'Active Name',
                 'route' => 'admin.list.activename',
                 'permission' => 'view clientactivenames',

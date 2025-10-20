@@ -10,6 +10,7 @@ use App\Models\Loadpackage;
 use App\Models\Client;
 use App\Models\ClientAdmin;
 use App\Models\Companyinvoicedetail;
+use App\Models\GodownAddress;
 use App\Models\Payment;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -151,8 +152,9 @@ class InvoiceController extends Controller
         }
 
         $client = $invoice->client;
+        $godowndetails = GodownAddress::where('client_id', $this->fms_id)->first();
 
-        $pdf = Pdf::loadview('dashboards.admin.invoices.releasepdf', ['invoice' => $invoice, 'client' => $client]);
+        $pdf = Pdf::loadview('dashboards.admin.invoices.releasepdf', ['invoice' => $invoice, 'client' => $client, 'godowndetails' => $godowndetails]);
         return $pdf->download('release_order.pdf');
     }
     

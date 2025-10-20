@@ -6,6 +6,16 @@ Route::prefix('/')
     ->middleware('multiple')
     ->group(function () {
 
+        // Branches Manage Here
+        Route::get('godownaddress', [App\Http\Controllers\Admin\GodownController::class, 'index'])->name('admin.list.godownaddress');
+        Route::get('godownaddresscreate', [App\Http\Controllers\Admin\GodownController::class, 'create'])->name('admin.create.godownaddress');
+        Route::post('godownaddress/store', [App\Http\Controllers\Admin\GodownController::class, 'store'])->name('admin.store.godownaddress');
+        Route::get('godownaddress/edit/{godownaddress}', [App\Http\Controllers\Admin\GodownController::class, 'edit'])->name('admin.edit.godownaddress');
+        Route::put('godownaddress/update/{godownaddress}', [App\Http\Controllers\Admin\GodownController::class, 'update'])->name('admin.update.godownaddress');
+        Route::get('godownaddress/show/{godownaddress}', [App\Http\Controllers\Admin\GodownController::class, 'show'])->name('admin.show.godownaddress');
+        Route::delete('godownaddress/delete/{godownaddress}', [App\Http\Controllers\Admin\GodownController::class, 'delete'])->name('admin.delete.godownaddress');
+
+
           // Container Manage Here
           Route::get('container', [App\Http\Controllers\Admin\ContainerController::class, 'index'])->name('admin.list.container');
           Route::get('containercreate', [App\Http\Controllers\Admin\ContainerController::class, 'create'])->name('admin.create.container');
