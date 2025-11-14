@@ -26,6 +26,8 @@ Route::prefix('/')
           Route::post('/containers/{container}/load', [App\Http\Controllers\Admin\ContainerController::class, 'loadContainer'])->name('admin.loadcontainer.container');
           Route::get('/containers/{containerId}/pdflist', [App\Http\Controllers\Admin\ContainerController::class, 'generateContainerloads'])->name('admin.loadlistpdf.container');
           Route::delete('container/delete/{container}', [App\Http\Controllers\Admin\ContainerController::class, 'delete'])->name('admin.delete.container');
+          Route::get('container/{id}/loadpackages', [App\Http\Controllers\Admin\ContainerController::class, 'showloadstoload'])->name('admin.load.container');
+          Route::post('container/{id}/attachloadpackages', [App\Http\Controllers\Admin\ContainerController::class, 'attachPackagetoContainer'])->name('admin.attachload.container');
 
           
         // Manage loadpackagetype Here
@@ -58,6 +60,9 @@ Route::prefix('/')
         Route::put('customer/update/{customer}', [App\Http\Controllers\Admin\CustomerController::class, 'update'])->name('admin.update.customer');
         Route::get('customer/show/{customer}', [App\Http\Controllers\Admin\CustomerController::class, 'show'])->name('admin.show.customer');
         Route::delete('customer/delete/{customer}', [App\Http\Controllers\Admin\CustomerController::class, 'delete'])->name('admin.delete.customer');
+        Route::post('/customers/import', [App\Http\Controllers\Admin\CustomerController::class, 'importExcel'])->name('customers.import');
+        Route::get('/customers/template', [App\Http\Controllers\Admin\CustomerController::class, 'downloadTemplate'])->name('customers.template');
+
 
         // Invoices Manage Here
         Route::get('invoicelist', [App\Http\Controllers\Admin\InvoiceController::class, 'index'])->name('admin.list.invoice');
@@ -66,6 +71,8 @@ Route::prefix('/')
         Route::put('invoice/update/{invoice}', [App\Http\Controllers\Admin\InvoiceController::class, 'update'])->name('admin.update.invoice');
         Route::get('invoice/pdf/{invoice}', [App\Http\Controllers\Admin\InvoiceController::class, 'generateInvoicePDF'])->name('admin.pdf.invoice');
         Route::get('finalInvoice/pdf/{invoice}', [App\Http\Controllers\Admin\InvoiceController::class, 'UpdatedInvoicePDF'])->name('admin.pdf.finalinvoice');
+        Route::post('invoices/merge-pdf', [App\Http\Controllers\Admin\InvoiceController::class, 'InvoiceMerge'])->name('admin.invoices.mergepdf');
+
 
         // Release Order Manage Here
         Route::get('release/pdf/{id}', [App\Http\Controllers\Admin\InvoiceController::class, 'generatereleasePDF'])->name('admin.pdf.release');
@@ -188,9 +195,5 @@ Route::prefix('/')
 
 
         Route::get('rolewithpermission/{roleId}/', [App\Http\Controllers\RoleController::class, 'roleByPermission'])->name('all.permission.role');
-
-
-
-
         
     });

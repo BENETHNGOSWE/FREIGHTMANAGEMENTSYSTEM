@@ -39,7 +39,7 @@ class LoadpackageController extends Controller
     {
         if (auth()->user()->hasRole('admin')) {
             $this->data['loadpackages'] = Loadpackage::where('client_id', $this->fms_id)
-                ->with('container')
+                ->with('containers')
                 ->get();
         } else {
             $this->data['loadpackages'] = auth()->user()->loadpackages;
@@ -105,14 +105,26 @@ class LoadpackageController extends Controller
                 $load = LoadPackageHelper::createLoad($validated, $index, $clientId, $customerId, $userId, $branchCode, $invoice->id);
                 LoadPackageHelper::updateInvoiceTotals($invoice, $load);
 
-                // Pass the required values to the sendCustomerNotification method.
-                // $response = LoadPackageHelper::sendCustomerNotification($customerId, $load->load_no, $client->client_name, $load->load_weight_value, $load->unittype->unittype_name, $load->id);
 
-                // if (!$response['success']) {
-                //     return redirect()
-                //         ->back()
-                //         ->with('error', $response['message']);
-                // }
+                // Pass the required values to the sendCustomerNotification method.
+                $response = LoadPackageHelper::sendCustomerNotification($customerId, $load->load_no, $load->load_name, $load->load_price, $client->client_name, $load->load_weight_value, $load->unittype->unittype_name, $load->id);
+                LoadPackageHelper::sendCustomerNotification(
+                    $customerId,
+                    $load->load_no,
+                    $client->client_name,   
+                    $load->load_weight_value,    
+                    $load->load_price,   
+                    $load->load_name,     
+                    $load->unittype->unittype_name,    
+                    $load->id
+                );
+
+
+                if (!$response['success']) {
+                    return redirect()
+                        ->back()
+                        ->with('error', $response['message']);
+                }
             }
 
             DB::commit();

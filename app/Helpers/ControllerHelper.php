@@ -118,13 +118,13 @@ function return_status_badge($status)
             $badge = '<span class="badge badge-warning">Warehouse</span>';
             break;
         case 'OnVessel':
-            $badge = '<span class="badge badge-info">On Vercel</span>';
+            $badge = '<span class="badge badge-info">On Vessell</span>';
             break;
         case 'Arrived_TZ-Port':
             $badge = '<span class="badge badge-success">Arrived at Port</span>';
             break;
         case 'ICD':
-            $badge = '<span class="badge badge-dark">IDC</span>';
+            $badge = '<span class="badge badge-dark">ICD</span>';
             break;
 
         case 'Warehouse-HQ':

@@ -99,4 +99,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(Invoice::class);
     }
+
+     public function staff()
+    {
+        return $this->hasOne(Staff::class);
+    }
+
+    
 }

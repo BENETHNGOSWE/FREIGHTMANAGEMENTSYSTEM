@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Helpers\LoadPackageHelper;
 use Illuminate\Http\Request;
 use App\Models\Container;
 use App\Models\ClientAdmin;
@@ -109,67 +110,7 @@ class ContainerController extends Controller
         return redirect()->route('admin.list.container')->with('success', 'Container Deleted Successfuly ');
     }
 
-    // public function loadContainer($containerId)
-    // {
-    //     $container = Container::findOrFail($containerId);
-    //     $availableLoads = Loadpackage::whereNull('container_id')->orderBy('load_volume', 'desc')->get();
-
-    //     $selectedLoads = $this->findOptimalLoadCombination($availableLoads, $container->container_volume);
-
-    //     if ($selectedLoads) {
-    //         foreach ($selectedLoads as $load) {
-    //             $load->container_id = $containerId;
-    //             $load->save();
-
-    //             Containerloading::create([
-    //                 'loadpackage_id' => $load->id,
-    //                 'container_id' => $containerId,
-    //                 'client_id' => $load->client_id,
-    //             ]);
-    //         }
-
-    //         return response()->json([
-    //             'success' => true,
-    //             'message' => 'Loads successfully added to container',
-    //             'loads' => $selectedLoads,
-    //         ]);
-    //     }
-
-    //     return response()->json([
-    //         'success' => false,
-    //         'message' => 'No optimal load combination found',
-    //     ]);
-    // }
-
-    // // Recursive function to find optimal load combination
-    // private function findOptimalLoadCombination($loads, $containerVolume, $currentCombination = [], $currentVolume = 0)
-    // {
-    //     if (abs($currentVolume - $containerVolume) < 0.1) {
-    //         return $currentCombination;
-    //     }
-
-    //     if ($currentVolume > $containerVolume) {
-    //         return null;
-    //     }
-
-    //     foreach ($loads as $index => $load) {
-    //         if (in_array($load, $currentCombination)) {
-    //             continue;
-    //         }
-
-    //         $newCombination = $currentCombination;
-    //         $newCombination[] = $load;
-    //         $newVolume = $currentVolume + $load->load_volume;
-
-    //         $result = $this->findOptimalLoadCombination($loads, $containerVolume, $newCombination, $newVolume);
-
-    //         if ($result !== null) {
-    //             return $result;
-    //         }
-    //     }
-
-    //     return null;
-    // }
+    
 
     public function loadContainer($containerId)
     {
@@ -313,4 +254,59 @@ class ContainerController extends Controller
 
         return $pdf->download('container-loadlist-' . $container->id . '.pdf');
     }
+
+
+    public function showloadstoload($id)
+    {
+        $loadedIdsForContainer = ContainerLoading::where('container_id', $id)
+            ->pluck('loadpackage_id')
+            ->toArray();
+        $allLoadedIds = ContainerLoading::pluck('loadpackage_id')->toArray();
+        $allloads = LoadPackage::where(function ($query) use ($allLoadedIds, $loadedIdsForContainer) {
+            $query->whereNotIn('id', $allLoadedIds)
+                  ->orWhereIn('id', $loadedIdsForContainer);
+        })->get();
+
+        return view('dashboards.admin.containers.modal_load_content', [
+            'allloads' => $allloads,
+            'container_id' => $id,
+            'loadedIdsForContainer' => $loadedIdsForContainer
+        ]);
+    }
+
+    public function attachPackagetoContainer(Request $request, $id)
+    {
+        $packageIds = $request->package_ids ?? [];
+
+        ContainerLoading::where('container_id', $id)->delete();
+
+        $clientName = auth()->user()->client->client_name ?? 'Our Company';
+
+        foreach ($packageIds as $packageId) {
+            $load = LoadPackage::with(['unittype', 'customer'])->find($packageId);
+
+            if (!$load) continue;
+
+            ContainerLoading::create([
+                'loadpackage_id' => $packageId,
+                'container_id' => $id,
+                'client_id' => $load->client_id,
+            ]);
+
+            $response = LoadPackageHelper::sendCustomerNotificationafterLoading(
+                $load->customer_id,
+                $load->load_no,
+                $load->load_delivery_date,
+                $load->containers->first()->container_number ?? '',
+                $load->id
+            );
+
+            if (!$response['success']) {
+                \Log::warning("Failed to send message for Load #{$load->load_no}: " . $response['message']);
+            }
+        }
+
+        return response()->json(['success' => true]);
+    }
+
 }

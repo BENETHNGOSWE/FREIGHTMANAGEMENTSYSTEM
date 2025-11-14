@@ -363,7 +363,7 @@ return [
             ],
             [
                 'title' => 'Sender Name',
-                'route' => 'owner.list.assignname',
+                'route' => 'owner.list.sendername',
                 'permission' => 'view sendernames',
             ],
             [

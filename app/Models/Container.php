@@ -20,7 +20,7 @@ class Container extends Model
 
     public function loadpackages()
     {
-        return $this->hasMany(Loadpackage::class, 'container_id');
+        return $this->belongsToMany(Loadpackage::class, 'containerloadings');
     }
 
     public function containerLoadings()

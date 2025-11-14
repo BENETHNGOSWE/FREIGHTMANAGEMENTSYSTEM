@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\View\View;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Validation\Rule;
+use App\Imports\CustomerLoadImport;
+use App\Exports\CustomerLoadTemplateExport;
+use  Maatwebsite\Excel\Facades\Excel;
 
 
 class CustomerController extends Controller
@@ -182,4 +185,26 @@ class CustomerController extends Controller
         $customer->delete();
         return redirect()->route('admin.list.customer', $customer)->with('success', 'customer Deleted Successful');
     }
+
+    public function downloadTemplate()
+    {
+        return Excel::download(new CustomerLoadTemplateExport, 'customer_load_template.xlsx');
+    }
+
+
+    public function importExcel(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,csv'
+        ]);
+
+        try {
+            Excel::import(new CustomerLoadImport, $request->file('file'));
+
+            return back()->with('success', 'Customers and their loads imported successfully!');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Import failed: ' . $e->getMessage());
+        }
+    }
+
 }

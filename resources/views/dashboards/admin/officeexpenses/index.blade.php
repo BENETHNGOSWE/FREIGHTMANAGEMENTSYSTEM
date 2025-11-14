@@ -15,7 +15,6 @@
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <!-- Progress Bar Container -->
                         <div id="progress-bar-container" style="display: none; width: 100%; background-color: #ddd; margin-bottom: 15px;">
                             <div id="progress-bar" style="width: 0%; height: 25px; background-color: #4caf50; text-align: center; color: white;">
                                 0%

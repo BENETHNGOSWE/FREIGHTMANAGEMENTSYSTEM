@@ -14,6 +14,7 @@ use App\Models\GodownAddress;
 use App\Models\Payment;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Validator;
 
 class InvoiceController extends Controller
 {
@@ -112,13 +113,11 @@ class InvoiceController extends Controller
         $invoice = Invoice::with('invoiceLoads.loadpackage', 'customer')->findOrFail($id);
         $client = Client::findOrFail($invoice->client_id);
         $paymentInfo = Payment::where('client_id', $invoice->client_id)->get();
-
         $data = [
             'invoice' => $invoice,
             'client' => $client,
             'paymentInfo' => $paymentInfo,
         ];
-
         $pdf = Pdf::loadView('dashboards.admin.invoices.invoicepdf', $data);
         return $pdf->download('cargo_receipt.pdf');
     }
@@ -130,14 +129,12 @@ class InvoiceController extends Controller
         $client = Client::findOrFail($invoice->client_id);
         $paymentInfo = Payment::where('client_id', $invoice->client_id)->get();
         $company = Companyinvoicedetail::where('client_id', $this->fms_id)->first();
-
         $data = [
             'invoice' => $invoice,
             'client' => $client,
             'paymentInfo' => $paymentInfo,
             'company' => $company,
         ];
-
         $pdf = Pdf::loadView('dashboards.admin.invoices.finalinvoicePDF', $data);
         return $pdf->download('finalInvoice_' . $invoice->invoice_no . '.pdf');
     }
@@ -145,17 +142,68 @@ class InvoiceController extends Controller
     public function generatereleasePDF($id)
     {
         $invoice = Invoice::findOrFail($id);
-
-
         if ($invoice->status != 1) {
             return redirect()->back()->with('error', 'Invoice must be fully paid to generate a release order.');
         }
-
         $client = $invoice->client;
         $godowndetails = GodownAddress::where('client_id', $this->fms_id)->first();
-
         $pdf = Pdf::loadview('dashboards.admin.invoices.releasepdf', ['invoice' => $invoice, 'client' => $client, 'godowndetails' => $godowndetails]);
         return $pdf->download('release_order.pdf');
+    }
+
+    public function InvoiceMerge(Request $request)
+    {
+        $invoiceIds = $request->input('invoice_ids'); 
+
+        if (empty($invoiceIds)) {
+            return redirect()->back()->with('error', 'No invoices selected for merge.');
+        }
+
+        $invoices = Invoice::with(['customer', 'invoiceLoads.loadpackage', 'invoiceLoads.invoice'])
+                           ->whereIn('id', $invoiceIds)
+                           ->get();
+
+        if ($invoices->isEmpty()) {
+            return redirect()->back()->with('error', 'Selected invoices not found.');
+        }
+
+        $company = Companyinvoicedetail::first() ?? (object)['logo' => null, 'company_name' => 'N/A', 'office_phone' => 'N/A', 'tin_number' => 'N/A', 'tagline' => 'N/A', 'company_address_one' => 'N/A', 'company_city' => 'N/A', 'company_country' => 'N/A', 'company_email' => 'N/A'];
+        
+        $paymentInfo = Payment::where('client_id', $this->fms_id)->get();
+
+        $firstInvoice = $invoices->first();
+        $customer = $firstInvoice->customer;
+        
+        $allItems = collect();
+        $totalAmountDue = 0; 
+        $totalAmount = 0; 
+        $invoiceNos = [];
+
+        foreach ($invoices as $invoice) {
+            $allItems = $allItems->merge($invoice->invoiceLoads);
+            
+            $totalAmountDue += $invoice->total_amount + $invoice->total_transportfee;
+            $totalAmount += $invoice->total_amount;
+            
+            $invoiceNos[] = $invoice->invoice_no;
+        }
+
+        $totalInvoiceNo = implode(', ', $invoiceNos);
+        
+        $data = [
+            'company' => $company, 
+            'customer' => $customer,
+            'allItems' => $allItems,
+            'totalInvoiceNo' => $totalInvoiceNo,
+            'totalAmountDue' => $totalAmountDue,
+            'totalAmount' => $totalAmount,
+            'exchangeRate' => $firstInvoice->exchange_rate, 
+            'paymentInfo' => $paymentInfo,
+        ];
+
+        $pdf = Pdf::loadView('dashboards.admin.invoices.merged_pdf', $data);
+        
+        return $pdf->download('Consolidated_Invoice_' . $customer->id . '.pdf');
     }
     
 }

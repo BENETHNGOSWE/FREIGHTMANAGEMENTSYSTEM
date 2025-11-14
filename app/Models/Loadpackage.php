@@ -15,9 +15,9 @@ class Loadpackage extends Model
         return $this->belongsTo(Client::class);
     }
 
-    public function container()
+    public function containers()
     {
-        return $this->belongsTo(Container::class, 'container_id');
+        return $this->belongsToMany(Container::class, 'containerloadings');
     }
 
     public function containerLoadings()

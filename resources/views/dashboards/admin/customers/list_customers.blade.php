@@ -9,9 +9,22 @@
                             List</a></span>
                 </p>
             </div>
-            <div>
-                <a href="{{ route('admin.create.customer') }}" class="btn btn-primary me-3">+ Add Costomer</a>
+            <div class="d-flex">
+                <!-- Download Template -->
+                <a href="{{ route('customers.template') }}" class="btn btn-success me-3">
+                    <i class="fa fa-download"></i> Download Template
+                </a>
+
+                <!-- Import Excel -->
+                <button type="button" data-bs-toggle="modal" data-bs-target="#importModal"
+                    class="btn btn-info me-3">
+                    <i class="fa fa-upload"></i> Import Excel
+                </button>
+
+                <!-- Add Customer -->
+                <a href="{{ route('admin.create.customer') }}" class="btn btn-primary">+ Add Customer</a>
             </div>
+
         </div>
         <div class="row">
             <div class="card">
@@ -112,6 +125,38 @@
 
 
     </div>
+    <!-- Import Modal -->
+<div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form action="{{ route('customers.import') }}" method="POST" enctype="multipart/form-data"
+            class="modal-content">
+            @csrf
+            <div class="modal-header">
+                <h5 class="modal-title" id="importModalLabel">Import Customers & Loads</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <p>Upload an Excel file that follows the downloaded template format.</p>
+
+                <div class="form-group">
+                    <label for="file">Choose Excel File (.xlsx or .csv)</label>
+                    <input type="file" name="file" class="form-control mt-2" required>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa fa-upload"></i> Upload & Import
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
 @endsection
 
 @push('scripts')
