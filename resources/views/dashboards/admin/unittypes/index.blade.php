@@ -24,6 +24,9 @@
                                 <tr>
                                     <th>
                                         s/n
+                                    </th>  
+                                    <th>
+                                        id for excel
                                     </th>    
                                     <th class="text-left">
                                         @lang('crud.unittypes.inputs.unittype_name')
@@ -42,6 +45,7 @@
                                         <td>
                                             {{ $loop->iteration }}
                                         </td>
+                                        <td>{{ strtoupper($unittype->id) ?? '-' }}</td>
                                         <td>{{ strtoupper($unittype->unittype_name) ?? '-' }}</td>
                                         <td>{{ strtoupper($unittype->unitytype_initial) ?? '-' }}</td>
                                         <td class="text-center" style="width: 134px;">
