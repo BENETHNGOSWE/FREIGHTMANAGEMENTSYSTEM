@@ -24,6 +24,9 @@
                                 <tr>
                                     <th>
                                         s/n
+                                    </th> 
+                                    <th>
+                                        Id for Excel
                                     </th>    
                                     <th class="text-left">
                                         @lang('crud.loadpackagetypes.inputs.load_type_name')
@@ -41,6 +44,9 @@
                                     <tr>
                                         <td>
                                             {{ $loop->iteration }}
+                                        </td>
+                                        <td>
+                                            {{ $loadpackagetype->id }}
                                         </td>
                                         <td>{{ strtoupper($loadpackagetype->load_type_name) ?? '-' }}</td>
                                         <td>{{ strtoupper($loadpackagetype->load_type_description) ?? '-' }}</td>
