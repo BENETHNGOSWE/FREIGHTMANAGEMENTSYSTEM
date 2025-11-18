@@ -23,10 +23,10 @@ class CustomerLoadImport implements ToModel, WithHeadingRow
         DB::beginTransaction();
 
         try {
+            $row['phone'] = $this->normalizePhoneNumber($row['phone']);
             $userId = auth()->user()->id;
             $clientId = auth()->user()->client_id;
             
-            // ✅ EXACT same pattern as your store method
             $staff = Staff::where('user_id', $userId)->first();
             $branchCode = $staff ? $staff->branch->branch_code : 'TZ';
             
@@ -55,6 +55,17 @@ class CustomerLoadImport implements ToModel, WithHeadingRow
             Log::error("Import error on row: " . json_encode($row) . " | " . $e->getMessage());
             throw $e;
         }
+    }
+
+    private function normalizePhoneNumber($phone): string
+    {
+        $phone = preg_replace('/[^0-9]/', '', $phone);
+
+        if(strlen($phone) == 9 && !str_starts_with($phone, '+255')) {
+            $phone = '+255' . $phone;
+        }
+
+        return $phone;
     }
 
     private function findOrCreateCustomer(array $row, int $clientId): Customer

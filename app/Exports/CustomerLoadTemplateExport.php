@@ -4,8 +4,12 @@ namespace App\Exports;
 
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class CustomerLoadTemplateExport implements FromArray, WithHeadings
+class CustomerLoadTemplateExport implements FromArray, WithHeadings, WithColumnFormatting, WithStyles
 {
     public function array(): array
     {
@@ -38,6 +42,20 @@ class CustomerLoadTemplateExport implements FromArray, WithHeadings
             'unittype_id',
             'is_ocean',
             'mode',
+        ];
+    }
+
+    public function columnFormats(): array
+    {
+        return [
+            'E' => NumberFormat::FORMAT_TEXT,
+        ];
+    }
+
+    public function styles(Worksheet $sheet)
+    {
+        return [
+            'E' => ['numberFormat' => ['formatCode' => NumberFormat::FORMAT_TEXT]],
         ];
     }
 }
