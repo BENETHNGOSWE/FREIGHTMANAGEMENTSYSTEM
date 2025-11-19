@@ -47,6 +47,7 @@ Route::prefix('/')
         Route::put('loadpackage/update/{loadpackage}', [App\Http\Controllers\Admin\LoadpackageController::class, 'update'])->name('admin.update.loadpackage');
         Route::get('loadpackage/show/{loadpackage}', [App\Http\Controllers\Admin\LoadpackageController::class, 'show'])->name('admin.show.loadpackage');
         Route::delete('loadpackage/delete/{loadpackage}', [App\Http\Controllers\Admin\LoadpackageController::class, 'delete'])->name('admin.delete.loadpackage');
+        Route::post('/admin/toggle-notification', [App\Http\Controllers\Admin\LoadpackageController::class, 'toggleNotification'])->name('admin.toggle.notification');
 
         // Tracking Manage Here
         Route::get('loadtracking', [App\Http\Controllers\Admin\LoadpackageController::class, 'loadtrackingpage'])->name('admin.loadtrackingpage.loadpackage');

@@ -94,6 +94,8 @@ class LoadpackageController extends Controller
             $customerId = $request->input('customer_id');
             $clientId = $this->fms_id;
             $client = Client::find($clientId);
+            
+            $sendNotification = session('send_notifications', true);
 
             $invoice = LoadPackageHelper::generateInvoice($customerId, $clientId);
 
@@ -105,36 +107,39 @@ class LoadpackageController extends Controller
                 $load = LoadPackageHelper::createLoad($validated, $index, $clientId, $customerId, $userId, $branchCode, $invoice->id);
                 LoadPackageHelper::updateInvoiceTotals($invoice, $load);
 
+                // Only send if globally enabled
+                if ($sendNotification) {
+                    $response = LoadPackageHelper::sendCustomerNotification(
+                        $customerId,
+                        $load->load_no,
+                        $client->client_name,   
+                        $load->load_weight_value,    
+                        $load->load_price,   
+                        $load->load_name,     
+                        $load->unittype->unittype_name,    
+                        $load->id
+                    );
 
-                // Pass the required values to the sendCustomerNotification method.
-                $response = LoadPackageHelper::sendCustomerNotification($customerId, $load->load_no, $load->load_name, $load->load_price, $client->client_name, $load->load_weight_value, $load->unittype->unittype_name, $load->id);
-                LoadPackageHelper::sendCustomerNotification(
-                    $customerId,
-                    $load->load_no,
-                    $client->client_name,   
-                    $load->load_weight_value,    
-                    $load->load_price,   
-                    $load->load_name,     
-                    $load->unittype->unittype_name,    
-                    $load->id
-                );
-
-
-                if (!$response['success']) {
-                    return redirect()
-                        ->back()
-                        ->with('error', $response['message']);
+                    if (!$response['success']) {
+                        // Just log error, don't stop the process
+                        \Log::error('Notification failed: ' . $response['message']);
+                    }
                 }
             }
 
             DB::commit();
+            
+            $message = $sendNotification 
+                ? 'Load packages added, invoice generated, and customer notified successfully' 
+                : 'Load packages added and invoice generated successfully (Notifications are disabled)';
+                
         } catch (\Throwable $th) {
             DB::rollback();
             \Log::error($th->getMessage() . ' ' . $th->getTraceAsString());
             return redirect()->back()->with('error', $th->getMessage());
         }
 
-        return redirect()->route('admin.list.loadpackage')->with('success', 'Load packages added and invoice generated successfully');
+        return redirect()->route('admin.list.loadpackage')->with('success', $message);
     }
 
     public function show(Request $request, Loadpackage $loadpackage): View
@@ -222,6 +227,19 @@ class LoadpackageController extends Controller
         } else {
             return redirect()->back()->with('error', 'Load not found. Please check your load number.');
         }
+    }
+
+    public function toggleNotification(Request $request)
+    {
+        $enabled = $request->input('enabled') === 'true' || $request->input('enabled') === true;
+        
+        session(['send_notifications' => $enabled]);
+        
+        return response()->json([
+            'success' => true,
+            'enabled' => $enabled,
+            'message' => $enabled ? 'Notifications enabled' : 'Notifications disabled'
+        ]);
     }
 }
 
