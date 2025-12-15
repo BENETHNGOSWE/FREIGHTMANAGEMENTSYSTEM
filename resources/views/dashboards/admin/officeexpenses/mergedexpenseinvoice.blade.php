@@ -50,7 +50,6 @@
             text-align: left;
             border-radius: 0.25em;
             border-style: solid;
-
             word-wrap: break-word;
             overflow-wrap: break-word;
         }
@@ -223,10 +222,6 @@
             width: 50px;
         }
 
-        /* table.inventory th:nth-child(2) {
-            width: 300px;
-        } */
-
         table.inventory th {
             font-weight: bold;
             text-align: center;
@@ -236,36 +231,28 @@
             text-align: center;
         }
 
-        table.inventory td:nth-child(1) {
-            width: 5%;
-        }
-
-       .inventory th:nth-child(1),
+        /* Updated column widths for 4 columns */
+        .inventory th:nth-child(1),
         .inventory td:nth-child(1) {
-            width: 7%; 
+            width: 8%;
         }
 
         .inventory th:nth-child(2),
         .inventory td:nth-child(2) {
-            width: 55%; 
+            width: 47%;
+            text-align: left;
         }
 
         .inventory th:nth-child(3),
         .inventory td:nth-child(3) {
-            width: 15%; 
+            width: 20%;
+            text-align: right;
         }
 
         .inventory th:nth-child(4),
         .inventory td:nth-child(4) {
-            width: 15%; 
+            width: 25%;
         }
-
-        .inventory th:nth-child(5),
-        .inventory td:nth-child(5) {
-            width: 16%; 
-            text-align: center;
-        }
-
 
         /* table balance */
         table.balance th,
@@ -284,7 +271,6 @@
 
         .company-logo {
             flex: 0 0 150px;
-            /* Fixed width for logo container */
             margin-top: 10px;
         }
 
@@ -334,23 +320,19 @@
 
         .payment-info {
             margin-top: 2em;
-            /* Adds space above the payment info */
         }
 
         .payment-info h2 {
             font-size: 1.5em;
-            /* Adjusts the font size for the header */
             margin-bottom: 1em;
-            /* Space below the header */
         }
 
         .payment-info p {
             margin: 0.2em 0;
             font-size: 15px;
-            /* Adds space between each paragraph */
         }
 
-         /* Footer absolute positioning */
+        /* Footer absolute positioning */
         footer {
             position: absolute;
             bottom: 100px;
@@ -361,8 +343,18 @@
             justify-content: space-between;
         }
 
-         footer .footer-left {
+        footer .footer-left {
             text-align: left;
+        }
+
+        /* Total row styling */
+        .total-row {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+
+        .total-row td {
+            background-color: #f0f0f0;
         }
 
         @media print {
@@ -398,8 +390,7 @@
             margin: 0;
         }
 
-
-         .badge {
+        .badge {
             display: inline-block;
             padding: 1em 0.9em;
             font-size: 75%;
@@ -420,22 +411,22 @@
             color: #fff;
             background-color: #28a745;
         }
-        
+
         /* New styles for signature sections */
         .signature-section {
             margin-bottom: 10px;
             padding-bottom: 8px;
             border-bottom: 1px solid #ddd;
         }
-        
+
         .signature-section:last-child {
             border-bottom: none;
         }
-        
+
         .signature-section p {
             margin: 3px 0 !important;
         }
-        
+
         .role-title {
             font-weight: bold;
             text-decoration: underline;
@@ -451,9 +442,9 @@
             <div class="company-header">
                 <div class="company-logo">
                     @if ($client->client_logo)
-                        <img alt="logko" src="{{ public_path('storage/uploads/' . $client->client_logo) }}" style="width: 150px; height: auto;">
+                        <img alt="logo" src="{{ public_path('storage/uploads/' . $client->client_logo) }}" style="width: 150px; height: auto;">
                     @endif
-                </div>               
+                </div>
                 <div class="company-info">
                     <div class="company-name">{{ strtoupper($client->client_name) }}</div>
                     <div class="company-details">
@@ -469,7 +460,6 @@
         <hr>
         <article>
             <table class="inventory">
-                
                 <thead>
                     <tr>
                         <th><span>S. No</span></th>
@@ -482,17 +472,18 @@
                     @php $counter = 1; @endphp
                     @foreach($expenses as $expense)
                     <tr>
-                        <td><span>1</span></td> 
-                        <td><span>{{ $expense['description'] }}</span></td> 
-                        <td><span>{{ number_format($expense['cost'], 2) }}</span></td> 
-                        <td><span>{{ $expense['category'] }}</span></td> 
+                        <td><span>{{ $counter++ }}</span></td>
+                        <td style="text-align: left;"><span>{{ $expense['description'] }}</span></td>
+                        <td style="text-align: right;"><span>{{ number_format($expense['cost'], 2) }}</span></td>
+                        <td><span>{{ $expense['category'] }}</span></td>
                     </tr>
-                     @endforeach
+                    @endforeach
                 </tbody>
                 <tfoot>
-                    <tr>
-                        <td style="text-align: right; font-weight: bold; font-size: 12px;">TOTAL AMOUNT:</td>
+                    <tr class="total-row">
+                        <td colspan="2" style="text-align: right; font-weight: bold; font-size: 12px;">TOTAL AMOUNT:</td>
                         <td style="text-align: right; font-weight: bold; font-size: 12px;">{{ number_format($totalAmount, 2) }}</td>
+                        <td></td>
                     </tr>
                 </tfoot>
             </table>
@@ -500,7 +491,7 @@
         <header>
             <span style="margin-top: -1em; font-size: 10px">
                 <p style="margin: 0; font-weight: bold; text-decoration: underline;">Approved By:</p>
-                
+
                 <!-- Managing Director -->
                 <div class="signature-section">
                     <p class="role-title">Managing Director (MD)</p>
@@ -508,15 +499,15 @@
                     <p>Name: _____________________</p>
                     <p>Date: _____________________</p>
                 </div>
-                
-                  <!-- General Manager -->
+
+                <!-- General Manager -->
                 <div class="signature-section">
                     <p class="role-title">General Manager (GM)</p>
                     <p>Signature: _____________________</p>
                     <p>Name: _____________________</p>
                     <p>Date: _____________________</p>
                 </div>
-                
+
                 <!-- Accountant -->
                 <div class="signature-section">
                     <p class="role-title">Accountant</p>
@@ -524,7 +515,7 @@
                     <p>Name: _____________________</p>
                     <p>Date: _____________________</p>
                 </div>
-                
+
                 <!-- Cashier -->
                 <div class="signature-section">
                     <p class="role-title">Cashier</p>
@@ -532,7 +523,7 @@
                     <p>Name: _____________________</p>
                     <p>Date: _____________________</p>
                 </div>
-                
+
                 <!-- Receiver -->
                 <div class="signature-section">
                     <p class="role-title">Receiver</p>
@@ -549,17 +540,13 @@
             </address>
         </header>
 
-
-
         <footer>
             <aside class="footer-left" style="display: inline-block; text-align: left; font-size: 12px">
                 <div>
-                    <p style="margin: 0; padding: 0;">{{ $client->client_address_one}} P.O. Box {{$client->client_fax}}
-                        {{$client->client_city}}, {{$client->client_country}} | Tel: {{$client->client_phonenumber}} Email: {{ $client->client_email}}</p>
-
+                    <p style="margin: 0; padding: 0;">{{ $client->client_address_one }} P.O. Box {{ $client->client_fax }}
+                        {{ $client->client_city }}, {{ $client->client_country }} | Tel: {{ $client->client_phonenumber }} Email: {{ $client->client_email }}</p>
                 </div>
             </aside>
-           
         </footer>
     </div>
 </body>
