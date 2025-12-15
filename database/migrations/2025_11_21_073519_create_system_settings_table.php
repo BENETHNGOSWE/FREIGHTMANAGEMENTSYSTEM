@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('system_settings', function (Blueprint $table) {
             $table->id();
-            $table->id();
             $table->foreignId('client_id'); // IMPORTANT: For multi-tenancy
             $table->string('key');
             $table->text('value')->nullable();
