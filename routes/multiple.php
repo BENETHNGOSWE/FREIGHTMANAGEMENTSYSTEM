@@ -183,7 +183,8 @@ Route::prefix('/')
         Route::get('invoice/{id}/pdf', [App\Http\Controllers\Admin\OfficeExpenseController::class, 'pdfgenerate'])->name('admin.pdf.generate');
         Route::get('expense-report', [App\Http\Controllers\Admin\OfficeExpenseController::class, 'expenseReport'])->name('admin.expense.report');
         Route::get('expense-report/export', [App\Http\Controllers\Admin\OfficeExpenseController::class, 'exportReport'])->name('admin.export.report');
-
+        Route::get('/expense/pdf/{ids}', [App\Http\Controllers\Admin\OfficeExpenseController::class, 'printExpenseInvoice'])->name('admin.expense.pdf');
+        
         // Reports Manage Here
         Route::get('/sales-reports/export', [App\Http\Controllers\Sales\SalesreportController::class, 'exportExcel'])->name('sales.excel.salesreport');
          Route::get('salesreport', [App\Http\Controllers\Sales\SalesreportController::class, 'index'])->name('sales.list.salesreport');

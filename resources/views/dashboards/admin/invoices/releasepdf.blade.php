@@ -430,13 +430,6 @@
                     <td><span>{{ number_format($invoice->total_amount, 0, '.', ',') }} /=</span></td>
               </tr>
 
-
-                <tr>
-                    <th><span>Status</span></th>
-                    <td><span class="{{ $invoice->status == 1 ? 'status-paid' : 'status-unpaid' }}">
-                            {{ $invoice->status == 1 ? 'Full Paid' : 'Not Paid' }}
-                        </span></td>
-                </tr>
             </table>
         </article>
         <br>

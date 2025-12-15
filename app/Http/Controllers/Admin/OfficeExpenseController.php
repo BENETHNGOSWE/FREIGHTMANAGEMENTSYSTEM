@@ -160,5 +160,80 @@ class OfficeExpenseController extends Controller
         return Excel::download(new OfficeExpenseExport($startDate, $endDate, $categoryId), 'office-expenses-report.xlsx');
     }
 
+
+
+public function printExpenseInvoice($expenseinvoice_ids)
+{
+    // Check if we're dealing with multiple expense invoices
+    $expenseInvoiceIds = explode(',', $expenseinvoice_ids);
+    $isMultiple = count($expenseInvoiceIds) > 1;
+    
+    if ($isMultiple) {
+        // MERGED EXPENSES
+        $allExpenses = collect();
+        $totalAmount = 0;
+        $firstExpenseInvoice = null;
+        $mergedExpenseNumbers = [];
+        
+        foreach ($expenseInvoiceIds as $id) {
+            $expenseInvoice = OfficeExpense::with(['client', 'categoryexpense'])
+                ->where('id', $id)
+                ->first();
+            
+            if (!$expenseInvoice) {
+                continue;
+            }
+            
+            // Store first expense invoice for client details
+            if (!$firstExpenseInvoice) {
+                $firstExpenseInvoice = $expenseInvoice;
+            }
+            
+            // Collect expense numbers for reference
+            $mergedExpenseNumbers[] = $expenseInvoice->expenses_invoicenumber;
+            
+            // Add this expense to collection
+            $allExpenses->push([
+                'expense_number' => $expenseInvoice->expenses_invoicenumber,
+                'description' => $expenseInvoice->expenses_description,
+                'cost' => $expenseInvoice->expenses_cost,
+                'category' => $expenseInvoice->categoryexpense->name ?? '',
+            ]);
+            
+            // Add to total
+            $totalAmount += $expenseInvoice->expenses_cost;
+        }
+        
+        $client = $firstExpenseInvoice->client;
+        
+        // Generate merged PDF
+        $pdf = PDF::loadView('dashboards.admin.officeexpenses.mergedexpenseinvoice', [
+            'client' => $client,
+            'expenses' => $allExpenses,
+            'mergedExpenseNumbers' => implode(', ', $mergedExpenseNumbers),
+            'totalAmount' => $totalAmount
+        ]);
+        
+        $pdf->setPaper('A4', 'portrait');
+        return $pdf->stream('merged_expense_invoice.pdf');
+        
+    } else {
+        // SINGLE EXPENSE - Your existing code
+        $expenseinvoice = OfficeExpense::with(['client', 'categoryexpense'])
+            ->where('id', $expenseinvoice_ids)
+            ->first();
+        
+        $client = $expenseinvoice->client;
+        
+        $pdf = PDF::loadView('Invoices.expenseinvoice', [
+            'client' => $client,
+            'expenseinvoice' => $expenseinvoice
+        ]);
+        
+        $pdf->setPaper('A4', 'portrait');
+        return $pdf->stream('expense_invoice.pdf');
+    }
+}
+
   
 }

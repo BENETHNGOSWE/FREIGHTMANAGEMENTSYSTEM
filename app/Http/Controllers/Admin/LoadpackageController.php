@@ -107,35 +107,34 @@ class LoadpackageController extends Controller
                 $load = LoadPackageHelper::createLoad($validated, $index, $clientId, $customerId, $userId, $branchCode, $invoice->id);
                 LoadPackageHelper::updateInvoiceTotals($invoice, $load);
 
-                // $response = LoadPackageHelper::sendCustomerNotification($customerId, $load->load_no, $load->load_name, $load->load_price, $client->client_name, $load->load_weight_value, $load->unittype->unittype_name, $load->id);
-                // LoadPackageHelper::sendCustomerNotification(
-                //     $customerId,
-                //     $load->load_no,
-                //     $client->client_name,   
-                //     $load->load_weight_value,    
-                //     $load->load_price,   
-                //     $load->load_name,     
-                //     $load->unittype->unittype_name,    
-                //     $load->id
-                // );
+                $response = LoadPackageHelper::sendCustomerNotification(
+                    $customerId,
+                    $load->load_no,
+                    $client->client_name,   
+                    $load->load_weight_value,    
+                    $load->load_price,   
+                    $load->load_name,     
+                    $load->unittype->unittype_name,    
+                    $load->id
+                );
 
 
-                // if (!$response['success']) {
-                //     return redirect()
-                //         ->back()
-                //         ->with('error', $response['message']);
-                // }
+                if (!$response['success']) {
+                    return redirect()
+                        ->back()
+                        ->with('error', $response['message']);
+                }
             }
 
-            DB::commit();
-        } catch (\Throwable $th) {
-            DB::rollback();
-            \Log::error($th->getMessage() . ' ' . $th->getTraceAsString());
-            return redirect()->back()->with('error', $th->getMessage());
-    }
+                DB::commit();
+            } catch (\Throwable $th) {
+                DB::rollback();
+                \Log::error($th->getMessage() . ' ' . $th->getTraceAsString());
+                return redirect()->back()->with('error', $th->getMessage());
+        }
 
-    return redirect()->route('admin.list.loadpackage')->with('success', 'Load packages added and invoice generated successfully');
-}
+        return redirect()->route('admin.list.loadpackage')->with('success', 'Load packages added and invoice generated successfully');
+    }
 
     public function show(Request $request, Loadpackage $loadpackage): View
     {

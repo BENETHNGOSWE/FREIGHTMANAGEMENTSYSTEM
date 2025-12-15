@@ -420,6 +420,27 @@
             color: #fff;
             background-color: #28a745;
         }
+        
+        /* New styles for signature sections */
+        .signature-section {
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .signature-section:last-child {
+            border-bottom: none;
+        }
+        
+        .signature-section p {
+            margin: 3px 0 !important;
+        }
+        
+        .role-title {
+            font-weight: bold;
+            text-decoration: underline;
+            margin-bottom: 5px !important;
+        }
     </style>
 </head>
 
@@ -469,10 +490,47 @@
         </article>
         <header>
             <span style="margin-top: -1em; font-size: 10px">
-                <p style="margin: 0; font-weight: bold;">Approved By:</p>
-                <p style="margin: 5px 0;">Signature: __________________________</p>
-                <p style="margin: 5px 0;">Name: __________________________</p>
-                <p style="margin: 5px 0;">Date: __________________________</p>
+                <p style="margin: 0; font-weight: bold; text-decoration: underline;">Approved By:</p>
+                
+                <!-- Managing Director -->
+                <div class="signature-section">
+                    <p class="role-title">Managing Director (MD)</p>
+                    <p>Signature: _____________________</p>
+                    <p>Name: _____________________</p>
+                    <p>Date: _____________________</p>
+                </div>
+                
+                  <!-- General Manager -->
+                <div class="signature-section">
+                    <p class="role-title">General Manager (GM)</p>
+                    <p>Signature: _____________________</p>
+                    <p>Name: _____________________</p>
+                    <p>Date: _____________________</p>
+                </div>
+                
+                <!-- Accountant -->
+                <div class="signature-section">
+                    <p class="role-title">Accountant</p>
+                    <p>Signature: _____________________</p>
+                    <p>Name: _____________________</p>
+                    <p>Date: _____________________</p>
+                </div>
+                
+                <!-- Cashier -->
+                <div class="signature-section">
+                    <p class="role-title">Cashier</p>
+                    <p>Signature: _____________________</p>
+                    <p>Name: _____________________</p>
+                    <p>Date: _____________________</p>
+                </div>
+                
+                <!-- Receiver -->
+                <div class="signature-section">
+                    <p class="role-title">Receiver</p>
+                    <p>Signature: _____________________</p>
+                    <p>Name: _____________________</p>
+                    <p>Date: _____________________</p>
+                </div>
             </span>
             <address style="margin-top: -1em; font-size: 10px">
                 <p style="margin: 0; font-weight: bold;">Printed By:</p>
