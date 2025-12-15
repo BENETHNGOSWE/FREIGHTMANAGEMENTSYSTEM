@@ -13,14 +13,11 @@ return new class extends Migration
     {
         Schema::create('system_settings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('client_id'); // IMPORTANT: For multi-tenancy
+            $table->foreignId('client_id')->constrained('clients')->onDelete('cascade');
             $table->string('key');
             $table->text('value')->nullable();
             $table->integer('updated_by')->nullable();
             $table->timestamps();
-            
-            // Unique constraint per client
-            $table->unique(['client_id', 'key']);
             $table->timestamps();
         });
     }
