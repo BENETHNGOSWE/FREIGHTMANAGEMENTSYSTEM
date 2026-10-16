@@ -118,6 +118,9 @@ Uko tayari kuanza safari.
 Utawasili Bandari ya Dar-es-salaam tarehe {$load_delivery_date}.";
         return sendMessage($customer->phone, $message, $senderName);
     }
+
+
+
 }
 
 
