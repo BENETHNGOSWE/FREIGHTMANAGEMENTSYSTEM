@@ -14,7 +14,12 @@
                             Show</a></span></p>
             </div>
             <div>
-                <a href="{{ route('admin.pdf.invoice', $invoice->id) }}" class="btn btn-primary me-3">Download PDF</a>
+                <a href="{{ route('admin.pdf.finalinvoice', $invoice->id) }}" class="btn btn-primary me-3">
+                    <i class="fas fa-file-invoice"></i> Download Final Invoice
+                </a>
+                <a href="{{ route('admin.pdf.invoice', $invoice->id) }}" class="btn btn-outline-secondary me-3">
+                    <i class="fas fa-receipt"></i> Download Cargo Receipt
+                </a>
             </div>
         </div>
         <div class="row">

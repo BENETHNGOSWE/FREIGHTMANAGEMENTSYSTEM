@@ -19,7 +19,6 @@ class FinancialreportController extends Controller
 
     public function __construct()
     {
-        $this->middleware('chiefoperation');
         $this->middleware(function ($request, $next) {
             if (Auth::check()) {
                 $this->fms_id = Auth::user()->client_id;
@@ -55,6 +54,12 @@ class FinancialreportController extends Controller
         }
 
         $this->data['invoices'] = $query->get();
+        $this->data['customerStatements'] = (clone $query)
+        ->selectRaw("customer_id, COUNT(*) as invoice_count, SUM(total_amount + total_transportfee) as total_due, SUM((SELECT COALESCE(SUM(amount_received), 0) FROM invoice_payments WHERE invoice_payments.invoice_id = invoices.id)) as total_received, (SUM(total_amount + total_transportfee) - SUM((SELECT COALESCE(SUM(amount_received), 0) FROM invoice_payments WHERE invoice_payments.invoice_id = invoices.id))) as outstanding_amount, MAX(created_at) as last_invoice_date")
+        ->groupBy('customer_id')
+        ->orderByDesc('outstanding_amount')
+        ->with('customer')
+        ->get();
         $this->data['customers'] = Customer::where('client_id', $this->fms_id)->pluck('customer_firstname', 'id');
         $this->data['staffs'] = Staff::where('client_id', $this->fms_id)->pluck('staff_firstname', 'id');
 
@@ -64,6 +69,6 @@ class FinancialreportController extends Controller
     public function exportExcel(Request $request)
     {
         $fileName = 'Invoices_Report_' . Carbon::now()->format('Y-m-d') . '.xlsx';
-        return Excel::download(new InvoiceExport($request), $fileName);
+        return Excel::download(new InvoiceExport($request, $this->fms_id), $fileName);
     }
 }

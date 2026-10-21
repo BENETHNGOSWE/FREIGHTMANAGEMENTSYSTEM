@@ -258,22 +258,22 @@ return [
     [
         'title' => 'Financial Reports',
         'icon' => 'fas fa-file-invoice-dollar',
-        'permission' => 'view companyinvoicedetails',
+        'permission' => 'view financial reports',
         'children' => [
             [
                 'title' => 'Invoice Report',
                 'route' => 'chiefoperation.list.financialreport',
-                'permission' => 'view companyinvoicedetails',
+                'permission' => 'view financial reports',
             ],
             [
                 'title' => 'Expenses Report',
                 'route' => 'admin.expense.report',
-                'permission' => 'view companyinvoicedetails',
+                'permission' => 'view financial reports',
             ],
             [
                 'title' => 'CBM Record',
                 'route' => 'sales.list.salesreport',
-                'permission' => 'view companyinvoicedetails',
+                'permission' => 'view financial reports',
             ],
         ],
     ],

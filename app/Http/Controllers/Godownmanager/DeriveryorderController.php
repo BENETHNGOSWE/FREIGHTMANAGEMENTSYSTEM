@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\View\View;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Validation\Rule;
+
 
 class DeriveryorderController extends Controller
 {
@@ -19,7 +21,6 @@ class DeriveryorderController extends Controller
 
     public function __construct()
     {
-        $this->middleware('godownmanager');
         $this->middleware(function ($request, $next) {
             if (Auth::check()) {
                 $this->fms_id = Auth::user()->client_id;
@@ -38,7 +39,7 @@ class DeriveryorderController extends Controller
     public function create()
     {
         // $this->authorize('create', Loadpackagetype::class);
-        $this->data['invoices'] = Invoice::with('customer')->pluck('invoice_no', 'id');
+        $this->data['invoices'] = Invoice::where('client_id', $this->fms_id)->pluck('invoice_no','id');
         return view('dashboards.godownmanager.deriveryorders.create', $this->data);
     }
 
@@ -48,7 +49,12 @@ class DeriveryorderController extends Controller
             'driver_name' => ['required', 'string', 'max:255'],
             'driver_number' => ['required', 'string', 'max:255'],
             'vehicle_reg_no' => ['required', 'string', 'max:255'],
-            'invoice_id' => ['required', 'string', 'exists:invoices,id'],
+            'invoice_id' => [
+                'required',
+                Rule::exists('invoices', 'id')->where(function ($query) {
+                    $query->where('client_id', $this->fms_id);
+                }),
+            ],
         ]);
     }
 

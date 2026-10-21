@@ -41,6 +41,28 @@ class Invoice extends Model
         return $this->belongsToMany(Loadpackage::class, 'invoice_loads', 'invoice_id', 'loadpackage_id')
                 ->withPivot('load_price', 'client_id');
     }
+    public function invoicePayments()
+    {
+        return $this->hasMany(InvoicePayment::class);
+    }
+
+    /** What the customer must pay in total (your decision: amount + transport fee) */
+    public function amountDue(): float
+    {
+        return (float) $this->total_amount + (float) $this->total_transportfee;
+    }
+
+    /** What has actually been received so far */
+    public function totalReceived(): float
+    {
+        return (float) $this->invoicePayments()->sum('amount_received');
+    }
+
+    /** What remains. Never show a negative balance in the UI later. */
+    public function balanceDue(): float
+    {
+        return $this->amountDue() - $this->totalReceived();
+    }
 
     public function user()
     {

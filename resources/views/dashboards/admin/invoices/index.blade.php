@@ -67,7 +67,7 @@
                                         <td class="invoice-status">{!! invoice_status($invoice->status) !!}</td>
                                         <td class="text-center" style="width: 200px;">
                                             <div role="group" aria-label="Row Actions" class="btn-group">
-                                                @if ($canPrintReleaseOrder)
+                                                @if ($canEditInvoice)
                                                     <a href="{{ route('admin.edit.invoice', $invoice) }}">
                                                         <button type="button" class="btn btn-outline-success">
                                                             <i class="fas fa-edit"></i>
@@ -185,20 +185,17 @@
             });
             
             // Re-adding your existing print listeners here for completeness
-            const printROButtons = document.querySelectorAll('.print-release-order');
-            printROButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const invoiceId = button.dataset.invoiceId;
-                    window.location.href = `/release/pdf/${invoiceId}`;
-                });
-            });
+            document.addEventListener('click', function (e) {
+                const releaseBtn = e.target.closest('.print-release-order');
+                if (releaseBtn) {
+                    window.location.href = `/release/pdf/${releaseBtn.dataset.invoiceId}`;
+                    return;
+                }
 
-            const printFIButtons = document.querySelectorAll('.print-final-invoice');
-            printFIButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const invoiceId = button.dataset.invoiceId;
-                    window.location.href = `/finalInvoice/pdf/${invoiceId}`;
-                });
+                const finalBtn = e.target.closest('.print-final-invoice');
+                if (finalBtn) {
+                    window.location.href = `/finalInvoice/pdf/${finalBtn.dataset.invoiceId}`;
+                }
             });
 
         });

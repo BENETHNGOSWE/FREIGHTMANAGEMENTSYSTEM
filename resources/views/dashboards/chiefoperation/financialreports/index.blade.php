@@ -52,6 +52,52 @@
                             </div>
                         </div>
                     </form>
+                    {{-- Customer Statement Summary --}}
+                    <div class="table-responsive mb-4">
+                        <h4 class="card-title">Customer Statement Summary</h4>
+                        <table id="customerStatementTable" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Customer</th>
+                                    <th>Invoices</th>
+                                    <th>Total Invoiced</th>
+                                    <th>Total Received</th>
+                                    <th>Balance Outstanding</th>
+                                    <th>Last Invoice</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($customerStatements as $statement)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ strtoupper(($statement->customer->customer_firstname ?? '') . ' ' . ($statement->customer->customer_lastname ?? '')) ?: '-' }}</td>
+                                        <td>{{ $statement->invoice_count }}</td>
+                                        <td>{{ number_format($statement->total_due, 2) }}</td>
+                                        <td>{{ number_format($statement->total_received, 2) }}</td>
+                                        <td>{{ number_format($statement->outstanding_amount, 2) }}</td>
+                                        <td>{{ $statement->last_invoice_date ? \Carbon\Carbon::parse($statement->last_invoice_date)->format('d M Y') : '-' }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="7" class="text-center py-4">No customer statements found</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                            @if($customerStatements->isNotEmpty())
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="2">TOTAL</th>
+                                        <th>{{ $customerStatements->sum('invoice_count') }}</th>
+                                        <th>{{ number_format($customerStatements->sum('total_due'), 2) }}</th>
+                                        <th>{{ number_format($customerStatements->sum('total_received'), 2) }}</th>
+                                        <th>{{ number_format($customerStatements->sum('outstanding_amount'), 2) }}</th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
+                            @endif
+                        </table>
+                    </div>
                     <div class="table-responsive">
                         <h4 class="card-title">Invoice Report</h4>
                         <table id="invoiceTable" class="table table-borderless table-hover">
@@ -62,6 +108,7 @@
                                     <th>Customer Name</th>
                                     <th>Amount</th>
                                     <th>Status</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -72,6 +119,14 @@
                                         <td>{{ strtoupper($invoice->customer->customer_firstname) ?? '-' }}</td>
                                         <td>{{ number_format($invoice->total_amount, 2) }}</td>
                                         <td class="invoice-status">{!! invoice_status($invoice->status) !!}</td>
+                                        <td>
+                                            <a href="{{ route('admin.show.invoice', $invoice) }}" class="btn btn-outline-primary btn-sm" title="View invoice details">
+                                                <i class="fas fa-eye"></i> View
+                                            </a>
+                                            <a href="{{ route('admin.pdf.finalinvoice', $invoice) }}" class="btn btn-outline-secondary btn-sm" title="Download final invoice PDF">
+                                                <i class="fas fa-print"></i> Print
+                                            </a>
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr>
@@ -96,6 +151,40 @@
                 select: false,
                 lengthChange: false,
             });
+           $("#customerStatementTable").DataTable({
+            searching: true,
+            paging: true,
+            select: false,
+            lengthChange: false,
+            pageLength: 10,
+            footerCallback: function (row, data, start, end, display) {
+                var api = this.api();
+
+                // Helper: remove commas like "2,352,304,838.00" -> 2352304838.00
+                function clean(value) {
+                    return parseFloat(String(value).replace(/,/g, '')) || 0;
+                }
+
+                // Helper: sum one column using ONLY the rows matching the current search
+                function sumColumn(index) {
+                    return api.column(index, { search: 'applied' }).data()
+                        .reduce(function (a, b) { return clean(a) + clean(b); }, 0);
+                }
+
+                function fmt(value) {
+                    return Number(value).toLocaleString('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    });
+                }
+
+                // Column numbers: 2=Invoices, 3=Total Invoiced, 4=Full Paid, 5=Outstanding
+                $(api.column(2).footer()).html(sumColumn(2));
+                $(api.column(3).footer()).html(fmt(sumColumn(3)));
+                $(api.column(4).footer()).html(fmt(sumColumn(4)));
+                $(api.column(5).footer()).html(fmt(sumColumn(5)));
+            }
+        });
         })(jQuery);
     </script>
     <script>

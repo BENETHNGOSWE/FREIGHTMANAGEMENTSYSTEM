@@ -29,6 +29,10 @@ class PermissionsSeeder extends Seeder
             }
         }
 
+        foreach (['view financial reports', 'print release order', 'print final invoice'] as $name) {
+            Permission::firstOrCreate(['name' => $name, 'guard_name' => 'web']);
+        }
+
         $manager = Role::firstOrCreate(['name' => 'manager', 'guard_name' => 'web']);
         $manager->syncPermissions([
             'view client_sendername',
@@ -66,6 +70,7 @@ class PermissionsSeeder extends Seeder
             'view companyinvoicedetails', 'create companyinvoicedetails', 'update companyinvoicedetails', 'delete companyinvoicedetails',
             'view office_expense_categories', 'create office_expense_categories', 'update office_expense_categories', 'delete office_expense_categories',
             'view office_expenses', 'create office_expenses', 'update office_expenses', 'delete office_expenses',
+            'view financial reports', 'print release order', 'print final invoice',
         ]);
 
 
@@ -110,6 +115,7 @@ class PermissionsSeeder extends Seeder
             'view loadpackagetypes',
             'view loadpackages',
             'view customers',
+            'print final invoice',
             'view customercategories', 'create customercategories', 'update customercategories', 'delete customercategories',
             'view customerleads', 'create customerleads', 'update customerleads', 'delete customerleads',
             'view messages', 'create messages', 'update messages', 'delete messages',
@@ -130,6 +136,7 @@ class PermissionsSeeder extends Seeder
             'view messages', 'create messages', 'update messages', 'delete messages',
             'view office_expense_categories', 'create office_expense_categories', 'update office_expense_categories',
             'view office_expenses', 'create office_expenses', 'update office_expenses',
+            'print release order', 'print final invoice',
         ]);
 
         $kodasmspackage = Role::firstOrCreate(['name' => 'kodasmspackage', 'guard_name' => 'web']);
