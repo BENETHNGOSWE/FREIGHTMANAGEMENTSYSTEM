@@ -254,6 +254,25 @@ return [
         ],
     ],
 
+    // Accounts - the full accounting module (chart of accounts, journals, ledgers, reports)
+    [
+        'title' => 'Accounts',
+        'icon' => 'fas fa-calculator',
+        'permission' => null,
+        'children' => [
+            ['title' => 'Accounts Dashboard', 'route' => 'accounts.dashboard', 'permission' => null],
+            ['title' => 'Chart of Accounts', 'route' => 'accounts.chart.index', 'permission' => null],
+            ['title' => 'Journal Entries', 'route' => 'accounts.journal.index', 'permission' => null],
+            ['title' => 'General Ledger', 'route' => 'accounts.ledger.index', 'permission' => null],
+            ['title' => 'Trial Balance', 'route' => 'accounts.reports.trial_balance', 'permission' => null],
+            ['title' => 'Profit & Loss', 'route' => 'accounts.reports.profit_loss', 'permission' => null],
+            ['title' => 'Balance Sheet', 'route' => 'accounts.reports.balance_sheet', 'permission' => null],
+            ['title' => 'Receivables & Ageing', 'route' => 'accounts.reports.receivables', 'permission' => null],
+            ['title' => 'Cash & Bank Book', 'route' => 'accounts.reports.cash_bank', 'permission' => null],
+            ['title' => 'Accounts Settings', 'route' => 'accounts.settings', 'permission' => null],
+        ],
+    ],
+
     // Financial Reports
     [
         'title' => 'Financial Reports',

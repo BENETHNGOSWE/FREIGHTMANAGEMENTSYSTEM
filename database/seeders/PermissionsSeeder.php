@@ -18,7 +18,9 @@ class PermissionsSeeder extends Seeder
         $models = ['banks', 'branches', 'containers', 'clients', 'client_admins', 'clientpayments', 'client_types', 'companyinvoicedetails','godown_addresses',
                     'countries', 'customers', 'customercategories', 'customerleads', 'client_sendername', 'derivery_orders', 'messages', 'modules', 'packages', 
                     'loadpackagetypes', 'loadpackages', 'office_expense_categories', 'office_expenses', 'staffs', 'staff_types', 'payments', 'role', 'sendernames', 'subscriptions', 'subscription_invoices',
-                    'subscription_tokens', 'sales_reports',  'userroles', 'roles', 'permissions', 'users', 'unit_types', 'invoices', 'invoice_loads', 'kodapackages', 'customermessages','demorequests', 'settings','clientactivenames'];
+                    'subscription_tokens', 'sales_reports',  'userroles', 'roles', 'permissions', 'users', 'unit_types', 'invoices', 'invoice_loads', 'kodapackages', 'customermessages','demorequests', 'settings','clientactivenames',
+                    // Accounting module
+                    'accounts', 'journal_entries', 'accounting_reports'];
 
         foreach ($models as $model) {
             foreach ($actions as $action) {
@@ -29,7 +31,8 @@ class PermissionsSeeder extends Seeder
             }
         }
 
-        foreach (['view financial reports', 'print release order', 'print final invoice'] as $name) {
+        foreach (['view financial reports', 'print release order', 'print final invoice',
+                 'view accounting reports', 'manage accounting settings', 'post journal entries'] as $name) {
             Permission::firstOrCreate(['name' => $name, 'guard_name' => 'web']);
         }
 
@@ -50,6 +53,11 @@ class PermissionsSeeder extends Seeder
             'view office_expense_categories', 'create office_expense_categories', 'update office_expense_categories', 'delete office_expense_categories',
             'view office_expenses', 'create office_expenses', 'update office_expenses', 'delete office_expenses',
             'view sales_reports', 'create sales_reports', 'update sales_reports', 'delete sales_reports',
+            // Accounts
+            'list accounts', 'view accounts', 'create accounts', 'update accounts', 'delete accounts',
+            'list journal_entries', 'view journal_entries', 'create journal_entries', 'update journal_entries', 'delete journal_entries',
+            'list accounting_reports', 'view accounting_reports',
+            'view accounting reports', 'manage accounting settings', 'post journal entries',
         ]);
 
         $chiefoperation = Role::firstOrCreate(['name' => 'chiefoperation', 'guard_name' => 'web']);
@@ -71,6 +79,11 @@ class PermissionsSeeder extends Seeder
             'view office_expense_categories', 'create office_expense_categories', 'update office_expense_categories', 'delete office_expense_categories',
             'view office_expenses', 'create office_expenses', 'update office_expenses', 'delete office_expenses',
             'view financial reports', 'print release order', 'print final invoice',
+            // Accounts
+            'list accounts', 'view accounts', 'create accounts', 'update accounts',
+            'list journal_entries', 'view journal_entries', 'create journal_entries', 'update journal_entries',
+            'list accounting_reports', 'view accounting_reports',
+            'view accounting reports', 'post journal entries',
         ]);
 
 
@@ -137,6 +150,10 @@ class PermissionsSeeder extends Seeder
             'view office_expense_categories', 'create office_expense_categories', 'update office_expense_categories',
             'view office_expenses', 'create office_expenses', 'update office_expenses',
             'print release order', 'print final invoice',
+            // Accounts: the cashier records payments, so they must see the books
+            'list accounts', 'view accounts',
+            'list journal_entries', 'view journal_entries', 'create journal_entries',
+            'list accounting_reports', 'view accounting_reports', 'view accounting reports',
         ]);
 
         $kodasmspackage = Role::firstOrCreate(['name' => 'kodasmspackage', 'guard_name' => 'web']);

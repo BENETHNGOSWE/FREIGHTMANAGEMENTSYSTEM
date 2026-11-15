@@ -45,6 +45,9 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware(['auth', 'web', 'receptionist'])->group(base_path('routes/reception.php'));
             Route::middleware(['auth', 'web', 'Cashier'])->group(base_path('routes/cashier.php'));
             Route::middleware(['auth', 'web', 'owner'])->group(base_path('routes/owner.php'));
+
+            // Accounting module: available to every signed-in user, pages are permission-gated.
+            Route::middleware(['auth', 'web'])->group(base_path('routes/accounts.php'));
         });
     }
 }
