@@ -36,13 +36,15 @@
                             <th class="text-end">31-60</th>
                             <th class="text-end">61-90</th>
                             <th class="text-end">90+</th>
-                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse ($report['customers'] as $row)
                             <tr>
-                                <td>{{ $row['name'] }}</td>
+                                <td>
+                                    <a href="{{ route('accounts.ledger.customer', $row['customer_id']) }}"
+                                       title="Open the customer statement">{{ $row['name'] }}</a>
+                                </td>
                                 <td class="text-end">{{ $row['invoices'] }}</td>
                                 <td class="text-end">{{ number_format($row['invoiced'], 2) }}</td>
                                 <td class="text-end">{{ number_format($row['received'], 2) }}</td>
@@ -53,13 +55,9 @@
                                 <td class="text-end">{{ number_format($row['days_31_60'], 2) }}</td>
                                 <td class="text-end">{{ number_format($row['days_61_90'], 2) }}</td>
                                 <td class="text-end">{{ number_format($row['over_90'], 2) }}</td>
-                                <td class="text-end">
-                                    <a href="{{ route('accounts.ledger.customer', $row['customer_id']) }}"
-                                       class="btn btn-sm btn-outline-primary">Statement</a>
-                                </td>
                             </tr>
                         @empty
-                            <tr><td colspan="10" class="text-center text-muted">No invoices yet.</td></tr>
+                            <tr><td colspan="9" class="text-center text-muted">No invoices yet.</td></tr>
                         @endforelse
                     </tbody>
                     <tfoot>
@@ -73,14 +71,13 @@
                             <th class="text-end">{{ number_format($report['totals']['days_31_60'], 2) }}</th>
                             <th class="text-end">{{ number_format($report['totals']['days_61_90'], 2) }}</th>
                             <th class="text-end">{{ number_format($report['totals']['over_90'], 2) }}</th>
-                            <th></th>
                         </tr>
                     </tfoot>
                 </table>
             </div>
             <p class="text-muted mb-0 small">
                 Invoiced = CBM / KG amount + transport fee. Received = payments recorded on the invoice.
-                Ageing is counted from the invoice date.
+                Ageing is counted from the invoice date. Click a customer name to open the statement.
             </p>
         </div>
     </div>
