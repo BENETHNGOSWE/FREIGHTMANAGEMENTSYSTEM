@@ -198,6 +198,74 @@ class LedgerService
             $lines, 'Expense Entry', 'Expense: ' . $expense->expenses_description);
     }
 
+    // ------------------------------------------------------------------ storage
+
+    /** Daily storage charges -> Dr Accounts Receivable, Cr Storage Income (one entry per day). */
+    public function postStorageAccrual(int $clientId, string $date, float $amount): ?JournalEntry
+    {
+        $setting = $this->settings($clientId);
+
+        if (! $setting->auto_post_invoices || $amount <= 0) {
+            return null;
+        }
+
+        $lines = [
+            $this->line($this->accountId($setting->receivable_account_id, $clientId, '1200'), $amount, 0,
+                'Storage charges ' . $date),
+            $this->line($this->accountId($setting->storage_income_account_id ?: $setting->transport_income_account_id, $clientId, '4400'), 0, $amount,
+                'Storage income ' . $date),
+        ];
+
+        return $this->upsertReference($clientId, 'StorageAccrual', (int) str_replace('-', '', $date), $date,
+            $date, $lines, 'Storage Accrual', 'Daily storage charges ' . $date);
+    }
+
+    /** Storage money received -> Dr Cash / Bank / Mobile money, Cr Accounts Receivable. */
+    public function postStoragePayment(\App\Models\StoragePayment $payment): ?JournalEntry
+    {
+        $clientId = (int) $payment->client_id;
+        $setting = $this->settings($clientId);
+        $amount = round((float) $payment->amount, 2);
+
+        if (! $setting->auto_post_payments || $amount <= 0) {
+            return null;
+        }
+
+        $lines = [
+            $this->line($this->paymentAccountId($setting, (string) $payment->payment_method), $amount, 0,
+                'Storage payment ' . ($payment->reference_no ?: '#' . $payment->id)),
+            $this->line($this->accountId($setting->receivable_account_id, $clientId, '1200'), 0, $amount,
+                'Storage payment cleared'),
+        ];
+
+        return $this->upsertReference($clientId, 'StoragePayment', (int) $payment->id,
+            $payment->reference_no ?: 'STP-' . $payment->id,
+            optional($payment->payment_date)->toDateString() ?: now()->toDateString(),
+            $lines, 'Storage Payment', 'Storage payment ' . number_format($amount, 2));
+    }
+
+    /** Waived storage -> Dr Storage Income, Cr Accounts Receivable (revenue reversed, debt removed). */
+    public function postStorageWaiver(\App\Models\StorageWaiver $waiver): ?JournalEntry
+    {
+        $clientId = (int) $waiver->client_id;
+        $setting = $this->settings($clientId);
+        $amount = round((float) $waiver->amount, 2);
+
+        if ($amount <= 0) {
+            return null;
+        }
+
+        $lines = [
+            $this->line($this->accountId($setting->storage_income_account_id ?: $setting->transport_income_account_id, $clientId, '4400'), $amount, 0,
+                'Storage waived: ' . ($waiver->reason ?: 'no reason')),
+            $this->line($this->accountId($setting->receivable_account_id, $clientId, '1200'), 0, $amount,
+                'Storage waived'),
+        ];
+
+        return $this->upsertReference($clientId, 'StorageWaiver', (int) $waiver->id, 'STW-' . $waiver->id,
+            now()->toDateString(), $lines, 'Storage Waiver', 'Storage waived ' . number_format($amount, 2));
+    }
+
     /** Used when a record is deleted or becomes worthless. */
     public function cancelReference(int $clientId, string $doctype, int $id, string $reason = ''): void
     {

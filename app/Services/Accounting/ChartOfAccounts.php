@@ -51,6 +51,7 @@ class ChartOfAccounts
         ['4100', 'Freight Income', '4000', 'Income', 'Income Account', false, 'CBM / KG billed on cargo loads'],
         ['4200', 'Transport Income', '4000', 'Income', 'Income Account', false, 'Trucking / transport fee'],
         ['4300', 'Other Income', '4000', 'Income', 'Income Account', false, null],
+        ['4400', 'Storage Income', '4000', 'Income', 'Income Account', false, 'Daily storage charges after the free period'],
 
         // --------------------------------------------------------------- Expenses
         ['5000', 'Expenses', null, 'Expense', null, true, null],
@@ -74,6 +75,7 @@ class ChartOfAccounts
         '2100' => 'payable_account_id',
         '4100' => 'income_account_id',
         '4200' => 'transport_income_account_id',
+        '4400' => 'storage_income_account_id',
         '1110' => 'cash_account_id',
         '1121' => 'bank_account_id',
         '1123' => 'mobile_money_account_id',

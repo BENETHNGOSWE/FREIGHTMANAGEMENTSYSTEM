@@ -55,3 +55,20 @@ place; the warehouse-physical path (QR, verification, storage, pickup, investiga
    billable weight computed on the combined weight.
 
 Each of these is a self-contained module; none requires rewriting what exists.
+
+---
+
+## Build log — 16 Oct 2026
+
+The six missing/partial items from the spec are now implemented and tested (see `docs/CARGO_STORAGE.md`):
+
+| Spec item | Status | Where |
+|---|---|---|
+| Cargo photos, China location, batch | done | cargo page `/cargo/{id}` |
+| QR code per cargo + public tracking + timeline | done | `/track`, `/track/{token}` |
+| Mark as arrived → warehouse verification | done | `/verification` |
+| Automatic daily storage, default + per-customer fee, no duplicates | done | `/warehouse/storage`, `storage:accrue` (00:05) |
+| Release control with the storage check | done | `/release-control` |
+| Merge payment across cargo, 1 KG minimum on combined weight | done | `/merge-payment` |
+
+`tests/Feature/CargoOperationsTest.php` — 18 tests / 73 assertions.

@@ -254,6 +254,31 @@ return [
         ],
     ],
 
+    // Cargo operations: the physical journey of every package
+    [
+        'title' => 'Cargo Operations',
+        'icon' => 'fas fa-boxes',
+        'permission' => null,
+        'children' => [
+            ['title' => 'Cargo List', 'route' => 'cargo.index', 'permission' => null],
+            ['title' => 'Warehouse Verification', 'route' => 'cargo.verification', 'permission' => null],
+            ['title' => 'Release Control', 'route' => 'cargo.release.index', 'permission' => null],
+            ['title' => 'Merge Payment', 'route' => 'invoices.merge.create', 'permission' => null],
+        ],
+    ],
+
+    // Storage - its own section: it has its own settings, money and reports
+    [
+        'title' => 'Storage',
+        'icon' => 'fas fa-warehouse',
+        'permission' => null,
+        'children' => [
+            ['title' => 'Cargo in Storage', 'route' => 'storage.index', 'permission' => null],
+            ['title' => 'Storage Payments', 'route' => 'storage.payments', 'permission' => null],
+            ['title' => 'Storage Settings', 'route' => 'storage.settings', 'permission' => null],
+        ],
+    ],
+
     // Accounts - the full accounting module (chart of accounts, journals, ledgers, reports)
     [
         'title' => 'Accounts',

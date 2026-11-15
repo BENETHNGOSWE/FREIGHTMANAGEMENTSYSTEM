@@ -37,6 +37,13 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+
+// ---------------------------------------------------------------- public cargo tracking
+// No login: the customer enters a tracking number, or scans the QR on the cargo.
+Route::get('track', [App\Http\Controllers\Cargo\TrackingController::class, 'form'])->name('track.form');
+Route::get('track/{token}', [App\Http\Controllers\Cargo\TrackingController::class, 'show'])->name('track.show');
+// Warehouse scans the pickup note: valid / not valid, no money shown.
+Route::get('pickup/{token}', [App\Http\Controllers\Cargo\TrackingController::class, 'pickup'])->name('track.pickup');
 Route::redirect('/register', '/login', 301);
 
 // Route::get('/home', [HomeController::class, 'index'])->name('home');

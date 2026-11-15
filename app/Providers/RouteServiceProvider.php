@@ -48,6 +48,9 @@ class RouteServiceProvider extends ServiceProvider
 
             // Accounting module: available to every signed-in user, pages are permission-gated.
             Route::middleware(['auth', 'web'])->group(base_path('routes/accounts.php'));
+
+            // Cargo operations, verification, release control, storage, merge payment.
+            Route::middleware(['auth', 'web'])->group(base_path('routes/cargo.php'));
         });
     }
 }

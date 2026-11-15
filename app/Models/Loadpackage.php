@@ -8,7 +8,76 @@ use Illuminate\Database\Eloquent\Model;
 class Loadpackage extends Model
 {
     use HasFactory;
-    protected $fillable = ['load_no', 'load_description', 'load_name', 'load_price', 'load_transport_date', 'load_delivery_date', 'load_weight_value', 'load_trucking_number', 'client_id', 'loadpackagetype_id', 'customer_id', 'unittype_id', 'user_id', 'container_id', 'load_length', 'load_width', 'load_height', 'load_volume'];
+    protected $fillable = [
+        'load_no', 'load_description', 'load_name', 'load_price', 'load_transport_date',
+        'load_delivery_date', 'load_weight_value', 'load_trucking_number', 'client_id',
+        'loadpackagetype_id', 'customer_id', 'unittype_id', 'user_id', 'container_id',
+        'load_length', 'load_width', 'load_height', 'load_volume',
+        // cargo registration / warehouse
+        'china_location', 'batch_no', 'qr_token', 'cargo_status', 'arrived_at',
+        'original_weight_value', 'verified_weight_value', 'verified_at', 'has_damage',
+        'has_missing', 'has_wrong_item', 'verification_notes', 'weight_price_impact',
+        'released_at', 'collected_at', 'released_by',
+    ];
+
+    protected $casts = [
+        'arrived_at' => 'date',
+        'verified_at' => 'datetime',
+        'released_at' => 'datetime',
+        'collected_at' => 'datetime',
+        'has_damage' => 'boolean',
+        'has_missing' => 'boolean',
+        'has_wrong_item' => 'boolean',
+        'weight_price_impact' => 'decimal:2',
+    ];
+
+    /** The journey a cargo walks through, in order. */
+    public const STATUSES = [
+        'Received' => 'Received (China warehouse)',
+        'In Transit' => 'In Transit',
+        'Arrived' => 'Arrived Tanzania',
+        'Verified' => 'Verified (Dar warehouse)',
+        'Invoiced' => 'Invoiced',
+        'Paid' => 'Paid',
+        'Ready for Pickup' => 'Ready for Pickup',
+        'Collected' => 'Collected',
+    ];
+
+    public function photos()
+    {
+        return $this->hasMany(\App\Models\CargoPhoto::class, 'loadpackage_id')->latest();
+    }
+
+    public function statusHistories()
+    {
+        return $this->hasMany(\App\Models\CargoStatusHistory::class, 'loadpackage_id')->latest();
+    }
+
+    public function storage()
+    {
+        return $this->hasOne(\App\Models\CargoStorage::class, 'loadpackage_id');
+    }
+
+    public function getRelatedInvoices()
+    {
+        return \App\Models\Invoice::whereIn('id', $this->getRelatedInvoiceIds())->get();
+    }
+
+    public function statusLabel(): string
+    {
+        return self::STATUSES[$this->cargo_status] ?? ($this->cargo_status ?: 'Received');
+    }
+
+    public function isCollected(): bool
+    {
+        return $this->cargo_status === 'Collected' || $this->collected_at !== null;
+    }
+
+    /** Weight used for pricing: the verified weight once the warehouse confirmed it. */
+    public function billableWeight(): float
+    {
+        return (float) ($this->verified_weight_value ?? $this->load_weight_value);
+    }
 
     public function client()
     {
