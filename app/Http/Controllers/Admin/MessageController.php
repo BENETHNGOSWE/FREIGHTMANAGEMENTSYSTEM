@@ -61,16 +61,32 @@ class MessageController extends Controller
             return redirect()->back()->with('error', 'No customers selected.');
         }
 
+        // The sender ID is required by the SMS gateway; it comes from the active name of
+        // this client (Settings -> Active Name).
+        $activeName = \App\Models\Clientactivename::where('client_id', $this->fms_id)->first();
+        $senderId = $activeName
+            ? \App\Models\Sendername::find($activeName->sendername_id)->name ?? null
+            : null;
+
         foreach ($customers as $customer) {
             $personalizedMessage = str_replace('{{ customer_firstname }}', $customer->customer_firstname, $message);
             $plainMessage = strip_tags($personalizedMessage);
 
-            $response = sendMessage([$customer->phone], $plainMessage);
+            // A chat message is an explicit action by a staff member, so it is not affected by
+            // the automatic "Customer SMS Notifications" switch. One failed number must not
+            // stop the rest of the batch.
+            try {
+                $response = sendMessage([$customer->phone], $plainMessage, $senderId);
+                $delivered = (bool) ($response['success'] ?? false);
+            } catch (\Throwable $e) {
+                \Log::warning('Manual SMS failed for ' . $customer->phone . ': ' . $e->getMessage());
+                $delivered = false;
+            }
 
             Message::create([
                 'customer_number' => $customer->phone,
                 'content' => $plainMessage,
-                'status' => $response['success'] ? 'delivered' : 'failed',
+                'status' => $delivered ? 'delivered' : 'failed',
                 'client_id' => $this->fms_id,
             ]);
         }

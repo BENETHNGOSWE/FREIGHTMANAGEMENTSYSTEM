@@ -25,7 +25,7 @@
                                 </h5>
                                 <small class="text-muted">
                                     <span id="notification-status-text">
-                                        @if(session('send_notifications', true))
+                                        @if($smsNotificationsEnabled)
                                             Notifications are <strong class="text-success">ENABLED</strong> - Customers will receive SMS when loads are created
                                         @else
                                             Notifications are <strong class="text-danger">DISABLED</strong> - No SMS will be sent to customers
@@ -38,12 +38,12 @@
                                     class="form-check-input" 
                                     type="checkbox" 
                                     id="notification_toggle" 
-                                    {{ session('send_notifications', true) ? 'checked' : '' }}
+                                    {{ $smsNotificationsEnabled ? 'checked' : '' }}
                                     style="width: 3.5rem; height: 2rem; cursor: pointer;"
                                 >
                                 <label class="form-check-label ms-2" for="notification_toggle">
                                     <strong id="toggle-label">
-                                        {{ session('send_notifications', true) ? 'ON' : 'OFF' }}
+                                        {{ $smsNotificationsEnabled ? 'ON' : 'OFF' }}
                                     </strong>
                                 </label>
                             </div>
@@ -135,17 +135,17 @@
                                 $('#notification-status-text').html(
                                     'Notifications are <strong class="text-success">ENABLED</strong> - Customers will receive SMS when loads are created'
                                 );
-                                toastr.success('SMS notifications enabled for all new loads');
+                                toastr.success('Customer SMS notifications are ON for new loads');
                             } else {
                                 $('#notification-status-text').html(
                                     'Notifications are <strong class="text-danger">DISABLED</strong> - No SMS will be sent to customers'
                                 );
-                                toastr.warning('SMS notifications disabled. Customers will NOT receive messages');
+                                toastr.warning('Customer SMS notifications are OFF - no SMS will be sent when loads are created');
                             }
                         }
                     },
-                    error: function() {
-                        toastr.error('Failed to update notification settings');
+                    error: function(xhr) {
+                        toastr.error(xhr.responseJSON?.message || 'Failed to update notification settings');
                         toggle.prop('checked', !isEnabled); // Revert
                     },
                     complete: function() {

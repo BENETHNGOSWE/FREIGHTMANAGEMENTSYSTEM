@@ -8,11 +8,66 @@ use App\Models\InvoiceLoad;
 use App\Models\Customer;
 use App\Models\Clientactivename;
 use App\Models\Sendername;
+use App\Models\SystemSetting;
 use Illuminate\Support\Str;
 use DB;
 
 class LoadPackageHelper
 {
+    /**
+     * Is the customer SMS switch on for this client?
+     *
+     * The switch lives in `system_settings` (key `send_load_notifications`), so it survives
+     * logins and is per client. When it is off nothing is sent, but every other operation
+     * (saving the load, the invoice, the container, the reports) keeps working normally.
+     */
+    public static function smsEnabled(?int $clientId): bool
+    {
+        if (! $clientId) {
+            return false;
+        }
+
+        try {
+            return SystemSetting::notificationsEnabled($clientId);
+        } catch (\Throwable $e) {
+            // A settings/table problem must never stop a load from being created.
+            \Log::warning('Could not read the SMS notification setting: ' . $e->getMessage());
+
+            return true;
+        }
+    }
+
+    /**
+     * Send one SMS, never throwing.
+     *
+     * Returns ['success' => bool, 'skipped' => bool, 'message' => string]. A failed SMS is
+     * logged, never allowed to roll back the business transaction that triggered it.
+     */
+    public static function sendSmsSafely(?int $clientId, ?string $phone, ?string $message, ?string $senderId): array
+    {
+        if (! self::smsEnabled($clientId)) {
+            return ['success' => true, 'skipped' => true, 'message' => 'SMS notifications are switched off.'];
+        }
+
+        if (blank($phone) || blank($message)) {
+            return ['success' => false, 'skipped' => true, 'message' => 'No phone number or message to send.'];
+        }
+
+        try {
+            $response = sendMessage($phone, $message, $senderId);
+
+            if (! ($response['success'] ?? false)) {
+                \Log::warning('SMS not delivered to ' . $phone . ': ' . ($response['message'] ?? 'unknown error'));
+            }
+
+            return $response + ['skipped' => false];
+        } catch (\Throwable $e) {
+            \Log::warning('SMS failed for ' . $phone . ': ' . $e->getMessage());
+
+            return ['success' => false, 'skipped' => false, 'message' => $e->getMessage()];
+        }
+    }
+
     public static function generateInvoice($customerId, $clientId)
     {
         $invoice_no = 'INV-' . date('Ymd') . '-' . strtoupper(Str::random(5));
@@ -90,8 +145,16 @@ class LoadPackageHelper
 ) {
     $customer = Customer::find($customerId);
 
+    if (! $customer) {
+        return ['success' => false, 'skipped' => true, 'message' => 'Customer not found.'];
+    }
+
+    if (! self::smsEnabled((int) $customer->client_id)) {
+        return ['success' => true, 'skipped' => true, 'message' => 'SMS notifications are switched off.'];
+    }
+
     $clientActiveName = Clientactivename::where('client_id', $customer->client_id)->first();
-    $senderName = Sendername::find($clientActiveName->sendername_id)->name;
+    $senderName = Sendername::find($clientActiveName->sendername_id)->name ?? null;
 
     $message = "Habari {$customer->customer_firstname} {$customer->customer_lastname}, Mzigo wako (Tracking No: {$load_no})
 
@@ -102,21 +165,30 @@ Weight: {$load_weight_value} {$unittype_name}
 Umepokelewa warehouse kwetu. Tutakujulisha Utakapoanza Safari.
 Ahsante kwa kusafirisha na {$clientName}.";
 
-    return sendMessage($customer->phone, $message, $senderName);
+    return self::sendSmsSafely((int) $customer->client_id, $customer->phone, $message, $senderName);
 }
 
 
      public static function sendCustomerNotificationafterLoading($customerId, $load_no, $load_delivery_date, $container_number, $id)
     {
         $customer = Customer::find($customerId);
+
+        if (! $customer) {
+            return ['success' => false, 'skipped' => true, 'message' => 'Customer not found.'];
+        }
+
+        if (! self::smsEnabled((int) $customer->client_id)) {
+            return ['success' => true, 'skipped' => true, 'message' => 'SMS notifications are switched off.'];
+        }
+
         $clientActiveName = Clientactivename::where('client_id', $customer->client_id)->first();
-        $senderName = Sendername::find($clientActiveName->sendername_id)->name;
+        $senderName = Sendername::find($clientActiveName->sendername_id)->name ?? null;
 
         $message = "Habari {$customer->customer_firstname} {$customer->customer_lastname}, 
 Mzigo wako (Tracking No: {$load_no}) umepakiliwa kwenye Kontena Namba: {$container_number}.
 Uko tayari kuanza safari. 
 Utawasili Bandari ya Dar-es-salaam tarehe {$load_delivery_date}.";
-        return sendMessage($customer->phone, $message, $senderName);
+        return self::sendSmsSafely((int) $customer->client_id, $customer->phone, $message, $senderName);
     }
 
 
