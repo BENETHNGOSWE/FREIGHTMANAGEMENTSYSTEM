@@ -148,6 +148,34 @@ class CargoOperationsController extends CargoController
             'note' => ['nullable', 'string', 'max:250'],
         ]);
 
+        // Only the physical journey is set by hand. Everything after arrival has a screen that
+        // does its own checks, and moving backwards would contradict what already happened.
+        $manual = ['Received', 'In Transit', 'Arrived'];
+
+        if (! in_array($data['cargo_status'], $manual, true)) {
+            $screen = match ($data['cargo_status']) {
+                'Verified' => 'Warehouse Verification',
+                'Invoiced', 'Paid' => 'the invoice (a payment)',
+                default => 'Release Control',
+            };
+
+            return back()->with(
+                'error',
+                'Status "' . $data['cargo_status'] . '" is set from ' . $screen . ', not by hand.'
+            );
+        }
+
+        $order = array_keys(Loadpackage::STATUSES);
+        $current = array_search($loadpackage->cargo_status, $order, true);
+        $target = array_search($data['cargo_status'], $order, true);
+
+        if ($current !== false && $target !== false && $target < $current) {
+            return back()->with(
+                'error',
+                'Cargo ' . $loadpackage->load_no . ' is already at "' . $loadpackage->cargo_status . '" and cannot move back to "' . $data['cargo_status'] . '".'
+            );
+        }
+
         $loadpackage->forceFill([
             'cargo_status' => $data['cargo_status'],
             'arrived_at' => $data['cargo_status'] === 'Arrived' ? ($loadpackage->arrived_at ?? now()->toDateString()) : $loadpackage->arrived_at,

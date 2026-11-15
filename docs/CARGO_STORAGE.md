@@ -102,6 +102,34 @@ and turns the cargo into `Ready for Pickup`; **Collected** then stops the storag
    `merged_payment_invoices`), which also creates the normal `invoice_payments` rows — so the existing
    invoice screens, balances and accounting keep working untouched.
 
+## Air freight and sea freight
+
+Nothing in the journey depends on a container. A cargo with no container is simply air freight:
+
+| Step | Who/what sets it |
+|---|---|
+| Received (China warehouse) | China desk — cargo page or the list |
+| In Transit | China desk — cargo page or the list dropdown |
+| Arrived Tanzania | Dar desk — cargo page or the list dropdown (starts the storage free period) |
+| Verified | **Warehouse Verification** (weight + condition) |
+| Invoiced | the invoice itself |
+| Paid | the payment on the invoice |
+| Ready for Pickup | **Release Control** (all six checks) |
+| Collected | **Release Control** (stops the storage clock) |
+
+So with no container you use the dropdown on the cargo list (or the cargo page) for the first three
+steps, then Warehouse Verification → Release Control. The cargo page shows "Air freight (no container
+needed)" when no container is attached, and "Sea — container ..." when one is. Only those first three
+steps can be set by hand: the later ones come from the screen that does their checks, and the status can
+never be moved backwards.
+
+## PostgreSQL note (the COALESCE bug)
+
+`verified_weight_value` is `numeric` while the legacy `load_weight_value` is `varchar`, so summing them in
+SQL fails on PostgreSQL with *"COALESCE types numeric and character varying cannot be matched"*. The weight
+of an invoice is therefore summed in PHP (`Loadpackage::weightForInvoice()`), and the same applies to
+`total_balance` (varchar) — the "still owing" filters run in PHP. Both are covered by tests.
+
 ## Permissions (added to `PermissionsSeeder`)
 
 `verify cargo`, `manage storage`, `manage storage settings`, `release cargo`, `merge payments`, plus
@@ -132,7 +160,7 @@ Server cron (automatic storage):
 
 ```bash
 php artisan test --filter="CargoOperationsTest|AccountsModuleTest|SmsNotificationSwitchTest"
-# 34 passed / 141 assertions
+# 38 passed / 173 assertions
 ```
 
 `tests/Feature/CargoOperationsTest.php` covers: free period then daily charge, no duplicate on a second run,

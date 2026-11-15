@@ -58,11 +58,49 @@
                                     {{ $load->china_location ?: '-' }}
                                     @if ($load->batch_no) <span class="badge bg-light text-dark">{{ $load->batch_no }}</span> @endif
                                 </td>
-                                <td>
-                                    <span class="badge bg-primary">{{ \Illuminate\Support\Str::before($load->statusLabel(), ' (') }}</span>
-                                    @if ($load->has_damage) <span class="badge bg-danger">damaged</span> @endif
-                                    @if ($load->has_missing) <span class="badge bg-dark">missing</span> @endif
-                                    @if ($load->has_wrong_item) <span class="badge bg-warning text-dark">wrong item</span> @endif
+                                <td style="min-width:200px">
+                                    @php
+                                        $manual = array_slice($statuses, 0, 3, true);   // Received, In Transit, Arrived
+                                        $canMoveByHand = array_key_exists($load->cargo_status, $manual);
+                                    @endphp
+                                    <div class="mb-1">
+                                        <span class="badge bg-primary">{{ \Illuminate\Support\Str::before($load->statusLabel(), ' (') }}</span>
+                                    </div>
+                                    {{-- Only the physical journey is set here. Verification, the invoice and
+                                         Release Control set everything after arrival. --}}
+                                    @if ($canMoveByHand)
+                                        <form method="POST" action="{{ route('cargo.status', $load) }}">
+                                            @csrf
+                                            <select name="cargo_status" class="form-select form-select-sm"
+                                                    onchange="this.form.submit()"
+                                                    title="Move {{ $load->load_no }}: China → transit → arrival">
+                                                @foreach ($manual as $key => $label)
+                                                    <option value="{{ $key }}" @selected($load->cargo_status === $key)>
+                                                        {{ \Illuminate\Support\Str::before($label, ' (') }}
+                                                    </option>
+                                                    @if ($key === 'Arrived')
+                                                        <option value="Verified" disabled>Verified → next: Warehouse Verification</option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        </form>
+                                    @else
+                                        <small class="text-muted">
+                                            next:
+                                            @if ($load->cargo_status === 'In Transit')
+                                                <a href="{{ route('cargo.show', $load) }}">mark arrived</a>
+                                            @elseif ($load->cargo_status === 'Arrived')
+                                                <a href="{{ route('cargo.verification') }}">Warehouse Verification</a>
+                                            @elseif ($load->cargo_status === 'Verified')
+                                                <a href="{{ route('cargo.release.index') }}">Release Control</a>
+                                            @else
+                                                <a href="{{ route('cargo.release.index') }}">Release Control</a>
+                                            @endif
+                                        </small>
+                                    @endif
+                                    @if ($load->has_damage) <span class="badge bg-danger mt-1">damaged</span> @endif
+                                    @if ($load->has_missing) <span class="badge bg-dark mt-1">missing</span> @endif
+                                    @if ($load->has_wrong_item) <span class="badge bg-warning text-dark mt-1">wrong item</span> @endif
                                 </td>
                                 <td class="text-end {{ $load->storage_balance > 0 ? 'text-danger fw-bold' : '' }}">
                                     {{ number_format($load->storage_balance, 2) }}

@@ -79,6 +79,24 @@ class Loadpackage extends Model
         return (float) ($this->verified_weight_value ?? $this->load_weight_value);
     }
 
+    /**
+     * Total billable weight of every cargo on one invoice.
+     *
+     * The sum is done in PHP on purpose: on PostgreSQL verified_weight_value is numeric while
+     * the old load_weight_value is a varchar, so "coalesce(...)" inside SQL blows up with
+     * "COALESCE types numeric and character varying cannot be matched".
+     */
+    public static function weightForInvoice($invoiceId): float
+    {
+        $ids = \App\Models\InvoiceLoad::where('invoice_id', $invoiceId)->pluck('loadpackage_id')->all();
+
+        if (empty($ids)) {
+            return 0.0;
+        }
+
+        return (float) static::whereIn('id', $ids)->get()->sum(fn ($load) => $load->billableWeight());
+    }
+
     public function client()
     {
         return $this->belongsTo(Client::class);

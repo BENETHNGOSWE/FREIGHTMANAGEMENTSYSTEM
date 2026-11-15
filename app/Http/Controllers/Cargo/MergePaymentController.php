@@ -31,13 +31,16 @@ class MergePaymentController extends CargoController
 
         $customers = Customer::where('client_id', $clientId)->orderBy('customer_firstname')->get();
 
+        // total_balance is varchar in the legacy schema: comparing it to 0 works on MySQL but not
+        // on PostgreSQL, so the "still owing" filter is done in PHP.
         $invoices = Invoice::where('client_id', $clientId)
             ->when($customerId, fn ($query) => $query->where('customer_id', $customerId))
-            ->where('total_balance', '>', 0)
             ->with(['customer', 'invoicePayments'])
             ->orderBy('created_at')
-            ->limit(60)
-            ->get();
+            ->get()
+            ->filter(fn ($invoice) => $invoice->balanceDue() > 0)
+            ->take(60)
+            ->values();
 
         $this->withWeights($invoices);
 
@@ -64,11 +67,12 @@ class MergePaymentController extends CargoController
 
         $invoices = Invoice::where('client_id', $clientId)
             ->where('customer_id', $data['customer_id'])
-            ->where('total_balance', '>', 0)
             ->with(['customer', 'invoicePayments'])
             ->orderBy('created_at')
-            ->limit(60)
-            ->get();
+            ->get()
+            ->filter(fn ($invoice) => $invoice->balanceDue() > 0)
+            ->take(60)
+            ->values();
 
         $this->withWeights($invoices);
 
@@ -86,9 +90,7 @@ class MergePaymentController extends CargoController
     private function withWeights($invoices): void
     {
         foreach ($invoices as $invoice) {
-            $invoice->weight = (float) InvoiceLoad::where('invoice_id', $invoice->id)
-                ->join('loadpackages', 'loadpackages.id', '=', 'invoice_loads.loadpackage_id')
-                ->sum(\DB::raw('coalesce(loadpackages.verified_weight_value, loadpackages.load_weight_value)'));
+            $invoice->weight = Loadpackage::weightForInvoice($invoice->id);
         }
     }
 

@@ -34,9 +34,14 @@
                         <div class="col-md-6 mb-2"><strong>Status:</strong> <span class="badge bg-primary">{{ $load->statusLabel() }}</span></div>
                         <div class="col-md-6 mb-2"><strong>China location:</strong> {{ $load->china_location ?: '-' }}</div>
                         <div class="col-md-6 mb-2"><strong>Batch:</strong> {{ $load->batch_no ?: '-' }}</div>
-                        @if ($load->container->container_number ?? false)
-                            <div class="col-md-6 mb-2"><strong>Container:</strong> {{ $load->container->container_number }}</div>
-                        @endif
+                        <div class="col-md-6 mb-2">
+                            <strong>Transport:</strong>
+                            @if ($load->containers->isNotEmpty())
+                                Sea — {{ $load->containers->pluck('container_number')->filter()->implode(', ') }}
+                            @else
+                                Air freight (no container needed)
+                            @endif
+                        </div>
                         @if ((float) $load->weight_price_impact != 0)
                             <div class="col-12">
                                 <div class="alert alert-warning py-2 mb-0">
@@ -121,20 +126,36 @@
                         @endforeach
                     </ul>
 
+                    @php
+                        $manualSteps = array_slice($statuses, 0, 3, true);   // Received, In Transit, Arrived
+                        $canMoveByHand = array_key_exists($load->cargo_status, $manualSteps);
+                    @endphp
+                    @unless ($canMoveByHand)
+                        <p class="text-muted small mt-2 mb-1">
+                            The next steps are set by their own screens: <a href="{{ route('cargo.verification') }}">Warehouse Verification</a>
+                            when the cargo is confirmed, the invoice when it is paid, and
+                            <a href="{{ route('cargo.release.index') }}">Release Control</a> for pickup.
+                        </p>
+                    @endunless
                     <form method="POST" action="{{ route('cargo.status', $load) }}" class="row g-2 mt-2">
                         @csrf
                         <div class="col-md-4">
-                            <select name="cargo_status" class="form-control">
-                                @foreach ($statuses as $key => $label)
-                                    <option value="{{ $key }}" @selected($load->cargo_status === $key)>{{ $label }}</option>
-                                @endforeach
+                            <select name="cargo_status" class="form-control" @disabled(! $canMoveByHand)
+                                    title="China → transit → arrival. After that, use Verification and Release Control.">
+                                @if ($canMoveByHand)
+                                    @foreach ($manualSteps as $key => $label)
+                                        <option value="{{ $key }}" @selected($load->cargo_status === $key)>{{ $label }}</option>
+                                    @endforeach
+                                @else
+                                    <option selected disabled>{{ $load->statusLabel() }}</option>
+                                @endif
                             </select>
                         </div>
                         <div class="col-md-5">
                             <input type="text" name="note" class="form-control" placeholder="Note (optional)">
                         </div>
                         <div class="col-md-3">
-                            <button class="btn btn-outline-primary w-100">Update status</button>
+                            <button class="btn btn-outline-primary w-100" @disabled(! $canMoveByHand)>Update status</button>
                         </div>
                     </form>
                 </div>

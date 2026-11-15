@@ -34,7 +34,7 @@ class VerificationService
             $load->forceFill([
                 'original_weight_value' => $load->original_weight_value ?? $oldWeight,
                 'verified_weight_value' => $newWeight,
-                'load_weight_value' => $newWeight,
+                'load_weight_value' => (string) $newWeight,
                 'verified_at' => now(),
                 'has_damage' => (bool) ($data['has_damage'] ?? false),
                 'has_missing' => (bool) ($data['has_missing'] ?? false),
@@ -92,9 +92,9 @@ class VerificationService
             $before = (float) $invoice->total_amount;
 
             if ($price > 0) {
-                $totalWeight = (float) InvoiceLoad::where('invoice_id', $invoice->id)
-                    ->join('loadpackages', 'loadpackages.id', '=', 'invoice_loads.loadpackage_id')
-                    ->sum(DB::raw('coalesce(loadpackages.verified_weight_value, loadpackages.load_weight_value)'));
+                // Summed in PHP: verified_weight_value is numeric, load_weight_value is varchar,
+                // and COALESCE of the two is rejected by PostgreSQL.
+                $totalWeight = Loadpackage::weightForInvoice($invoice->id);
                 $newTotal = round($totalWeight * $price * $fx, 2);
             } else {
                 $newTotal = round($before + ($difference * (float) $load->load_price), 2);
@@ -113,7 +113,7 @@ class VerificationService
             // Keep the line in step with the new weight, for the load list and the PDFs.
             InvoiceLoad::where('invoice_id', $invoice->id)
                 ->where('loadpackage_id', $load->id)
-                ->update(['load_price' => $price > 0 ? round($newWeight * $price * $fx, 2) : $load->load_price]);
+                ->update(['load_price' => (string) ($price > 0 ? round($newWeight * $price * $fx, 2) : $load->load_price)]);
         }
 
         $load->forceFill(['weight_price_impact' => round($totalImpact, 2)])->save();

@@ -193,9 +193,8 @@ class MergePaymentService
 
     private function weightOf(Invoice $invoice): float
     {
-        return (float) InvoiceLoad::where('invoice_id', $invoice->id)
-            ->join('loadpackages', 'loadpackages.id', '=', 'invoice_loads.loadpackage_id')
-            ->sum(\DB::raw('coalesce(loadpackages.verified_weight_value, loadpackages.load_weight_value)'));
+        // PHP-side sum, see Loadpackage::weightForInvoice().
+        return Loadpackage::weightForInvoice($invoice->id);
     }
 
     private function isKgInvoice(Invoice $invoice): bool

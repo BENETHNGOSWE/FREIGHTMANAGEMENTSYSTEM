@@ -462,4 +462,85 @@ class CargoOperationsTest extends TestCase
 
         $this->get(route('cargo.show', $foreign))->assertNotFound();
     }
+
+    // ------------------------------------------------------------------ air freight (no container)
+
+    public function test_air_cargo_walks_the_whole_journey_without_a_container(): void
+    {
+        // Nothing here assigns a container: this is an air shipment.
+        $load = $this->load(['cargo_status' => 'Received']);
+        $this->assertNull($load->container_id);
+
+        $this->post(route('cargo.status', $load), ['cargo_status' => 'In Transit'])->assertRedirect();
+        $this->assertSame('In Transit', $load->fresh()->cargo_status);
+
+        $this->post(route('cargo.status', $load), ['cargo_status' => 'Arrived'])->assertRedirect();
+        $this->assertSame('Arrived', $load->fresh()->cargo_status);
+        $this->assertNotNull($load->fresh()->arrived_at, 'arrival starts the storage clock');
+        $this->assertNotNull($load->fresh()->storage, 'storage started when the cargo arrived');
+
+        $invoice = $this->invoiceWithLoad($load, price: 1000, fx: 1);
+        app(VerificationService::class)->verify($load->fresh(), ['weight' => 2]);
+        $this->assertSame('Verified', $load->fresh()->cargo_status);
+
+        InvoicePayment::create([
+            'invoice_id' => $invoice->id, 'client_id' => $this->client->id, 'amount_received' => 2000,
+            'payment_date' => now()->toDateString(), 'payment_method' => 'CASH', 'received_by' => $this->user->id,
+        ]);
+
+        $storage = app(StorageService::class);
+        $record = $load->fresh()->storage;
+        $storage->waive($record, $record->balance(), 'Free of charge');
+        app(CargoStatusService::class)->pickupNoteFor($invoice);
+
+        $result = app(ReleaseControlService::class)->release($load->fresh());
+        $this->assertTrue($result['ok'], $result['message']);
+        $this->assertSame('Ready for Pickup', $load->fresh()->cargo_status);
+
+        $this->assertTrue(app(ReleaseControlService::class)->collect($load->fresh())['ok']);
+        $this->assertSame('Collected', $load->fresh()->cargo_status);
+    }
+
+    public function test_only_the_physical_journey_can_be_set_by_hand(): void
+    {
+        $load = $this->load(['cargo_status' => 'Arrived']);
+
+        // Verification, invoices and the release desk own the later steps.
+        foreach (['Verified', 'Invoiced', 'Paid', 'Ready for Pickup', 'Collected'] as $status) {
+            $this->post(route('cargo.status', $load), ['cargo_status' => $status])
+                ->assertRedirect()
+                ->assertSessionHas('error');
+            $this->assertSame('Arrived', $load->fresh()->cargo_status, $status . ' must not be set by hand');
+        }
+    }
+
+    public function test_the_journey_cannot_move_backwards(): void
+    {
+        $load = $this->load(['cargo_status' => 'Arrived']);
+
+        $this->post(route('cargo.status', $load), ['cargo_status' => 'In Transit'])
+            ->assertRedirect()
+            ->assertSessionHas('error');
+
+        $this->assertSame('Arrived', $load->fresh()->cargo_status);
+    }
+
+    public function test_invoice_weight_is_summed_in_php_not_in_sql(): void
+    {
+        // PostgreSQL rejects coalesce(numeric, varchar); the sum must never reach the database.
+        $a = $this->load(['load_weight_value' => 4]);
+        $b = $this->load(['load_weight_value' => 1.5]);
+        $invoice = $this->invoiceWithLoad($a, price: 1000, fx: 1);
+
+        InvoiceLoad::create([
+            'invoice_id' => $invoice->id, 'loadpackage_id' => $b->id,
+            'client_id' => $this->client->id, 'load_price' => 1500,
+        ]);
+
+        $this->assertSame(5.5, Loadpackage::weightForInvoice($invoice->id));
+
+        // After verification the verified weight wins.
+        app(VerificationService::class)->verify($b, ['weight' => 2.5]);
+        $this->assertSame(6.5, Loadpackage::weightForInvoice($invoice->id));
+    }
 }
