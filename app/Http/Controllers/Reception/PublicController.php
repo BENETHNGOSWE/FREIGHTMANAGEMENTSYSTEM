@@ -63,8 +63,8 @@ class PublicController extends Controller
         $rolesAllowedToPrintFinalInvoice = ['admin', 'chiefoperation', 'receptionist'];
 
         if (auth()->user()->hasAnyRole($rolesAllowedToView)) {
-            $this->data['customer'] = Customer::all();
-            $this->data['Load'] = Loadpackage::all();
+            $this->data['customer'] = Customer::where('client_id', $this->fms_id)->get();
+            $this->data['Load'] = Loadpackage::where('client_id', $this->fms_id)->get();
             $this->data['invoices'] = Invoice::where('client_id', $this->fms_id)->get();
         } else {
             $this->data['invoices'] = auth()->user()->invoices;

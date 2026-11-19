@@ -6,7 +6,8 @@ return [
         'title' => 'Dashboard',
         'icon' => 'flaticon-381-networking',
         'route' => 'home',
-        'permission' => null, 
+        'permission' => null,
+        'module' => 'dashboard',
     ],
 
     // Client Profile
@@ -14,6 +15,8 @@ return [
         'title' => 'Clients',
         'icon'  => 'fa fa-circle-h',
         'permission' => 'create clients',
+        'module' => 'customers',
+        'owner_only' => true,
         'children' => [
             [
                 'title' => 'Clients List',
@@ -35,6 +38,8 @@ return [
         'title' => 'Packages',
         'icon'  => 'fa fa-circle-h',
         'permission' => 'view kodapackages',
+        'module' => 'loads',
+        'owner_only' => true,
         'children' => [
             [
                 'title' => 'Create',
@@ -56,6 +61,8 @@ return [
         'title' => 'Sender Name',
         'icon'  => 'fa fa-circle-h',
         'permission' => 'view sendernames',
+        'module' => 'sms_sender',
+        'owner_only' => true,
         'children' => [
             [
                 'title' => 'Assign Name',
@@ -71,6 +78,8 @@ return [
         'title' => 'Message Count',
         'icon'  => 'fa fa-circle-h',
         'permission' => 'view customermessages',
+        'module' => 'sms_reports',
+        'owner_only' => true,
         'children' => [
             [
                 'title' => 'Assign Name',
@@ -86,6 +95,8 @@ return [
         'title' => 'Demo request',
         'icon'  => 'fa fa-circle-h',
         'permission' => 'view demorequests',
+        'module' => 'dashboard',
+        'owner_only' => true,
         'children' => [
             [
                 'title' => 'Demo request',
@@ -101,6 +112,7 @@ return [
         'title' => 'Staffs',
         'icon' => 'fa fa-users',
         'permission' => 'list staffs',
+        'module' => 'staff',
         'children' => [
             [
                 'title' => '+Add new',
@@ -120,6 +132,7 @@ return [
         'title' => 'Containers',
         'icon' => 'fa fa-box',
         'permission' => 'list containers',
+        'module' => 'containers',
         'children' => [
             [
                 'title' => '+Add new',
@@ -139,6 +152,7 @@ return [
         'title' => 'Customers',
         'icon' => 'fa fa-user',
         'permission' => 'list customers',
+        'module' => 'customers',
         'children' => [
             [
                 'title' => '+Add new',
@@ -159,6 +173,7 @@ return [
         'title' => 'Loads',
         'icon' => 'fas fa-truck',
         'permission' => 'list loadpackages',
+        'module' => 'loads',
         'children' => [
             [
                 'title' => 'List Loads',
@@ -178,6 +193,7 @@ return [
         'title' => 'Invoices',
         'icon' => 'fas fa-file-invoice',
         'permission' => 'list invoices',
+        'module' => 'invoices',
         'children' => [
             [
                 'title' => 'Load Invoices',
@@ -197,6 +213,7 @@ return [
         'title' => 'Expenses',
         'icon' => 'fas fa-file-invoice',
         'permission' => 'list office_expenses',
+        'module' => 'expenses',
         'children' => [
             [
                 'title' => 'Expenses Category',
@@ -216,6 +233,7 @@ return [
         'title' => 'Leads',
         'icon' => 'fas fa-lightbulb',
         'permission' => 'view customercategories',
+        'module' => 'customers',
         'children' => [
             [
                 'title' => 'Categories List',
@@ -235,6 +253,7 @@ return [
         'title' => 'Message',
         'icon' => 'fa fa-comments',
         'permission' => 'view messages',
+        'module' => 'sms_bulk',
         'children' => [
             [
                 'title' => 'Chat With Customer',
@@ -251,6 +270,58 @@ return [
                 'route' => 'admin.message.index',
                 'permission' => 'view messages',
             ],
+            [
+                'title' => 'SMS Balance',
+                'route' => 'admin.sms.balance',
+                'permission' => 'view messages',
+            ],
+        ],
+    ],
+
+    // Cargo operations: the physical journey of every package
+    [
+        'title' => 'Cargo Operations',
+        'icon' => 'fas fa-boxes',
+        'permission' => null,
+        'module' => 'cargo',
+        'children' => [
+            ['title' => 'Cargo List', 'route' => 'cargo.index', 'permission' => null],
+            ['title' => 'Warehouse Verification', 'route' => 'cargo.verification', 'permission' => null],
+            ['title' => 'Release Control', 'route' => 'cargo.release.index', 'permission' => null],
+            ['title' => 'Merge Payment', 'route' => 'invoices.merge.create', 'permission' => null],
+        ],
+    ],
+
+    // Storage - its own section: it has its own settings, money and reports
+    [
+        'title' => 'Storage',
+        'icon' => 'fas fa-warehouse',
+        'permission' => null,
+        'module' => 'storage',
+        'children' => [
+            ['title' => 'Cargo in Storage', 'route' => 'storage.index', 'permission' => null],
+            ['title' => 'Storage Payments', 'route' => 'storage.payments', 'permission' => null],
+            ['title' => 'Storage Settings', 'route' => 'storage.settings', 'permission' => null],
+        ],
+    ],
+
+    // Accounts - the full accounting module (chart of accounts, journals, ledgers, reports)
+    [
+        'title' => 'Accounts',
+        'icon' => 'fas fa-calculator',
+        'permission' => null,
+        'module' => 'accounts',
+        'children' => [
+            ['title' => 'Accounts Dashboard', 'route' => 'accounts.dashboard', 'permission' => null],
+            ['title' => 'Chart of Accounts', 'route' => 'accounts.chart.index', 'permission' => null],
+            ['title' => 'Journal Entries', 'route' => 'accounts.journal.index', 'permission' => null],
+            ['title' => 'General Ledger', 'route' => 'accounts.ledger.index', 'permission' => null],
+            ['title' => 'Trial Balance', 'route' => 'accounts.reports.trial_balance', 'permission' => null],
+            ['title' => 'Profit & Loss', 'route' => 'accounts.reports.profit_loss', 'permission' => null],
+            ['title' => 'Balance Sheet', 'route' => 'accounts.reports.balance_sheet', 'permission' => null],
+            ['title' => 'Receivables & Ageing', 'route' => 'accounts.reports.receivables', 'permission' => null],
+            ['title' => 'Cash & Bank Book', 'route' => 'accounts.reports.cash_bank', 'permission' => null],
+            ['title' => 'Accounts Settings', 'route' => 'accounts.settings', 'permission' => null],
         ],
     ],
 
@@ -258,22 +329,23 @@ return [
     [
         'title' => 'Financial Reports',
         'icon' => 'fas fa-file-invoice-dollar',
-        'permission' => 'view companyinvoicedetails',
+        'permission' => 'view financial reports',
+        'module' => 'reports',
         'children' => [
             [
                 'title' => 'Invoice Report',
                 'route' => 'chiefoperation.list.financialreport',
-                'permission' => 'view companyinvoicedetails',
+                'permission' => 'view financial reports',
             ],
             [
                 'title' => 'Expenses Report',
                 'route' => 'admin.expense.report',
-                'permission' => 'view companyinvoicedetails',
+                'permission' => 'view financial reports',
             ],
             [
                 'title' => 'CBM Record',
                 'route' => 'sales.list.salesreport',
-                'permission' => 'view companyinvoicedetails',
+                'permission' => 'view financial reports',
             ],
         ],
     ],
@@ -283,6 +355,7 @@ return [
         'title' => 'Sales Reports',
         'icon' => 'fas fa-file-invoice-dollar',
         'permission' => 'view sales_reports',
+        'module' => 'reports',
         'children' => [
             [
                 'title' => 'CBM Record',
@@ -302,6 +375,7 @@ return [
         'title' => 'Derivery Order',
         'icon' => 'fas fa-file-invoice-dollar',
         'permission' => 'view derivery_orders',
+        'module' => 'reports',
         'children' => [
            [
                 'title' => '+Add new',
@@ -321,6 +395,7 @@ return [
         'title' => 'Manage Profile',
         'icon' => 'fas fa-user',
         'permission' => 'view staffs',
+        'module' => 'staff',
         'children' => [
             [
                 'title' => 'Your Profile',
@@ -335,6 +410,7 @@ return [
         'title' => 'Settings',
         'icon' => 'fa fa-cog',
         'permission' => 'view settings',
+        'module' => 'staff',
         'children' => [
             [
                 'title' => 'Roles',

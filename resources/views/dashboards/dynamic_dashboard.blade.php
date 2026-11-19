@@ -5,7 +5,11 @@
         <div class="form-head d-flex align-items-center mb-sm-4 mb-3">
             <div class="me-auto">
                 <h2 class="text-black font-w600">Welcome {{ auth()->user()->name }} <span
-                        class="badge light badge-info">{{ auth()->user()->role_name }}</span></h2>
+                        class="badge light badge-info">{{ auth()->user()->role_name }}</span>
+                    @if ($productLabel ?? null)
+                        <span class="badge light badge-primary">{{ $productLabel }}</span>
+                    @endif
+                </h2>
                 <p class="mb-0" id="date_time"></p>
                 
                 <p class="mb-0" id="date_time"></p>
@@ -20,129 +24,205 @@
 
 
 
-        {{-- Dashboard card --}}
+        {{-- Dashboard cards — a KodaSMS client talks about messages, a KodaFreight client about loads --}}
         <div class="row">
+            @if (($hasCargo ?? false) === false)
             <div class="col-xl-3 col-sm-6">
                 <div class="card">
                     <div class="card-body">
                         <div class="media align-items-center">
                             <div class="media-body mr-3">
-                                <h2 class="fs-34 text-black font-w600">{{$total_customer}}</h2>
+                                <h2 class="fs-34 text-black font-w600">{{ $total_customer }}</h2>
                                 <span>Total Customers</span>
                             </div>
-                            <i class="fa fa-user text-primary" style="font-size:40px;"></i>
+                            <i class="fa-solid fa-user text-primary" style="font-size:40px;"></i>
                         </div>
                     </div>
-                    <div class="progress  rounded-0" style="height:4px;">
-                        <div class="progress-bar rounded-0 bg-secondary progress-animated" style="width: 100%; height:4px;"
-                            role="progressbar">
-                            <span class="sr-only">100% Complete</span>
-                        </div>
+                    <div class="progress rounded-0" style="height:4px;">
+                        <div class="progress-bar rounded-0 bg-secondary" style="width:100%;height:4px;"></div>
                     </div>
                 </div>
             </div>
-            <div class="col-xl-3  col-sm-6">
-                <a href="#">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="media align-items-center">
-                                <div class="media-body mr-3">
-                                <h2 class="fs-34 text-black font-w600">{{$total_categories}}</h2>
-                                    <span>Total Categories</span>
-                                </div>
-                                <i class="fa fa-th-list text-primary" style="font-size:40px;"></i>
-                            </div>
-                        </div>
-                        <div class="progress  rounded-0" style="height:4px;">
-                            <div class="progress-bar rounded-0 bg-primary progress-animated" style="width:100%; height:4px;"
-                                role="progressbar">
-                                <span class="sr-only">100% Complete</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
             <div class="col-xl-3 col-sm-6">
-                <a href="#">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="media align-items-center">
-                                <div class="media-body mr-3">
-                                    <h2 class="fs-34 text-black font-w600">{{$messentsent}} / {{$messageLimit}}</h2>
-                                    <span>Total Messages Sent / Assigned</span>
-                                </div>
-                                <i class="fa fa-comments text-primary" style="font-size:40px;"></i>
-                            </div>
-                        </div>
-                        <div class="progress rounded-0" style="height:4px;">
-                            <div class="progress-bar rounded-0 bg-secondary progress-animated" 
-                                 style="width: {{ $messageLimit > 0 ? ($messentsent / $messageLimit) * 100 : 0 }}%; height:4px;" 
-                                 role="progressbar">
-                                <span class="sr-only">{{ $messageLimit > 0 ? round(($messentsent / $messageLimit) * 100) : 0 }}% Complete</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            
-            
-            <div class="col-xl-3  col-sm-6">
                 <div class="card">
                     <div class="card-body">
                         <div class="media align-items-center">
                             <div class="media-body mr-3">
-                                <h2 class="fs-34 text-black font-w600">{{$messagefailed}}</h2>
-                                <span>Total Message Fail</span>
+                                <h2 class="fs-34 text-black font-w600">{{ $messentsent }}</h2>
+                                <span>Messages Sent</span>
                             </div>
-                            <i class="fa-solid fa-exclamation-circle text-primary" style="font-size:40px;"></i>
+                            <i class="fa-solid fa-comments text-primary" style="font-size:40px;"></i>
                         </div>
                     </div>
-                    <div class="progress  rounded-0" style="height:4px;">
-                        <div class="progress-bar rounded-0 bg-secondary progress-animated" style="width: 100%; height:4px;"
-                            role="progressbar">
-                            <span class="sr-only">1000% Complete</span>
-                        </div>
+                    <div class="progress rounded-0" style="height:4px;">
+                        <div class="progress-bar rounded-0 bg-primary" style="width:100%;height:4px;"></div>
                     </div>
                 </div>
             </div>
+            <div class="col-xl-3 col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="media align-items-center">
+                            <div class="media-body mr-3">
+                                <h2 class="fs-34 text-black font-w600">{{ $messagefailed }}</h2>
+                                <span>Messages Failed</span>
+                            </div>
+                            <i class="fa-solid fa-triangle-exclamation text-danger" style="font-size:40px;"></i>
+                        </div>
+                    </div>
+                    <div class="progress rounded-0" style="height:4px;">
+                        <div class="progress-bar rounded-0 bg-danger" style="width:100%;height:4px;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="media align-items-center">
+                            <div class="media-body mr-3">
+                                <h2 class="fs-34 text-black font-w600">{{ $smsLeft ?? 0 }}</h2>
+                                <span>SMS Left In Package</span>
+                            </div>
+                            <i class="fa-solid fa-envelope-circle-check text-success" style="font-size:40px;"></i>
+                        </div>
+                    </div>
+                    <div class="progress rounded-0" style="height:4px;">
+                        <div class="progress-bar rounded-0 bg-success" style="width:100%;height:4px;"></div>
+                    </div>
+                </div>
+            </div>
+            @else
+            <div class="col-xl-3 col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="media align-items-center">
+                            <div class="media-body mr-3">
+                                <h2 class="fs-34 text-black font-w600">{{ $loadcreate ?? 0 }}</h2>
+                                <span>Total Loads</span>
+                            </div>
+                            <i class="fa-solid fa-truck text-primary" style="font-size:40px;"></i>
+                        </div>
+                    </div>
+                    <div class="progress rounded-0" style="height:4px;">
+                        <div class="progress-bar rounded-0 bg-secondary" style="width:100%;height:4px;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="media align-items-center">
+                            <div class="media-body mr-3">
+                                <h2 class="fs-34 text-black font-w600">{{ $total_customer }}</h2>
+                                <span>Total Customers</span>
+                            </div>
+                            <i class="fa-solid fa-user text-primary" style="font-size:40px;"></i>
+                        </div>
+                    </div>
+                    <div class="progress rounded-0" style="height:4px;">
+                        <div class="progress-bar rounded-0 bg-primary" style="width:100%;height:4px;"></div>
+                    </div>
+                </div>
+            </div>
+            @if ($hasAccounts ?? false)
+            <div class="col-xl-3 col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="media align-items-center">
+                            <div class="media-body mr-3">
+                                <h2 class="fs-34 text-black font-w600">{{ $pendingInvoices ?? 0 }}</h2>
+                                <span>Unpaid Invoices</span>
+                            </div>
+                            <i class="fa-solid fa-file-invoice-dollar text-warning" style="font-size:40px;"></i>
+                        </div>
+                    </div>
+                    <div class="progress rounded-0" style="height:4px;">
+                        <div class="progress-bar rounded-0 bg-warning" style="width:100%;height:4px;"></div>
+                    </div>
+                </div>
+            </div>
+            @endif
+            @if ($hasSms ?? false)
+            <div class="col-xl-3 col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="media align-items-center">
+                            <div class="media-body mr-3">
+                                <h2 class="fs-34 text-black font-w600">{{ $smsLeft ?? 0 }}</h2>
+                                <span>SMS Left In Package</span>
+                            </div>
+                            <i class="fa-solid fa-envelope-circle-check text-success" style="font-size:40px;"></i>
+                        </div>
+                    </div>
+                    <div class="progress rounded-0" style="height:4px;">
+                        <div class="progress-bar rounded-0 bg-success" style="width:100%;height:4px;"></div>
+                    </div>
+                </div>
+            </div>
+            @endif
+            @endif
         </div>
+
         <div class="row">
-            <div class="col-12">
-                <div class="row">
-                    <div class="col-xl-4 col-lg-4">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">Invoice Status</h4>
-                            </div>
-                            <div class="card-body">
-                                <canvas id="invoicePieChart" width="150" height="150"></canvas>
-                            </div>
-                        </div>
+            @if ($hasCargo ?? false)
+            <div class="col-xl-8 col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Top 5 Customers by Loads</h4>
                     </div>
-                    <div class="col-xl-8 col-lg-8">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">Top 5 Customers by Loads</h4>
-                            </div>
-                            <div class="card-body">
-                                <canvas id="topCustomersBarChart" width="400" height="200"></canvas>
-                            </div>
+                    <div class="card-body" style="height:300px;">
+                        <canvas id="topCustomersBarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            @endif
+            @if ($hasAccounts ?? false)
+            <div class="col-xl-4 col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Invoice Status</h4>
+                    </div>
+                    <div class="card-body" style="height:300px;">
+                        <canvas id="invoicePieChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            @endif
+            @if (($hasCargo ?? false) === false && ($hasSms ?? false))
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Your SMS allowance</h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-2">
+                            <strong>{{ $smsLeft ?? 0 }}</strong> SMS left of
+                            <strong>{{ $smsQuota ?? 0 }}</strong> assigned to this package.
+                            When the allowance is finished sending stops until the owner adds more.
+                        </p>
+                        <div class="progress" style="height:10px;">
+                            @php($used = max(($smsQuota ?? 0) - ($smsLeft ?? 0), 0))
+                            @php($pct = ($smsQuota ?? 0) > 0 ? min(100, round($used / $smsQuota * 100)) : 0)
+                            <div class="progress-bar {{ $pct > 90 ? 'bg-danger' : 'bg-primary' }}" style="width: {{ $pct }}%"></div>
+                        </div>
+                        <div class="mt-3">
+                            <a href="{{ route('admin.message') }}" class="btn btn-primary btn-sm">Send a message</a>
+                            <a href="{{ route('admin.message.index') }}" class="btn btn-outline-primary btn-sm">Message history</a>
                         </div>
                     </div>
                 </div>
             </div>
+            @endif
         </div>
+
     </div>
     @push('scripts')
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                console.log('Pending Invoices:', {{ $pendingInvoices }});
-                console.log('Full Paid Invoices:', {{ $fullPaidInvoices }});
-                console.log('Partial Paid Invoices:', {{ $partialPaidInvoices }});
-
-                var ctx = document.getElementById('invoicePieChart').getContext('2d');
+            (function () {
+                var invoiceEl = document.getElementById('invoicePieChart');
+                if (invoiceEl) {
+                var ctx = invoiceEl.getContext('2d');
                 var invoicePieChart = new Chart(ctx, {
                     type: 'pie',
                     data: {
@@ -172,10 +252,13 @@
                         }
                     }
                 });
-            });
+                }
+            })();
 
-            document.addEventListener('DOMContentLoaded', function() {
-                var ctx = document.getElementById('topCustomersBarChart').getContext('2d');
+            (function () {
+                var topEl = document.getElementById('topCustomersBarChart');
+                if (topEl) {
+                var ctx = topEl.getContext('2d');
                 var customerNames = @json($topCustomers->pluck('customer_firstname'));
                 var loadCounts = @json($topCustomers->pluck('loadpackages_count'));
 
@@ -219,10 +302,13 @@
                         }
                     }
                 });
-            });
+                }
+            })();
 
-            document.addEventListener('DOMContentLoaded', function() {
-                var ctx = document.getElementById('customersPerMonthLineChart').getContext('2d');
+            (function () {
+                var monthEl = document.getElementById('customersPerMonthLineChart');
+                if (monthEl) {
+                var ctx = monthEl.getContext('2d');
                 var customersPerMonth = @json($customersPerMonth);
                 var labels = customersPerMonth.map(function(item) {
                     return new Date(item.year, item.month - 1).toLocaleString('default', {
@@ -277,9 +363,8 @@
                         }
                     }
                 });
-            });
-
-          
+                }
+            })();
         </script>
     @endpush
 

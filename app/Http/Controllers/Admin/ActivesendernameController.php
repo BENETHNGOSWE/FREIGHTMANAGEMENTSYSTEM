@@ -37,6 +37,10 @@ class ActivesendernameController extends Controller
             ->with('client.sendernames') // Eager load the client and sendernames
             ->get();
 
+        // The SMS switch is stored per client, so it looks the same to every user and after
+        // every logout.
+        $this->data['smsNotificationsEnabled'] = \App\Models\SystemSetting::notificationsEnabled($this->fms_id);
+
         return view('dashboards.admin.activenames.index', $this->data);
     }
 

@@ -119,10 +119,10 @@ class LoadpackageController extends Controller
                 );
 
 
-                if (!$response['success']) {
-                    return redirect()
-                        ->back()
-                        ->with('error', $response['message']);
+                // An SMS problem is logged inside the helper and never blocks the load:
+                // the cargo, the invoice and the totals must be saved regardless.
+                if (empty($response['success']) && empty($response['skipped'])) {
+                    \Log::warning('Load ' . $load->load_no . ' saved, but the customer SMS failed: ' . ($response['message'] ?? 'unknown error'));
                 }
             }
 
@@ -223,16 +223,25 @@ class LoadpackageController extends Controller
         }
     }
 
+    /**
+     * Turn the customer SMS switch on or off for this client.
+     *
+     * Stored in `system_settings` (key `send_load_notifications`) so it is the same for every
+     * user, every device and every later login - not a value that lived only in one browser
+     * session.
+     */
     public function toggleNotification(Request $request)
     {
-        $enabled = $request->input('enabled') === 'true' || $request->input('enabled') === true;
-        
-        session(['send_notifications' => $enabled]);
-        
+        $enabled = filter_var($request->input('enabled'), FILTER_VALIDATE_BOOLEAN);
+
+        SystemSetting::set('send_load_notifications', $enabled ? '1' : '0', $this->fms_id, auth()->id());
+
         return response()->json([
             'success' => true,
             'enabled' => $enabled,
-            'message' => $enabled ? 'Notifications enabled' : 'Notifications disabled'
+            'message' => $enabled
+                ? 'Customer SMS notifications are ON.'
+                : 'Customer SMS notifications are OFF - no SMS will be sent when loads are created.',
         ]);
     }
 }

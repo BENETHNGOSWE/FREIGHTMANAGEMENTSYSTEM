@@ -20,10 +20,12 @@ class InvoiceExport implements FromCollection, WithHeadings, WithCustomStartCell
     protected $request;
     protected $startDate;
     protected $endDate;
+    protected $clientId;
 
-    public function __construct(Request $request, $startDate = null, $endDate = null)
+    public function __construct(Request $request, $clientId = null, $startDate = null, $endDate = null)
     {
         $this->request = $request;
+        $this->clientId = $clientId ?? auth()->user()?->client_id;
         $this->startDate = $startDate ?? $request->start_date;
         $this->endDate = $endDate ?? $request->end_date;
     }
@@ -35,7 +37,7 @@ class InvoiceExport implements FromCollection, WithHeadings, WithCustomStartCell
 
     public function collection()
     {
-        $query = Invoice::with('customer');
+        $query = Invoice::with('customer')->where('client_id', $this->clientId);
 
         if ($this->startDate) {
             $query->whereDate('created_at', '>=', $this->startDate);
@@ -78,7 +80,7 @@ class InvoiceExport implements FromCollection, WithHeadings, WithCustomStartCell
     {
         // Get the highest row
         $highestRow = $sheet->getHighestRow();
-        $monthYear = Carbon::parse($this->startDate)->format('F Y');
+        $monthYear = $this->startDate ? Carbon::parse($this->startDate)->format('F Y') : Carbon::now()->format('F Y');
 
         // Set column widths
         $sheet->getColumnDimension('A')->setWidth(20);
@@ -92,7 +94,9 @@ class InvoiceExport implements FromCollection, WithHeadings, WithCustomStartCell
 
         // Date Range - Row 2
         $sheet->mergeCells('A2:D2');
-        $dateRange = 'DATE RANGE: ' . Carbon::parse($this->startDate)->format('d M Y') . ' - ' . Carbon::parse($this->endDate)->format('d M Y');
+        $dateRange = ($this->startDate && $this->endDate)
+        ? 'DATE RANGE: ' . Carbon::parse($this->startDate)->format('d M Y') . ' - ' . Carbon::parse($this->endDate)->format('d M Y')
+        : 'DATE RANGE: ALL DATES';
         $sheet->setCellValue('A2', strtoupper($dateRange));
 
         // Style the title row

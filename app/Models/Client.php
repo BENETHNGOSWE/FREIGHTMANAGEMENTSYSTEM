@@ -13,7 +13,7 @@ class Client extends Model
     use HasFactory;
     use Searchable;
 
-    protected $fillable = ['client_name', 'client_logo', 'client_location', 'client_address_one', 'client_address_two', 'client_tinnumber', 'client_phonenumber', 'client_email', 'client_city', 'client_country', 'client_zipcode', 'client_fax', 'client_website_link', 'client_type_id'];
+    protected $fillable = ['client_name', 'client_logo', 'client_location', 'client_address_one', 'client_address_two', 'client_tinnumber', 'client_phonenumber', 'client_email', 'client_city', 'client_country', 'client_zipcode', 'client_fax', 'client_website_link', 'client_type_id', 'account_type', 'subscription_status'];
 
     protected $searchableFields = ['*'];
 
@@ -37,6 +37,20 @@ class Client extends Model
     public function clientType()
     {
         return $this->belongsTo(ClientType::class)->value('name');
+    }
+
+    /** The real relationship (clientType() above returns a string and cannot be eager loaded). */
+    public function clientTypeRelation()
+    {
+        return $this->belongsTo(ClientType::class, 'client_type_id');
+    }
+
+    /** The subscription that rules today, if any. */
+    public function currentSubscription()
+    {
+        return $this->hasOne(Subscription::class, 'client_id')
+            ->whereDate('expire_date', '>=', now()->toDateString())
+            ->latestOfMany();
     }
 
     public function containerLoadings()

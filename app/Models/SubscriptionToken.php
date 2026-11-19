@@ -18,6 +18,8 @@ class SubscriptionToken extends Model
         'expire_date',
         'status',
         'client_id',
+        'used_at',
+        'used_by',
     ];
 
     protected $searchableFields = ['*'];
@@ -27,7 +29,16 @@ class SubscriptionToken extends Model
     protected $casts = [
         'expire_date' => 'date',
         'status' => 'boolean',
+        'used_at' => 'datetime',
     ];
+
+    /** Still usable? active, not used, not past its own expiry date. */
+    public function isValid(): bool
+    {
+        return $this->status
+            && $this->used_at === null
+            && (! $this->expire_date || ! $this->expire_date->isPast());
+    }
 
     public function subscription()
     {

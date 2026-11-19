@@ -36,6 +36,8 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            // Soft lock: expired / locked clients can only reach the unlock screen.
+            \App\Http\Middleware\EnsureSubscription::class,
         ],
 
         'api' => [
@@ -69,6 +71,8 @@ class Kernel extends HttpKernel
         'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
         'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
         'set_freight' => \App\Http\Middleware\setFreightid::class,
+        'subscription' => \App\Http\Middleware\EnsureSubscription::class,
+        'module' => \App\Http\Middleware\EnsureModule::class,
         'owner' => \App\Http\Middleware\Owner::class,
         'admin' => \App\Http\Middleware\Admin::class,
         'manager' => \App\Http\Middleware\Manager::class,

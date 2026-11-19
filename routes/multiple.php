@@ -70,6 +70,7 @@ Route::prefix('/')
         Route::get('invoiceshow/{invoice}', [App\Http\Controllers\Admin\InvoiceController::class, 'show'])->name('admin.show.invoice');
         Route::get('invoice/edit/{invoice}', [App\Http\Controllers\Admin\InvoiceController::class, 'edit'])->name('admin.edit.invoice');
         Route::put('invoice/update/{invoice}', [App\Http\Controllers\Admin\InvoiceController::class, 'update'])->name('admin.update.invoice');
+        Route::post('invoice/{invoice}/payments', [App\Http\Controllers\Admin\InvoiceController::class, 'recordPayment'])->name('admin.invoice.payments.store');
         Route::get('invoice/pdf/{invoice}', [App\Http\Controllers\Admin\InvoiceController::class, 'generateInvoicePDF'])->name('admin.pdf.invoice');
         Route::get('finalInvoice/pdf/{invoice}', [App\Http\Controllers\Admin\InvoiceController::class, 'UpdatedInvoicePDF'])->name('admin.pdf.finalinvoice');
         Route::post('invoices/merge-pdf', [App\Http\Controllers\Admin\InvoiceController::class, 'InvoiceMerge'])->name('admin.invoices.mergepdf');
@@ -147,6 +148,8 @@ Route::prefix('/')
         Route::put('updateprofile', [App\Http\Controllers\Admin\StaffController::class, 'updateProfile'])->name('admin.updateprofile.staff');
 
         // Message Manage Here
+        // Messaging is part of the bulk SMS module: a KodaFreight package must not reach it by URL.
+        Route::middleware('module:sms_bulk')->group(function () {
         Route::get('/message', [App\Http\Controllers\Admin\MessageController::class, 'index'])->name('admin.message.index');
         Route::post('/messagecreate', [App\Http\Controllers\Admin\MessageController::class, 'sendMessage'])->name('admin.sendmessage');
         Route::get('/message-form', [App\Http\Controllers\Admin\MessageController::class, 'showSendMessageForm'])->name('admin.message');
@@ -159,6 +162,8 @@ Route::prefix('/')
         // MessageMultiple Here
         Route::post('/messagecreatemultipe', [App\Http\Controllers\Admin\MessageController::class, 'sendMessageToExistingCustomer'])->name('admin.sendmessage.multiple');
         Route::get('/message-form-multiple', [App\Http\Controllers\Admin\MessageController::class, 'showsendMessageToExistingCustomerform'])->name('admin.message.multiple');
+        Route::get('/sms-balance', [App\Http\Controllers\Admin\SmsBalanceController::class, 'index'])->name('admin.sms.balance');
+        });
 
 
 

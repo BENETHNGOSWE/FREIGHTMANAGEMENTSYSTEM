@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             PermissionsSeeder::class,
             StafftypeSeeder::class,
             ClientTypeSeeder::class,
+            PlatformSeeder::class,
         ]);
     }
 }

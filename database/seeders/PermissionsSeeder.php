@@ -18,7 +18,11 @@ class PermissionsSeeder extends Seeder
         $models = ['banks', 'branches', 'containers', 'clients', 'client_admins', 'clientpayments', 'client_types', 'companyinvoicedetails','godown_addresses',
                     'countries', 'customers', 'customercategories', 'customerleads', 'client_sendername', 'derivery_orders', 'messages', 'modules', 'packages', 
                     'loadpackagetypes', 'loadpackages', 'office_expense_categories', 'office_expenses', 'staffs', 'staff_types', 'payments', 'role', 'sendernames', 'subscriptions', 'subscription_invoices',
-                    'subscription_tokens', 'sales_reports',  'userroles', 'roles', 'permissions', 'users', 'unit_types', 'invoices', 'invoice_loads', 'kodapackages', 'customermessages','demorequests', 'settings','clientactivenames'];
+                    'subscription_tokens', 'sales_reports',  'userroles', 'roles', 'permissions', 'users', 'unit_types', 'invoices', 'invoice_loads', 'kodapackages', 'customermessages','demorequests', 'settings','clientactivenames',
+                    // Accounting module
+                    'accounts', 'journal_entries', 'accounting_reports',
+                    // Cargo operations / storage
+                    'cargo_operations', 'cargo_storage', 'pickup_notes'];
 
         foreach ($models as $model) {
             foreach ($actions as $action) {
@@ -27,6 +31,18 @@ class PermissionsSeeder extends Seeder
                     Permission::create(['name' => $permissionName, 'guard_name' => 'web']);
                 }
             }
+        }
+
+        foreach (['view financial reports', 'print release order', 'print final invoice',
+                 'view accounting reports', 'manage accounting settings', 'post journal entries',
+            // Cargo operations / storage
+            'list cargo_operations', 'view cargo_operations', 'update cargo_operations',
+            'list cargo_storage', 'view cargo_storage', 'create cargo_storage', 'update cargo_storage',
+            'list pickup_notes', 'view pickup_notes', 'create pickup_notes', 'update pickup_notes',
+            'verify cargo', 'manage storage', 'manage storage settings', 'release cargo', 'merge payments',
+                 // Cargo operations / storage
+                 'verify cargo', 'manage storage', 'manage storage settings', 'release cargo', 'merge payments'] as $name) {
+            Permission::firstOrCreate(['name' => $name, 'guard_name' => 'web']);
         }
 
         $manager = Role::firstOrCreate(['name' => 'manager', 'guard_name' => 'web']);
@@ -46,6 +62,11 @@ class PermissionsSeeder extends Seeder
             'view office_expense_categories', 'create office_expense_categories', 'update office_expense_categories', 'delete office_expense_categories',
             'view office_expenses', 'create office_expenses', 'update office_expenses', 'delete office_expenses',
             'view sales_reports', 'create sales_reports', 'update sales_reports', 'delete sales_reports',
+            // Accounts
+            'list accounts', 'view accounts', 'create accounts', 'update accounts', 'delete accounts',
+            'list journal_entries', 'view journal_entries', 'create journal_entries', 'update journal_entries', 'delete journal_entries',
+            'list accounting_reports', 'view accounting_reports',
+            'view accounting reports', 'manage accounting settings', 'post journal entries',
         ]);
 
         $chiefoperation = Role::firstOrCreate(['name' => 'chiefoperation', 'guard_name' => 'web']);
@@ -66,12 +87,23 @@ class PermissionsSeeder extends Seeder
             'view companyinvoicedetails', 'create companyinvoicedetails', 'update companyinvoicedetails', 'delete companyinvoicedetails',
             'view office_expense_categories', 'create office_expense_categories', 'update office_expense_categories', 'delete office_expense_categories',
             'view office_expenses', 'create office_expenses', 'update office_expenses', 'delete office_expenses',
+            'view financial reports', 'print release order', 'print final invoice',
+            // Accounts
+            'list accounts', 'view accounts', 'create accounts', 'update accounts',
+            'list journal_entries', 'view journal_entries', 'create journal_entries', 'update journal_entries',
+            'list accounting_reports', 'view accounting_reports',
+            'view accounting reports', 'post journal entries',
         ]);
 
 
         $godownmanager = Role::firstOrCreate(['name' => 'godownmanager', 'guard_name' => 'web']);
         $godownmanager->syncPermissions([
             'view derivery_orders', 'create derivery_orders', 'update derivery_orders', 'delete derivery_orders',
+            // Warehouse: verification, storage and release desk
+            'list cargo_operations', 'view cargo_operations', 'update cargo_operations',
+            'list cargo_storage', 'view cargo_storage', 'create cargo_storage', 'update cargo_storage',
+            'list pickup_notes', 'view pickup_notes', 'create pickup_notes', 'update pickup_notes',
+            'verify cargo', 'manage storage', 'release cargo',
         ]);
 
         $hr = Role::firstOrCreate(['name' => 'hr', 'guard_name' => 'web']);
@@ -110,6 +142,7 @@ class PermissionsSeeder extends Seeder
             'view loadpackagetypes',
             'view loadpackages',
             'view customers',
+            'print final invoice',
             'view customercategories', 'create customercategories', 'update customercategories', 'delete customercategories',
             'view customerleads', 'create customerleads', 'update customerleads', 'delete customerleads',
             'view messages', 'create messages', 'update messages', 'delete messages',
@@ -130,6 +163,14 @@ class PermissionsSeeder extends Seeder
             'view messages', 'create messages', 'update messages', 'delete messages',
             'view office_expense_categories', 'create office_expense_categories', 'update office_expense_categories',
             'view office_expenses', 'create office_expenses', 'update office_expenses',
+            'print release order', 'print final invoice',
+            // Accounts: the cashier records payments, so they must see the books
+            'list accounts', 'view accounts',
+            'list journal_entries', 'view journal_entries', 'create journal_entries',
+            'list accounting_reports', 'view accounting_reports', 'view accounting reports',
+            // Storage money and merged payments
+            'list cargo_storage', 'view cargo_storage', 'create cargo_storage',
+            'list pickup_notes', 'view pickup_notes', 'merge payments', 'manage storage',
         ]);
 
         $kodasmspackage = Role::firstOrCreate(['name' => 'kodasmspackage', 'guard_name' => 'web']);

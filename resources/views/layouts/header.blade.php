@@ -23,8 +23,49 @@
                 </svg>
                 <span class="badge light text-white bg-primary">0</span>
               </a>
-            
+
             </li>
+
+            @auth
+              {{-- Where the subscription stands, and how much SMS is left.
+                   Defaults keep this safe on any page that does not run the header composer. --}}
+              @php
+                $subscriptionStatus = $subscriptionStatus ?? 'none';
+                $subscriptionDaysLeft = $subscriptionDaysLeft ?? null;
+                $smsLeft = $smsLeft ?? 0;
+                $isPlatformOwner = $isPlatformOwner ?? false;
+              @endphp
+              @if (! $isPlatformOwner)
+                <li class="nav-item d-flex align-items-center me-3">
+                  @php
+                    $statusLabel = [
+                      'active' => 'Subscription active',
+                      'grace'  => 'Grace period',
+                      'expired'=> 'Subscription expired',
+                      'locked' => 'Account locked',
+                      'none'   => 'No subscription',
+                    ][$subscriptionStatus ?? 'none'] ?? 'Subscription';
+                    $statusClass = [
+                      'active' => 'badge-success',
+                      'grace'  => 'badge-warning',
+                      'expired'=> 'badge-danger',
+                      'locked' => 'badge-danger',
+                      'none'   => 'badge-secondary',
+                    ][$subscriptionStatus ?? 'none'] ?? 'badge-secondary';
+                  @endphp
+                  <a href="{{ route('subscription.unlock') }}" class="badge light {{ $statusClass }} me-0" style="font-size:12px">
+                    {{ $statusLabel }}{{ $subscriptionDaysLeft !== null ? ' · ' . $subscriptionDaysLeft . 'd' : '' }}
+                  </a>
+                  @if (($smsLeft ?? 0) > 0 || ($subscriptionStatus ?? '') === 'active')
+                    <span class="badge light badge-info ms-2" style="font-size:12px">{{ number_format($smsLeft ?? 0) }} SMS left</span>
+                  @endif
+                </li>
+              @else
+                <li class="nav-item d-flex align-items-center me-3">
+                  <span class="badge light badge-primary" style="font-size:12px">Platform owner</span>
+                </li>
+              @endif
+            @endauth
          
             <li class="nav-item dropdown notification_dropdown">
               <a class="nav-link" href="javascript:void(0)" role="button" data-bs-toggle="dropdown">

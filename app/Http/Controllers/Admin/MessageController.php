@@ -14,6 +14,7 @@ use App\Models\Customercategory;
 use App\Models\Sendername;
 use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
+use App\Services\Platform\SubscriptionService;
 
 class MessageController extends Controller
 {
@@ -34,9 +35,50 @@ class MessageController extends Controller
         });
     }
 
+    /**
+     * The SMS allowance of this client: the subscription's quota minus what was already sent.
+     * When it is finished, sending must stop - that is the whole "assign message amount" rule.
+     */
+    private function guardSmsAllowance(int $howMany = 1): ?\Illuminate\Http\RedirectResponse
+    {
+        $service = app(SubscriptionService::class);
+        $client = optional(auth()->user())->client;
+
+        if (! $client) {
+            return null;
+        }
+
+        if (! $service->isUsable($client)) {
+            return redirect()->route('subscription.unlock')
+                ->with('error', 'Your subscription has ended, so SMS cannot be sent. Enter the unlock token to continue.');
+        }
+
+        if ($service->smsQuota($client) <= 0) {
+            return redirect()->back()->with('error', 'This account has no SMS balance. Ask your provider to add SMS to the subscription.');
+        }
+
+        if ($service->smsLeft($client) < $howMany) {
+            return redirect()->back()->with('error', sprintf(
+                'SMS balance finished: %s of %s used. Ask your provider to renew before sending again.',
+                number_format($service->smsUsed($client)),
+                number_format($service->smsQuota($client))
+            ));
+        }
+
+        return null;
+    }
+
+    /** Shared by every send action: stop when the balance cannot cover this batch. */
+    private function smsBalanceBlocked(\Illuminate\Support\Collection $recipients): ?\Illuminate\Http\RedirectResponse
+    {
+        return $this->guardSmsAllowance(max($recipients->count(), 1));
+    }
+
     public function index()
     {
         $this->data['messages'] = Message::where('client_id', $this->fms_id)->get();
+        $this->data['smsQuota'] = app(SubscriptionService::class)->smsQuota(optional(auth()->user())->client);
+        $this->data['smsUsed'] = app(SubscriptionService::class)->smsUsed(optional(auth()->user())->client);
         return view('dashboards.admin.messages.index', $this->data);
     }
 
@@ -61,16 +103,37 @@ class MessageController extends Controller
             return redirect()->back()->with('error', 'No customers selected.');
         }
 
+        // Subscription + SMS balance: no messages once the allowance is finished.
+        if ($blocked = $this->smsBalanceBlocked($customers)) {
+            return $blocked;
+        }
+
+        // The sender ID is required by the SMS gateway; it comes from the active name of
+        // this client (Settings -> Active Name).
+        $activeName = \App\Models\Clientactivename::where('client_id', $this->fms_id)->first();
+        $senderId = $activeName
+            ? \App\Models\Sendername::find($activeName->sendername_id)->name ?? null
+            : null;
+
         foreach ($customers as $customer) {
             $personalizedMessage = str_replace('{{ customer_firstname }}', $customer->customer_firstname, $message);
             $plainMessage = strip_tags($personalizedMessage);
 
-            $response = sendMessage([$customer->phone], $plainMessage);
+            // A chat message is an explicit action by a staff member, so it is not affected by
+            // the automatic "Customer SMS Notifications" switch. One failed number must not
+            // stop the rest of the batch.
+            try {
+                $response = sendMessage([$customer->phone], $plainMessage, $senderId);
+                $delivered = (bool) ($response['success'] ?? false);
+            } catch (\Throwable $e) {
+                \Log::warning('Manual SMS failed for ' . $customer->phone . ': ' . $e->getMessage());
+                $delivered = false;
+            }
 
             Message::create([
                 'customer_number' => $customer->phone,
                 'content' => $plainMessage,
-                'status' => $response['success'] ? 'delivered' : 'failed',
+                'status' => $delivered ? 'delivered' : 'failed',
                 'client_id' => $this->fms_id,
             ]);
         }
@@ -131,6 +194,10 @@ class MessageController extends Controller
 
         if ($customers->isEmpty()) {
             return redirect()->back()->with('error', 'No customers found.');
+        }
+
+        if ($blocked = $this->smsBalanceBlocked($customers)) {
+            return $blocked;
         }
 
         $allSuccess = true;
@@ -319,7 +386,11 @@ class MessageController extends Controller
         if ($customerleads->isEmpty()) {
             return redirect()->back()->with('error', 'No customers found.');
         }
-    
+
+        if ($blocked = $this->smsBalanceBlocked($customerleads)) {
+            return $blocked;
+        }
+
         $messageCount = 0;
     
         foreach ($customerleads as $customer) {

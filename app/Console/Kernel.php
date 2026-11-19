@@ -14,6 +14,10 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command('messages:send-pending')->everyMinute();
+
+        // Automatic storage: every day at 00:05 the daily charge is added to every cargo
+        // still in the warehouse. Running it twice never duplicates a day.
+        $schedule->command('storage:accrue')->dailyAt('00:05')->withoutOverlapping();
     }
 
     /**

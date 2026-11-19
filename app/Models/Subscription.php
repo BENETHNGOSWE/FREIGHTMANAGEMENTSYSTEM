@@ -18,6 +18,12 @@ class Subscription extends Model
         'package_id',
         'duration_in_month',
         'status',
+        'product',
+        'sms_quota',
+        'sms_used',
+        'amount',
+        'locked_at',
+        'notes',
     ];
 
     protected $searchableFields = ['*'];
@@ -25,7 +31,20 @@ class Subscription extends Model
     protected $casts = [
         'start_date' => 'date',
         'expire_date' => 'date',
+        'locked_at' => 'datetime',
+        'amount' => 'decimal:2',
     ];
+
+    /** How the subscription reads on screen: active / grace / expired / locked. */
+    public function health(): string
+    {
+        return app(\App\Services\Platform\SubscriptionService::class)->status($this->client);
+    }
+
+    public function smsLeft(): int
+    {
+        return max((int) $this->sms_quota - (int) \App\Models\Message::where('client_id', $this->client_id)->count(), 0);
+    }
 
     public function client()
     {

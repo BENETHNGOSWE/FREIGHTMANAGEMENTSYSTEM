@@ -53,6 +53,20 @@ class HomeController extends Controller
         $this->data['fullPaidInvoices'] = Invoice::where('client_id', $clientid)->where('status', 1)->count();
         $this->data['partialPaidInvoices'] = Invoice::where('client_id', $clientid)->where('status', 2)->count();
         $this->data['topCustomers'] = Customer::where('client_id', $clientid)->withCount('loadpackages')->orderByDesc('loadpackages_count')->take(5)->get();
+        // What this client actually bought: the dashboard follows the package, not a fixed template.
+        $access = app(\App\Services\Platform\ModuleAccess::class);
+        $client = auth()->user()->client ?? null;
+        $this->data['hasCargo'] = $access->allows('cargo');
+        $this->data['hasAccounts'] = $access->allows('accounts');
+        $this->data['hasSms'] = $access->allows('sms_bulk');
+        $this->data['productLabel'] = $client ? (\App\Services\Platform\ProductCatalog::PRODUCTS[$client->account_type] ?? 'KodaFreight') : null;
+        $this->data['subscriptionStatus'] = app(\App\Services\Platform\SubscriptionService::class)->status($client);
+        $subs = app(\App\Services\Platform\SubscriptionService::class);
+        $this->data['subscriptionDaysLeft'] = $subs->daysLeft($client);
+        $this->data['smsQuota'] = $client ? $subs->smsQuota($client) : 0;
+        $this->data['smsLeft'] = $client ? $subs->smsLeft($client) : 0;
+        // what the owner assigned, so "allowance" on screen is the package's, not a fixed column
+        $this->data['loadcreate'] = \App\Models\Loadpackage::where('client_id', $clientid)->count();
         $this->data['customersPerMonth'] = Loadpackage::where('client_id', $clientid)->selectRaw('EXTRACT(YEAR FROM created_at) as year, EXTRACT(MONTH FROM created_at) as month, COUNT(DISTINCT customer_id) as customer_count')->groupByRaw('EXTRACT(YEAR FROM created_at), EXTRACT(MONTH FROM created_at)')->orderByRaw('EXTRACT(YEAR FROM created_at), EXTRACT(MONTH FROM created_at)')->get();
         return view('dashboards.dynamic_dashboard',$this->data);
     }
