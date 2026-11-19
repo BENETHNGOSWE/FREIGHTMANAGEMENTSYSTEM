@@ -35,7 +35,12 @@
                 $smsLeft = $smsLeft ?? 0;
                 $isPlatformOwner = $isPlatformOwner ?? false;
               @endphp
-              @if (! $isPlatformOwner)
+              @if ($isPlatformOwner)
+                <li class="nav-item d-flex align-items-center me-3">
+                  <span class="badge light badge-primary" style="font-size:12px">Platform owner</span>
+                </li>
+              @elseif ($subscriptionStatus !== 'none')
+                {{-- No subscription is not a badge: that client is already on the unlock screen. --}}
                 <li class="nav-item d-flex align-items-center me-3">
                   @php
                     $statusLabel = [
@@ -59,10 +64,6 @@
                   @if (($smsLeft ?? 0) > 0 || ($subscriptionStatus ?? '') === 'active')
                     <span class="badge light badge-info ms-2" style="font-size:12px">{{ number_format($smsLeft ?? 0) }} SMS left</span>
                   @endif
-                </li>
-              @else
-                <li class="nav-item d-flex align-items-center me-3">
-                  <span class="badge light badge-primary" style="font-size:12px">Platform owner</span>
                 </li>
               @endif
             @endauth

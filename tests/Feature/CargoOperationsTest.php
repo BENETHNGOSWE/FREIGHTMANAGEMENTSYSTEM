@@ -57,6 +57,18 @@ class CargoOperationsTest extends TestCase
         ]);
         Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
         $this->user->assignRole('admin');
+
+        // the client bought KodaFreight: cargo needs the module *and* a live subscription
+        $freightPackage = \App\Models\Kodapackage::where('name', 'KodaFreight')->first();
+        if ($freightPackage && ! \App\Models\Subscription::where('client_id', $this->client->id)->exists()) {
+            \App\Models\Subscription::create([
+                'client_id' => $this->client->id, 'package_id' => $freightPackage->id, 'product' => 'freight',
+                'start_date' => now()->subMonth()->toDateString(),
+                'expire_date' => now()->addYear()->toDateString(),
+                'duration_in_month' => 12, 'status' => '0', 'sms_quota' => 0, 'amount' => 0,
+            ]);
+        }
+
         $this->actingAs($this->user);
 
         $this->customer = Customer::create([

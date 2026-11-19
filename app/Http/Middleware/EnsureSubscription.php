@@ -40,7 +40,10 @@ class EnsureSubscription
             return $next($request);
         }
 
-        $allowed = ['subscription.unlock', 'subscription.unlock.post', 'logout', 'profile'];
+        $allowed = [
+            'subscription.unlock', 'subscription.unlock.post', 'logout',
+            'admin.list.profile', 'profile',
+        ];
 
         if ($request->routeIs(...$allowed) || $request->is('css/*') || $request->is('assets/*')) {
             return $next($request);

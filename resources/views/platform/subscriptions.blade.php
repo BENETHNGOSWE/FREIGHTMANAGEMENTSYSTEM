@@ -77,11 +77,23 @@
                 <div class="card-body">
                     <div class="d-flex gap-2 mb-3 flex-wrap">
                         <a href="{{ route('platform.subscriptions') }}" class="btn btn-sm {{ $status ? 'btn-outline-primary' : 'btn-primary' }}">All</a>
-                        @foreach (['1' => 'Paid', '2' => 'Partial', '0' => 'Not paid', 'expired' => 'Expired'] as $key => $label)
+                        @foreach (['1' => 'Paid', '2' => 'Partial', '0' => 'Not paid', 'expired' => 'Expired', 'none' => 'No subscription'] as $key => $label)
                             <a href="{{ route('platform.subscriptions', ['status' => $key]) }}"
                                class="btn btn-sm {{ $status === $key ? 'btn-primary' : 'btn-outline-primary' }}">{{ $label }}</a>
                         @endforeach
                     </div>
+
+                    @if (($unsubscribed ?? collect())->isNotEmpty())
+                        <div class="alert alert-warning">
+                            <strong>{{ $unsubscribed->count() }} client(s) have no subscription yet.</strong>
+                            They can sign in but land on the token screen until a package is assigned.
+                            <ul class="mb-0 mt-2">
+                                @foreach ($unsubscribed as $waiting)
+                                    <li>{{ $waiting->client_name }} <span class="text-muted">({{ $waiting->client_email }})</span></li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
 
                     <div class="table-responsive">
                         <table class="table table-hover table-borderless align-middle">

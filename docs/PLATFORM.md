@@ -28,6 +28,7 @@ with `product`, `package_id`, `start_date`, `expire_date`, `duration_in_month`,
 ## 2. The owner flow (menu: Clients / Subscriptions / Products / Access)
 
 1. **Clients → Add client** (`list.clients` / `create.clients`) creates the client company.
+   The client can sign in immediately but sees only the unlock screen until step 3.
 2. **Clients & subscriptions** (`/platform/clients`) shows every client with product,
    package, expiry, status, SMS left and the actions: **Lock / Unlock**, **Renew**,
    **Token**.
@@ -49,11 +50,21 @@ with `product`, `package_id`, `start_date`, `expire_date`, `duration_in_month`,
 * expired but still inside the grace period → **grace** (still usable)
 * expired after grace → **expired** and the client is redirected to the unlock screen
 * locked by the owner → **locked**, same unlock screen
-* no subscription on file → **none**: the client keeps working (grandfathered) unless
-  *Enforce for every client* is switched on in Platform settings
+* no subscription on file → **none** → treated exactly like **locked**: the client lands on
+  the token screen. **Money first, then access.** Nothing is deleted; their data waits.
 
-A locked or expired client sees only **Manage Profile** and **Settings** plus the unlock
-box; `/cargo`, `/storage`, `/accounts`, `/message` all answer **403** for them.
+A client that is `locked`, `expired` or `none` sees an account-only menu (**Manage Profile**,
+**Settings**) plus the unlock box; `/cargo`, `/storage`, `/accounts`, `/message` all answer
+**403** or redirect to `/subscription` for them. The header shows no product badge and no
+subscription badge in that state — there is nothing to report yet.
+
+The owner sees those clients on the overview under **Waiting for their first package**, and
+on **Subscriptions → No subscription**, where a package is assigned in two clicks.
+
+**Grace / grandfather escape hatch:** if an install still has clients that were never
+migrated to subscriptions, switch *Lock a client that has no subscription* **off** in Platform
+settings. Then `none` behaves the old way (usable, on the product's default modules). Leave
+it on in production — that is the flow you described.
 
 ## 4. Unlock token
 

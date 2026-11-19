@@ -29,6 +29,22 @@
                         </p>
                     </div>
 
+                    @if ($status === 'none')
+                        <div class="alert alert-warning">
+                            <strong>This account has no subscription yet.</strong><br>
+                            Ask your provider to assign a package and send you the unlock token, then paste it
+                            below. Nothing is deleted while you wait — your data is untouched.
+                        </div>
+                    @endif
+
+                    @if ($status === 'locked')
+                        <div class="alert alert-danger">
+                            The account was locked by the provider. The token they send you reopens it.
+                        </div>
+                    @endif
+
+                    {{-- No subscription means there is nothing to measure yet --}}
+                    @if ($status !== 'none')
                     <ul class="list-group list-group-flush mb-4">
                         <li class="list-group-item d-flex justify-content-between">
                             <span>Days remaining</span>
@@ -45,9 +61,10 @@
                             <strong>{{ number_format($smsLeft) }} of {{ number_format($smsQuota) }}</strong>
                         </li>
                     </ul>
+                    @endif
 
-                    @if (in_array($status, ['expired', 'locked', 'none'], true))
-                        <div class="alert alert-warning">
+                    @if (in_array($status, ['expired', 'locked'], true))
+                        <div class="alert alert-warning mb-0">
                             Enter the token your provider sent you. It unlocks the system until the date printed
                             with the token — nothing is deleted, your data is safe.
                         </div>
@@ -67,10 +84,10 @@
 
                     <hr>
                     <div class="d-flex justify-content-between align-items-center">
-                        <small class="text-muted">Need a new token? Contact your provider and quote your client name.</small>
+                        <small class="text-muted me-3">Need a new token? Contact your provider and quote your client name.</small>
                         <a href="{{ route('logout') }}"
                            onclick="event.preventDefault(); document.getElementById('logout-form-unlock').submit();"
-                           class="btn btn-sm btn-outline-secondary">Sign out</a>
+                           class="btn btn-sm btn-outline-secondary text-nowrap">Sign out</a>
                     </div>
                     <form id="logout-form-unlock" action="{{ route('logout') }}" method="POST" class="d-none">@csrf</form>
                 </div>

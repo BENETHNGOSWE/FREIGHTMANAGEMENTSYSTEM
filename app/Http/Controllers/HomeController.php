@@ -62,12 +62,15 @@ class HomeController extends Controller
         // What this client actually bought: the dashboard follows the package, not a fixed template.
         $access = app(\App\Services\Platform\ModuleAccess::class);
         $client = auth()->user()->client ?? null;
+        $subs = app(\App\Services\Platform\SubscriptionService::class);
+        $this->data['subscriptionStatus'] = $subscriptionStatus = $subs->status($client);
         $this->data['hasCargo'] = $access->allows('cargo');
         $this->data['hasAccounts'] = $access->allows('accounts');
         $this->data['hasSms'] = $access->allows('sms_bulk');
-        $this->data['productLabel'] = $client ? (\App\Services\Platform\ProductCatalog::PRODUCTS[$client->account_type] ?? 'KodaFreight') : null;
-        $this->data['subscriptionStatus'] = app(\App\Services\Platform\SubscriptionService::class)->status($client);
-        $subs = app(\App\Services\Platform\SubscriptionService::class);
+        // the product badge only makes sense once a package is actually subscribed
+        $this->data['productLabel'] = ($client && $subscriptionStatus !== 'none')
+            ? (\App\Services\Platform\ProductCatalog::PRODUCTS[$client->account_type] ?? null)
+            : null;
         $this->data['subscriptionDaysLeft'] = $subs->daysLeft($client);
         $this->data['smsQuota'] = $client ? $subs->smsQuota($client) : 0;
         $this->data['smsLeft'] = $client ? $subs->smsLeft($client) : 0;
@@ -114,6 +117,8 @@ class HomeController extends Controller
             ],
             'expiringSoon' => $rows->filter(fn ($row) => $row->days_left !== null && $row->days_left >= 0 && $row->days_left <= 30)->sortBy('days_left'),
             'renewals' => $rows->filter(fn ($row) => in_array($row->status, ['expired', 'locked', 'grace'], true)),
+            // signed up but never bought: assign a package, then they need a token to get in
+            'noSubscription' => $rows->where('status', 'none'),
             // summed in PHP on purpose: an aggregate over an empty list is the classic
             // "column does not exist" 500 on PostgreSQL, and this dashboard must never fall over
             'subscriptionValue' => round((float) $rows->pluck('subscription')->filter()

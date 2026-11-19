@@ -39,6 +39,27 @@
 
         <div class="row">
             <div class="col-xl-8">
+                @if ($noSubscription->isNotEmpty())
+                    <div class="card border-warning">
+                        <div class="card-header">
+                            <h4 class="card-title">Waiting for their first package</h4>
+                        </div>
+                        <div class="card-body">
+                            @foreach ($noSubscription as $row)
+                                <div class="d-flex align-items-center border-bottom py-2">
+                                    <div class="me-auto">
+                                        <strong>{{ optional($row->client)->client_name }}</strong>
+                                        <div class="small text-muted">
+                                            no subscription — they see the token screen until you assign a package
+                                        </div>
+                                    </div>
+                                    <a href="{{ route('platform.subscriptions') }}" class="btn btn-sm btn-primary">Assign a package</a>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+
                 <div class="card">
                     <div class="card-header">
                         <h4 class="card-title">Renewals to chase</h4>

@@ -44,16 +44,10 @@ class ModuleAccess
 
         $subscription = app(SubscriptionService::class)->current($clientId);
 
-        // No subscription on file: keep the client working with the full product
-        // (grandfathered, same rule as SubscriptionService::isUsable).
+        // No subscription on file: nothing is included. The owner assigns a package and
+        // issues a token first; until then the client only sees the unlock screen.
         if (! $subscription) {
-            if (! app(SubscriptionService::class)->isUsable(Client::find($clientId))) {
-                return $this->cache[$clientId] = [];   // locked: no modules at all
-            }
-
-            return $this->cache[$clientId] = ProductCatalog::modulesFor(
-                Client::whereKey($clientId)->value('account_type') ?: 'freight'
-            );
+            return $this->cache[$clientId] = [];
         }
 
         $keys = DB::table('package_modules')->where('package_id', $subscription->package_id)->pluck('module_key')->all();

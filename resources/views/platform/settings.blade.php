@@ -28,11 +28,12 @@
                             <input type="checkbox" class="form-check-input" name="enforce_all" value="1" id="enforce_all"
                                    @checked($enforceForEveryone)>
                             <label class="form-check-label" for="enforce_all">
-                                Also lock clients that have <strong>no subscription</strong> at all
+                                Lock a client that has <strong>no subscription</strong> (recommended)
                             </label>
                             <div class="small text-muted">
-                                Leave this off until every existing client has a subscription — otherwise they
-                                cannot use the system anymore. Turning it on honours the subscription rule for everyone.
+                                On: a new client cannot use the system until you assign a package and they enter
+                                their token — the money-first flow. Off: clients with no subscription keep working
+                                on their product's modules, which is only useful while you migrate existing clients.
                             </div>
                         </div>
                         <button class="btn btn-primary">Save</button>

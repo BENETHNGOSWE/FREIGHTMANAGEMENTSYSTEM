@@ -91,20 +91,19 @@ class SubscriptionService
             return true;
         }
 
-        // Clients that never had a subscription are grandfathered: the upgrade must not lock
-        // an existing business out. The owner can switch enforcement on in Platform settings
-        // once every client has a subscription.
-        if ($status === 'none' && ! $this->enforceForEveryone()) {
-            return true;
-        }
-
-        return false;
+        // Escape hatch for an install whose clients are not migrated to subscriptions yet:
+        // enforcement off means a client with no subscription keeps working.
+        return $status === 'none' && ! $this->enforceForEveryone();
     }
 
-    /** Should a client with no subscription at all be locked too? (off by default) */
+    /**
+     * A client with no subscription is not a customer yet: they get the unlock screen
+     * (the money-first flow). Flipping this off is the escape hatch for an install whose
+     * clients have not been migrated to subscriptions yet — off it is grandfathered.
+     */
     public function enforceForEveryone(): bool
     {
-        return (string) \App\Models\PlatformSetting::get('subscription_enforce_all', '0') === '1';
+        return (string) \App\Models\PlatformSetting::get('subscription_enforce_all', '1') === '1';
     }
 
     public function setEnforceForEveryone(bool $on): void

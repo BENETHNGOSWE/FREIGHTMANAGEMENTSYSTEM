@@ -50,6 +50,17 @@ class SmsNotificationSwitchTest extends TestCase
         Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
         $user->assignRole('admin');
 
+        // KodaSMS bought and paid: messaging is a paid module, never a free one
+        $smsPackage = \App\Models\Kodapackage::where('name', 'KodaSMS')->first();
+        if ($smsPackage && ! \App\Models\Subscription::where('client_id', $client->id)->exists()) {
+            \App\Models\Subscription::create([
+                'client_id' => $client->id, 'package_id' => $smsPackage->id, 'product' => 'sms',
+                'start_date' => now()->subMonth()->toDateString(),
+                'expire_date' => now()->addYear()->toDateString(),
+                'duration_in_month' => 12, 'status' => '0', 'sms_quota' => 1000, 'amount' => 0,
+            ]);
+        }
+
         $customer = Customer::create([
             'customer_firstname' => 'SMS Customer', 'phone' => '0754000111',
             'user_id' => $user->id, 'client_id' => $client->id,

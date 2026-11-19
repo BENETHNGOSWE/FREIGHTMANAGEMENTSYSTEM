@@ -25,7 +25,10 @@ class ViewServiceProvider extends ServiceProvider
 
             // A locked client only gets their own account: showing them Cargo or Storage
             // they cannot open is exactly the confusion this layer exists to stop.
-            $locked = in_array(app(SubscriptionService::class)->status(auth()->user()->client), ['locked', 'expired'], true);
+            // "No subscription" counts as locked too — they are on the token screen.
+            $subscriptions = app(SubscriptionService::class);
+            $locked = ! app(ModuleAccess::class)->isOwner(auth()->user())
+                && ! $subscriptions->isUsable(auth()->user()->client);
 
             $view->with('menu', $locked
                 ? app(SidebarService::class)->accountMenu()

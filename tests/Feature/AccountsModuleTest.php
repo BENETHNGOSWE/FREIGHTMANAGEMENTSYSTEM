@@ -32,6 +32,22 @@ class AccountsModuleTest extends TestCase
         }
     }
 
+    private static function subscribeToFreight(Client $client): void
+    {
+        $package = \App\Models\Kodapackage::where('name', 'KodaFreight')->first();
+
+        if (! $package || \App\Models\Subscription::where('client_id', $client->id)->exists()) {
+            return;
+        }
+
+        \App\Models\Subscription::create([
+            'client_id' => $client->id, 'package_id' => $package->id, 'product' => 'freight',
+            'start_date' => now()->subMonth()->toDateString(),
+            'expire_date' => now()->addYear()->toDateString(),
+            'duration_in_month' => 12, 'status' => '0', 'sms_quota' => 0, 'amount' => 0,
+        ]);
+    }
+
     private function user(): User
     {
         $email = 'accounts-test@example.test';
@@ -55,6 +71,9 @@ class AccountsModuleTest extends TestCase
 
             Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
             $user->assignRole('admin');
+
+            // a client buys a package: without one the platform (correctly) sends them to the token screen
+            self::subscribeToFreight($client);
         }
 
         // A client always has the standard chart, created on first use.
@@ -311,6 +330,7 @@ class AccountsModuleTest extends TestCase
 
         Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
         $user->assignRole('admin');
+        self::subscribeToFreight($client);
 
         $this->actingAs($user)->get(route('accounts.dashboard'))->assertOk();
         $this->assertGreaterThanOrEqual(35, Account::where('client_id', $client->id)->count());

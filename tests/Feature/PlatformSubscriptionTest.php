@@ -66,6 +66,10 @@ class PlatformSubscriptionTest extends TestCase
         ]);
         $this->clientUser->assignRole('admin');
 
+        // start from the shipped policy on every run (the setting is cached app-wide)
+        app(SubscriptionService::class)->setGraceDays(3);
+        app(SubscriptionService::class)->setEnforceForEveryone(true);
+
         $this->freightPackage = Kodapackage::firstOrCreate(['name' => 'KodaFreight'], ['monthly_fee' => 50000, 'yearly_fee' => 500000]);
         $this->smsPackage = Kodapackage::firstOrCreate(['name' => 'KodaSMS'], ['monthly_fee' => 30000, 'yearly_fee' => 300000]);
 
@@ -90,15 +94,41 @@ class PlatformSubscriptionTest extends TestCase
 
     // ---------------------------------------------------------------- status & lock
 
-    public function test_a_client_without_subscription_keeps_working_until_enforced(): void
+    public function test_a_client_without_a_subscription_is_sent_to_the_unlock_screen(): void
     {
         $service = app(SubscriptionService::class);
 
         $this->assertSame('none', $service->status($this->client));
-        $this->assertTrue($service->isUsable($this->client), 'grandfathered on purpose');
+        $this->assertFalse($service->isUsable($this->client), 'no package, no access');
+
+        // the client lands on the token screen instead of an empty dashboard
+        $this->actingAs($this->clientUser)
+            ->get(route('dashboard'))
+            ->assertRedirect(route('subscription.unlock'));
+
+        $this->actingAs($this->clientUser)
+            ->get(route('subscription.unlock'))
+            ->assertOk()
+            ->assertSee('no subscription yet', false);
+    }
+
+    public function test_turning_enforcement_off_grandfathers_unpaid_clients(): void
+    {
+        $service = app(SubscriptionService::class);
+
+        // default: no subscription means no access
+        $this->assertTrue($service->enforceForEveryone());
+        $this->assertFalse($service->isUsable($this->client));
+
+        // the escape hatch, for an install whose clients are not migrated yet
+        $service->setEnforceForEveryone(false);
+        $this->assertTrue($service->isUsable($this->client->fresh()), 'explicitly grandfathered');
 
         $service->setEnforceForEveryone(true);
         $this->assertFalse($service->isUsable($this->client->fresh()));
+
+        // the setting is read back per request, not cached from the session
+        $this->assertTrue($service->enforceForEveryone());
     }
 
     public function test_an_expired_subscription_gets_a_grace_period_then_locks(): void
@@ -371,5 +401,20 @@ class PlatformSubscriptionTest extends TestCase
         $this->assertTrue($subscription->fresh()->expire_date->isFuture());
         // the renewal is billed automatically, so the invoice trail stays complete
         $this->assertTrue(\App\Models\SubscriptionInvoice::where('client_id', $this->client->id)->exists());
+    }
+
+    public function test_a_client_with_no_subscription_is_listed_for_the_owner_to_assign(): void
+    {
+        $this->actingAs($this->owner)
+            ->get(route('platform.subscriptions', ['status' => 'none']))
+            ->assertOk()
+            ->assertSee($this->client->client_name)
+            ->assertSee('have no subscription yet', false);
+
+        // and nowhere else on that screen
+        $this->actingAs($this->owner)
+            ->get(route('platform.subscriptions'))
+            ->assertOk()
+            ->assertDontSee('have no subscription yet', false);
     }
 }

@@ -68,12 +68,19 @@ class PlatformController extends Controller
     {
         $status = $request->get('status');
 
+        // "Not started" is the other side of the coin: clients with no subscription at all.
+        $unsubscribed = $status === 'none'
+            ? Client::whereDoesntHave('subscriptions')->get()
+            : collect();
+
         $subscriptions = Subscription::with(['client', 'kodapackages'])
             ->when($status, function ($query) use ($status) {
                 if ($status === 'expired') {
                     $query->whereDate('expire_date', '<', now()->toDateString());
-                } else {
+                } elseif ($status !== 'none') {
                     $query->where('status', $status);
+                } else {
+                    $query->whereRaw('1 = 0');   // "not started" is not a subscription row
                 }
             })
             ->orderByDesc('id')
@@ -81,6 +88,7 @@ class PlatformController extends Controller
 
         return view('platform.subscriptions', [
             'subscriptions' => $subscriptions,
+            'unsubscribed' => $unsubscribed,
             'status' => $status,
             'products' => ProductCatalog::PRODUCTS,
             'statusLabels' => SubscriptionService::STATUSES,
@@ -264,6 +272,7 @@ class PlatformController extends Controller
         ]);
 
         $this->subscriptions->setGraceDays((int) $data['grace_days']);
+        // the checkbox means "lock clients with no subscription", which is the default rule
         $this->subscriptions->setEnforceForEveryone($request->boolean('enforce_all'));
 
         return back()->with('success', 'Platform settings saved.');
