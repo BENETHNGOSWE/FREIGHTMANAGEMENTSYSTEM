@@ -101,5 +101,10 @@ php artisan optimize:clear
 Then, once: **Platform settings** → set the grace period, and **Products → Modules** →
 confirm KodaFreight / KodaSMS include what you sell.
 
+Want demo data to click through the flow? `php artisan db:seed --class=PlatformDemoSeeder`
+creates a freight client, a bulk-SMS reseller and an expired client, and prints its unlock
+token. Logins: `owner@fms.com`/`12345678`, `freight@demo.test`, `sms@demo.test`,
+`expired@demo.test` (password `secret123`).
+
 Tests: `php artisan test --filter="PlatformSubscriptionTest|CargoOperationsTest|AccountsModuleTest|SmsNotificationSwitchTest"`
 (54 passed, 248 assertions).
