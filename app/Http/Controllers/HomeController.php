@@ -41,6 +41,12 @@ class HomeController extends Controller
     }
 
     public function index() {
+        // The platform owner runs the subscriptions, not one client's cargo: show them
+        // the whole book rather than an empty freight dashboard.
+        if (app(\App\Services\Platform\ModuleAccess::class)->isOwner()) {
+            return $this->platformOverview();
+        }
+
          $clientid = auth()->user()->client_id;
         //  $role = auth()->user()->getRoleNames();
         //  dd($role);
@@ -69,6 +75,52 @@ class HomeController extends Controller
         $this->data['loadcreate'] = \App\Models\Loadpackage::where('client_id', $clientid)->count();
         $this->data['customersPerMonth'] = Loadpackage::where('client_id', $clientid)->selectRaw('EXTRACT(YEAR FROM created_at) as year, EXTRACT(MONTH FROM created_at) as month, COUNT(DISTINCT customer_id) as customer_count')->groupByRaw('EXTRACT(YEAR FROM created_at), EXTRACT(MONTH FROM created_at)')->orderByRaw('EXTRACT(YEAR FROM created_at), EXTRACT(MONTH FROM created_at)')->get();
         return view('dashboards.dynamic_dashboard',$this->data);
+    }
+
+    /** The owner's home: every client, where each subscription stands, what is running out. */
+    private function platformOverview()
+    {
+        $subscriptions = app(\App\Services\Platform\SubscriptionService::class);
+        $clients = \App\Models\Client::with(['clientTypeRelation', 'currentSubscription.kodapackages'])->get();
+
+        $rows = $clients->map(function ($client) use ($subscriptions) {
+            $subscription = $subscriptions->current($client->id);
+
+            return (object) [
+                'client' => $client,
+                'subscription' => $subscription,
+                'product' => $subscription->product ?? ($client->account_type ?: 'freight'),
+                'status' => $subscriptions->status($client),
+                'days_left' => $subscriptions->daysLeft($client),
+                'sms_left' => $subscriptions->smsLeft($client),
+                'sms_quota' => $subscriptions->smsQuota($client),
+                'expires' => optional($subscription)->expire_date,
+            ];
+        });
+
+        $count = fn ($status) => $rows->where('status', $status)->count();
+
+        return view('dashboards.platform_owner', [
+            'rows' => $rows,
+            'totals' => [
+                'clients' => $rows->count(),
+                'active' => $count('active'),
+                'grace' => $count('grace'),
+                'expired' => $count('expired'),
+                'locked' => $count('locked'),
+                'none' => $count('none'),
+                'sms' => $rows->whereIn('product', ['sms', 'both'])->count(),
+                'freight' => $rows->whereIn('product', ['freight', 'both'])->count(),
+            ],
+            'expiringSoon' => $rows->filter(fn ($row) => $row->days_left !== null && $row->days_left >= 0 && $row->days_left <= 30)->sortBy('days_left'),
+            'renewals' => $rows->filter(fn ($row) => in_array($row->status, ['expired', 'locked', 'grace'], true)),
+            'monthlyValue' => \App\Models\Subscription::whereIn('id', $rows->pluck('subscription')->filter()->pluck('id'))
+                ->sum('amount'),
+            'recentInvoices' => \App\Models\SubscriptionInvoice::with('client')->latest('id')->take(6)->get(),
+            'products' => \App\Services\Platform\ProductCatalog::PRODUCTS,
+            'graceDays' => $subscriptions->graceDays(),
+            'enforceAll' => $subscriptions->enforceForEveryone(),
+        ]);
     }
 
     /**

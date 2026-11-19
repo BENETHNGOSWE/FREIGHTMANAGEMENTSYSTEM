@@ -27,6 +27,7 @@ class ProductCatalog
         'loads' => ['Loads / Packages', 'freight', 'Load packages and package types'],
         'invoices' => ['Invoices & Payments', 'freight', 'Invoices, payments, merged payment and final invoice'],
         'customers' => ['Customers & Leads', 'freight', 'Customers, categories and leads'],
+        'sms_customers' => ['My Customers', 'both', 'Own customer list to add to and message'],
         'expenses' => ['Expenses', 'freight', 'Office expenses and expense categories'],
         'reports' => ['Sales & Financial Reports', 'freight', 'Sales reports, delivery orders and financial reports'],
         'accounts' => ['Accounting', 'freight', 'Chart of accounts, journals, ledgers and books reports'],

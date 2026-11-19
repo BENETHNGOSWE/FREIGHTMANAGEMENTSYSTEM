@@ -90,6 +90,23 @@ class PlatformController extends Controller
     /** Create the subscription (this is what "assign package" really means). */
     public function storeSubscription(Request $request): RedirectResponse
     {
+        // One click from the overview: extend whatever subscription is already on file.
+        if ($request->filled('renew_client_id')) {
+            $client = Client::findOrFail($request->integer('renew_client_id'));
+            $current = $this->subscriptions->current($client->id);
+
+            if (! $current) {
+                return back()->with('error', 'That client has no subscription yet — create one first.');
+            }
+
+            $months = max((int) $request->input('months', 12), 1);
+            $this->subscriptions->renew($current, $months);
+            $client->update(['subscription_status' => 'active']);
+
+            return redirect()->route('platform.clients')
+                ->with('success', $client->client_name . ' renewed for ' . $months . ' month(s).');
+        }
+
         $data = $request->validate([
             'client_id' => ['required', 'exists:clients,id'],
             'package_id' => ['required', 'exists:kodapackages,id'],

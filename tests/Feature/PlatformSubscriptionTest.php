@@ -350,4 +350,26 @@ class PlatformSubscriptionTest extends TestCase
         $this->assertSame('active', app(SubscriptionService::class)->status($this->client->fresh()));
         $this->assertEquals(300000.0, (float) $subscription->amount, 'yearly price of the SMS package');
     }
+
+    public function test_the_owner_renews_from_the_overview_in_one_click(): void
+    {
+        $subscription = $this->subscribe($this->client, $this->smsPackage, 'sms', [
+            'start_date' => now()->subMonths(13)->toDateString(),
+            'expire_date' => now()->subMonth()->toDateString(),
+        ]);
+        $this->client->update(['subscription_status' => 'locked']);
+
+        $this->actingAs($this->owner)
+            ->post(route('platform.subscriptions.store'), [
+                'renew_client_id' => $this->client->id,
+                'months' => 12,
+            ])
+            ->assertRedirect(route('platform.clients'))
+            ->assertSessionHas('success');
+
+        $this->assertSame('active', app(SubscriptionService::class)->status($this->client->fresh()));
+        $this->assertTrue($subscription->fresh()->expire_date->isFuture());
+        // the renewal is billed automatically, so the invoice trail stays complete
+        $this->assertTrue(\App\Models\SubscriptionInvoice::where('client_id', $this->client->id)->exists());
+    }
 }

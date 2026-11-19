@@ -205,11 +205,27 @@ class SubscriptionService
                 ? $subscription->expire_date->copy()
                 : now()->startOfDay();
 
+            $price = $amount ?? $this->priceFor($subscription->package_id, $months);
+
             $subscription->update([
                 'duration_in_month' => $subscription->duration_in_month + $months,
                 'expire_date' => $from->copy()->addMonths($months),
-                'amount' => $amount ?? ($subscription->amount + $this->priceFor($subscription->package_id, $months)),
+                'amount' => $price,
+                'locked_at' => null,
             ]);
+
+            // a renewal is money owed: bill it right away so the owner can follow it
+            SubscriptionInvoice::create([
+                'subscription_id' => $subscription->id,
+                'client_id' => $subscription->client_id,
+                'amount' => $price,
+                'balance' => $price,
+                'bill_date' => now()->toDateString(),
+                'due_date' => now()->addDays(7)->toDateString(),
+                'status' => '0',
+            ]);
+
+            Client::whereKey($subscription->client_id)->update(['subscription_status' => 'active']);
 
             return $subscription->fresh();
         });

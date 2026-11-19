@@ -164,6 +164,19 @@ return [
                 'route' => 'admin.list.customer',
                 'permission' => 'view customers',
             ],
+            [
+                // bulk-SMS resellers sell to their own market: they need their own address book
+                'title' => 'My Customers',
+                'route' => 'admin.list.customer',
+                'permission' => 'view customers',
+                'module' => 'sms_contacts',
+            ],
+            [
+                'title' => '+Add SMS Customer',
+                'route' => 'admin.create.customer',
+                'permission' => 'create customers',
+                'module' => 'sms_contacts',
+            ],
         ],
     ],
 
