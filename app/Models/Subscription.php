@@ -35,6 +35,22 @@ class Subscription extends Model
         'amount' => 'decimal:2',
     ];
 
+    /**
+     * Does the database actually have the platform columns?
+     * A half-migrated or older install must not take the owner screens down.
+     */
+    public static function platformColumnsReady(): bool
+    {
+        static $ready = null;
+
+        if ($ready === null) {
+            $ready = \Illuminate\Support\Facades\Schema::hasTable('subscriptions')
+                && \Illuminate\Support\Facades\Schema::hasColumn('subscriptions', 'amount');
+        }
+
+        return $ready;
+    }
+
     /** How the subscription reads on screen: active / grace / expired / locked. */
     public function health(): string
     {

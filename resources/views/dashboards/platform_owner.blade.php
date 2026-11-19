@@ -88,7 +88,7 @@
                     <div class="card-body">
                         <p class="mb-1">Grace period: <strong>{{ $graceDays }} day(s)</strong></p>
                         <p class="mb-3">Enforce for every client: <strong>{{ $enforceAll ? 'yes' : 'no' }}</strong></p>
-                        <p class="mb-3">Subscription value on file: <strong>{{ number_format((float) $monthlyValue, 2) }}</strong></p>
+                        <p class="mb-3">Subscription value on file: <strong>{{ number_format((float) ($subscriptionValue ?? 0), 2) }}</strong></p>
                         <a href="{{ route('platform.settings') }}" class="btn btn-sm btn-outline-primary">Change settings</a>
                     </div>
                 </div>

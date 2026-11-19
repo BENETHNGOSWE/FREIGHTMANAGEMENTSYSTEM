@@ -114,8 +114,10 @@ class HomeController extends Controller
             ],
             'expiringSoon' => $rows->filter(fn ($row) => $row->days_left !== null && $row->days_left >= 0 && $row->days_left <= 30)->sortBy('days_left'),
             'renewals' => $rows->filter(fn ($row) => in_array($row->status, ['expired', 'locked', 'grace'], true)),
-            'monthlyValue' => \App\Models\Subscription::whereIn('id', $rows->pluck('subscription')->filter()->pluck('id'))
-                ->sum('amount'),
+            // summed in PHP on purpose: an aggregate over an empty list is the classic
+            // "column does not exist" 500 on PostgreSQL, and this dashboard must never fall over
+            'subscriptionValue' => round((float) $rows->pluck('subscription')->filter()
+                ->sum(fn ($subscription) => (float) ($subscription->amount ?? 0)), 2),
             'recentInvoices' => \App\Models\SubscriptionInvoice::with('client')->latest('id')->take(6)->get(),
             'products' => \App\Services\Platform\ProductCatalog::PRODUCTS,
             'graceDays' => $subscriptions->graceDays(),

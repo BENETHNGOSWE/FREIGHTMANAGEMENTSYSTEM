@@ -207,12 +207,19 @@ class SubscriptionService
 
             $price = $amount ?? $this->priceFor($subscription->package_id, $months);
 
-            $subscription->update([
+            $changes = [
                 'duration_in_month' => $subscription->duration_in_month + $months,
                 'expire_date' => $from->copy()->addMonths($months),
-                'amount' => $price,
-                'locked_at' => null,
-            ]);
+            ];
+
+            // only touch the platform columns when they are really there
+            foreach (['amount' => $price, 'locked_at' => null] as $column => $value) {
+                if (\Illuminate\Support\Facades\Schema::hasColumn('subscriptions', $column)) {
+                    $changes[$column] = $value;
+                }
+            }
+
+            $subscription->update($changes);
 
             // a renewal is money owed: bill it right away so the owner can follow it
             SubscriptionInvoice::create([
