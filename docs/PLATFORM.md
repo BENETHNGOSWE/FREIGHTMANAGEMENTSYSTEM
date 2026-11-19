@@ -85,7 +85,34 @@ The SMS package includes the `sms_sender` module; a freight-only package does no
 guards the routes themselves, so closing a menu item is not the only protection. The
 sidebar filters by module **and** spatie permission; the owner bypasses both.
 
-## 8. Deploy
+## 8. If an owner screen reports a missing column
+
+`SQLSTATE[42703] ... column "amount" does not exist` (PostgreSQL) means the database was
+built before the platform columns existed. Two things protect you now:
+
+* the owner overview sums subscription value in PHP, so an empty table or a missing
+  column renders as `0` instead of a 500;
+* `2026_11_26_000001_repair_subscription_platform_columns` adds `product`, `sms_quota`,
+  `sms_used`, `amount`, `locked_at` and `notes` to `subscriptions` one column at a time
+  (PostgreSQL refuses several `ADD COLUMN`s in a single `ALTER`, which is why the batch
+  migration could silently stop halfway).
+
+Fix an affected database with:
+
+```bash
+php artisan migrate --force
+php artisan tinker --execute="var_dump(App\Models\Subscription::platformColumnsReady());"
+```
+
+Check the other platform tables in the same breath:
+
+```sql
+select table_name, column_name from information_schema.columns
+where table_name in ('subscriptions','subscription_tokens','platform_settings','platform_modules','package_modules')
+order by table_name, ordinal_position;
+```
+
+## 9. Deploy
 
 ```bash
 git pull
